@@ -661,8 +661,6 @@
     <None Include="Resources\Brasão da Gastão75x82.png" />
     <None Include="Resources\icons8-livro-25.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BibliotecaApp\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -305,12 +305,7 @@
       <DependentUpon>MapeamentoDeTurmasWizardForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\MapeamentoModel.cs" />
-    <Compile Include="Utils\ActivationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utils\ActivationForm.Designer.cs">
-      <DependentUpon>ActivationForm.cs</DependentUpon>
-    </Compile>
+    
     <Compile Include="Utils\AppPaths.cs" />
     <Compile Include="Utils\BackupManager.cs" />
     <Compile Include="Utils\EmailService.cs" />
@@ -365,7 +360,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\Etiquetas\LabelPrintOptions.cs" />
-    <Compile Include="Utils\LicenseValidator.cs" />
+    
     <Compile Include="Utils\mdiProperties.cs" />
     <Compile Include="Models\Sessao.cs" />
     <Compile Include="Program.cs" />
@@ -396,12 +391,7 @@
     <Compile Include="Utils\PasswordForm.Designer.cs">
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\TermsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utils\TermsForm.Designer.cs">
-      <DependentUpon>TermsForm.cs</DependentUpon>
-    </Compile>
+    
     <Compile Include="Utils\TurmasUtil.cs" />
     <EmbeddedResource Include="Elements\AnimatedToggle.resx">
       <DependentUpon>AnimatedToggle.cs</DependentUpon>
@@ -445,9 +435,7 @@
     <EmbeddedResource Include="Forms\Usuario\EditarUsuarioForm.resx">
       <DependentUpon>EditarUsuarioForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utils\ActivationForm.resx">
-      <DependentUpon>ActivationForm.cs</DependentUpon>
-    </EmbeddedResource>
+    
     <EmbeddedResource Include="Utils\Etiquetas\LabelActionDialog.resx">
       <DependentUpon>LabelActionDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -480,9 +468,7 @@
     <EmbeddedResource Include="Utils\PasswordForm.resx">
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Utils\TermsForm.resx">
-      <DependentUpon>TermsForm.cs</DependentUpon>
-    </EmbeddedResource>
+    
     <None Include="credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -628,9 +614,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icon_gastao_valle_zoomed_v2.ico" />
-    <Content Include="publicKey.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    
     <None Include="Resources\icons8-search-25.png" />
     <None Include="Resources\icons8-refresh-barcode-25.png" />
     <None Include="Resources\icons8-barcode-scanner-20 %281%29.png" />

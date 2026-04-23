@@ -45,8 +45,7 @@ O **Sistema Biblioteca** é uma aplicação desktop desenvolvida em C# (.NET Fra
 ### 🔐 Autenticação e Segurança
 - Login seguro com validação de credenciais
 - Criptografia de senhas com BCrypt
-- Sistema de licenciamento integrado
-- Termos de uso obrigatórios na primeira execução
+- Sistema open source, livre para uso
 
 ### 👥 Gerenciamento de Usuários
 | Tipo de Usuário | Permissões |
@@ -149,7 +148,6 @@ BibliotecaApp/bin/Debug/bibliotecaDB/bibliotecaDB.sdf
 
 | Arquivo | Localização | Descrição |
 |---------|-------------|------------|
-| `publicKey.xml` | Pasta do executável | Chave pública para licenciamento |
 | `credentials.json` | Pasta do executável | Credenciais Google Drive (backup) |
 | `App.config` | Projeto | Configurações de conexão |
 
@@ -205,13 +203,6 @@ SistemaBiblioteca/
 │   └── Utils/                    # Utilitários
 │       ├── AppPaths.cs           # Caminhos do sistema
 │       ├── BackupManager.cs      # Gerenciamento de backup
-│       ├── Conexao.cs            # Conexão com banco
-│       ├── CriptografiaSenha.cs  # Criptografia BCrypt
-│       ├── EmailService.cs       # Serviço de e-mail
-│       ├── Etiquetas/            # Geração de etiquetas
-│       │   ├── LabelPdfExporter.cs
-│       │   └── LabelPrintOptions.cs
-│       ├── LicenseValidator.cs   # Sistema de licenciamento
 │       └── TermsForm.cs          # Termos de uso
 ├── BibliotecaApp.sln             # Solução Visual Studio
 └── README.md                     # Este arquivo
@@ -389,9 +380,7 @@ SistemaBiblioteca/
 
 ## 📄 Licença
 
-Este projeto é distribuído sob a licença **Proprietária**.
-
-Consulte o arquivo `LICENSE` para mais informações.
+Este projeto é distribuído sob a licença **MIT**. Sinta-se livre para usar, modificar e distribuir.
 
 ---
 

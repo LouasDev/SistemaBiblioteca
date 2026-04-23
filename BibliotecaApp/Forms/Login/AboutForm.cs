@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BibliotecaApp.Utils;
 
 namespace BibliotecaApp.Forms.Login
 {
@@ -64,24 +63,8 @@ namespace BibliotecaApp.Forms.Login
 
         private void btnTerm_Click(object sender, EventArgs e)
         {
-            // Esconde o About enquanto o Terms estiver aberto
-            this.Hide();
-            try
-            {
-                using (var terms = new TermsForm(readOnly: true))
-                {
-                    terms.StartPosition = FormStartPosition.CenterScreen;
-                    terms.ShowInTaskbar = false;
-                    terms.ShowDialog();
-                }
-            }
-            finally
-            {
-                // Reexibe o About ao fechar os Termos
-                this.Show();
-                this.Activate();
-                this.BringToFront();
-            }
+            MessageBox.Show("Sistema open source sob licença MIT.\nConsulte o arquivo LICENSE no repositório.",
+                "Licença", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void gradientPanel1_Paint(object sender, PaintEventArgs e)

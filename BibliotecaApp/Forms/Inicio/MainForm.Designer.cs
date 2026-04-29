@@ -37,7 +37,6 @@ namespace BibliotecaApp.Forms.Inicio
             this.picExit = new System.Windows.Forms.PictureBox();
             this.picMax = new System.Windows.Forms.PictureBox();
             this.picMin = new System.Windows.Forms.PictureBox();
-            this.sairContainer = new System.Windows.Forms.Panel();
             this.btnSair = new System.Windows.Forms.Button();
             this.relContainer = new System.Windows.Forms.Panel();
             this.btnRel = new System.Windows.Forms.Button();
@@ -65,7 +64,6 @@ namespace BibliotecaApp.Forms.Inicio
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMax)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMin)).BeginInit();
-            this.sairContainer.SuspendLayout();
             this.relContainer.SuspendLayout();
             this.userContainer.SuspendLayout();
             this.incioContainer.SuspendLayout();
@@ -146,16 +144,6 @@ namespace BibliotecaApp.Forms.Inicio
             this.picMin.MouseEnter += new System.EventHandler(this.picMin_MouseEnter);
             this.picMin.MouseLeave += new System.EventHandler(this.picMin_MouseLeave);
             // 
-            // sairContainer
-            // 
-            this.sairContainer.Controls.Add(this.btnSair);
-            this.sairContainer.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.sairContainer.Location = new System.Drawing.Point(3, 343);
-            this.sairContainer.Name = "sairContainer";
-            this.sairContainer.Padding = new System.Windows.Forms.Padding(3, 0, 0, 0);
-            this.sairContainer.Size = new System.Drawing.Size(200, 60);
-            this.sairContainer.TabIndex = 7;
-            // 
             // btnSair
             // 
             this.btnSair.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(87)))), ((int)(((byte)(174)))));
@@ -165,7 +153,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnSair.ForeColor = System.Drawing.Color.White;
             this.btnSair.Image = global::BibliotecaApp.Properties.Resources.icons8_sair_25;
             this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSair.Location = new System.Drawing.Point(0, -3);
+            this.btnSair.Location = new System.Drawing.Point(3, 343);
             this.btnSair.Name = "btnSair";
             this.btnSair.Padding = new System.Windows.Forms.Padding(8, 0, 0, 0);
             this.btnSair.Size = new System.Drawing.Size(223, 60);
@@ -330,12 +318,13 @@ namespace BibliotecaApp.Forms.Inicio
             this.menu.Controls.Add(this.userContainer);
             this.menu.Controls.Add(this.livroContainer);
             this.menu.Controls.Add(this.relContainer);
-            this.menu.Controls.Add(this.sairContainer);
+            this.menu.Controls.Add(this.btnSair);
             this.menu.Dock = System.Windows.Forms.DockStyle.Left;
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
             this.menu.Size = new System.Drawing.Size(205, 800);
             this.menu.TabIndex = 1;
+            this.menu.Paint += new System.Windows.Forms.PaintEventHandler(this.menu_Paint);
             // 
             // panel1
             // 
@@ -519,7 +508,6 @@ namespace BibliotecaApp.Forms.Inicio
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMax)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picMin)).EndInit();
-            this.sairContainer.ResumeLayout(false);
             this.relContainer.ResumeLayout(false);
             this.userContainer.ResumeLayout(false);
             this.incioContainer.ResumeLayout(false);
@@ -538,7 +526,6 @@ namespace BibliotecaApp.Forms.Inicio
         private System.Windows.Forms.FlowLayoutPanel ControlPanel;
         private System.Windows.Forms.PictureBox picMin;
         private System.Windows.Forms.PictureBox picMax;
-        private System.Windows.Forms.Panel sairContainer;
         private System.Windows.Forms.Button btnSair;
         private System.Windows.Forms.Panel relContainer;
         private System.Windows.Forms.Button btnRel;

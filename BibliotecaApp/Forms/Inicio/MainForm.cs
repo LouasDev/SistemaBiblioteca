@@ -911,5 +911,9 @@ namespace BibliotecaApp.Forms.Inicio
 
         #endregion
 
+        private void menu_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

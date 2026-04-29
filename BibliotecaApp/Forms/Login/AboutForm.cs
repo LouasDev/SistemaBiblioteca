@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SeuProjeto;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,12 @@ namespace BibliotecaApp.Forms.Login
         public AboutForm()
         {
             InitializeComponent();
+
+            //aredondar cantos e desenhar borda cinza
+
+            int meuRaio = 15;
+            this.ArredondarCantos(meuRaio);
+            this.DesenharBorda(Color.Red, meuRaio, 1);
         }
 
         private void picExit_Click(object sender, EventArgs e)
@@ -79,7 +86,7 @@ namespace BibliotecaApp.Forms.Login
 
         private void GitLuis_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/ManoLouas"); // substitua pela URL correta
+            OpenUrl("https://github.com/LouasDev"); // substitua pela URL correta
         }
 
         private void GitIthalo_Click(object sender, EventArgs e)

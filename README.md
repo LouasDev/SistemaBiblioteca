@@ -1,7 +1,6 @@
 # Sistema Biblioteca - Gestão de Biblioteca Escolar
 
 <div align="center">
-  <img src="BibliotecaApp/Resources/brasao_Gastao_Black.png" alt="Logo Sistema Biblioteca" width="120"/>
   
   **Sistema de Gestão Bibliotecária para Escolas Públicas**
   

@@ -49,7 +49,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnInicio = new System.Windows.Forms.Button();
             this.menu = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.picLogoMenu = new System.Windows.Forms.PictureBox();
             this.livroContainer = new System.Windows.Forms.Panel();
             this.btnDev = new System.Windows.Forms.Button();
             this.btnLivros = new System.Windows.Forms.Button();
@@ -69,7 +69,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.incioContainer.SuspendLayout();
             this.menu.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogoMenu)).BeginInit();
             this.livroContainer.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -329,22 +329,21 @@ namespace BibliotecaApp.Forms.Inicio
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Controls.Add(this.picLogoMenu);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(196, 70);
             this.panel1.TabIndex = 10;
             // 
-            // pictureBox1
+            // picLogoMenu
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.BackgroundImage = global::BibliotecaApp.Properties.Resources.gast_removebg_preview_100x100_1_;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Location = new System.Drawing.Point(43, -16);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(118, 96);
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
+            this.picLogoMenu.BackColor = System.Drawing.Color.Transparent;
+            this.picLogoMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.picLogoMenu.Location = new System.Drawing.Point(43, -16);
+            this.picLogoMenu.Name = "picLogoMenu";
+            this.picLogoMenu.Size = new System.Drawing.Size(100, 100);
+            this.picLogoMenu.TabIndex = 9;
+            this.picLogoMenu.TabStop = false;
             // 
             // livroContainer
             // 
@@ -513,7 +512,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.incioContainer.ResumeLayout(false);
             this.menu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogoMenu)).EndInit();
             this.livroContainer.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -540,7 +539,7 @@ namespace BibliotecaApp.Forms.Inicio
         private System.Windows.Forms.Button btnLivro;
         private System.Windows.Forms.Timer livroTransition;
         private System.Windows.Forms.Button btnInicio;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox picLogoMenu;
         private System.Windows.Forms.Button btnLivros;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnUserCad;

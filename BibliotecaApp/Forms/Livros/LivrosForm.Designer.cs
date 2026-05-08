@@ -166,6 +166,8 @@
             // 
             this.dgvLivros.AllowUserToAddRows = false;
             this.dgvLivros.AllowUserToDeleteRows = false;
+            this.dgvLivros.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvLivros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLivros.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
@@ -177,13 +179,13 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvLivros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvLivros.Location = new System.Drawing.Point(1, 278);
+            this.dgvLivros.Location = new System.Drawing.Point(3, 278);
             this.dgvLivros.Name = "dgvLivros";
             this.dgvLivros.ReadOnly = true;
             this.dgvLivros.RowHeadersWidth = 51;
             this.dgvLivros.RowTemplate.Height = 24;
             this.dgvLivros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLivros.Size = new System.Drawing.Size(1280, 564);
+            this.dgvLivros.Size = new System.Drawing.Size(1274, 564);
             this.dgvLivros.TabIndex = 3;
             this.dgvLivros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLivros_CellContentClick);
             this.dgvLivros.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Lista_CellFormatting);

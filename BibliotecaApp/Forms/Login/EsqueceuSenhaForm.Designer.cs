@@ -48,18 +48,17 @@
             this.pnSenha = new System.Windows.Forms.Panel();
             this.btnTrocarSenha = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.gradientPanel1 = new BibliotecaApp.ElementosPersonalizados.GradientPanel();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.bemVindo = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.btnVoltar = new System.Windows.Forms.Button();
+            this.gradientPanel2 = new BibliotecaApp.ElementosPersonalizados.GradientPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblNomeEscola = new System.Windows.Forms.Label();
+            this.picLogoLogin = new System.Windows.Forms.PictureBox();
+            this.lblBiblioteca = new System.Windows.Forms.Label();
             this.pnSenha.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.gradientPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.gradientPanel2.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogoLogin)).BeginInit();
             this.SuspendLayout();
             // 
             // lblReenviar
@@ -67,7 +66,7 @@
             this.lblReenviar.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblReenviar.AutoSize = true;
             this.lblReenviar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReenviar.Location = new System.Drawing.Point(648, 488);
+            this.lblReenviar.Location = new System.Drawing.Point(145, 445);
             this.lblReenviar.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblReenviar.Name = "lblReenviar";
             this.lblReenviar.Size = new System.Drawing.Size(60, 17);
@@ -84,7 +83,7 @@
             this.btnEnviar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEnviar.Font = new System.Drawing.Font("Segoe UI", 16.2F);
             this.btnEnviar.ForeColor = System.Drawing.Color.White;
-            this.btnEnviar.Location = new System.Drawing.Point(593, 428);
+            this.btnEnviar.Location = new System.Drawing.Point(90, 385);
             this.btnEnviar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEnviar.Name = "btnEnviar";
             this.btnEnviar.Size = new System.Drawing.Size(220, 52);
@@ -96,9 +95,10 @@
             // txtTeste
             // 
             this.txtTeste.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.txtTeste.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtTeste.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtTeste.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this.txtTeste.Location = new System.Drawing.Point(568, 343);
+            this.txtTeste.Location = new System.Drawing.Point(65, 300);
             this.txtTeste.Margin = new System.Windows.Forms.Padding(2);
             this.txtTeste.Name = "txtTeste";
             this.txtTeste.Size = new System.Drawing.Size(271, 19);
@@ -112,7 +112,7 @@
             this.btnTeste.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTeste.Font = new System.Drawing.Font("Segoe UI", 16.2F);
             this.btnTeste.ForeColor = System.Drawing.Color.White;
-            this.btnTeste.Location = new System.Drawing.Point(801, 432);
+            this.btnTeste.Location = new System.Drawing.Point(330, 447);
             this.btnTeste.Margin = new System.Windows.Forms.Padding(2);
             this.btnTeste.Name = "btnTeste";
             this.btnTeste.Size = new System.Drawing.Size(220, 52);
@@ -125,7 +125,7 @@
             // 
             this.pnBarra.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pnBarra.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.pnBarra.Location = new System.Drawing.Point(568, 301);
+            this.pnBarra.Location = new System.Drawing.Point(65, 258);
             this.pnBarra.Margin = new System.Windows.Forms.Padding(2);
             this.pnBarra.Name = "pnBarra";
             this.pnBarra.Size = new System.Drawing.Size(271, 2);
@@ -136,7 +136,7 @@
             this.lblDigite.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblDigite.AutoSize = true;
             this.lblDigite.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDigite.Location = new System.Drawing.Point(567, 255);
+            this.lblDigite.Location = new System.Drawing.Point(64, 212);
             this.lblDigite.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDigite.Name = "lblDigite";
             this.lblDigite.Size = new System.Drawing.Size(93, 13);
@@ -146,10 +146,10 @@
             // txtEmail
             // 
             this.txtEmail.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.txtEmail.BackColor = System.Drawing.Color.White;
+            this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(568, 281);
+            this.txtEmail.Location = new System.Drawing.Point(65, 238);
             this.txtEmail.Margin = new System.Windows.Forms.Padding(2);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(271, 19);
@@ -159,22 +159,22 @@
             // 
             this.lblTop.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblTop.AutoEllipsis = true;
-            this.lblTop.AutoSize = true;
             this.lblTop.BackColor = System.Drawing.Color.Transparent;
             this.lblTop.Font = new System.Drawing.Font("Segoe UI", 21F);
-            this.lblTop.Location = new System.Drawing.Point(570, 90);
+            this.lblTop.Location = new System.Drawing.Point(4, 20);
             this.lblTop.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTop.Name = "lblTop";
-            this.lblTop.Size = new System.Drawing.Size(262, 38);
+            this.lblTop.Size = new System.Drawing.Size(383, 82);
             this.lblTop.TabIndex = 15;
             this.lblTop.Text = "Redefina sua senha.";
+            this.lblTop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblCodigo
             // 
             this.lblCodigo.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblCodigo.AutoSize = true;
             this.lblCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCodigo.Location = new System.Drawing.Point(567, 319);
+            this.lblCodigo.Location = new System.Drawing.Point(64, 276);
             this.lblCodigo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCodigo.Name = "lblCodigo";
             this.lblCodigo.Size = new System.Drawing.Size(133, 13);
@@ -185,7 +185,7 @@
             // 
             this.pnBarra2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.pnBarra2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.pnBarra2.Location = new System.Drawing.Point(568, 364);
+            this.pnBarra2.Location = new System.Drawing.Point(65, 321);
             this.pnBarra2.Margin = new System.Windows.Forms.Padding(2);
             this.pnBarra2.Name = "pnBarra2";
             this.pnBarra2.Size = new System.Drawing.Size(271, 2);
@@ -213,6 +213,7 @@
             // 
             // txtConfirmarSenha
             // 
+            this.txtConfirmarSenha.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtConfirmarSenha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtConfirmarSenha.Font = new System.Drawing.Font("Segoe UI", 10.2F);
             this.txtConfirmarSenha.Location = new System.Drawing.Point(2, 105);
@@ -243,6 +244,7 @@
             // 
             // txtNovaSenha
             // 
+            this.txtNovaSenha.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtNovaSenha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtNovaSenha.Font = new System.Drawing.Font("Segoe UI", 10.2F);
             this.txtNovaSenha.Location = new System.Drawing.Point(2, 27);
@@ -260,7 +262,7 @@
             this.pnSenha.Controls.Add(this.txtNovaSenha);
             this.pnSenha.Controls.Add(this.label2);
             this.pnSenha.Controls.Add(this.txtConfirmarSenha);
-            this.pnSenha.Location = new System.Drawing.Point(843, 255);
+            this.pnSenha.Location = new System.Drawing.Point(350, 276);
             this.pnSenha.Margin = new System.Windows.Forms.Padding(2);
             this.pnSenha.Name = "pnSenha";
             this.pnSenha.Size = new System.Drawing.Size(285, 137);
@@ -274,7 +276,7 @@
             this.btnTrocarSenha.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTrocarSenha.Font = new System.Drawing.Font("Segoe UI", 16.2F);
             this.btnTrocarSenha.ForeColor = System.Drawing.Color.White;
-            this.btnTrocarSenha.Location = new System.Drawing.Point(801, 482);
+            this.btnTrocarSenha.Location = new System.Drawing.Point(330, 498);
             this.btnTrocarSenha.Margin = new System.Windows.Forms.Padding(2);
             this.btnTrocarSenha.Name = "btnTrocarSenha";
             this.btnTrocarSenha.Size = new System.Drawing.Size(220, 52);
@@ -295,80 +297,6 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.picExit_Click);
             // 
-            // gradientPanel1
-            // 
-            this.gradientPanel1.Controls.Add(this.label6);
-            this.gradientPanel1.Controls.Add(this.label3);
-            this.gradientPanel1.Controls.Add(this.bemVindo);
-            this.gradientPanel1.Controls.Add(this.pictureBox2);
-            this.gradientPanel1.Controls.Add(this.pictureBox3);
-            this.gradientPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.gradientPanel1.Gradientebottom = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(145)))), ((int)(((byte)(245)))));
-            this.gradientPanel1.Gradientetop = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(74)))), ((int)(((byte)(158)))));
-            this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
-            this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(500, 600);
-            this.gradientPanel1.TabIndex = 29;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(145)))), ((int)(((byte)(245)))));
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(3, 576);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 17);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Version 1.0";
-            // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(93, 383);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(284, 169);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Seja bem-vindo ao sistema de gerenciamento da Biblioteca Monteiro Lobato! Aqui vo" +
-    "cê pode consultar o acervo, registrar empréstimos, devoluções e organizar sua le" +
-    "itura.";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // bemVindo
-            // 
-            this.bemVindo.AutoSize = true;
-            this.bemVindo.BackColor = System.Drawing.Color.Transparent;
-            this.bemVindo.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bemVindo.ForeColor = System.Drawing.Color.White;
-            this.bemVindo.Location = new System.Drawing.Point(158, 67);
-            this.bemVindo.Name = "bemVindo";
-            this.bemVindo.Size = new System.Drawing.Size(147, 37);
-            this.bemVindo.TabIndex = 1;
-            this.bemVindo.Text = "Bem-vindo";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::BibliotecaApp.Properties.Resources.clouds_upright_2x1;
-            this.pictureBox2.Location = new System.Drawing.Point(421, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(98, 600);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox3.Image = global::BibliotecaApp.Properties.Resources.Brasão_da_Gastão3;
-            this.pictureBox3.Location = new System.Drawing.Point(147, 168);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(176, 189);
-            this.pictureBox3.TabIndex = 0;
-            this.pictureBox3.TabStop = false;
-            // 
             // btnVoltar
             // 
             this.btnVoltar.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -377,7 +305,7 @@
             this.btnVoltar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVoltar.Font = new System.Drawing.Font("Segoe UI", 14.2F);
             this.btnVoltar.ForeColor = System.Drawing.Color.White;
-            this.btnVoltar.Location = new System.Drawing.Point(636, 500);
+            this.btnVoltar.Location = new System.Drawing.Point(133, 457);
             this.btnVoltar.Margin = new System.Windows.Forms.Padding(2);
             this.btnVoltar.Name = "btnVoltar";
             this.btnVoltar.Size = new System.Drawing.Size(135, 38);
@@ -386,27 +314,86 @@
             this.btnVoltar.UseVisualStyleBackColor = false;
             this.btnVoltar.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel2.BorderRadius = 10;
+            this.gradientPanel2.Controls.Add(this.lblTop);
+            this.gradientPanel2.Controls.Add(this.btnVoltar);
+            this.gradientPanel2.Controls.Add(this.lblReenviar);
+            this.gradientPanel2.Controls.Add(this.btnTrocarSenha);
+            this.gradientPanel2.Controls.Add(this.btnEnviar);
+            this.gradientPanel2.Controls.Add(this.btnTeste);
+            this.gradientPanel2.Controls.Add(this.txtTeste);
+            this.gradientPanel2.Controls.Add(this.pnSenha);
+            this.gradientPanel2.Controls.Add(this.txtEmail);
+            this.gradientPanel2.Controls.Add(this.pnBarra2);
+            this.gradientPanel2.Controls.Add(this.lblDigite);
+            this.gradientPanel2.Controls.Add(this.lblCodigo);
+            this.gradientPanel2.Controls.Add(this.pnBarra);
+            this.gradientPanel2.Gradientebottom = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel2.Gradientetop = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel2.Location = new System.Drawing.Point(488, 22);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(387, 557);
+            this.gradientPanel2.TabIndex = 31;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.Controls.Add(this.lblNomeEscola);
+            this.panel2.Controls.Add(this.picLogoLogin);
+            this.panel2.Controls.Add(this.lblBiblioteca);
+            this.panel2.Location = new System.Drawing.Point(34, 31);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(408, 550);
+            this.panel2.TabIndex = 31;
+            // 
+            // lblNomeEscola
+            // 
+            this.lblNomeEscola.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNomeEscola.BackColor = System.Drawing.Color.Transparent;
+            this.lblNomeEscola.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNomeEscola.ForeColor = System.Drawing.Color.White;
+            this.lblNomeEscola.Location = new System.Drawing.Point(3, 3);
+            this.lblNomeEscola.Name = "lblNomeEscola";
+            this.lblNomeEscola.Size = new System.Drawing.Size(402, 158);
+            this.lblNomeEscola.TabIndex = 1;
+            this.lblNomeEscola.Text = "Sistema Universal Bibliotecario";
+            this.lblNomeEscola.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picLogoLogin
+            // 
+            this.picLogoLogin.BackColor = System.Drawing.Color.Transparent;
+            this.picLogoLogin.Location = new System.Drawing.Point(98, 180);
+            this.picLogoLogin.Name = "picLogoLogin";
+            this.picLogoLogin.Size = new System.Drawing.Size(200, 200);
+            this.picLogoLogin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogoLogin.TabIndex = 0;
+            this.picLogoLogin.TabStop = false;
+            // 
+            // lblBiblioteca
+            // 
+            this.lblBiblioteca.BackColor = System.Drawing.Color.Transparent;
+            this.lblBiblioteca.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBiblioteca.ForeColor = System.Drawing.Color.White;
+            this.lblBiblioteca.Location = new System.Drawing.Point(56, 399);
+            this.lblBiblioteca.Name = "lblBiblioteca";
+            this.lblBiblioteca.Size = new System.Drawing.Size(284, 147);
+            this.lblBiblioteca.TabIndex = 2;
+            this.lblBiblioteca.Text = "Nome Da Biblioteca";
+            this.lblBiblioteca.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // EsqueceuSenhaForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.ClientSize = new System.Drawing.Size(900, 600);
-            this.Controls.Add(this.btnVoltar);
-            this.Controls.Add(this.gradientPanel1);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.btnTrocarSenha);
-            this.Controls.Add(this.lblTop);
-            this.Controls.Add(this.pnSenha);
-            this.Controls.Add(this.pnBarra2);
-            this.Controls.Add(this.lblCodigo);
-            this.Controls.Add(this.pnBarra);
-            this.Controls.Add(this.lblDigite);
-            this.Controls.Add(this.txtEmail);
-            this.Controls.Add(this.txtTeste);
-            this.Controls.Add(this.btnTeste);
-            this.Controls.Add(this.btnEnviar);
-            this.Controls.Add(this.lblReenviar);
+            this.Controls.Add(this.gradientPanel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -417,12 +404,11 @@
             this.pnSenha.ResumeLayout(false);
             this.pnSenha.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.gradientPanel1.ResumeLayout(false);
-            this.gradientPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.gradientPanel2.ResumeLayout(false);
+            this.gradientPanel2.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogoLogin)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -446,12 +432,11 @@
         private System.Windows.Forms.Panel pnSenha;
         private System.Windows.Forms.Button btnTrocarSenha;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private ElementosPersonalizados.GradientPanel gradientPanel1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label bemVindo;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Button btnVoltar;
+        private ElementosPersonalizados.GradientPanel gradientPanel2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label lblNomeEscola;
+        private System.Windows.Forms.PictureBox picLogoLogin;
+        private System.Windows.Forms.Label lblBiblioteca;
     }
 }

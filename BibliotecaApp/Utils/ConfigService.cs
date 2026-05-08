@@ -37,4 +37,17 @@ using System.Windows.Forms;
             }
             catch { return new ConfiguracaoApp(); }
         }
+
+    public static string ObterCaminhoMidia()
+    {
+        // Criamos uma pasta 'Media' dentro da pasta de dados do App
+        string pastaMedia = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Imagens");
+
+        if (!Directory.Exists(pastaMedia))
+            Directory.CreateDirectory(pastaMedia);
+
+        return pastaMedia;
     }
+
+
+}

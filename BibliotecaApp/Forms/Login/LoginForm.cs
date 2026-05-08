@@ -30,11 +30,30 @@ namespace BibliotecaApp.Forms.Login
         // Evita reentrância no clique (duplo Enter/click)
         private bool _isAuthenticating = false;
         #endregion
+        public void CarregarFotoSegura()
+        {
+            var config = ConfigService.Carregar();
+
+            // Verificamos se o arquivo existe DE VERDADE antes de tentar ler
+            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
+            {
+                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
+                {
+                    picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
+                }
+            }
+            else
+            {
+                // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
+                picLogoLogin.Image = Properties.Resources.sub_200x200px;
+            }
+        }
 
         #region Construtor
         public LoginForm()
         {
             InitializeComponent();
+            CarregarFotoSegura();
 
             //aredondar cantos e desenhar borda cinza
 
@@ -952,5 +971,15 @@ string corpo = $@"
             RecarregarConfiguracoes();
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            const string msg = "Tem certeza de que quer fechar a Aplicação?";
+            const string box = "Confirmação de Encerramento";
+            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirma == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
     }
 }

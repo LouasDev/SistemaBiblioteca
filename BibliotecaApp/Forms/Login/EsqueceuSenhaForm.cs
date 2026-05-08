@@ -3,6 +3,7 @@ using BibliotecaApp.Utils;
 using System;
 using System.Data.SqlServerCe;
 using System.Drawing;
+using System.IO;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -11,6 +12,27 @@ namespace BibliotecaApp.Forms.Login
 {
     public partial class EsqueceuSenhaForm : Form
     {
+
+        public void CarregarFotoSegura()
+        {
+            var config = ConfigService.Carregar();
+
+            // Verificamos se o arquivo existe DE VERDADE antes de tentar ler
+            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
+            {
+                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
+                {
+                    picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
+                }
+            }
+            else
+            {
+                // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
+                picLogoLogin.Image = Properties.Resources.sub_200x200px;
+            }
+        }
+
+
         #region Constants
         private const string TabelaUsuarios = "usuarios";
         private const string ColunaNome = "nome";
@@ -43,13 +65,31 @@ namespace BibliotecaApp.Forms.Login
             InitializeComponent();
             ConfigurarTimers();
             AtualizarLblReenviar();
+            CarregarFotoSegura();
         }
         #endregion
 
         #region Form Events
         private void EsqueceuSenhaForm_Load(object sender, EventArgs e)
         {
-            txtTeste.BackColor = Color.White;
+
+            AppPaths.EnsureFolders();
+            // Carrega o que já existe no arquivo
+            var config = ConfigService.Carregar();
+
+            // Preenche os campos com os dados salvos
+            lblNomeEscola.Text = config.NomeEscola;
+            lblBiblioteca.Text = config.NomeBiblioteca;
+
+            // Mostra a foto que já estava salva, se existir
+            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
+            {
+                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
+                {
+                    picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
+                }
+            }
+
             txtTeste.Location = new Point(-200, -200);
             lblCodigo.Location = new Point(-200, -200);
             pnBarra2.Location = new Point(-200, -200);
@@ -65,11 +105,7 @@ namespace BibliotecaApp.Forms.Login
 
         private void txtEmail_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-               btnEnviar.PerformClick();
-            }
+
         }
 
 
@@ -292,7 +328,6 @@ namespace BibliotecaApp.Forms.Login
         private void TransicionarParaVerificacaoCodigo()
         {
             lblTop.Text = "Digite o Código enviado.";
-            lblTop.Location = new Point(545, 90);
 
             txtEmail.Visible = false;
             txtEmail.Enabled = false;
@@ -311,7 +346,6 @@ namespace BibliotecaApp.Forms.Login
         private void TransicionarParaNovaSenha()
         {
             lblTop.Text = "Digite uma nova senha.";
-            lblTop.Location = new Point(550, 90);
 
             txtTeste.Visible = false;
             pnBarra2.Visible = false;
@@ -589,8 +623,8 @@ namespace BibliotecaApp.Forms.Login
                 }
             }
         }
+
         #endregion
 
-       
     }
 }

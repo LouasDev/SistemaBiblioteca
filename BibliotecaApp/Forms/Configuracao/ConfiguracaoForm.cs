@@ -38,25 +38,50 @@ namespace BibliotecaApp.Forms.Configuracao
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            var config = new ConfiguracaoApp
-            {
-                NomeEscola = txtEscola.Text,
-                NomeBiblioteca = txtBiblioteca.Text,
-                CaminhoLogo = caminhoTemporarioFoto, // Salva o caminho
-                UltimaAlteracao = DateTime.Now
-            };
+            // 1. Criamos a pergunta de confirmação
+            DialogResult confirmacao = MessageBox.Show(
+                "Deseja salvar as alterações de configuração?",
+                "Confirmar Alterações",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
-            ConfigService.Salvar(config);
-
-            // ATUALIZAÇÃO EM TEMPO REAL (Sem fechar o programa)
-            foreach (Form f in Application.OpenForms)
+            // 2. Só prosseguimos se o usuário clicar em "Sim"
+            if (confirmacao == DialogResult.Yes)
             {
-                // Se o Form aberto tiver um método chamado "RecarregarConfiguracoes", ele executa
-                //if (f is MainForm main) main.RecarregarConfiguracoes();
-                if (f is LoginForm login) login.RecarregarConfiguracoes();
+                var config = ConfigService.Carregar();
+                config.NomeEscola = txtEscola.Text;
+                config.NomeBiblioteca = txtBiblioteca.Text;
+
+                if (!string.IsNullOrEmpty(caminhoTemporarioFoto))
+                {
+                    try
+                    {
+                        string extensao = Path.GetExtension(caminhoTemporarioFoto);
+                        string nomeArquivo = "logo_instituicao" + extensao;
+                        string destinoFinal = Path.Combine(ConfigService.ObterCaminhoMidia(), nomeArquivo);
+
+                        File.Copy(caminhoTemporarioFoto, destinoFinal, true);
+                        config.CaminhoLogo = destinoFinal;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Erro ao processar imagem: " + ex.Message);
+                        return; // Interrompe o salvamento se a imagem der erro crítico
+                    }
+                }
+
+                // 3. Salva e atualiza a interface
+                ConfigService.Salvar(config);
+                AtualizarTodosOsForms();
+
+                MessageBox.Show("Configurações salvas com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            MessageBox.Show("Configurações aplicadas com sucesso!", "Sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+            {
+                // Opcional: Avisar que nada foi alterado
+                // MessageBox.Show("Operação cancelada.");
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -82,5 +107,25 @@ namespace BibliotecaApp.Forms.Configuracao
                 }
             }
         }
+
+        private void AtualizarTodosOsForms()
+        {
+            // Percorre todos os formulários que o Windows abriu para o seu App
+            foreach (Form f in Application.OpenForms)
+            {
+                // Se encontrar o Menu Principal, avisa para atualizar a foto
+                if (f is MainForm menu)
+                {
+                    menu.AtualizarFotoMenu();
+                }
+
+                // Se encontrar o Login, avisa para recarregar tudo
+                if (f is LoginForm login)
+                {
+                    login.RecarregarConfiguracoes();
+                }
+            }
+        }
+
     }
 }

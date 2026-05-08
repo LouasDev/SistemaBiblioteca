@@ -28,6 +28,24 @@ namespace BibliotecaApp.Forms.Inicio
 {
     public partial class MainForm : Form
     {
+        public void CarregarFotoSegura()
+        {
+            var config = ConfigService.Carregar();
+
+            // Verificamos se o arquivo existe DE VERDADE antes de tentar ler
+            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
+            {
+                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
+                {
+                    picLogoMenu.Image = System.Drawing.Image.FromStream(stream);
+                }
+            }
+            else
+            {
+                // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
+                picLogoMenu.Image = Properties.Resources.sub_200x200px;
+            }
+        }
 
         private bool menuAnimating = false;
         private NotifyIcon notifyIcon;
@@ -37,6 +55,7 @@ namespace BibliotecaApp.Forms.Inicio
         {
             InitializeComponent();
             mdiProp();
+            CarregarFotoSegura();
 
             // Inicializa NotifyIcon e menu de contexto
             notifyMenu = new ContextMenuStrip();

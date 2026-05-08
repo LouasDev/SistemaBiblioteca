@@ -339,9 +339,10 @@ namespace BibliotecaApp.Forms.Inicio
             // 
             this.picLogoMenu.BackColor = System.Drawing.Color.Transparent;
             this.picLogoMenu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.picLogoMenu.Location = new System.Drawing.Point(43, -16);
+            this.picLogoMenu.Location = new System.Drawing.Point(66, 0);
             this.picLogoMenu.Name = "picLogoMenu";
-            this.picLogoMenu.Size = new System.Drawing.Size(100, 100);
+            this.picLogoMenu.Size = new System.Drawing.Size(70, 70);
+            this.picLogoMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picLogoMenu.TabIndex = 9;
             this.picLogoMenu.TabStop = false;
             // 

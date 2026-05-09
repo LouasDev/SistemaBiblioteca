@@ -43,12 +43,12 @@ public class CustomButton : Button
     [Browsable(false)] public new FlatStyle FlatStyle { get => base.FlatStyle; set => base.FlatStyle = value; }
 
     // Esconde propriedades que aparecem na imagem
-    [Browsable(false)] public new Color BackgroundColor { get; set; }
-    [Browsable(false)] public new int BorderThickness { get; set; }
-    [Browsable(false)] public new Color BorderColor { get; set; }
-    [Browsable(false)] public new Color HoverColor { get; set; }
-    [Browsable(false)] public new Color PressedColor { get; set; }
-    [Browsable(false)] public new bool ShowBorder { get; set; }
+    [Browsable(false)] public Color BackgroundColor { get; set; }
+    [Browsable(false)] public int BorderThickness { get; set; }
+    [Browsable(false)] public Color BorderColor { get; set; }
+    [Browsable(false)] public Color HoverColor { get; set; }
+    [Browsable(false)] public Color PressedColor { get; set; }
+    [Browsable(false)] public bool ShowBorder { get; set; }
 
     // ──────────────────────────────────────────
     // CONSTRUTOR

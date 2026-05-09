@@ -20,7 +20,6 @@ namespace BibliotecaApp.Forms.Livros
         public List<Livro> Livros { get; set; }
         public List<Emprestimo> Emprestimos { get; set; }
         
-        private bool _carregandoLivroAutomaticamente = false;
         private List<Livro> _cacheLivros = new List<Livro>();
         private List<Usuarios> _cacheUsuarios = new List<Usuarios>();
         

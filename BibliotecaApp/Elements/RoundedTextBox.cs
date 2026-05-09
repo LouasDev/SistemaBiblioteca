@@ -16,7 +16,7 @@ public class RoundedTextBox : UserControl
     private bool isMouseOver = false;
     private bool isFocused = false;
 
-    public event EventHandler TextChanged
+    public new event EventHandler TextChanged
     {
         add { innerTextBox.TextChanged += value; }
         remove { innerTextBox.TextChanged -= value; }

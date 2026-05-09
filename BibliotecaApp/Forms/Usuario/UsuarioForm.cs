@@ -24,7 +24,6 @@ namespace BibliotecaApp.Forms.Usuario
             this.Load += UsuarioForm_Load;
         }
 
-        private EventHandler _empProrrogadoHandler;
 
         private void EventosGlobais_EmprestimoProrrogado(object sender, EventArgs e)
         {

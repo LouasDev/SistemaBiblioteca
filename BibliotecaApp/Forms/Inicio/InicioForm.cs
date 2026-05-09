@@ -58,7 +58,6 @@ namespace BibliotecaApp.Forms.Inicio
         // auto-refresh timer
         private System.Windows.Forms.Timer timerAutoRefresh;
 
-        private EmprestimoRapidoForm emprestimoRap = null;
         private Dictionary<string, bool> mainButtonsOriginalState = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         public InicioForm()
@@ -1316,7 +1315,6 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
 
                 foreach (var kv in mainButtonsOriginalState) SetButtonEnabledOnForm(main, kv.Key, kv.Value);
 
-                emprestimoRap = null;
                 _ = CarregarEstatisticasAsync();
             }
             catch { /*silent*/ }

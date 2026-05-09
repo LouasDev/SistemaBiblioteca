@@ -2,7 +2,6 @@
 using BibliotecaApp.Forms.Utils;
 using BibliotecaApp.Models;
 using BibliotecaApp.Utils;
-using BibliotecaApp.Utils;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SeuProjeto;

@@ -20,7 +20,6 @@ namespace BibliotecaApp.Froms.Usuario
 
         private static bool IsAdminLogado()=> string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
 
-        private List<string> todasTurmasPadrao;
         public event EventHandler UsuarioCriado;
 
 

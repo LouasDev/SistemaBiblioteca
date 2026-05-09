@@ -27,7 +27,6 @@ namespace BibliotecaApp.Forms.Usuario
         private Size originalSize;
         private List<string> turmasCadastradas = new List<string>();
         
-        private List<string> todasTurmasPadrao;
         public event EventHandler UsuarioAtualizado;
 
         public EditarUsuarioForm()

@@ -22,7 +22,6 @@ namespace BibliotecaApp.Forms.Livros
 
         public event EventHandler LivroAtualizado;
 
-        private List<string> todasTurmasPadrao;
 
         // Limite de caracteres do código de barras (igual ao EmprestimoForm)
         private const int LIMITE_CODIGO_BARRAS = 13;

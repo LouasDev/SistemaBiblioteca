@@ -47,21 +47,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.picExit = new System.Windows.Forms.PictureBox();
-            this.gradientPanel1 = new BibliotecaApp.ElementosPersonalizados.GradientPanel();
-            this.lblVersion = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.bemVindo = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GitMatheus)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitIthalo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitLuis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitRenato)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).BeginInit();
-            this.gradientPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel5
@@ -285,82 +276,6 @@
             this.picExit.MouseEnter += new System.EventHandler(this.picExit_MouseEnter);
             this.picExit.MouseLeave += new System.EventHandler(this.picExit_MouseLeave);
             // 
-            // gradientPanel1
-            // 
-            this.gradientPanel1.Controls.Add(this.lblVersion);
-            this.gradientPanel1.Controls.Add(this.label1);
-            this.gradientPanel1.Controls.Add(this.bemVindo);
-            this.gradientPanel1.Controls.Add(this.pictureBox2);
-            this.gradientPanel1.Controls.Add(this.pictureBox1);
-            this.gradientPanel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.gradientPanel1.Gradientebottom = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(145)))), ((int)(((byte)(245)))));
-            this.gradientPanel1.Gradientetop = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(74)))), ((int)(((byte)(158)))));
-            this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
-            this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(500, 600);
-            this.gradientPanel1.TabIndex = 10;
-            this.gradientPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel1_Paint);
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(145)))), ((int)(((byte)(245)))));
-            this.lblVersion.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(3, 576);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(71, 17);
-            this.lblVersion.TabIndex = 3;
-            this.lblVersion.Text = "Version 1.0";
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(93, 383);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(284, 169);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Seja bem-vindo ao sistema de gerenciamento da Biblioteca Monteiro Lobato! Aqui vo" +
-    "cê pode consultar o acervo, registrar empréstimos, devoluções e organizar sua le" +
-    "itura.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // bemVindo
-            // 
-            this.bemVindo.AutoSize = true;
-            this.bemVindo.BackColor = System.Drawing.Color.Transparent;
-            this.bemVindo.Font = new System.Drawing.Font("Segoe UI", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bemVindo.ForeColor = System.Drawing.Color.White;
-            this.bemVindo.Location = new System.Drawing.Point(158, 67);
-            this.bemVindo.Name = "bemVindo";
-            this.bemVindo.Size = new System.Drawing.Size(147, 37);
-            this.bemVindo.TabIndex = 1;
-            this.bemVindo.Text = "Bem-vindo";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::BibliotecaApp.Properties.Resources.clouds_upright_2x1;
-            this.pictureBox2.Location = new System.Drawing.Point(421, 0);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(98, 600);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::BibliotecaApp.Properties.Resources.Brasão_da_Gastão3;
-            this.pictureBox1.Location = new System.Drawing.Point(147, 168);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(176, 189);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -368,14 +283,13 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(900, 600);
             this.Controls.Add(this.panel5);
-            this.Controls.Add(this.gradientPanel1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BibliotecaApp";
+            this.Text = " ";
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GitMatheus)).EndInit();
@@ -383,22 +297,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.GitLuis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitRenato)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).EndInit();
-            this.gradientPanel1.ResumeLayout(false);
-            this.gradientPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private ElementosPersonalizados.GradientPanel gradientPanel1;
-        private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label bemVindo;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.PictureBox picExit;
         private System.Windows.Forms.Label label3;

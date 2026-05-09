@@ -624,6 +624,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icon_gastao_valle_zoomed_v2.ico" />
+    <None Include="Resources\sub-full.png" />
     <None Include="Resources\sub-200x200px.png" />
     <None Include="Resources\icons8-search-25.png" />
     <None Include="Resources\icons8-refresh-barcode-25.png" />

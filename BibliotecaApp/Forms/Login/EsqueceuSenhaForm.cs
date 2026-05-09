@@ -1,5 +1,6 @@
 ﻿using BibliotecaApp.Services;
 using BibliotecaApp.Utils;
+using SeuProjeto;
 using System;
 using System.Data.SqlServerCe;
 using System.Drawing;
@@ -28,7 +29,7 @@ namespace BibliotecaApp.Forms.Login
             else
             {
                 // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
-                picLogoLogin.Image = Properties.Resources.sub_200x200px;
+                picLogoLogin.Image = Properties.Resources.sub_full;
             }
         }
 
@@ -66,6 +67,13 @@ namespace BibliotecaApp.Forms.Login
             ConfigurarTimers();
             AtualizarLblReenviar();
             CarregarFotoSegura();
+
+            //aredondar cantos e desenhar borda cinza
+
+            int meuRaio = 15;
+            this.ArredondarCantos(meuRaio);
+            this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+
         }
         #endregion
 

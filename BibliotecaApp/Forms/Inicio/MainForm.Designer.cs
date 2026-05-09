@@ -342,7 +342,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.picLogoMenu.Location = new System.Drawing.Point(66, 0);
             this.picLogoMenu.Name = "picLogoMenu";
             this.picLogoMenu.Size = new System.Drawing.Size(70, 70);
-            this.picLogoMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picLogoMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoMenu.TabIndex = 9;
             this.picLogoMenu.TabStop = false;
             // 

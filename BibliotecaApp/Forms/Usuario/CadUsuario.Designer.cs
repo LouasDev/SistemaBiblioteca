@@ -54,11 +54,11 @@
             this.EmailAst = new System.Windows.Forms.Label();
             this.lstSugestoesTurma = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.txtNome = new RoundedTextBox();
             this.txtEmail = new RoundedTextBox();
             this.txtTurma = new RoundedTextBox();
             this.cbUsuario = new RoundedComboBox();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.dtpDataNasc = new RoundedDatePicker();
             this.txtConfirmSenha = new RoundedTextBox();
             this.mtxCPF = new RoundedMaskedTextBox();
@@ -338,11 +338,12 @@
             // 
             // btnLimpar
             // 
-            this.btnLimpar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnLimpar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLimpar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
             this.btnLimpar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnLimpar.ForeColor = System.Drawing.Color.White;
-            this.btnLimpar.Location = new System.Drawing.Point(23, 304);
+            this.btnLimpar.Location = new System.Drawing.Point(23, 313);
             this.btnLimpar.Name = "btnLimpar";
             this.btnLimpar.Size = new System.Drawing.Size(149, 57);
             this.btnLimpar.TabIndex = 89;
@@ -352,11 +353,12 @@
             // 
             // btnCadastrar
             // 
-            this.btnCadastrar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnCadastrar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCadastrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
             this.btnCadastrar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnCadastrar.ForeColor = System.Drawing.Color.White;
-            this.btnCadastrar.Location = new System.Drawing.Point(491, 304);
+            this.btnCadastrar.Location = new System.Drawing.Point(491, 313);
             this.btnCadastrar.Name = "btnCadastrar";
             this.btnCadastrar.Size = new System.Drawing.Size(149, 57);
             this.btnCadastrar.TabIndex = 10;
@@ -424,31 +426,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 980);
             this.panel1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.panel2.Controls.Add(this.dtpDataNasc);
-            this.panel2.Controls.Add(this.txtConfirmSenha);
-            this.panel2.Controls.Add(this.DataNascAst);
-            this.panel2.Controls.Add(this.btnLimpar);
-            this.panel2.Controls.Add(this.btnCadastrar);
-            this.panel2.Controls.Add(this.mtxCPF);
-            this.panel2.Controls.Add(this.lblSenha);
-            this.panel2.Controls.Add(this.mtxTelefone);
-            this.panel2.Controls.Add(this.txtSenha);
-            this.panel2.Controls.Add(this.lblConfirmSenha);
-            this.panel2.Controls.Add(this.SenhaAst);
-            this.panel2.Controls.Add(this.lblTelefone);
-            this.panel2.Controls.Add(this.lblDataNasc);
-            this.panel2.Controls.Add(this.lblCPF);
-            this.panel2.Controls.Add(this.ConfirmSenhaAst);
-            this.panel2.Controls.Add(this.chkMostrarSenha);
-            this.panel2.Controls.Add(this.TelefoneAst);
-            this.panel2.Location = new System.Drawing.Point(288, 430);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(657, 541);
-            this.panel2.TabIndex = 132;
             // 
             // txtNome
             // 
@@ -570,6 +547,31 @@
             this.cbUsuario.Size = new System.Drawing.Size(329, 34);
             this.cbUsuario.TabIndex = 1;
             this.cbUsuario.SelectedIndexChanged += new System.EventHandler(this.cbUsuario_SelectedIndexChanged);
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel2.Controls.Add(this.dtpDataNasc);
+            this.panel2.Controls.Add(this.txtConfirmSenha);
+            this.panel2.Controls.Add(this.DataNascAst);
+            this.panel2.Controls.Add(this.btnLimpar);
+            this.panel2.Controls.Add(this.btnCadastrar);
+            this.panel2.Controls.Add(this.mtxCPF);
+            this.panel2.Controls.Add(this.lblSenha);
+            this.panel2.Controls.Add(this.mtxTelefone);
+            this.panel2.Controls.Add(this.txtSenha);
+            this.panel2.Controls.Add(this.lblConfirmSenha);
+            this.panel2.Controls.Add(this.SenhaAst);
+            this.panel2.Controls.Add(this.lblTelefone);
+            this.panel2.Controls.Add(this.lblDataNasc);
+            this.panel2.Controls.Add(this.lblCPF);
+            this.panel2.Controls.Add(this.ConfirmSenhaAst);
+            this.panel2.Controls.Add(this.chkMostrarSenha);
+            this.panel2.Controls.Add(this.TelefoneAst);
+            this.panel2.Location = new System.Drawing.Point(288, 430);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(657, 541);
+            this.panel2.TabIndex = 132;
             // 
             // dtpDataNasc
             // 

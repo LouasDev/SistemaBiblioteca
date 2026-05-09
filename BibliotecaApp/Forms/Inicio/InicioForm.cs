@@ -1431,14 +1431,14 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 iTextSharp.text.Image imgEsq = null, imgDir = null;
                 using (var ms = new MemoryStream())
                 {
-                    Properties.Resources.Brasao_mg.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    Properties.Resources.sub_200x200px.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     imgEsq = iTextSharp.text.Image.GetInstance(ms.ToArray());
                     imgEsq.ScaleAbsolute(48f, 48f);
                     imgEsq.Alignment = Element.ALIGN_LEFT;
                 }
                 using (var ms = new MemoryStream())
                 {
-                    Properties.Resources.brasao_Gastao_Black.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    Properties.Resources.sub_200x200px.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     imgDir = iTextSharp.text.Image.GetInstance(ms.ToArray());
                     imgDir.ScaleAbsolute(48f, 48f);
                     imgDir.Alignment = Element.ALIGN_RIGHT;

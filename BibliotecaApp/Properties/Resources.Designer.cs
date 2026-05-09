@@ -83,36 +83,6 @@ namespace BibliotecaApp.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Brasão_da_Gastão {
-            get {
-                object obj = ResourceManager.GetObject("Brasão da Gastão", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Brasão_da_Gastão2 {
-            get {
-                object obj = ResourceManager.GetObject("Brasão da Gastão2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Brasão_da_Gastão3 {
-            get {
-                object obj = ResourceManager.GetObject("Brasão da Gastão3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap Brasão_da_Gastão59x65 {
             get {
                 object obj = ResourceManager.GetObject("Brasão da Gastão59x65", resourceCulture);
@@ -126,46 +96,6 @@ namespace BibliotecaApp.Properties {
         internal static System.Drawing.Bitmap Brasão_da_Gastão75x82 {
             get {
                 object obj = ResourceManager.GetObject("Brasão da Gastão75x82", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap brasao_Gastao_Black {
-            get {
-                object obj = ResourceManager.GetObject("brasao_Gastao_Black", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Brasao_mg {
-            get {
-                object obj = ResourceManager.GetObject("Brasao_mg", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap clouds_upright_2x {
-            get {
-                object obj = ResourceManager.GetObject("clouds-upright-2x", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap clouds_upright_2x1 {
-            get {
-                object obj = ResourceManager.GetObject("clouds-upright-2x1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -706,6 +636,16 @@ namespace BibliotecaApp.Properties {
         internal static System.Drawing.Bitmap sub_200x200px {
             get {
                 object obj = ResourceManager.GetObject("sub-200x200px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sub_full {
+            get {
+                object obj = ResourceManager.GetObject("sub-full", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

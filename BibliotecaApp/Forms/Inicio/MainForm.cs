@@ -7,6 +7,7 @@ using BibliotecaApp.Models;
 using BibliotecaApp.Properties;
 using BibliotecaApp.Utils;
 using Newtonsoft.Json;
+using SeuProjeto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,6 +57,15 @@ namespace BibliotecaApp.Forms.Inicio
             InitializeComponent();
             mdiProp();
             CarregarFotoSegura();
+
+
+            //aredondar cantos e desenhar borda cinza
+
+            int meuRaio = 15;
+            this.ArredondarCantos(meuRaio);
+            this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+
+
 
             // Inicializa NotifyIcon e menu de contexto
             notifyMenu = new ContextMenuStrip();

@@ -237,19 +237,18 @@ namespace BibliotecaApp.Forms.Inicio
                     try
                     {
                         var json = File.ReadAllText(arquivoMap);
-                        using (var doc = JsonDocument.Parse(json))
+                        var jObj = JObject.Parse(json);
+                        var status = (string)jObj["Status"];
+
+                        if (string.Equals(status, "pendente", StringComparison.OrdinalIgnoreCase))
                         {
-                            if (doc.RootElement.TryGetProperty("Status", out var s) &&
-                                string.Equals(s.GetString(), "pendente", StringComparison.OrdinalIgnoreCase))
+                            var msg = $"Existe um mapeamento pendente para o ano {DateTime.Now.Year}.\nDeseja executar o mapeamento agora (Sim) ou lembrar depois (Não)?";
+                            var resp = MessageBox.Show(msg, "Mapeamento pendente", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
+                            if (resp == DialogResult.Yes)
                             {
-                                var msg = $"Existe um mapeamento pendente para o ano {DateTime.Now.Year}.\nDeseja executar o mapeamento agora (Sim) ou lembrar depois (Não)?";
-                                var resp = MessageBox.Show(msg, "Mapeamento pendente", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                                if (resp == DialogResult.Yes)
-                                {
-                                    AbrirMapeamentoModal();
-                                }
-                                // se escolher "Não", nada acontece; aparecerá novamente no próximo startup
+                                AbrirMapeamentoModal();
                             }
+                            // se escolher "Não", nada acontece; aparecerá novamente no próximo startup
                         }
                     }
                     catch

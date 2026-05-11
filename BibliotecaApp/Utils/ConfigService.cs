@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 
     public static class ConfigService
@@ -17,7 +18,7 @@ using System.Windows.Forms;
             {
                 if (!Directory.Exists(pasta)) Directory.CreateDirectory(pasta);
 
-                string json = JsonSerializer.Serialize(dados, new JsonSerializerOptions { WriteIndented = true });
+                string json = JsonConvert.SerializeObject(dados, Formatting.Indented);
                 File.WriteAllText(arquivo, json);
             }
             catch (Exception ex)
@@ -33,7 +34,7 @@ using System.Windows.Forms;
             try
             {
                 string json = File.ReadAllText(arquivo);
-                return JsonSerializer.Deserialize<ConfiguracaoApp>(json);
+                return JsonConvert.DeserializeObject<ConfiguracaoApp>(json) ?? new ConfiguracaoApp();
             }
             catch { return new ConfiguracaoApp(); }
         }

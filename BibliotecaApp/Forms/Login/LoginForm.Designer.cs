@@ -37,7 +37,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gradientPanel2 = new BibliotecaApp.ElementosPersonalizados.GradientPanel();
-            this.BtnTeste = new CustomButton();
             this.BtnEntrar = new CustomButton();
             this.cbMostrarSenha = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -147,7 +146,6 @@
             // 
             this.gradientPanel2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.gradientPanel2.BorderRadius = 10;
-            this.gradientPanel2.Controls.Add(this.BtnTeste);
             this.gradientPanel2.Controls.Add(this.BtnEntrar);
             this.gradientPanel2.Controls.Add(this.cbMostrarSenha);
             this.gradientPanel2.Controls.Add(this.panel4);
@@ -164,30 +162,6 @@
             this.gradientPanel2.Name = "gradientPanel2";
             this.gradientPanel2.Size = new System.Drawing.Size(387, 557);
             this.gradientPanel2.TabIndex = 26;
-            // 
-            // BtnTeste
-            // 
-            this.BtnTeste.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(105)))), ((int)(((byte)(111)))));
-            this.BtnTeste.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.BtnTeste.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(105)))), ((int)(((byte)(111)))));
-            this.BtnTeste.BorderThickness = 0;
-            this.BtnTeste.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.BtnTeste.FlatAppearance.BorderSize = 0;
-            this.BtnTeste.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.BtnTeste.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.BtnTeste.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnTeste.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.BtnTeste.ForeColor = System.Drawing.Color.White;
-            this.BtnTeste.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(78)))), ((int)(((byte)(84)))));
-            this.BtnTeste.Location = new System.Drawing.Point(244, 512);
-            this.BtnTeste.Name = "BtnTeste";
-            this.BtnTeste.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(54)))), ((int)(((byte)(56)))));
-            this.BtnTeste.ShowBorder = false;
-            this.BtnTeste.Size = new System.Drawing.Size(140, 42);
-            this.BtnTeste.TabIndex = 29;
-            this.BtnTeste.Text = "Entrar";
-            this.BtnTeste.UseVisualStyleBackColor = true;
-            this.BtnTeste.Click += new System.EventHandler(this.BtnTeste_Click);
             // 
             // BtnEntrar
             // 
@@ -355,7 +329,6 @@
         private System.Windows.Forms.CheckBox cbMostrarSenha;
         private System.Windows.Forms.Panel pnInicial;
         private CustomButton BtnEntrar;
-        private CustomButton BtnTeste;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
     }

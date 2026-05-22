@@ -562,11 +562,7 @@ namespace BibliotecaApp.Forms.Usuario
                     CarregarUsuarios();
                     RestoreSelectionAfterRefresh();
                 }
-                catch (Exception ex)
-                {
-                    // opcional: Debug.WriteLine(ex);
-                }
-                finally
+                catch (Exception)
                 {
                     _needsRefreshAfterClose = false;
                 }
@@ -684,9 +680,8 @@ namespace BibliotecaApp.Forms.Usuario
 
                 activeChild = child;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // opcional: Debug.WriteLine(ex);
             }
         }
 

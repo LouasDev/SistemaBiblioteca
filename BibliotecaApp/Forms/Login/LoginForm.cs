@@ -1,4 +1,4 @@
-﻿using BibliotecaApp.Forms.Configuracao;
+﻿
 using BibliotecaApp.Forms.Utils;
 using BibliotecaApp.Models;
 using BibliotecaApp.Utils;
@@ -29,30 +29,11 @@ namespace BibliotecaApp.Forms.Login
         // Evita reentrância no clique (duplo Enter/click)
         private bool _isAuthenticating = false;
         #endregion
-        public void CarregarFotoSegura()
-        {
-            var config = ConfigService.Carregar();
-
-            // Verificamos se o arquivo existe DE VERDADE antes de tentar ler
-            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
-            {
-                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
-                {
-                    picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
-                }
-            }
-            else
-            {
-                // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
-                picLogoLogin.Image = Properties.Resources.sub_full;
-            }
-        }
 
         #region Construtor
         public LoginForm()
         {
             InitializeComponent();
-            CarregarFotoSegura();
 
             //aredondar cantos e desenhar borda cinza
 
@@ -78,22 +59,6 @@ namespace BibliotecaApp.Forms.Login
         //Fecharo form se o login for cancelado externamente
         private void LoginForm_Load(object sender, EventArgs e)
         {
-            AppPaths.EnsureFolders();
-            // Carrega o que já existe no arquivo
-            var config = ConfigService.Carregar();
-
-            // Preenche os campos com os dados salvos
-            lblNomeEscola.Text = config.NomeEscola;
-            lblBiblioteca.Text = config.NomeBiblioteca;
-
-            // Mostra a foto que já estava salva, se existir
-            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
-            {
-                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
-                {
-                    picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
-                }
-            }
 
         }
         #endregion
@@ -917,55 +882,9 @@ string corpo = $@"
 
 
 
-        public void RecarregarConfiguracoes()
-        {
-            // 1. Busca os dados usando o serviço que criamos
-            var config = ConfigService.Carregar();
-
-            // 2. Atualiza os Textos
-            // Usamos interpolação para o texto ficar elegante
-            lblNomeEscola.Text = string.IsNullOrEmpty(config.NomeEscola)
-                ? "Sistema de Biblioteca"
-                : config.NomeEscola;
-
-            lblBiblioteca.Text = config.NomeBiblioteca;
-
-            // 3. Carrega o Logo de forma segura (sem travar o arquivo)
-            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
-            {
-                try
-                {
-                    // Libera a imagem anterior se existir
-                    if (picLogoLogin.Image != null) picLogoLogin.Image.Dispose();
-
-                    using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
-                    {
-                        picLogoLogin.Image = System.Drawing.Image.FromStream(stream);
-                    }
-                    picLogoLogin.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-                catch (Exception ex)
-                {
-                    // Caso a imagem esteja corrompida, não quebra o login
-                    Console.WriteLine("Erro ao carregar logo no Login: " + ex.Message);
-                }
-            }
-        }
 
         private void BtnTeste_Click(object sender, EventArgs e)
         {
-            // 1. Instancia o formulário que você criou
-            ConfiguracaoForm popup = new ConfiguracaoForm();
-
-            // 2. Opcional: Define a posição para abrir no centro do formulário pai
-            popup.StartPosition = FormStartPosition.CenterParent;
-
-            // 3. Abre como Modal (Popup)
-            popup.ShowDialog();
-
-            // O código abaixo só será executado DEPOIS que o usuário fechar o popup
-            // Você pode aproveitar para atualizar os nomes/fotos aqui!
-            RecarregarConfiguracoes();
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

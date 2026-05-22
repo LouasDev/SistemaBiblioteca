@@ -30,24 +30,6 @@ namespace BibliotecaApp.Forms.Inicio
 {
     public partial class MainForm : Form
     {
-        public void CarregarFotoSegura()
-        {
-            var config = ConfigService.Carregar();
-
-            // Verificamos se o arquivo existe DE VERDADE antes de tentar ler
-            if (!string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
-            {
-                using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
-                {
-                    picLogoMenu.Image = System.Drawing.Image.FromStream(stream);
-                }
-            }
-            else
-            {
-                // PLANO B: Se o arquivo sumiu, carregamos um recurso interno do projeto
-                picLogoMenu.Image = Properties.Resources.sub_200x200px;
-            }
-        }
 
         private bool menuAnimating = false;
         private NotifyIcon notifyIcon;
@@ -57,7 +39,7 @@ namespace BibliotecaApp.Forms.Inicio
         {
             InitializeComponent();
             mdiProp();
-            CarregarFotoSegura();
+
 
 
             //aredondar cantos e desenhar borda cinza
@@ -98,38 +80,7 @@ namespace BibliotecaApp.Forms.Inicio
         }
 
         #region Componentes de inicialização
-        public void AtualizarFotoMenu()
-        {
-            // 1. Carrega as configurações do arquivo JSON
-            var config = ConfigService.Carregar();
 
-            // 2. Verifica se o caminho existe e se o arquivo está lá
-            if (config != null && !string.IsNullOrEmpty(config.CaminhoLogo) && File.Exists(config.CaminhoLogo))
-            {
-                try
-                {
-                    // 3. LIMPEZA CRÍTICA: Libera a imagem anterior para permitir a troca
-                    if (picLogoMenu.Image != null)
-                    {
-                        picLogoMenu.Image.Dispose();
-                        picLogoMenu.Image = null;
-                    }
-
-                    // 4. Carrega a foto usando um Stream (modo profissional que não trava o ficheiro)
-                    using (var stream = new FileStream(config.CaminhoLogo, FileMode.Open, FileAccess.Read))
-                    {
-                        picLogoMenu.Image = Image.FromStream(stream);
-                    }
-
-                    picLogoMenu.SizeMode = PictureBoxSizeMode.Zoom;
-                }
-                catch (Exception ex)
-                {
-                    // Caso ocorra algum erro técnico, ele não fecha o programa
-                    Console.WriteLine("Erro ao carregar a foto do menu: " + ex.Message);
-                }
-            }
-        }
         private void tamanho()
         {
             this.Width = 1440; this.Height = 800;
@@ -801,7 +752,7 @@ namespace BibliotecaApp.Forms.Inicio
         //Load para fechar o Login
         private void MainForm_Load(object sender, EventArgs e)
         {
-            AtualizarFotoMenu();
+            
 
 
 

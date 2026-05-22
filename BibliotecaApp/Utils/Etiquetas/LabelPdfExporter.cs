@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using PdfSharp;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using PdfSharp.Fonts;
@@ -30,7 +31,7 @@ namespace BibliotecaApp.Utils.Etiquetas
         private const double PageWidthMm = 215.9;
         private const double PageHeightMm = 279.4;
 
-        // REMOVIDO: campos estáticos de fontes que causavam o TypeInitializerException
+        // REMOVIDO: campos estï¿½ticos de fontes que causavam o TypeInitializerException
         // private static readonly XFont TitleFont = ...
         // private static readonly XFont InfoFont  = ...
         // private static readonly XFont CodeFont  = ...
@@ -62,8 +63,8 @@ namespace BibliotecaApp.Utils.Etiquetas
                 while (currentIndex < items.Count)
                 {
                     var page = doc.AddPage();
-                    page.Width = PageWidthMm * mm;
-                    page.Height = PageHeightMm * mm;
+                    page.Width = XUnit.FromMillimeter(PageWidthMm);
+                    page.Height = XUnit.FromMillimeter(PageHeightMm);
                     page.Orientation = PdfSharp.PageOrientation.Portrait;
 
                     using (var gfx = XGraphics.FromPdfPage(page))
@@ -121,7 +122,7 @@ namespace BibliotecaApp.Utils.Etiquetas
                             }
                         }
 
-                        startPosition = 1; // próximas páginas do lote começam no 1
+                        startPosition = 1; // prï¿½ximas pï¿½ginas do lote comeï¿½am no 1
                     }
                 }
 
@@ -135,7 +136,7 @@ namespace BibliotecaApp.Utils.Etiquetas
             var order = new List<string>();
             foreach (var it in items)
             {
-                var g = string.IsNullOrWhiteSpace(it.Genero) ? "Sem gênero" : it.Genero.Trim();
+                var g = string.IsNullOrWhiteSpace(it.Genero) ? "Sem gï¿½nero" : it.Genero.Trim();
                 if (!map.TryGetValue(g, out var list))
                 {
                     list = new List<EtiquetaLabelItem>();
@@ -151,19 +152,19 @@ namespace BibliotecaApp.Utils.Etiquetas
 
         private static string BuildPageHeaderGenresText(IList<EtiquetaLabelItem> items, int startIndex, int pageCapacity)
         {
-            if (pageCapacity <= 0 || startIndex >= items.Count) return "Vários gêneros";
+            if (pageCapacity <= 0 || startIndex >= items.Count) return "Vï¿½rios gï¿½neros";
             int endExclusive = Math.Min(items.Count, startIndex + pageCapacity);
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var list = new List<string>();
             for (int i = startIndex; i < endExclusive; i++)
             {
-                var g = string.IsNullOrWhiteSpace(items[i].Genero) ? "Sem gênero" : items[i].Genero.Trim();
+                var g = string.IsNullOrWhiteSpace(items[i].Genero) ? "Sem gï¿½nero" : items[i].Genero.Trim();
                 if (set.Add(g)) list.Add(g);
             }
-            return list.Count == 1 ? $"Gênero: {list[0]}" : "Gêneros: " + string.Join(", ", list);
+            return list.Count == 1 ? $"Gï¿½nero: {list[0]}" : "Gï¿½neros: " + string.Join(", ", list);
         }
 
-        // Ajustado: recebe as fontes como parâmetros
+        // Ajustado: recebe as fontes como parï¿½metros
         private static void DrawLabelPdf(
             XGraphics gfx, XRect bounds, EtiquetaLabelItem item,
             MemoryStream sharedStream, int barcodeDpi,

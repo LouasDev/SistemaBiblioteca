@@ -2,7 +2,6 @@
 using BibliotecaApp.Forms.Relatorio;
 using BibliotecaApp.Models;
 using BibliotecaApp.Utils;
-using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1272,7 +1271,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
             AbrirEmprestimoRapido();
         }
 
-        private async void AbrirEmprestimoRapido()
+        private void AbrirEmprestimoRapido()
         {
             try
             {

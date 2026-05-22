@@ -111,18 +111,13 @@ namespace BibliotecaApp.Services
             string mensagem,
             string caminhoAnexo)
         {
-            // Carrega a configuração da escola (remetente e identificador)
-            var config = ConfigService.Carregar();
+            // TODO: Carrega a configuração da escola quando ConfigService estiver disponível
+            // Por enquanto, usa valores padrão
+            var remetente = System.Configuration.ConfigurationManager.AppSettings["EmailRemetente"] 
+                ?? "no-reply@escola.local";
 
-            // Define o remetente: usa EmailInstitucional se disponível, senão fallback
-            var remetente = !string.IsNullOrEmpty(config.EmailInstitucional)
-                ? config.EmailInstitucional
-                : "no-reply@escola.local";
-
-            // Define o ID da escola se disponível
-            var escolaId = !string.IsNullOrEmpty(config.EscolaId)
-                ? config.EscolaId
-                : "ESCOLA-PADRAO";
+            var escolaId = System.Configuration.ConfigurationManager.AppSettings["EscolaId"] 
+                ?? "ESCOLA-PADRAO";
 
             // Processa anexo se fornecido
             string anexoBase64 = null;

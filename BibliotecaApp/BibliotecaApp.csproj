@@ -244,18 +244,9 @@
     <Compile Include="Elements\RoundedDatePicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Compile Include="Forms\Configuracao\ConfiguracaoForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Configuracao\ConfiguracaoForm.Designer.cs">
-      <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Utils\ConfigService.cs" />
     <Compile Include="Utils\ConfiguracaoApp.cs" />
     <Compile Include="Utils\EmailRequest.cs" />
-=======
->>>>>>> 033581687de1c32aefbf0161c53acce7660b7fe1
     <Compile Include="Utils\Etiquetas\LabelActionDialog.cs">
       <SubType>Form</SubType>
     </Compile>

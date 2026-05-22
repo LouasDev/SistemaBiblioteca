@@ -255,6 +255,7 @@
     </Compile>
     <Compile Include="Utils\ConfigService.cs" />
     <Compile Include="Utils\ConfiguracaoApp.cs" />
+    <Compile Include="Utils\EmailRequest.cs" />
     <Compile Include="Utils\Etiquetas\LabelActionDialog.cs">
       <SubType>Form</SubType>
     </Compile>

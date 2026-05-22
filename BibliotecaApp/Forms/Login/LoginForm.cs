@@ -845,11 +845,8 @@ string corpo = $@"
                                         {
                                             string mensagemOffline =
                                                 "Não foi possível conectar à internet.\n\n" +
-                                                "No MODO OFFLINE, as seguintes funções estarão INDISPONÍVEIS:\n" +
-                                                "• Backup automático na nuvem\n" +
+                                                "No MODO OFFLINE, a seguinte função estará INDISPONÍVEL:\n" +
                                                 "• Envio de notificações por e-mail\n" +
-                                                "• Envio do relatório semanal\n" +
-                                                "• Consultas de livros online (API)\n\n" +
                                                 "Deseja tentar conectar novamente ou continuar offline?";
 
                                             var result = MessageBox.Show(mensagemOffline,

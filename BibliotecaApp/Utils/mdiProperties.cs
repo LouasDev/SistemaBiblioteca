@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-namespace BibliotecaApp
+namespace SUB
 {
     public static class mdiProperties
     {
@@ -62,3 +62,4 @@ namespace BibliotecaApp
         }
     }
 }
+

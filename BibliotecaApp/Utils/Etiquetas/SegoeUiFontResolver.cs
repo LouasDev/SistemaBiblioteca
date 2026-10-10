@@ -1,8 +1,8 @@
-using System;
+ï»¿using System;
 using System.IO;
 using PdfSharp.Fonts;
 
-namespace BibliotecaApp.Utils.Etiquetas
+namespace SUB.Utils.Etiquetas
 {
     internal sealed class SegoeUiFontResolver : IFontResolver
     {
@@ -58,7 +58,7 @@ namespace BibliotecaApp.Utils.Etiquetas
             string fontsDir = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
             string path = Path.Combine(fontsDir, fileName);
             if (!File.Exists(path))
-                throw new FileNotFoundException("Fonte não encontrada no Windows\\Fonts.", path);
+                throw new FileNotFoundException("Fonte nï¿½o encontrada no Windows\\Fonts.", path);
             return File.ReadAllBytes(path);
         }
     }

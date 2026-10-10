@@ -3,12 +3,10 @@ bin/
 obj/
 
 ## Ignorar arquivos do banco de dados na pasta Debug
-/bin/Debug/bibliotecaDB/
+/bin/Debug/BibliotecaDB/
 
 ## Ignorar arquivos de usuário do VS
 *.user
 *.suo
-
-## Ignorar todos os arquivos .sdf (exceto o original)
+## Bancos locais são criados apenas durante a primeira configuração
 *.sdf
-!bibliotecaDB/bibliotecaDB.sdf

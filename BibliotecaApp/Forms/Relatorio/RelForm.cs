@@ -1,4 +1,4 @@
-﻿using BibliotecaApp.Utils;
+﻿using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Windows.Forms;
 using ClosedXML.Excel;
 
 
-namespace BibliotecaApp.Forms.Relatorio
+namespace SUB.Forms.Relatorio
     {
         public partial class RelForm : Form
         {
@@ -44,8 +44,8 @@ namespace BibliotecaApp.Forms.Relatorio
                 txtLivro.KeyDown += TxtLivro_KeyDown;
                 lstLivros.Click += LstLivros_Click;
 
-                BibliotecaApp.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => PopularCbBibliotecaria();
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoProrrogado += (s, e) => CarregarLog();
+                SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => PopularCbBibliotecaria();
+            SUB.Utils.EventosGlobais.EmprestimoProrrogado += (s, e) => CarregarLog();
 
         }
 
@@ -929,3 +929,4 @@ namespace BibliotecaApp.Forms.Relatorio
       
     }
     }
+

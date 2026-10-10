@@ -1,0 +1,148 @@
+﻿using System;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using BibliotecaApp.ElementosPersonalizados;
+
+namespace BibliotecaApp.Utils
+{
+    public static class ThemeManager
+    {
+        private static readonly ConditionalWeakTable<Control, object> ControlsWithThemeHandler =
+            new ConditionalWeakTable<Control, object>();
+
+        public static Color DefaultColor { get; } = Color.FromArgb(31, 72, 126);
+
+        public static Color Normalize(Color color)
+        {
+            return color.IsEmpty ? DefaultColor : color;
+        }
+
+        public static Color Darken(Color color, float amount)
+        {
+            return Color.FromArgb(
+                color.A,
+                Math.Max(0, (int)(color.R * (1f - amount))),
+                Math.Max(0, (int)(color.G * (1f - amount))),
+                Math.Max(0, (int)(color.B * (1f - amount))));
+        }
+
+        public static Color Lighten(Color color, float amount)
+        {
+            return Color.FromArgb(
+                color.A,
+                Math.Min(255, (int)(color.R + (255 - color.R) * amount)),
+                Math.Min(255, (int)(color.G + (255 - color.G) * amount)),
+                Math.Min(255, (int)(color.B + (255 - color.B) * amount)));
+        }
+
+        public static Color GetContrastColor(Color color)
+        {
+            double luminance = (0.299 * color.R) + (0.587 * color.G) + (0.114 * color.B);
+            return luminance >= 160 ? Color.FromArgb(20, 42, 60) : Color.White;
+        }
+
+        public static void Apply(Control root, Color primaryColor)
+        {
+            if (root == null)
+                return;
+
+            ApplyRecursive(root, Normalize(primaryColor), false);
+        }
+
+        private static void ApplyRecursive(Control control, Color primaryColor, bool insideNavigation)
+        {
+            bool isNavigation = insideNavigation || IsNavigationContainer(control);
+
+            if (!ControlsWithThemeHandler.TryGetValue(control, out _))
+            {
+                ControlsWithThemeHandler.Add(control, new object());
+                control.ControlAdded += (sender, args) => ApplyRecursive(args.Control, primaryColor, isNavigation);
+            }
+
+            var gradientPanel = control as GradientPanel;
+            if (gradientPanel != null)
+            {
+                gradientPanel.Gradientetop = Lighten(primaryColor, 0.12f);
+                gradientPanel.Gradientebottom = Darken(primaryColor, 0.12f);
+                gradientPanel.Invalidate();
+            }
+
+            var customButton = control as CustomButton;
+            if (customButton != null)
+            {
+                customButton.BaseColor = isNavigation ? Darken(primaryColor, 0.08f) : primaryColor;
+                customButton.BackgroundColor = customButton.BaseColor;
+                customButton.HoverColor = Darken(customButton.BaseColor, 0.1f);
+                customButton.PressedColor = Darken(customButton.BaseColor, 0.2f);
+                customButton.BorderColor = Darken(customButton.BaseColor, 0.12f);
+                customButton.ForeColor = GetContrastColor(customButton.BaseColor);
+            }
+
+            var textBox = control as RoundedTextBox;
+            if (textBox != null)
+            {
+                textBox.BorderColor = Lighten(primaryColor, 0.25f);
+                textBox.BorderFocusColor = primaryColor;
+                textBox.HoverBackColor = Color.FromArgb(245, 247, 250);
+            }
+
+            var comboBox = control as RoundedComboBox;
+            if (comboBox != null)
+                comboBox.BorderColor = primaryColor;
+
+            var maskedTextBox = control as RoundedMaskedTextBox;
+            if (maskedTextBox != null)
+            {
+                maskedTextBox.BorderColor = Lighten(primaryColor, 0.25f);
+                maskedTextBox.BorderFocusColor = primaryColor;
+                maskedTextBox.HoverBorderColor = primaryColor;
+            }
+
+            var datePicker = control as RoundedDatePicker;
+            if (datePicker != null)
+            {
+                datePicker.BorderFocusColor = primaryColor;
+                datePicker.IconHoverColor = primaryColor;
+                datePicker.Invalidate();
+            }
+
+            var panel = control as Panel;
+            if (panel != null && IsNavigationContainer(control))
+                panel.BackColor = primaryColor;
+            else if (panel != null && isNavigation && panel.BackColor != Color.Transparent)
+                panel.BackColor = Darken(primaryColor, 0.08f);
+
+            var button = control as Button;
+            if (button != null && !(control is CustomButton) &&
+                (isNavigation || (button.BackColor != SystemColors.Control && button.BackColor != SystemColors.Window && !IsSemanticColor(button.BackColor))))
+            {
+                button.BackColor = isNavigation ? Darken(primaryColor, 0.08f) : primaryColor;
+                button.ForeColor = GetContrastColor(button.BackColor);
+                if (button.FlatStyle != FlatStyle.System)
+                {
+                    button.FlatAppearance.BorderColor = Darken(button.BackColor, 0.12f);
+                    button.FlatAppearance.MouseOverBackColor = Darken(button.BackColor, 0.1f);
+                    button.FlatAppearance.MouseDownBackColor = Darken(button.BackColor, 0.2f);
+                }
+            }
+
+            foreach (Control child in control.Controls)
+                ApplyRecursive(child, primaryColor, isNavigation);
+        }
+
+        private static bool IsNavigationContainer(Control control)
+        {
+            string name = control.Name ?? string.Empty;
+            return name.Equals("menu", StringComparison.OrdinalIgnoreCase) ||
+                   name.IndexOf("navigation", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("navContainer", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsSemanticColor(Color color)
+        {
+            float hue = color.GetHue();
+            return hue <= 15 || hue >= 345 || (hue >= 25 && hue <= 165);
+        }
+    }
+}

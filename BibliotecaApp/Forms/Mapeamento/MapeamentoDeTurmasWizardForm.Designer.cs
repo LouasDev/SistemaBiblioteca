@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Usuario
+﻿namespace SUB.Forms.Usuario
 {
     partial class MapeamentoDeTurmasWizardForm
     {
@@ -353,7 +353,7 @@
             this.Name = "MapeamentoDeTurmasWizardForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "BibliotecaApp - Mapeamento Anual";
+            this.Text = "SUB - Mapeamento Anual";
             this.panelPrincipal.ResumeLayout(false);
             this.panelPrincipal.PerformLayout();
             this.pnlTutorial.ResumeLayout(false);
@@ -404,3 +404,4 @@
         private RoundedTextBox txtBuscaAlunoEtapa2;
     }
 }
+

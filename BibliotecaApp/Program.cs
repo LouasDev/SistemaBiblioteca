@@ -1,16 +1,17 @@
-﻿using BibliotecaApp.Forms.Inicio;
-using BibliotecaApp.Forms.Login;
+﻿using SUB.Forms.Inicio;
+using SUB.Forms.Login;
+using SUB.Forms.Setup;
+using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Windows.Forms;
 
 
-namespace BibliotecaApp
+namespace SUB
 {
     internal static class Program
     {
         public static bool RequestLogout = false;
-
-        public static bool IsOfflineMode = false;
 
         /// <summary>
         /// Ponto de entrada principal para o aplicativo.
@@ -21,8 +22,20 @@ namespace BibliotecaApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            if (!InstituicaoConfiguracaoStore.Existe())
+            {
+                using (var primeiroUso = new PrimeiroUsoForm())
+                {
+                    if (primeiroUso.ShowDialog() != DialogResult.OK)
+                        return;
+                }
+
+                DatabaseInitializer.EnsureCreated();
+            }
+
             while (true)
             {
+                Sessao.Limpar();
                 LoginForm.UsuarioBibliotecaria = false;
                 using (LoginForm login = new LoginForm())
                 {
@@ -39,3 +52,4 @@ namespace BibliotecaApp
         }
     }
 }
+

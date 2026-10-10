@@ -1,11 +1,11 @@
-﻿using BibliotecaApp.Forms.Livros;
-using BibliotecaApp.Forms.Login;
-using BibliotecaApp.Forms.Relatorio;
-using BibliotecaApp.Forms.Usuario;
-using BibliotecaApp.Froms.Usuario;
-using BibliotecaApp.Models;
-using BibliotecaApp.Properties;
-using BibliotecaApp.Utils;
+﻿using SUB.Forms.Livros;
+using SUB.Forms.Login;
+using SUB.Forms.Relatorio;
+using SUB.Forms.Usuario;
+using SUB.Froms.Usuario;
+using SUB.Models;
+using SUB.Properties;
+using SUB.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SeuProjeto;
@@ -26,7 +26,7 @@ using ToggleSwitch;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
-namespace BibliotecaApp.Forms.Inicio
+namespace SUB.Forms.Inicio
 {
     public partial class MainForm : Form
     {
@@ -34,11 +34,35 @@ namespace BibliotecaApp.Forms.Inicio
         private bool menuAnimating = false;
         private NotifyIcon notifyIcon;
         private ContextMenuStrip notifyMenu;
+        private Color corPrimaria = ThemeManager.DefaultColor;
 
         public MainForm()
         {
             InitializeComponent();
             mdiProp();
+            Icon = SystemIcons.Application;
+
+            var configuracaoInstituicao = InstituicaoConfiguracaoStore.Carregar();
+            if (configuracaoInstituicao != null)
+            {
+                try
+                {
+                    corPrimaria = ColorTranslator.FromHtml(configuracaoInstituicao.CorPrimaria ?? "#1F487E");
+                    if (corPrimaria.IsEmpty)
+                        corPrimaria = Color.FromArgb(31, 72, 126);
+                }
+                catch
+                {
+                    corPrimaria = Color.FromArgb(31, 72, 126);
+                }
+                menu.BackColor = corPrimaria;
+                Text = configuracaoInstituicao.Nome;
+
+                SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
+            }
+
+            menu.BackColor = corPrimaria;
+            ThemeManager.Apply(this, corPrimaria);
 
 
 
@@ -69,9 +93,9 @@ namespace BibliotecaApp.Forms.Inicio
 
             notifyIcon = new NotifyIcon
             {
-                Icon =  Resources.icon_gastao_valle_zoomed_v2, 
+                Icon = SystemIcons.Application,
                 Visible = false,
-                Text = "BibliotecaApp",
+                Text = configuracaoInstituicao?.Nome ?? "Biblioteca Escolar",
                 ContextMenuStrip = notifyMenu
             };
             notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
@@ -234,23 +258,7 @@ namespace BibliotecaApp.Forms.Inicio
         }
         private void AbrirMapeamentoModal()
         {
-            // --- INÍCIO DA MODIFICAÇÃO ---
-            // Verificamos se o usuário logado é o "Administrador"
-            // Conforme LoginForm.cs, apenas o admin terá esse nome exato na sessão.
-            if (string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase))
-            {
-                MessageBox.Show(
-                    "O Mapeamento de Turmas é uma função restrita a usuários do tipo 'Bibliotecário(a)'.",
-                    "Acesso Negado",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return; // Impede a abertura do formulário de mapeamento
-            }
-            // --- FIM DA MODIFICAÇÃO ---
-
-
-            var mapeamentoForm = new BibliotecaApp.Forms.Usuario.MapeamentoDeTurmasWizardForm();
+            var mapeamentoForm = new SUB.Forms.Usuario.MapeamentoDeTurmasWizardForm();
 
             // Configurar como modal dialog
             mapeamentoForm.StartPosition = FormStartPosition.CenterParent;
@@ -407,7 +415,7 @@ namespace BibliotecaApp.Forms.Inicio
         private void UsuarioCad_UsuarioCriado(object sender, EventArgs e)
         {
             // Procura se o UsuarioForm já está aberto como MDI child
-            var usuarioForm = this.MdiChildren.OfType<BibliotecaApp.Forms.Usuario.UsuarioForm>().FirstOrDefault();
+            var usuarioForm = this.MdiChildren.OfType<SUB.Forms.Usuario.UsuarioForm>().FirstOrDefault();
             if (usuarioForm != null)
             {
                 // chama método público para recarregar a grid
@@ -860,10 +868,13 @@ namespace BibliotecaApp.Forms.Inicio
                 // se a instância atual do child foi descartada, tente recriar? (faça fora se necessário)
                 child.MdiParent = this;
                 child.Dock = DockStyle.Fill;
+                ThemeManager.Apply(child, corPrimaria);
 
                 // Se o form já está criado mas escondido, apenas BringToFront
                 if (!child.Visible)
                     child.Show();
+
+                ThemeManager.Apply(child, corPrimaria);
 
                 child.BringToFront();
                 child.Activate();
@@ -927,3 +938,4 @@ namespace BibliotecaApp.Forms.Inicio
         }
     }
 }
+

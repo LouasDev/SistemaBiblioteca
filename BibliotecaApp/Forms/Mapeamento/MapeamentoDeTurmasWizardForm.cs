@@ -1,5 +1,5 @@
-﻿using BibliotecaApp.Forms.Usuario;
-using BibliotecaApp.Models;
+﻿using SUB.Forms.Usuario;
+using SUB.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,11 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using BibliotecaApp.Utils;
+using SUB.Utils;
 
 //Para Acessar o form de mapeamento altere o arquivo txt em AppData para um ano anterior ao ano atual
 
-namespace BibliotecaApp.Forms.Usuario
+namespace SUB.Forms.Usuario
 {
     public partial class MapeamentoDeTurmasWizardForm : Form
     {
@@ -1258,7 +1258,7 @@ namespace BibliotecaApp.Forms.Usuario
                             {
                                 var hash = r["Senha_hash"]?.ToString() ?? "";
                                 var salt = r["Senha_salt"]?.ToString() ?? "";
-                                return BibliotecaApp.Utils.CriptografiaSenha.VerificarSenha(senha, hash, salt);
+                                return SUB.Utils.CriptografiaSenha.VerificarSenha(senha, hash, salt);
                             }
                         }
                     }
@@ -1436,3 +1436,4 @@ namespace BibliotecaApp.Forms.Usuario
         }
     }
 }
+

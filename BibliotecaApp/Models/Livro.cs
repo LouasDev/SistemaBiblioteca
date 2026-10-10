@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 //classe provisoria totalmente sujeita a alteraçoes (DESCONSIDERE)
 
-namespace BibliotecaApp
+namespace SUB
 {
     public class Livro
     {
@@ -35,3 +35,4 @@ namespace BibliotecaApp
         }
     }
 }
+

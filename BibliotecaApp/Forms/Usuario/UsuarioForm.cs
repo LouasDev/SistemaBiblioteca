@@ -1,6 +1,6 @@
-﻿using BibliotecaApp.Forms.Inicio;
-using BibliotecaApp.Forms.Livros;
-using BibliotecaApp.Utils; // ADICIONE ESTA LINHA
+﻿using SUB.Forms.Inicio;
+using SUB.Forms.Livros;
+using SUB.Utils; // ADICIONE ESTA LINHA
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 
-namespace BibliotecaApp.Forms.Usuario
+namespace SUB.Forms.Usuario
 {
     public partial class UsuarioForm : Form
     {
@@ -44,10 +44,10 @@ namespace BibliotecaApp.Forms.Usuario
 
         private void UsuarioForm_Load(object sender, EventArgs e)
         {
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoRealizado -= EventosGlobais_EmprestimoRealizado;
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoRealizado += EventosGlobais_EmprestimoRealizado;
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoProrrogado -= EventosGlobais_EmprestimoProrrogado;
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoProrrogado += EventosGlobais_EmprestimoProrrogado;
+            SUB.Utils.EventosGlobais.EmprestimoRealizado -= EventosGlobais_EmprestimoRealizado;
+            SUB.Utils.EventosGlobais.EmprestimoRealizado += EventosGlobais_EmprestimoRealizado;
+            SUB.Utils.EventosGlobais.EmprestimoProrrogado -= EventosGlobais_EmprestimoProrrogado;
+            SUB.Utils.EventosGlobais.EmprestimoProrrogado += EventosGlobais_EmprestimoProrrogado;
 
 
             var caminho = Conexao.CaminhoBanco;
@@ -687,3 +687,5 @@ namespace BibliotecaApp.Forms.Usuario
 
     }
 }
+
+

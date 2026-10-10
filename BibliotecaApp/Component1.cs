@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibliotecaApp
+namespace SUB
 {
     public partial class Component1 : Component
     {
@@ -23,3 +23,4 @@ namespace BibliotecaApp
         }
     }
 }
+

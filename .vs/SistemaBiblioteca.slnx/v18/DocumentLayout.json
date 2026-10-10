@@ -1,0 +1,466 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\BibliotecaApp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\BibliotecaApp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\MainForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Inicio\\MainForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\InicioForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Inicio\\InicioForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Login\\LoginForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\Sessao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Models\\Sessao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\InstituicaoConfiguracao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Models\\InstituicaoConfiguracao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\.copilot\\plans\\plan-implementao-da-generalizao-estadual.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\.copilot\\plans\\plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}|MarkdownSecurePreview"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\GENERALIZACAO-INVENTARIO.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docs\\GENERALIZACAO-INVENTARIO.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\SCHEMA-ALVO-BASE-NOVA.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:docs\\SCHEMA-ALVO-BASE-NOVA.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\AppPaths.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Utils\\AppPaths.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\App.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\packages.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\credentials.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\credentials.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Utils\\EmailRequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Utils\\EmailService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 9,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CadastroLivroForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Livros\\CadastroLivroForm.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:40:34.118Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Program.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Program.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Program.cs",
+              "RelativeToolTip": "BibliotecaApp\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:17:14.143Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EmprestimoForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Livros\\EmprestimoForm.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:18:20.44Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoginForm.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Login\\LoginForm.Designer.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T02:11:11.972Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LoginForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Login\\LoginForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\LoginForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Login\\LoginForm.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:17:14.227Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\MainForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Inicio\\MainForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\MainForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Inicio\\MainForm.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T02:11:12.577Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "InicioForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\InicioForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Inicio\\InicioForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Inicio\\InicioForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Inicio\\InicioForm.cs",
+              "ViewState": "AgIAAFcDAAAAAAAAAAAmwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:40:08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BibliotecaApp.csproj",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\BibliotecaApp.csproj",
+              "RelativeDocumentMoniker": "BibliotecaApp\\BibliotecaApp.csproj",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\BibliotecaApp.csproj",
+              "RelativeToolTip": "BibliotecaApp\\BibliotecaApp.csproj",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-09-26T01:16:29.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Sessao.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\Sessao.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Models\\Sessao.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\Sessao.cs",
+              "RelativeToolTip": "BibliotecaApp\\Models\\Sessao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:16:29.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PrimeiroUsoForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Setup\\PrimeiroUsoForm.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAmwK4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T02:13:59.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "InstituicaoConfiguracao.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\InstituicaoConfiguracao.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Models\\InstituicaoConfiguracao.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Models\\InstituicaoConfiguracao.cs",
+              "RelativeToolTip": "BibliotecaApp\\Models\\InstituicaoConfiguracao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:16:23.534Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "plan-implementao-da-generalizao-estadual.md [Visualiza\u00E7\u00E3o]",
+              "DocumentMoniker": "C:\\Users\\renat\\.copilot\\plans\\plan-implementao-da-generalizao-estadual.md",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\.copilot\\plans\\plan-implementao-da-generalizao-estadual.md",
+              "ToolTip": "C:\\Users\\renat\\.copilot\\plans\\plan-implementao-da-generalizao-estadual.md [Visualiza\u00E7\u00E3o]",
+              "RelativeToolTip": "..\\..\\..\\..\\.copilot\\plans\\plan-implementao-da-generalizao-estadual.md [Visualiza\u00E7\u00E3o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-26T02:15:55.43Z",
+              "EditorCaption": " [Visualiza\u00E7\u00E3o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "EsqueceuSenhaForm.resx",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2026-09-26T01:38:07.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "EsqueceuSenhaForm.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:38:06.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "EsqueceuSenhaForm.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs",
+              "RelativeToolTip": "BibliotecaApp\\Forms\\Login\\EsqueceuSenhaForm.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:38:06.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "EmailService.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailService.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Utils\\EmailService.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailService.cs",
+              "RelativeToolTip": "BibliotecaApp\\Utils\\EmailService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:38:06.669Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EmailRequest.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailRequest.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Utils\\EmailRequest.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\EmailRequest.cs",
+              "RelativeToolTip": "BibliotecaApp\\Utils\\EmailRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:38:06.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md [Visualiza\u00E7\u00E3o]",
+              "DocumentMoniker": "C:\\Users\\renat\\.copilot\\plans\\plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\.copilot\\plans\\plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md",
+              "ToolTip": "C:\\Users\\renat\\.copilot\\plans\\plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md [Visualiza\u00E7\u00E3o]",
+              "RelativeToolTip": "..\\..\\..\\..\\.copilot\\plans\\plan-generalizao-do-sistema-de-biblioteca-para-uso-estadual.md [Visualiza\u00E7\u00E3o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-26T01:05:53.562Z",
+              "EditorCaption": " [Visualiza\u00E7\u00E3o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "GENERALIZACAO-INVENTARIO.md",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\GENERALIZACAO-INVENTARIO.md",
+              "RelativeDocumentMoniker": "docs\\GENERALIZACAO-INVENTARIO.md",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\GENERALIZACAO-INVENTARIO.md",
+              "RelativeToolTip": "docs\\GENERALIZACAO-INVENTARIO.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-26T01:08:23.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md",
+              "RelativeDocumentMoniker": "docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md",
+              "RelativeToolTip": "docs\\CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-26T01:10:58.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "SCHEMA-ALVO-BASE-NOVA.md",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\SCHEMA-ALVO-BASE-NOVA.md",
+              "RelativeDocumentMoniker": "docs\\SCHEMA-ALVO-BASE-NOVA.md",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\docs\\SCHEMA-ALVO-BASE-NOVA.md",
+              "RelativeToolTip": "docs\\SCHEMA-ALVO-BASE-NOVA.md",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAK0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-09-26T01:15:53.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "credentials.json",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\credentials.json",
+              "RelativeDocumentMoniker": "BibliotecaApp\\credentials.json",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\credentials.json",
+              "RelativeToolTip": "BibliotecaApp\\credentials.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-09-26T01:18:05.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "packages.config",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\packages.config",
+              "RelativeDocumentMoniker": "BibliotecaApp\\packages.config",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\packages.config",
+              "RelativeToolTip": "BibliotecaApp\\packages.config",
+              "ViewState": "AgIAAAcAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-09-26T01:18:01.313Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\App.config",
+              "RelativeDocumentMoniker": "BibliotecaApp\\App.config",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\App.config",
+              "RelativeToolTip": "BibliotecaApp\\App.config",
+              "ViewState": "AgIAABIAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-09-26T01:18:01.249Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AppPaths.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\AppPaths.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Utils\\AppPaths.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\AppPaths.cs",
+              "RelativeToolTip": "BibliotecaApp\\Utils\\AppPaths.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:18:01.168Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "InstituicaoConfiguracaoStore.cs",
+              "DocumentMoniker": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs",
+              "RelativeDocumentMoniker": "BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs",
+              "ToolTip": "C:\\Users\\renat\\source\\repos\\LouasDev\\SistemaBiblioteca\\BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs",
+              "RelativeToolTip": "BibliotecaApp\\Utils\\InstituicaoConfiguracaoStore.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-09-26T01:17:24.743Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("BibliotecaApp")]
+[assembly: AssemblyTitle("SUB")]
 [assembly: AssemblyDescription("Aplicativo de Biblioteca")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Beverso")]
-[assembly: AssemblyProduct("BibliotecaApp")]
+[assembly: AssemblyProduct("SUB")]
 
 [assembly: ComVisible(false)]
 [assembly: Guid("00000000-0000-0000-0000-000000000000")]
@@ -18,3 +18,4 @@ using System.Runtime.InteropServices;
 
 // InformationalVersion aceita sufixos (ex.: 1.0.0-beta.1+abc1234)
 [assembly: AssemblyInformationalVersion("1.0.0-AlphaOffline")]
+

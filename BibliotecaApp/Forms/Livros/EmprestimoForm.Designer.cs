@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class EmprestimoForm
     {

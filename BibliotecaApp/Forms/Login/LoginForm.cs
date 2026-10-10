@@ -1,9 +1,6 @@
-﻿
-using BibliotecaApp.Forms.Utils;
-using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+﻿using SUB.Forms.Utils;
+using SUB.Models;
+using SUB.Utils;
 using SeuProjeto;
 using System;
 using System.Collections.Generic;
@@ -11,11 +8,10 @@ using System.Data.SqlServerCe;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Login
+namespace SUB.Forms.Login
 {
     public partial class LoginForm : Form
     {
@@ -34,6 +30,7 @@ namespace BibliotecaApp.Forms.Login
         public LoginForm()
         {
             InitializeComponent();
+            Icon = SystemIcons.Application;
 
             //aredondar cantos e desenhar borda cinza
 
@@ -49,8 +46,6 @@ namespace BibliotecaApp.Forms.Login
             this.txtSenha.Enter += txtSenha_Enter;
             this.txtSenha.Leave += txtSenha_Leave;
 
-            txtEmail.CharacterCasing = CharacterCasing.Lower;
-
             // Removido: KeyDown já está inscrito no Designer
             // txtEmail.KeyDown += txtEmail_KeyDown;
             // txtSenha.KeyDown += txtSenha_KeyDown;
@@ -59,42 +54,52 @@ namespace BibliotecaApp.Forms.Login
         //Fecharo form se o login for cancelado externamente
         private void LoginForm_Load(object sender, EventArgs e)
         {
+            var configuracao = InstituicaoConfiguracaoStore.Carregar();
+            if (configuracao == null)
+                return;
 
+            lblNomeEscola.Text = configuracao.Nome;
+            lblBiblioteca.Text = "Sistema de Biblioteca";
+
+            Color corPrimaria = ThemeManager.DefaultColor;
+            try
+            {
+                corPrimaria = ColorTranslator.FromHtml(configuracao.CorPrimaria ?? "#1F487E");
+                if (corPrimaria.IsEmpty)
+                    corPrimaria = Color.FromArgb(31, 72, 126);
+                ThemeManager.Apply(this, corPrimaria);
+                pnInicial.BackColor = corPrimaria;
+                BtnEntrar.BaseColor = corPrimaria;
+                BtnEntrar.BackgroundColor = corPrimaria;
+                BtnEntrar.BorderColor = corPrimaria;
+            }
+            catch
+            {
+                pnInicial.BackColor = Color.FromArgb(31, 72, 126);
+            }
+
+            SubLogoManager.SetImage(picLogoLogin, SubLogoVariant.Square, corPrimaria, Color.WhiteSmoke);
         }
         #endregion
 
         #region Métodos de Login
 
-        private bool LoginAdmin(SqlCeConnection conexao, string email, string senha)
-        {
-            // Tabela 'Admin' deve conter apenas 1 linha (um único admin)
-            const string sql = @"SELECT COUNT(*) FROM Admin 
-                                 WHERE Ativo = 1 AND Email = @email AND Senha = @senha";
-
-            using (var cmd = new SqlCeCommand(sql, conexao))
-            {
-                cmd.Parameters.AddWithValue("@email", email);
-                cmd.Parameters.AddWithValue("@senha", senha);
-                int count = Convert.ToInt32(cmd.ExecuteScalar());
-                return count > 0;
-            }
-        }
-
         private void BtnEntrar_MouseLeave(object sender, EventArgs e)
         {
-            BtnEntrar.BackColor = Color.FromArgb(9, 74, 158);
+            Color cor = ThemeManager.Normalize(BtnEntrar.BaseColor);
+            BtnEntrar.BackColor = ThemeManager.Darken(cor, 0.08f);
             BtnEntrar.Refresh();
         }
 
         private void BtnEntrar_MouseEnter(object sender, EventArgs e)
         {
-            BtnEntrar.BackColor = Color.FromArgb(33, 145, 245);
+            BtnEntrar.BackColor = ThemeManager.Lighten(ThemeManager.Normalize(BtnEntrar.BaseColor), 0.12f);
             BtnEntrar.Refresh();
         }
         #endregion
 
         #region Métodos de Atualização
-        private async Task AtualizarStatusEmprestimosAsync(bool usuarioEhBibliotecaria, bool isOffline)
+        private async Task AtualizarStatusEmprestimosAsync()
         {
             using (var progressForm = new frmProgresso())
             {
@@ -102,308 +107,12 @@ namespace BibliotecaApp.Forms.Login
 
                 await Task.Run(() =>
                 {
-                    // Se estiver offline, passamos essa info para dentro dos métodos ou pulamos a execução
-                    AtualizarEmprestimos(progressForm, isOffline);
-
-                    if (isOffline)
-                    {
-                        progressForm.AtualizarProgresso(50, "Modo Offline: Pulando notificações e relatórios...");
-                        System.Threading.Thread.Sleep(1000); // Pequena pausa para o usuário ler
-                    }
-                    else
-                    {
-                        // Só executa se estiver online
-                        AtualizarNotificacoesDisponibilidade(progressForm);
-                    }
-
-                    // ---- Envio Semanal Relatorio ----
-                    try
-                    {
-                        // Se não for bibliotecária OU se estiver Offline, aborta o relatório
-                        if (!usuarioEhBibliotecaria)
-                        {
-                            progressForm.AtualizarProgresso(100, "Atualizações concluídas.");
-                            return;
-                        }
-
-                        if (isOffline)
-                        {
-                            progressForm.AtualizarProgresso(100, "Modo Offline: Relatório semanal não enviado.");
-                            return;
-                        }
-
-                        if (!ControleSemanal.JaEnviadoEstaSemana())
-                        {
-                            progressForm.AtualizarProgresso(90, "Gerando relatório semanal...");
-
-                            using (var conexao = Conexao.ObterConexao())
-                            {
-                                conexao.Open();
-                                string pdfPath = GerarRelatorioAtrasados(conexao);
-
-                                if (string.IsNullOrEmpty(pdfPath))
-                                {
-                                    // Falha ao gerar PDF; já foi logado em GerarRelatorioAtrasados
-                                    progressForm.AtualizarProgresso(100, "Falha ao gerar relatório semanal.");
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        progressForm.AtualizarProgresso(95, "Enviando relatório para secretaria...");
-
-                                        string assunto = $"📑 Relatório semanal de alunos não aptos - {DateTime.Now:dd/MM/yyyy}";
-                                        string corpo = $@"
-<html>
-<body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
-        <h2 style='color: #2c3e50;'>📚 Biblioteca Monteiro Lobato</h2>
-        <p>Prezada secretaria,</p>
-        <p>Segue em anexo o relatório semanal de alunos que <strong>não estão aptos</strong> a retirar documentos,
-           devido a <span style='color:#d35400; font-weight:bold;'>empréstimos em atraso</span>.</p>
-        <p style='font-size: 16px;'><strong>📅 Data do relatório:</strong> {DateTime.Now:dd/MM/yyyy}</p>
-        <p>O PDF anexo contém a lista de alunos e suas respectivas turmas.</p>
-        <p style='margin-top:20px;'>Atenciosamente,<br/><strong>Sistema da Biblioteca</strong></p>
-        <hr />
-        <p style='font-size: 13px; color: #888;'>Este é um e-mail automático. Não responda a esta mensagem.</p>
-    </div>
-</body>
-</html>";
-
-                                        // Chamada de envio com anexo (ajuste se sua assinatura for diferente)
-                                        BibliotecaApp.Services.EmailService.Enviar(
-                                            "secretaria.79448@gmail.com",
-                                            assunto,
-                                            corpo,
-                                            pdfPath
-                                        );
-
-                                        // Registrar somente após envio sem exceção
-                                        ControleSemanal.RegistrarEnvio();
-                                        progressForm.AtualizarProgresso(100, "Relatório semanal enviado com sucesso!");
-                                        LogRelatorio($"Relatório semanal enviado com sucesso. Arquivo: {pdfPath}");
-                                    }
-                                    catch (Exception exEnvio)
-                                    {
-                                        // Falha no envio por e-mail
-                                        LogRelatorio($"Falha ao enviar relatório semanal: {exEnvio}");
-                                        progressForm.AtualizarProgresso(100, "Falha ao enviar relatório semanal.");
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            progressForm.AtualizarProgresso(100, "Relatório semanal já enviado nesta semana.");
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogRelatorio($"Erro no processo de envio do relatório semanal: {ex}");
-                        progressForm.AtualizarProgresso(100, "Erro ao processar relatório.");
-                    }
+                    AtualizarEmprestimos(progressForm);
                 });
             }
         }
 
-
-
-
-        // ---- PDF Relatorio Gerador ----
-        private string GerarRelatorioAtrasados(SqlCeConnection conexao)
-        {
-            try
-            {
-                // Garante a pasta AppData/Relatorios
-                string relatoriosFolder = Path.Combine(AppPaths.AppDataFolder, "Relatorios");
-                if (!Directory.Exists(relatoriosFolder))
-                    Directory.CreateDirectory(relatoriosFolder);
-
-                string friendlyTimestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                string caminho = Path.Combine(relatoriosFolder, $"Relatorio_Atrasados_{friendlyTimestamp}.pdf");
-
-                // Consulta: apenas usuários do tipo 'Aluno(a)', sem duplicatas, tratando Turma nula e ordenando
-                string sql = @"
-            SELECT DISTINCT u.Nome, 
-                   CASE WHEN u.Turma IS NULL THEN '' ELSE u.Turma END AS Turma
-            FROM Usuarios u
-            WHERE LOWER(LTRIM(RTRIM(u.TipoUsuario))) = 'aluno(a)'
-              AND EXISTS (
-                  SELECT 1 FROM Emprestimo e
-                  WHERE e.Alocador = u.Id AND e.Status = 'Atrasado'
-              )
-            ORDER BY Turma, Nome";
-
-                var resultados = new List<(string Nome, string Turma)>();
-
-                using (var cmd = new SqlCeCommand(sql, conexao))
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        string nome = reader["Nome"] == DBNull.Value ? string.Empty : reader["Nome"].ToString();
-                        string turma = reader["Turma"] == DBNull.Value ? string.Empty : reader["Turma"].ToString();
-                        resultados.Add((nome, turma));
-                    }
-                }
-
-                // Cria o PDF (mesmo que não haja resultados - geramos um PDF com mensagem)
-                using (var fs = new FileStream(caminho, FileMode.Create, FileAccess.Write, FileShare.None))
-                {
-                    var doc = new Document(PageSize.A4, 40, 40, 40, 40);
-                    PdfWriter.GetInstance(doc, fs);
-                    doc.AddAuthor("Sistema da Biblioteca");
-                    doc.AddCreationDate();
-                    doc.AddTitle("Relatório de Alunos NÃO Aptos a Retirar Documentos");
-                    doc.Open();
-
-                    // Título
-                    var titulo = new iTextSharp.text.Paragraph(
-                        "Relatório de Alunos NÃO Aptos a Retirar Documentos\n\n",
-                        new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 18f, iTextSharp.text.Font.BOLD, BaseColor.DARK_GRAY)
-                    )
-                    { Alignment = Element.ALIGN_CENTER };
-                    doc.Add(titulo);
-
-                    // Data
-                    var data = new iTextSharp.text.Paragraph(
-                        $"Gerado em: {DateTime.Now:dd/MM/yyyy HH:mm}\n\n",
-                        new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12f, iTextSharp.text.Font.ITALIC, new BaseColor(128, 128, 128))
-                    )
-                    { Alignment = Element.ALIGN_RIGHT };
-                    doc.Add(data);
-
-                    if (resultados.Count == 0)
-                    {
-                        var p = new iTextSharp.text.Paragraph(
-                            "Nenhum aluno com empréstimos atrasados encontrado no momento.",
-                            new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12f, iTextSharp.text.Font.NORMAL, BaseColor.BLACK)
-                        );
-                        doc.Add(p);
-                    }
-                    else
-                    {
-                        // Tabela
-                        PdfPTable tabela = new PdfPTable(2) { WidthPercentage = 100 };
-                        tabela.SetWidths(new float[] { 3, 2 });
-
-                        string[] headers = { "Nome", "Turma" };
-                        foreach (var h in headers)
-                        {
-                            var cell = new PdfPCell(new Phrase(h, new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 12, iTextSharp.text.Font.BOLD, BaseColor.WHITE)))
-                            {
-                                BackgroundColor = new BaseColor(30, 61, 88),
-                                HorizontalAlignment = Element.ALIGN_CENTER,
-                                Padding = 5
-                            };
-                            tabela.AddCell(cell);
-                        }
-
-                        foreach (var item in resultados)
-                        {
-                            tabela.AddCell(new PdfPCell(new Phrase(item.Nome)) { Padding = 4 });
-                            tabela.AddCell(new PdfPCell(new Phrase(item.Turma)) { Padding = 4 });
-                        }
-
-                        doc.Add(tabela);
-                    }
-
-                    doc.Close();
-                }
-
-                return caminho;
-            }
-            catch (Exception ex)
-            {
-                // Log e retorno nulo (para o chamador decidir o comportamento)
-                LogRelatorio($"Erro ao gerar PDF do relatório: {ex}");
-                return null;
-            }
-        }
-
-
-
-        private void AtualizarNotificacoesDisponibilidade(frmProgresso progressForm)
-        {
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-                    string sql = @"
-                SELECT n.Id, n.Email, u.Nome, l.Nome
-                FROM NotificacoesDisponibilidade n
-                INNER JOIN Usuarios u ON n.UsuarioId = u.Id
-                INNER JOIN Livros l ON n.LivroId = l.Id
-                WHERE n.Enviado = 0 AND l.Disponibilidade = 1";
-
-                    var notificacoes = new List<dynamic>();
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            notificacoes.Add(new
-                            {
-                                Id = reader.GetInt32(0),
-                                Email = reader.GetString(1),
-                                NomeUsuario = reader.GetString(2),
-                                NomeLivro = reader.GetString(3)
-                            });
-                        }
-                    }
-
-                    int total = notificacoes.Count;
-                    int enviadas = 0;
-
-                    progressForm.AtualizarProgresso(10, "Processando notificações de disponibilidade...");
-
-                    foreach (var n in notificacoes)
-                    {
-                        try
-                        {
-                            string assunto = "📚 Notificação de disponibilidade - Biblioteca Monteiro Lobato";
-string corpo = $@"
-<html>
-<body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
-        <h2 style='color: #2c3e50;'>Olá, {n.NomeUsuario} 👋</h2>
-        <p>O livro <strong>{n.NomeLivro}</strong> que você solicitou está disponível para empréstimo!</p>
-        <p>Compareça à biblioteca para retirar seu exemplar.</p>
-        <hr />
-        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
-    </div>
-</body>
-</html>";
-                            BibliotecaApp.Services.EmailService.Enviar(n.Email, assunto, corpo);
-
-                            // Marca como enviado
-                            string sqlUpdate = "UPDATE NotificacoesDisponibilidade SET Enviado = 1 WHERE Id = @id";
-                            using (var cmdUpdate = new SqlCeCommand(sqlUpdate, conexao))
-                            {
-                                cmdUpdate.Parameters.AddWithValue("@id", n.Id);
-                                cmdUpdate.ExecuteNonQuery();
-                            }
-                            enviadas++;
-                            int progresso = 10 + (int)((double)enviadas / total * 80);
-                            progressForm.AtualizarProgresso(progresso, $"Enviando notificações ({enviadas}/{total})...");
-                        }
-                        catch
-                        {
-                            // Se falhar, apenas continua
-                        }
-                    }
-
-                    progressForm.AtualizarProgresso(100, "Notificações de disponibilidade atualizadas!");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Erro ao atualizar notificações de disponibilidade: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void AtualizarEmprestimos(frmProgresso progressForm, bool isOffline)
+        private void AtualizarEmprestimos(frmProgresso progressForm)
         {
             try
             {
@@ -411,105 +120,54 @@ string corpo = $@"
                 {
                     connection.Open();
 
-                    string countQuery = "SELECT COUNT(*) FROM Emprestimo WHERE Status <> 'Devolvido'";
-                    var countCommand = new SqlCeCommand(countQuery, connection);
-                    int totalEmprestimos = (int)countCommand.ExecuteScalar();
-
-                    if (totalEmprestimos == 0)
-                    {
-                        progressForm.AtualizarProgresso(100, "Nenhum empréstimo para atualizar");
-                        return;
-                    }
-
                     string selectQuery = @"
-                    SELECT 
-                        e.Id,
-                        e.DataDevolucao,
-                        e.DataProrrogacao,
-                        e.DataRealDevolucao,
-                        e.NotificadoLembrete,
-                        e.NotificadoAtraso,
-                        u.Email,
-                        u.Nome,
-                        l.Nome
-                    FROM Emprestimo e
-                    INNER JOIN Usuarios u ON e.Alocador = u.Id
-                    INNER JOIN Livros l ON e.Livro = l.Id
-                    WHERE e.Status <> 'Devolvido'";
+                    SELECT Id, DataDevolucao, DataProrrogacao, DataRealDevolucao
+                    FROM Emprestimo
+                    WHERE Status <> 'Devolvido'";
 
-                    var selectCommand = new SqlCeCommand(selectQuery, connection);
-                    var reader = selectCommand.ExecuteReader();
-
-                    int processados = 0;
-
-                    while (reader.Read())
+                    using (var selectCommand = new SqlCeCommand(selectQuery, connection))
+                    using (var reader = selectCommand.ExecuteReader())
                     {
-                        int id = reader.GetInt32(0);
-                        DateTime dataDevolucao = reader.GetDateTime(1);
-                        DateTime? dataProrrogacao = reader.IsDBNull(2) ? null : (DateTime?)reader.GetDateTime(2);
-                        DateTime? dataRealDevolucao = reader.IsDBNull(3) ? null : (DateTime?)reader.GetDateTime(3);
-
-                        bool notificadoLembrete = !reader.IsDBNull(4) && reader.GetBoolean(4);
-                        bool notificadoAtraso = !reader.IsDBNull(5) && reader.GetBoolean(5);
-
-                        string emailUsuario = reader.IsDBNull(6) ? null : reader.GetString(6);
-                        string nomeUsuario = reader.GetString(7);
-                        string tituloLivro = reader.GetString(8);
-
-                        string novoStatus = CalcularStatus(dataDevolucao, dataProrrogacao, dataRealDevolucao);
-
-                        string updateStatusQuery = "UPDATE Emprestimo SET Status = @Status WHERE Id = @Id";
-                        var updateStatusCommand = new SqlCeCommand(updateStatusQuery, connection);
-                        updateStatusCommand.Parameters.AddWithValue("@Status", novoStatus);
-                        updateStatusCommand.Parameters.AddWithValue("@Id", id);
-                        updateStatusCommand.ExecuteNonQuery();
-
-                        DateTime dataReferencia = dataProrrogacao ?? dataDevolucao;
-                        TimeSpan diferenca = dataReferencia.Date - DateTime.Now.Date;
-
-                        if (diferenca.Days == 3 && !notificadoLembrete)
+                        var emprestimos = new List<Tuple<int, DateTime, DateTime?, DateTime?>>();
+                        while (reader.Read())
                         {
-                            // Só envia se NÃO estiver offline
-                            if (!isOffline && !string.IsNullOrWhiteSpace(emailUsuario))
-                            {
-                                EnviarEmailLembrete(emailUsuario, nomeUsuario, tituloLivro, dataReferencia);
-                            }
-
-                            // Opcional: Se estiver offline, você pode optar por NÃO marcar como notificado 
-                            // para tentar enviar amanhã, ou marcar mesmo assim.
-                            // Abaixo, marcamos apenas se conseguimos enviar (se online) OU se preferir não acumular, marque sempre.
-                            // Recomendação: Marcar apenas se enviou.
-
-                            if (!isOffline && !string.IsNullOrWhiteSpace(emailUsuario))
-                            {
-                                var updateFlagCmd = new SqlCeCommand("UPDATE Emprestimo SET NotificadoLembrete = 1 WHERE Id = @Id", connection);
-                                updateFlagCmd.Parameters.AddWithValue("@Id", id);
-                                updateFlagCmd.ExecuteNonQuery();
-                            }
+                            emprestimos.Add(Tuple.Create(
+                                reader.GetInt32(0),
+                                reader.GetDateTime(1),
+                                reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
+                                reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3)));
                         }
 
-                        if (diferenca.Days < 0 && !notificadoAtraso)
+                        if (emprestimos.Count == 0)
                         {
-                            if (!isOffline && !string.IsNullOrWhiteSpace(emailUsuario))
-                            {
-                                EnviarEmailAtraso(emailUsuario, nomeUsuario, tituloLivro, dataReferencia);
-
-                                var updateFlagCmd = new SqlCeCommand("UPDATE Emprestimo SET NotificadoAtraso = 1 WHERE Id = @Id", connection);
-                                updateFlagCmd.Parameters.AddWithValue("@Id", id);
-                                updateFlagCmd.ExecuteNonQuery();
-                            }
+                            progressForm.AtualizarProgresso(100, "Nenhum empréstimo para atualizar.");
+                            return;
                         }
 
-                        processados++;
-                        int progresso = (int)((double)processados / totalEmprestimos * 100);
-                        progressForm.AtualizarProgresso(progresso, $"Atualizando empréstimo {processados} de {totalEmprestimos}");
+                        for (int i = 0; i < emprestimos.Count; i++)
+                        {
+                            var emprestimo = emprestimos[i];
+                            string novoStatus = CalcularStatus(emprestimo.Item2, emprestimo.Item3, emprestimo.Item4);
+
+                            using (var updateCommand = new SqlCeCommand(
+                                "UPDATE Emprestimo SET Status = @Status WHERE Id = @Id", connection))
+                            {
+                                updateCommand.Parameters.AddWithValue("@Status", novoStatus);
+                                updateCommand.Parameters.AddWithValue("@Id", emprestimo.Item1);
+                                updateCommand.ExecuteNonQuery();
+                            }
+
+                            int progresso = (int)((double)(i + 1) / emprestimos.Count * 100);
+                            progressForm.AtualizarProgresso(progresso,
+                                $"Atualizando empréstimo {i + 1} de {emprestimos.Count}.");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Erro ao atualizar empréstimos: {ex.Message}", "Erro",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -530,53 +188,6 @@ string corpo = $@"
                 return "Ativo";
             }
         }
-        #endregion
-
-        #region Métodos de Email
-        private void EnviarEmailLembrete(string email, string nome, string tituloLivro, DateTime dataDevolucao)
-        {
-            string assunto = "📚 Lembrete: Devolução de livro se aproxima!";
-
-            string corpo = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
-                    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
-                        <h2 style='color: #2c3e50;'>Olá, {nome} 👋</h2>
-                        <p>Este é um lembrete de que o livro <strong>{tituloLivro}</strong> precisa ser devolvido em breve.</p>
-                        <p style='font-size: 16px;'><strong>📅 Data limite de devolução:</strong> {dataDevolucao:dd/MM/yyyy}</p>
-                        <p>Por favor, devolva o livro no prazo para evitar bloqueios no sistema e problemas com a secretaria.</p>
-                        <hr />
-                        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
-                    </div>
-                </body>
-                </html>";
-
-            BibliotecaApp.Services.EmailService.Enviar(email, assunto, corpo);
-        }
-
-        private void EnviarEmailAtraso(string email, string nome, string tituloLivro, DateTime dataDevolucao)
-        {
-            string assunto = "⚠️ Atraso na devolução de livro";
-
-            string corpo = $@"
-                <html>
-                <body style='font-family: Arial, sans-serif; color: #333; background-color: #fffbe6; padding: 20px;'>
-                    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #e1a500; border-radius: 8px; padding: 20px;'>
-                        <h2 style='color: #d35400;'>Atenção, {nome} ⚠️</h2>
-                        <p>O prazo para devolução do livro <strong>{tituloLivro}</strong> venceu em <strong>{dataDevolucao:dd/MM/yyyy}</strong>.</p>
-                        <p>Devido a isso, você <strong>não poderá retirar documentos na secretaria</strong> até regularizar a situação.</p>
-                        <p>Pedimos que devolva o material o quanto antes ou entre em contato com a biblioteca.</p>
-                        <hr />
-                        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
-                    </div>
-                </body>
-                </html>";
-
-            BibliotecaApp.Services.EmailService.Enviar(email, assunto, corpo);
-        }
-
-
-
         #endregion
 
         #region Eventos de Teclado
@@ -611,75 +222,78 @@ string corpo = $@"
         }
         #endregion
 
-        #region ControleSemanal (TXT)
-        public static class ControleSemanal
-        {
-            private static readonly string txtPath = Path.Combine(AppPaths.AppDataFolder, "EnvioRelatorioSemanal.txt");
-            private const string DateFormat = "yyyy-MM-dd";
-
-            public static bool JaEnviadoEstaSemana()
-            {
-                try
-                {
-                    if (!File.Exists(txtPath)) return false;
-
-                    string conteudo = File.ReadAllText(txtPath).Trim();
-                    if (DateTime.TryParseExact(conteudo, DateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime ultimaData))
-                    {
-                        var diff = (DateTime.Now - ultimaData).TotalDays;
-                        return diff < 7; // menos de 7 dias = já enviou
-                    }
-                    // Se não conseguiu parse, considera não enviado e registra um log
-                    LogRelatorio($"Formato de data de controle semanal inválido: '{conteudo}'");
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    LogRelatorio($"Erro em JaEnviadoEstaSemana: {ex}");
-                    return false;
-                }
-            }
-
-            public static void RegistrarEnvio()
-            {
-                try
-                {
-                    File.WriteAllText(txtPath, DateTime.Now.ToString(DateFormat, System.Globalization.CultureInfo.InvariantCulture));
-                }
-                catch (Exception ex)
-                {
-                    LogRelatorio($"Erro ao registrar envio semanal: {ex}");
-                }
-            }
-        }
-
-        private static void LogRelatorio(string mensagem)
-        {
-            try
-            {
-                string logPath = Path.Combine(AppPaths.AppDataFolder, "Relatorio_Log.txt");
-                string texto = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {mensagem}{Environment.NewLine}";
-                File.AppendAllText(logPath, texto);
-            }
-            catch
-            {
-                // Se o log falhar, não interrompe a aplicação.
-            }
-        }
-
-
-        #endregion
-
         private void lblEsqueceuSenha_Click(object sender, EventArgs e)
         {
-            this.Hide(); // Esconde o formulário atual
+            var configuracao = InstituicaoConfiguracaoStore.Carregar();
+            if (configuracao == null)
+                return;
 
-            using (EsqueceuSenhaForm popup = new EsqueceuSenhaForm())
+            using (var promptCodigo = new Form { Text = "Redefinir senha", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, ClientSize = new Size(360, 145), MaximizeBox = false, MinimizeBox = false })
+            using (var codigo = new TextBox { Location = new Point(20, 34), Width = 320, UseSystemPasswordChar = true })
+            using (var redefinir = new Button { Text = "Validar código", Location = new Point(225, 80), DialogResult = DialogResult.OK })
             {
-                popup.ShowDialog(); // Abre como modal
+                promptCodigo.Controls.Add(new Label { Text = "Informe o código-mestre da instituição:", Location = new Point(20, 12), AutoSize = true });
+                promptCodigo.Controls.Add(codigo);
+                promptCodigo.Controls.Add(redefinir);
+                promptCodigo.AcceptButton = redefinir;
+                if (promptCodigo.ShowDialog(this) != DialogResult.OK ||
+                    !CriptografiaSenha.VerificarSenha(codigo.Text, configuracao.CodigoMestreHash, configuracao.CodigoMestreSalt))
+                {
+                    MessageBox.Show(this, "Código-mestre inválido.", "Redefinição não autorizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
             }
 
-            this.Show(); // Reexibe o formulário anterior após o fechamento do modal
+            using (var promptSenha = new Form { Text = "Nova senha da bibliotecária", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, ClientSize = new Size(360, 190), MaximizeBox = false, MinimizeBox = false })
+            using (var senha = new TextBox { Location = new Point(20, 38), Width = 320, UseSystemPasswordChar = true })
+            using (var confirmar = new TextBox { Location = new Point(20, 94), Width = 320, UseSystemPasswordChar = true })
+            using (var salvar = new Button { Text = "Salvar nova senha", Location = new Point(190, 140), DialogResult = DialogResult.OK })
+            {
+                promptSenha.Controls.Add(new Label { Text = "Nova senha (mínimo 8 caracteres):", Location = new Point(20, 16), AutoSize = true });
+                promptSenha.Controls.Add(senha);
+                promptSenha.Controls.Add(new Label { Text = "Confirme a nova senha:", Location = new Point(20, 72), AutoSize = true });
+                promptSenha.Controls.Add(confirmar);
+                promptSenha.Controls.Add(salvar);
+                promptSenha.AcceptButton = salvar;
+                if (promptSenha.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                if (senha.Text.Length < 8 || senha.Text != confirmar.Text)
+                {
+                    MessageBox.Show(this, "As senhas devem ser iguais e conter ao menos 8 caracteres.", "Senha inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                CriptografiaSenha.CriarHash(senha.Text, out string hash, out string salt);
+                try
+                {
+                    using (SqlCeConnection conexao = Conexao.ObterConexao())
+                    {
+                        conexao.Open();
+                        using (SqlCeCommand comando = conexao.CreateCommand())
+                        {
+                            comando.CommandText = @"UPDATE usuarios
+SET Senha_Hash = @Hash, Senha_Salt = @Salt
+WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(a)' ORDER BY Id)";
+                            comando.Parameters.AddWithValue("@Hash", hash);
+                            comando.Parameters.AddWithValue("@Salt", salt);
+                            if (comando.ExecuteNonQuery() == 0)
+                            {
+                                MessageBox.Show(this, "Não foi encontrada uma conta de bibliotecária para redefinir.", "Conta não encontrada",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                        }
+                    }
+
+                    MessageBox.Show(this, "Senha da primeira bibliotecária atualizada.", "Senha redefinida", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "Não foi possível atualizar a senha: " + ex.Message, "Erro",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void lblVersion_Click(object sender, EventArgs e)
@@ -705,23 +319,6 @@ string corpo = $@"
 
         }
 
-
-        private bool VerificarConexaoInternet()
-        {
-            try
-            {
-                // Tenta pingar o DNS do Google (8.8.8.8) para garantir saída para internet
-                using (var ping = new Ping())
-                {
-                    var reply = ping.Send("8.8.8.8", 2000); // 2 segundos de timeout
-                    return reply != null && reply.Status == IPStatus.Success;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {
@@ -751,14 +348,14 @@ string corpo = $@"
 
             try
             {
-                string email = txtEmail.Text.Trim().ToLowerInvariant();
+                string nomeUsuario = txtEmail.Text.Trim();
                 string senha = txtSenha.Text;
 
-                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+                if (string.IsNullOrEmpty(nomeUsuario) || string.IsNullOrEmpty(senha))
                 {
                     MessageBox.Show("Por favor, preencha todos os campos.", "Campos obrigatórios",
                                   MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    if (string.IsNullOrEmpty(email)) txtEmail.Focus();
+                    if (string.IsNullOrEmpty(nomeUsuario)) txtEmail.Focus();
                     else txtSenha.Focus();
                     return;
                 }
@@ -768,27 +365,13 @@ string corpo = $@"
                     using (SqlCeConnection conexao = Conexao.ObterConexao())
                     {
                         conexao.Open();
-
-                        // 1) Tenta login como ADMIN (credenciais simples via banco)
-                        if (LoginAdmin(conexao, email, senha))
-                        {
-                            Sessao.NomeBibliotecariaLogada = "Administrador";
-                            LoginForm.UsuarioBibliotecaria = false;
-                            cancelar = true;
-                            await AtualizarStatusEmprestimosAsync(false, Program.IsOfflineMode);
-
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
-                            return;
-                        }
-
-                        // 2) Tenta login como Bibliotecário(a)
-                        string query = @"SELECT Nome, Senha_hash, Senha_salt FROM usuarios 
-                    WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)'";
+                        string query = @"SELECT Id, Nome, Senha_hash, Senha_salt FROM usuarios 
+                    WHERE (Email = @email OR Nome = @nomeUsuario) AND TipoUsuario = 'Bibliotecário(a)'";
 
                         using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                         {
-                            comando.Parameters.AddWithValue("@email", email);
+                            comando.Parameters.AddWithValue("@email", nomeUsuario);
+                            comando.Parameters.AddWithValue("@nomeUsuario", nomeUsuario);
 
                             using (SqlCeDataReader reader = comando.ExecuteReader())
                             {
@@ -796,52 +379,19 @@ string corpo = $@"
                                 {
                                     string hashSalvo = reader["Senha_hash"].ToString();
                                     string saltSalvo = reader["Senha_salt"].ToString();
-                                    string nomeUsuario = reader["Nome"].ToString();
+                                    string nomeBibliotecario = reader["Nome"].ToString();
 
                                     bool senhaCorreta = CriptografiaSenha.VerificarSenha(senha, hashSalvo, saltSalvo);
 
                                     if (senhaCorreta)
                                     {
-                                        // --- INÍCIO DA VERIFICAÇÃO DE INTERNET ---
-                                        bool internetOk = VerificarConexaoInternet();
-                                        Program.IsOfflineMode = false; // Assume online por padrão
-
-                                        while (!internetOk)
-                                        {
-                                            string mensagemOffline =
-                                                "Não foi possível conectar à internet.\n\n" +
-                                                "No MODO OFFLINE, a seguinte função estará INDISPONÍVEL:\n" +
-                                                "• Envio de notificações por e-mail\n" +
-                                                "Deseja tentar conectar novamente ou continuar offline?";
-
-                                            var result = MessageBox.Show(mensagemOffline,
-                                                "Sem Conexão com Internet",
-                                                MessageBoxButtons.RetryCancel,
-                                                MessageBoxIcon.Warning);
-
-                                            if (result == DialogResult.Retry)
-                                            {
-                                                // Tenta verificar novamente
-                                                internetOk = VerificarConexaoInternet();
-                                                if (internetOk)
-                                                {
-                                                    MessageBox.Show("Conexão restabelecida com sucesso!", "Conectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                                    Program.IsOfflineMode = false;
-                                                }
-                                            }
-                                            else // Cancel (Entendido como Continuar Offline)
-                                            {
-                                                Program.IsOfflineMode = true;
-                                                break; // Sai do loop e prossegue offline
-                                            }
-                                        }
-                                        // --- FIM DA VERIFICAÇÃO ---
-
-                                        Sessao.NomeBibliotecariaLogada = nomeUsuario;
+                                        Sessao.UsuarioId = Convert.ToInt32(reader["Id"]);
+                                          Sessao.NomeUsuario = nomeBibliotecario;
+                                         Sessao.Perfil = "Bibliotecário(a)";
+                                        Sessao.NomeBibliotecariaLogada = nomeBibliotecario;
                                         LoginForm.UsuarioBibliotecaria = true;
 
-                                        // Passamos o status offline para o método de atualização
-                                        await AtualizarStatusEmprestimosAsync(true, Program.IsOfflineMode);
+                                        await AtualizarStatusEmprestimosAsync();
 
                                         cancelar = true;
                                         this.DialogResult = DialogResult.OK;
@@ -858,7 +408,7 @@ string corpo = $@"
                                 }
                                 else
                                 {
-                                    MessageBox.Show("E-mail não encontrado ou usuário sem permissão.", "Erro de autenticação",
+                                    MessageBox.Show("Usuário não encontrado ou sem permissão.", "Erro de autenticação",
                                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     txtEmail.Focus();
                                     return;

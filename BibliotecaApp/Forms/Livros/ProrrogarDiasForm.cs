@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     public partial class ProrrogarDiasForm : Form
     {
@@ -121,3 +121,4 @@ namespace BibliotecaApp.Forms.Livros
         
     }
 }
+

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Utils.Etiquetas
+namespace SUB.Utils.Etiquetas
 {
     public enum LabelActionChoice
     {

@@ -1,7 +1,7 @@
-﻿using BibliotecaApp.Forms.Inicio;
-using BibliotecaApp.Forms.Livros;
-using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
+﻿using SUB.Forms.Inicio;
+using SUB.Forms.Livros;
+using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,14 +16,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Usuario
+namespace SUB.Forms.Usuario
 {
     public partial class EditarUsuarioForm : Form
     {
-        private static bool IsAdminLogado()
-       => string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
-
-
         private Size originalSize;
         private List<string> turmasCadastradas = new List<string>();
         
@@ -199,12 +195,6 @@ namespace BibliotecaApp.Forms.Usuario
         private void btnSalvar_Click(object sender, EventArgs e)
         {
 
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode editar usuários.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             if (_usuarioSelecionado == null)
             {
                 MessageBox.Show("Selecione um usuário primeiro.");
@@ -215,7 +205,7 @@ namespace BibliotecaApp.Forms.Usuario
             if (txtTurma.Enabled && !string.IsNullOrWhiteSpace(txtTurma.Text))
             {
                 var turma = txtTurma.Text.Trim();
-                if (!BibliotecaApp.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
+                if (!SUB.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
                 {
                     MessageBox.Show("Selecione uma turma válida da lista de turmas permitidas.", "Turma inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -415,12 +405,6 @@ namespace BibliotecaApp.Forms.Usuario
 
         private void btnExcluir_Click(object sender, EventArgs e)
         {
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode excluir usuários.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             if (_usuarioSelecionado == null)
             {
                 MessageBox.Show("Selecione um usuário primeiro.");
@@ -1115,7 +1099,7 @@ private void txtTurma_TextChanged(object sender, EventArgs e)
         return;
     }
 
-    var sugestoes = BibliotecaApp.Utils.TurmasUtil.BuscarSugestoes(texto);
+    var sugestoes = SUB.Utils.TurmasUtil.BuscarSugestoes(texto);
 
     lstSugestoesTurma.Items.Clear();
 
@@ -1151,7 +1135,7 @@ private void txtTurma_TextChanged(object sender, EventArgs e)
                     lstSugestoesTurma.Visible = false;
                     // Impede sair do campo se não for uma turma permitida
                     var turma = txtTurma.Text.Trim();
-                    if (!string.IsNullOrEmpty(turma) && !BibliotecaApp.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
+                    if (!string.IsNullOrEmpty(turma) && !SUB.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
                     {
                         MessageBox.Show("Selecione uma turma válida da lista de turmas permitidas.", "Turma inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         txtTurma.Text = "";

@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BibliotecaApp",
+    "\\BibliotecaApp\\Forms",
+    "\\BibliotecaApp\\Forms\\Inicio",
+    "\\BibliotecaApp\\Forms\\Livros",
+    "\\BibliotecaApp\\Forms\\Login",
+    "\\BibliotecaApp\\Forms\\Setup",
+    "\\BibliotecaApp\\Models"
+  ],
+  "SelectedNode": "\\BibliotecaApp\\BibliotecaApp.csproj",
+  "PreviewInSolutionExplorer": false
+}

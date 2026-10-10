@@ -1,14 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BibliotecaApp.Models
+namespace SUB.Models
 {
     public static class Sessao
     {
-        // nome da bibliotecária que fez login
+        public static int? UsuarioId { get; set; }
+        public static string NomeUsuario { get; set; }
+        public static string Perfil { get; set; }
         public static string NomeBibliotecariaLogada { get; set; }
+
+        public static bool UsuarioAutenticado => UsuarioId.HasValue;
+
+        public static void Limpar()
+        {
+            UsuarioId = null;
+            NomeUsuario = null;
+            Perfil = null;
+            NomeBibliotecariaLogada = null;
+        }
     }
 }
+

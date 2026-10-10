@@ -1,6 +1,5 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Services;
-using BibliotecaApp.Utils; // ADICIONE ESTA LINHA
+﻿using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,7 +10,7 @@ using System.Linq;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     public partial class EmprestimoForm : Form
     {
@@ -62,12 +61,9 @@ namespace BibliotecaApp.Forms.Livros
             lstLivros.Click += lstLivros_Click;
             lstLivros.KeyDown += lstLivros_KeyDown;
 
-            BibliotecaApp.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarBibliotecarias();
+            SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarBibliotecarias();
         }
         #endregion
-
-        private static bool IsAdminLogado()
-            => string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
 
         #region Eventos do Formulário
 
@@ -104,13 +100,6 @@ namespace BibliotecaApp.Forms.Livros
         #region Métodos de Empréstimo
         private void btnEmprestar_Click(object sender, EventArgs e)
         {
-            // Bloqueia ação por administrador
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode realizar empréstimos.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             // Obtendo o nome do usuário, livro e responsável (bibliotecário)
             string nomeUsuario = txtNomeUsuario.Text.Trim();
             string nomeLivro = txtLivro.Text.Trim();
@@ -195,70 +184,13 @@ namespace BibliotecaApp.Forms.Livros
 
             if (!livro.Disponibilidade || livro.Quantidade <= 0)
             {
-                string email = usuario.Email?.Trim();
-                bool emailValido = !string.IsNullOrWhiteSpace(email) && email.Contains("@");
-
-                if (emailValido)
-                {
-                    MessageBox.Show(
-                        $"O livro \"{livro.Nome}\" está indisponível para empréstimo.\n\n" +
-                        "Você pode ser notificado por e-mail quando o livro estiver disponível.",
-                        "Livro Indisponível",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-
-                    DialogResult resposta = MessageBox.Show(
-                        "Deseja receber um e-mail quando o livro estiver disponível?",
-                        "Notificação de Disponibilidade",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                    );
-
-                    if (resposta == DialogResult.Yes)
-                    {
-                        using (var conexao = Conexao.ObterConexao())
-                        {
-                            conexao.Open();
-                            string sql = @"INSERT INTO NotificacoesDisponibilidade (UsuarioId, LivroId, Email, Enviado)
-                   VALUES (@usuarioId, @livroId, @email, 0)";
-                            using (var cmd = new SqlCeCommand(sql, conexao))
-                            {
-                                cmd.Parameters.AddWithValue("@usuarioId", usuario.Id);
-                                cmd.Parameters.AddWithValue("@livroId", livro.Id);
-                                cmd.Parameters.AddWithValue("@email", usuario.Email);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-
-
-                        string assunto = "📚 Notificação de disponibilidade - Biblioteca Monteiro Lobato";
-                        string corpo = $@"
-<html>
-<body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
-        <h2 style='color: #2c3e50;'>Olá, {usuario.Nome} 👋</h2>
-        <p>Você será avisado por e-mail assim que o livro <strong>{livro.Nome}</strong> estiver disponível para empréstimo.</p>
-        <hr />
-        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
-    </div>
-</body>
-</html>";
-                        EmailService.Enviar(email, assunto, corpo);
-                        LivroAtualizado?.Invoke(this, EventArgs.Empty);
-                        MessageBox.Show("Você será notificado por e-mail quando o livro estiver disponível.", "Notificação registrada", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(
-                        $"O livro \"{livro.Nome}\" está indisponível para empréstimo.\n\n" +
-                        "Nenhum e-mail cadastrado para notificação.",
-                        "Livro Indisponível",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
+                MessageBox.Show(
+                    $"O livro \"{livro.Nome}\" está indisponível para empréstimo.\n\n" +
+                    "A disponibilidade pode ser consultada novamente no sistema.",
+                    "Livro Indisponível",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
                 return; // interrompe o fluxo de empréstimo
             }
@@ -319,37 +251,11 @@ namespace BibliotecaApp.Forms.Livros
                
 
                 // dispara atualização global
-                BibliotecaApp.Utils.EventosGlobais.OnEmprestimoRealizado();
+                SUB.Utils.EventosGlobais.OnEmprestimoRealizado();
                 MessageBox.Show("Empréstimo registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimparCampos();
                 LivroAtualizado?.Invoke(this, EventArgs.Empty);
 
-                // Envio de e-mail apenas se o e-mail for válido
-                string email = usuario.Email?.Trim();
-                if (!string.IsNullOrWhiteSpace(email) && email.Contains("@"))
-                {
-                    string assunto = "✅ Empréstimo Confirmado - Biblioteca Monteiro Lobato";
-                    string corpo = $@"
-<html>
-<body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
-    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
-        <h2 style='color: #2c3e50;'>Olá, {usuario.Nome} 👋</h2>
-        <p>Seu empréstimo foi registrado com sucesso! Aqui estão os detalhes:</p>
-        <p><strong>📖 Livro:</strong> {livro.Nome}</p>
-        <p><strong>📅 Data do Empréstimo:</strong> {DateTime.Now:dd/MM/yyyy}</p>
-        <p><strong>📆 Data de Devolução:</strong> {dtpDataDevolucao.Value:dd/MM/yyyy}</p>
-        <p style='margin-top: 20px;'>Por favor, devolva o livro no prazo para evitar bloqueios no sistema e restrições na secretaria.</p>
-        <hr />
-        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
-    </div>
-</body>
-</html>";
-                    EmailService.Enviar(email, assunto, corpo);
-                }
-                else
-                {
-                    MessageBox.Show("Empréstimo registrado, porém o usuário não possui e-mail cadastrado ou válido. Nenhum e-mail foi enviado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
             }
             catch (Exception ex)
             {

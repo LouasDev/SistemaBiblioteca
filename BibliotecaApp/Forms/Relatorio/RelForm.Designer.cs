@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Relatorio
+﻿namespace SUB.Forms.Relatorio
 {
     partial class RelForm
     {
@@ -275,7 +275,7 @@
             this.btnExportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportar.Font = new System.Drawing.Font("Segoe UI Semibold", 13.5F, System.Drawing.FontStyle.Bold);
             this.btnExportar.ForeColor = System.Drawing.Color.White;
-            this.btnExportar.Image = global::BibliotecaApp.Properties.Resources.icons8_export_excel_25;
+            this.btnExportar.Image = global::SUB.Properties.Resources.icons8_export_excel_25;
             this.btnExportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnExportar.Location = new System.Drawing.Point(1113, 201);
             this.btnExportar.Name = "btnExportar";
@@ -384,7 +384,7 @@
             this.btnFiltrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFiltrar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnFiltrar.ForeColor = System.Drawing.Color.White;
-            this.btnFiltrar.Image = global::BibliotecaApp.Properties.Resources.material_symbols___tab_search_rounded_25px;
+            this.btnFiltrar.Image = global::SUB.Properties.Resources.material_symbols___tab_search_rounded_25px;
             this.btnFiltrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnFiltrar.Location = new System.Drawing.Point(948, 201);
             this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

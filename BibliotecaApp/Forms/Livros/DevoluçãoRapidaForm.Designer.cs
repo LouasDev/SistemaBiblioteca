@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class DevoluçãoRapidaForm
     {
@@ -483,7 +483,7 @@
             this.MinimizeBox = false;
             this.Name = "DevoluçãoRapidaForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BibliotecaApp";
+            this.Text = "SUB";
             this.panelHeader.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

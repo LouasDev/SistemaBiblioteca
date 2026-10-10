@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BibliotecaApp.Models
+namespace SUB.Models
 {
     public class MapeamentoRegistro
     {
@@ -21,3 +21,4 @@ namespace BibliotecaApp.Models
         public List<MapeamentoRegistro> Registros { get; set; } = new List<MapeamentoRegistro>();
     }
 }
+

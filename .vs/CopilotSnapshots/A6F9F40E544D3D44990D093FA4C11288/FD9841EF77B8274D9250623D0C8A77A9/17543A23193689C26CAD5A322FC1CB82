@@ -1,0 +1,497 @@
+﻿
+
+using BibliotecaApp.Forms.Utils;
+using BibliotecaApp.Models;
+using BibliotecaApp.Utils;
+using SeuProjeto;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlServerCe;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace BibliotecaApp.Forms.Login
+{
+    public partial class LoginForm : Form
+    {
+        #region Propriedades
+        // Variável para controle externo de login
+        public static bool cancelar = false;
+
+        // Indica se o login atual foi realizado por uma bibliotecária
+        public static bool UsuarioBibliotecaria { get; set; } = false;
+
+        // Evita reentrância no clique (duplo Enter/click)
+        private bool _isAuthenticating = false;
+        #endregion
+
+        #region Construtor
+        public LoginForm()
+        {
+            InitializeComponent();
+
+            //aredondar cantos e desenhar borda cinza
+
+            int meuRaio = 15;
+            this.ArredondarCantos(meuRaio);
+            this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+
+
+            // AcceptButton só será ativado quando o foco estiver em txtSenha
+            this.AcceptButton = null;
+
+            // Ativa/desativa AcceptButton conforme foco na senha
+            this.txtSenha.Enter += txtSenha_Enter;
+            this.txtSenha.Leave += txtSenha_Leave;
+
+            txtEmail.CharacterCasing = CharacterCasing.Lower;
+
+            // Removido: KeyDown já está inscrito no Designer
+            // txtEmail.KeyDown += txtEmail_KeyDown;
+            // txtSenha.KeyDown += txtSenha_KeyDown;
+        }
+
+        //Fecharo form se o login for cancelado externamente
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region Métodos de Login
+
+        private bool LoginAdmin(SqlCeConnection conexao, string email, string senha)
+        {
+            // Tabela 'Admin' deve conter apenas 1 linha (um único admin)
+            const string sql = @"SELECT COUNT(*) FROM Admin 
+                                 WHERE Ativo = 1 AND Email = @email AND Senha = @senha";
+
+            using (var cmd = new SqlCeCommand(sql, conexao))
+            {
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@senha", senha);
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
+            }
+        }
+
+        private void BtnEntrar_MouseLeave(object sender, EventArgs e)
+        {
+            BtnEntrar.BackColor = Color.FromArgb(9, 74, 158);
+            BtnEntrar.Refresh();
+        }
+
+        private void BtnEntrar_MouseEnter(object sender, EventArgs e)
+        {
+            BtnEntrar.BackColor = Color.FromArgb(33, 145, 245);
+            BtnEntrar.Refresh();
+        }
+        #endregion
+
+        #region Métodos de Atualização
+        private async Task AtualizarStatusEmprestimosAsync(bool usuarioEhBibliotecaria, bool isOffline)
+        {
+            using (var progressForm = new frmProgresso())
+            {
+                progressForm.Show();
+
+                await Task.Run(() =>
+                {
+                    AtualizarEmprestimos(progressForm);
+                });
+            }
+        }
+
+        private void AtualizarEmprestimos(frmProgresso progressForm)
+        {
+            try
+            {
+                using (var connection = Conexao.ObterConexao())
+                {
+                    connection.Open();
+
+                    string selectQuery = @"
+                    SELECT Id, DataDevolucao, DataProrrogacao, DataRealDevolucao
+                    FROM Emprestimo
+                    WHERE Status <> 'Devolvido'";
+
+                    using (var selectCommand = new SqlCeCommand(selectQuery, connection))
+                    using (var reader = selectCommand.ExecuteReader())
+                    {
+                        var emprestimos = new List<Tuple<int, DateTime, DateTime?, DateTime?>>();
+                        while (reader.Read())
+                        {
+                            emprestimos.Add(Tuple.Create(
+                                reader.GetInt32(0),
+                                reader.GetDateTime(1),
+                                reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
+                                reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3)));
+                        }
+
+                        if (emprestimos.Count == 0)
+                        {
+                            progressForm.AtualizarProgresso(100, "Nenhum empréstimo para atualizar.");
+                            return;
+                        }
+
+                        for (int i = 0; i < emprestimos.Count; i++)
+                        {
+                            var emprestimo = emprestimos[i];
+                            string novoStatus = CalcularStatus(emprestimo.Item2, emprestimo.Item3, emprestimo.Item4);
+
+                            using (var updateCommand = new SqlCeCommand(
+                                "UPDATE Emprestimo SET Status = @Status WHERE Id = @Id", connection))
+                            {
+                                updateCommand.Parameters.AddWithValue("@Status", novoStatus);
+                                updateCommand.Parameters.AddWithValue("@Id", emprestimo.Item1);
+                                updateCommand.ExecuteNonQuery();
+                            }
+
+                            int progresso = (int)((double)(i + 1) / emprestimos.Count * 100);
+                            progressForm.AtualizarProgresso(progresso,
+                                $"Atualizando empréstimo {i + 1} de {emprestimos.Count}.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao atualizar empréstimos: {ex.Message}", "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string CalcularStatus(DateTime dataDevolucao, DateTime? dataProrrogacao, DateTime? dataRealDevolucao)
+        {
+            DateTime dataReferencia = dataProrrogacao ?? dataDevolucao;
+
+            if (dataRealDevolucao.HasValue)
+            {
+                return "Devolvido";
+            }
+            else if (DateTime.Now > dataReferencia)
+            {
+                return "Atrasado";
+            }
+            else
+            {
+                return "Ativo";
+            }
+        }
+        #endregion
+
+        #region Métodos de Email
+        private void EnviarEmailLembrete(string email, string nome, string tituloLivro, DateTime dataDevolucao)
+        {
+            string assunto = "📚 Lembrete: Devolução de livro se aproxima!";
+
+            string corpo = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif; color: #333; background-color: #f9f9f9; padding: 20px;'>
+                    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px;'>
+                        <h2 style='color: #2c3e50;'>Olá, {nome} 👋</h2>
+                        <p>Este é um lembrete de que o livro <strong>{tituloLivro}</strong> precisa ser devolvido em breve.</p>
+                        <p style='font-size: 16px;'><strong>📅 Data limite de devolução:</strong> {dataDevolucao:dd/MM/yyyy}</p>
+                        <p>Por favor, devolva o livro no prazo para evitar bloqueios no sistema e problemas com a secretaria.</p>
+                        <hr />
+                        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
+                    </div>
+                </body>
+                </html>";
+
+            BibliotecaApp.Services.EmailService.Enviar(email, assunto, corpo);
+        }
+
+        private void EnviarEmailAtraso(string email, string nome, string tituloLivro, DateTime dataDevolucao)
+        {
+            string assunto = "⚠️ Atraso na devolução de livro";
+
+            string corpo = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif; color: #333; background-color: #fffbe6; padding: 20px;'>
+                    <div style='max-width: 600px; margin: auto; background-color: #fff; border: 1px solid #e1a500; border-radius: 8px; padding: 20px;'>
+                        <h2 style='color: #d35400;'>Atenção, {nome} ⚠️</h2>
+                        <p>O prazo para devolução do livro <strong>{tituloLivro}</strong> venceu em <strong>{dataDevolucao:dd/MM/yyyy}</strong>.</p>
+                        <p>Devido a isso, você <strong>não poderá retirar documentos na secretaria</strong> até regularizar a situação.</p>
+                        <p>Pedimos que devolva o material o quanto antes ou entre em contato com a biblioteca.</p>
+                        <hr />
+                        <p style='font-size: 14px; color: #888;'>Este é um e-mail automático enviado pela Biblioteca Monteiro Lobato.</p>
+                    </div>
+                </body>
+                </html>";
+
+            BibliotecaApp.Services.EmailService.Enviar(email, assunto, corpo);
+        }
+
+
+
+        #endregion
+
+        #region Eventos de Teclado
+        private void txtEmail_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Impede o AcceptButton e vai para a senha
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                txtSenha.Focus();
+            }
+        }
+
+        private void txtSenha_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // Deixe o AcceptButton (BtnEntrar) cuidar do Enter no campo senha
+            }
+        }
+
+        // Ativa o AcceptButton apenas quando a senha tem foco
+        private void txtSenha_Enter(object sender, EventArgs e)
+        {
+            this.AcceptButton = BtnEntrar;
+        }
+
+        private void txtSenha_Leave(object sender, EventArgs e)
+        {
+            this.AcceptButton = null;
+        }
+        #endregion
+
+        private void lblEsqueceuSenha_Click(object sender, EventArgs e)
+        {
+            this.Hide(); // Esconde o formulário atual
+
+            using (EsqueceuSenhaForm popup = new EsqueceuSenhaForm())
+            {
+                popup.ShowDialog(); // Abre como modal
+            }
+
+            this.Show(); // Reexibe o formulário anterior após o fechamento do modal
+        }
+
+        private void lblVersion_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            using (AboutForm popup = new AboutForm())
+            {
+                popup.ShowDialog(); // Abre como modal
+            }
+
+            this.Show();
+        }
+
+        private void lblVersion_MouseEnter(object sender, EventArgs e)
+        {
+            lblVersion.ForeColor = Color.SkyBlue;
+        }
+
+        private void lblVersion_MouseLeave(object sender, EventArgs e)
+        {
+            lblVersion.ForeColor = Color.White;
+
+        }
+
+
+        private bool VerificarConexaoInternet()
+        {
+            try
+            {
+                // Tenta pingar o DNS do Google (8.8.8.8) para garantir saída para internet
+                using (var ping = new Ping())
+                {
+                    var reply = ping.Send("8.8.8.8", 2000); // 2 segundos de timeout
+                    return reply != null && reply.Status == IPStatus.Success;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private void BtnCancelar_Click(object sender, EventArgs e)
+        {
+            const string msg = "Tem certeza de que quer fechar a Aplicação?";
+            const string box = "Confirmação de Encerramento";
+            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirma == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void cbMostrarSenha_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbMostrarSenha.Checked) {
+                txtSenha.UseSystemPasswordChar = false;
+            } else {
+                txtSenha.UseSystemPasswordChar = true;
+            }
+        }
+
+        private async void BtnEntrar_Click(object sender, EventArgs e)
+        {
+            if (_isAuthenticating) return;
+            _isAuthenticating = true;
+            if (BtnEntrar != null) BtnEntrar.Enabled = false;
+
+            try
+            {
+                string email = txtEmail.Text.Trim().ToLowerInvariant();
+                string senha = txtSenha.Text;
+
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
+                {
+                    MessageBox.Show("Por favor, preencha todos os campos.", "Campos obrigatórios",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    if (string.IsNullOrEmpty(email)) txtEmail.Focus();
+                    else txtSenha.Focus();
+                    return;
+                }
+
+                try
+                {
+                    using (SqlCeConnection conexao = Conexao.ObterConexao())
+                    {
+                        conexao.Open();
+
+                        // 1) Tenta login como ADMIN (credenciais simples via banco)
+                        if (LoginAdmin(conexao, email, senha))
+                        {
+                            Sessao.NomeUsuario = email;
+                            Sessao.Perfil = "Administrador";
+                            Sessao.NomeBibliotecariaLogada = "Administrador";
+                            LoginForm.UsuarioBibliotecaria = false;
+                            cancelar = true;
+                            await AtualizarStatusEmprestimosAsync(false, Program.IsOfflineMode);
+
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
+                            return;
+                        }
+
+                        // 2) Tenta login como Bibliotecário(a)
+                        string query = @"SELECT Nome, Senha_hash, Senha_salt FROM usuarios 
+                    WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)'";
+
+                        using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
+                        {
+                            comando.Parameters.AddWithValue("@email", email);
+
+                            using (SqlCeDataReader reader = comando.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    string hashSalvo = reader["Senha_hash"].ToString();
+                                    string saltSalvo = reader["Senha_salt"].ToString();
+                                    string nomeUsuario = reader["Nome"].ToString();
+
+                                    bool senhaCorreta = CriptografiaSenha.VerificarSenha(senha, hashSalvo, saltSalvo);
+
+                                    if (senhaCorreta)
+                                    {
+                                         Sessao.NomeUsuario = nomeUsuario;
+                                         Sessao.Perfil = "Bibliotecário(a)";
+                                        // --- INÍCIO DA VERIFICAÇÃO DE INTERNET ---
+                                        bool internetOk = VerificarConexaoInternet();
+                                        Program.IsOfflineMode = false; // Assume online por padrão
+
+                                        while (!internetOk)
+                                        {
+                                            string mensagemOffline =
+                                                "Não foi possível conectar à internet.\n\n" +
+                                                "No MODO OFFLINE, a seguinte função estará INDISPONÍVEL:\n" +
+                                                "• Envio de notificações por e-mail\n" +
+                                                "Deseja tentar conectar novamente ou continuar offline?";
+
+                                            var result = MessageBox.Show(mensagemOffline,
+                                                "Sem Conexão com Internet",
+                                                MessageBoxButtons.RetryCancel,
+                                                MessageBoxIcon.Warning);
+
+                                            if (result == DialogResult.Retry)
+                                            {
+                                                // Tenta verificar novamente
+                                                internetOk = VerificarConexaoInternet();
+                                                if (internetOk)
+                                                {
+                                                    MessageBox.Show("Conexão restabelecida com sucesso!", "Conectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                                    Program.IsOfflineMode = false;
+                                                }
+                                            }
+                                            else // Cancel (Entendido como Continuar Offline)
+                                            {
+                                                Program.IsOfflineMode = true;
+                                                break; // Sai do loop e prossegue offline
+                                            }
+                                        }
+                                        // --- FIM DA VERIFICAÇÃO ---
+
+                                        Sessao.NomeBibliotecariaLogada = nomeUsuario;
+                                        LoginForm.UsuarioBibliotecaria = true;
+
+                                        // Passamos o status offline para o método de atualização
+                                        await AtualizarStatusEmprestimosAsync(true, Program.IsOfflineMode);
+
+                                        cancelar = true;
+                                        this.DialogResult = DialogResult.OK;
+                                        this.Close();
+                                        return;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Senha incorreta.", "Erro de autenticação",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        txtSenha.Focus();
+                                        return;
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("E-mail não encontrado ou usuário sem permissão.", "Erro de autenticação",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    txtEmail.Focus();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro na autenticação: " + ex.Message, "Erro",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            finally
+            {
+                _isAuthenticating = false;
+                if (!IsDisposed && BtnEntrar != null) BtnEntrar.Enabled = true;
+            }
+        }
+
+
+
+
+        private void BtnTeste_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            const string msg = "Tem certeza de que quer fechar a Aplicação?";
+            const string box = "Confirmação de Encerramento";
+            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirma == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+    }
+}

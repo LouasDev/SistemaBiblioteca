@@ -1,0 +1,173 @@
+﻿# Schema-alvo para a base nova
+
+## Decisão de infraestrutura
+
+- Banco da primeira versão: SQL Server Compact 4.0.
+- Escopo: uma base local por instituição.
+- Uso previsto: um computador por instituição.
+- A base atual não será migrada nesta etapa.
+- A base nova deve ser criada e validada na inicialização da instalação.
+
+## Situação observada
+
+O projeto não possui uma camada de migrações formal identificada. O arquivo `BibliotecaDB\\bibliotecaDB.sdf` é distribuído como conteúdo do projeto e os Forms executam SQL diretamente. Foram observadas consultas para as seguintes áreas:
+
+- `Usuarios`;
+- `Livros`;
+- `Emprestimo`;
+- `EmprestimoRapido`;
+- `LogProrrogacoes`;
+- `NotificacoesDisponibilidade`;
+- `Admin`;
+- tabelas auxiliares relacionadas a configuração e relatórios.
+
+As consultas atuais usam nomes de colunas como `Nome`, `Email`, `Senha_Hash`, `Senha_Salt`, `CPF`, `DataNascimento`, `Turma`, `Telefone`, `TipoUsuario`, `Ativo`, `Quantidade`, `CodigoBarras`, `Disponibilidade`, datas de empréstimo/devolução e operador responsável.
+
+## Entidades da base nova
+
+### InstituicaoConfig
+
+Uma única linha por base local:
+
+- `Id`;
+- `Nome`;
+- `LogoPath` ou conteúdo local equivalente;
+- `CorPrimaria`;
+- `CodigoMestreHash`;
+- `CodigoMestreSalt`;
+- `ConfiguradoEm`;
+- `AtualizadoEm`.
+
+A configuração não deve armazenar o código mestre em texto puro.
+
+### Usuarios
+
+Campos mínimos previstos:
+
+- `Id` identity;
+- `Nome`;
+- `Email` opcional;
+- `Senha_Hash`;
+- `Senha_Salt`;
+- `CPF` opcional;
+- `DataNascimento` opcional;
+- `Turma` opcional;
+- `Telefone` opcional;
+- `TipoUsuario` ou perfil normalizado;
+- `Ativo`;
+- `CriadoEm`;
+- `AtualizadoEm`;
+- `UltimoLoginEm` opcional.
+
+O primeiro administrador deve ser criado pelo assistente, sem usuário padrão conhecido.
+
+### Perfis e permissões
+
+A implementação deve deixar de usar comparações de texto espalhadas para autorização. O schema-alvo deve permitir perfil e permissões centralizados, ainda que a primeira implementação preserve `TipoUsuario` por compatibilidade com os Forms.
+
+Evolução recomendada:
+
+- `Perfis`;
+- `Permissoes`;
+- `PerfilPermissoes`;
+- `UsuarioPerfis`.
+
+A decisão entre manter `TipoUsuario` e introduzir as tabelas normalizadas será aplicada junto com a extração da autorização, não em uma alteração isolada.
+
+### Livros
+
+Campos mínimos mantidos:
+
+- `Id` identity;
+- `Nome`;
+- `Autor`;
+- `Genero`;
+- `Quantidade`;
+- `CodigoBarras`;
+- `Disponibilidade` derivada ou mantida temporariamente;
+- `Ativo`;
+- `CriadoEm`;
+- `AtualizadoEm`.
+
+A primeira versão pode manter quantidade agregada para reduzir o impacto. A necessidade de uma tabela `Exemplares` deverá ser avaliada antes de implantação em instituições com acervo que exija rastreamento individual.
+
+### Emprestimos
+
+Campos esperados:
+
+- `Id` identity;
+- `UsuarioId`;
+- `LivroId`;
+- `ResponsavelId` ou responsável identificado de forma auditável;
+- `DataEmprestimo`;
+- `DataDevolucaoPrevista`;
+- `DataDevolucaoReal` opcional;
+- `Status`;
+- `DataCriacao`;
+- `Observacao` opcional.
+
+A prorrogação deve ser registrada em `LogProrrogacoes`, e não apenas sobrescrever a data sem histórico.
+
+### ParametrosCirculacao
+
+Uma linha por parâmetro/perfil e instituição local:
+
+- perfil;
+- limite de empréstimos simultâneos;
+- prazo padrão em dias;
+- dias máximos de prorrogação;
+- limite de prorrogações;
+- bloqueio por atraso;
+- ativo.
+
+Os valores padrão devem refletir o contrato funcional e ser editáveis pelo administrador.
+
+### Turmas
+
+A solução atual armazena turma diretamente em `Usuarios` e usa `TurmasUtil`. A base nova deve continuar aceitando `Turma` no usuário para reduzir impacto inicial, mas deve prever uma tabela de turmas configuráveis caso o mapeamento anual deixe de depender de listas fixas no código.
+
+### Auditoria
+
+Tabela local para ações administrativas e operações de circulação:
+
+- `Id` identity;
+- `UsuarioId` opcional;
+- `Acao`;
+- `Entidade`;
+- `EntidadeId` opcional;
+- `Detalhes` sem senha ou código mestre;
+- `DataHora`;
+- `Sucesso`.
+
+## Tabelas a remover ou redesenhar
+
+- `Admin`: substituir por usuário com perfil de administrador, evitando regra de um único admin fixo.
+- `NotificacoesDisponibilidade`: remover campos e rotinas de envio externo; se necessário, converter para pendência interna.
+- Campos ou registros usados exclusivamente para e-mail enviado.
+- Estruturas de backup/sincronização externa, se existirem no banco.
+
+## Inicialização e versionamento
+
+A base nova deve ter uma versão de schema local, por exemplo em uma tabela `SchemaInfo`, contendo:
+
+- `Versao`;
+- `AplicadoEm`.
+
+O inicializador deve:
+
+1. verificar se a base existe;
+2. criar o schema mínimo quando não existir;
+3. aplicar alterações versionadas;
+4. criar parâmetros padrão;
+5. deixar o assistente de primeiro uso criar a configuração e o primeiro administrador;
+6. interromper com mensagem clara se não conseguir inicializar.
+
+A distribuição não deve depender apenas da cópia silenciosa de um `.sdf` com dados institucionais embutidos.
+
+## Restrições
+
+- Não misturar a normalização do schema com a migração para outro banco.
+- Não apagar o arquivo `.sdf` atual durante desenvolvimento.
+- Não fazer alterações de colunas sem validar todos os SQL existentes.
+- Não usar o código mestre, senha ou salt em logs, exportações ou mensagens.
+- Não tornar o e-mail obrigatório para usuário, login ou recuperação.

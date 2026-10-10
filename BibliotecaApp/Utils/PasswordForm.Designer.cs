@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Usuario
+﻿namespace SUB.Forms.Usuario
 {
     partial class PasswordForm
     {

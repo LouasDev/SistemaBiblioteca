@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Login
+﻿namespace SUB.Forms.Login
 {
     partial class LoginForm
     {
@@ -36,7 +36,7 @@
             this.pnInicial = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gradientPanel2 = new BibliotecaApp.ElementosPersonalizados.GradientPanel();
+            this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
             this.BtnEntrar = new CustomButton();
             this.cbMostrarSenha = new System.Windows.Forms.CheckBox();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -79,7 +79,7 @@
             this.lblBiblioteca.Name = "lblBiblioteca";
             this.lblBiblioteca.Size = new System.Drawing.Size(284, 147);
             this.lblBiblioteca.TabIndex = 2;
-            this.lblBiblioteca.Text = "Nome Da Biblioteca";
+            this.lblBiblioteca.Text = "Sistema de Biblioteca";
             this.lblBiblioteca.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblNomeEscola
@@ -93,7 +93,7 @@
             this.lblNomeEscola.Name = "lblNomeEscola";
             this.lblNomeEscola.Size = new System.Drawing.Size(402, 158);
             this.lblNomeEscola.TabIndex = 1;
-            this.lblNomeEscola.Text = "Sistema Universal Bibliotecario";
+            this.lblNomeEscola.Text = "Biblioteca da Instituição";
             this.lblNomeEscola.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // picLogoLogin
@@ -123,7 +123,7 @@
             // 
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::BibliotecaApp.Properties.Resources.icons8_x_20;
+            this.pictureBox1.Image = global::SUB.Properties.Resources.icons8_x_20;
             this.pictureBox1.Location = new System.Drawing.Point(877, 3);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(20, 20);
@@ -257,9 +257,9 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(47, 189);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
+            this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 11;
-            this.label3.Text = "Email";
+            this.label3.Text = "Usuário ou e-mail";
             // 
             // label2
             // 
@@ -298,7 +298,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LoginForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BibliotecaApp";
+            this.Text = "SUB";
             this.Load += new System.EventHandler(this.LoginForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picLogoLogin)).EndInit();
             this.pnInicial.ResumeLayout(false);

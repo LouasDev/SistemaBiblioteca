@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class ProrrogarDiasForm
     {
@@ -200,7 +200,7 @@
             this.MinimizeBox = false;
             this.Name = "ProrrogarDiasForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BibliotecaApp";
+            this.Text = "SUB";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.ProrrogarForm_Load);
             this.panelHeader.ResumeLayout(false);

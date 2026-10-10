@@ -1,5 +1,5 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
+﻿using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Usuarios;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     public partial class DevoluçãoForm : Form
     {
@@ -281,12 +281,6 @@ namespace BibliotecaApp.Forms.Livros
         private void btnProrrogar_Click(object sender, EventArgs e)
         {
 
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode prorrogar empréstimo.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             if (dgvEmprestimos.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Selecione um empréstimo para prorrogar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -385,19 +379,13 @@ namespace BibliotecaApp.Forms.Livros
                 BuscarEmprestimos();
 
                 // dispara evento global para que outros forms (ex.: InicioForm) atualizem automaticamente
-                BibliotecaApp.Utils.EventosGlobais.OnEmprestimoProrrogado();
+                SUB.Utils.EventosGlobais.OnEmprestimoProrrogado();
 
             }
         }
 
         private void btnConfirmarDevolucao_Click(object sender, EventArgs e)
         {
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode registrar devoluções.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             DevolverEmprestimo();
         }
 
@@ -957,7 +945,7 @@ namespace BibliotecaApp.Forms.Livros
             LivroAtualizado?.Invoke(this, EventArgs.Empty);
 
             // Gatilho global para atualização em outros formulários
-            BibliotecaApp.Utils.EventosGlobais.OnLivroDevolvido();
+            SUB.Utils.EventosGlobais.OnLivroDevolvido();
 
             BuscarEmprestimos();
         }
@@ -1199,8 +1187,6 @@ namespace BibliotecaApp.Forms.Livros
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private static bool IsAdminLogado()
-        => string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
     }
 
     #region Classes Auxiliares
@@ -1247,3 +1233,4 @@ namespace BibliotecaApp.Forms.Livros
 
     #endregion
 }
+

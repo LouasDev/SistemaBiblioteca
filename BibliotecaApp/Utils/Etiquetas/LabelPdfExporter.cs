@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -10,7 +10,7 @@ using PdfSharp.Fonts;
 using ZXing;
 using ZXing.Common;
 
-namespace BibliotecaApp.Utils.Etiquetas
+namespace SUB.Utils.Etiquetas
 {
     public static class LabelPdfExporter
     {

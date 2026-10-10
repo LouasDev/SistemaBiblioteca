@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace BibliotecaApp.Utils
+namespace SUB.Utils
 {
     public static class EventosGlobais
     {

@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Login
+﻿namespace SUB.Forms.Login
 {
     partial class AboutForm
     {
@@ -76,9 +76,9 @@
             this.panel5.Controls.Add(this.label2);
             this.panel5.Controls.Add(this.picExit);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel5.Location = new System.Drawing.Point(500, 0);
+            this.panel5.Location = new System.Drawing.Point(498, 0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(400, 600);
+            this.panel5.Size = new System.Drawing.Size(402, 600);
             this.panel5.TabIndex = 11;
             // 
             // label10
@@ -117,7 +117,7 @@
             // GitMatheus
             // 
             this.GitMatheus.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitMatheus.Image = global::BibliotecaApp.Properties.Resources.icons8_github_30;
+            this.GitMatheus.Image = global::SUB.Properties.Resources.icons8_github_30;
             this.GitMatheus.Location = new System.Drawing.Point(110, 350);
             this.GitMatheus.Name = "GitMatheus";
             this.GitMatheus.Size = new System.Drawing.Size(30, 30);
@@ -128,7 +128,7 @@
             // GitIthalo
             // 
             this.GitIthalo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitIthalo.Image = global::BibliotecaApp.Properties.Resources.icons8_github_30;
+            this.GitIthalo.Image = global::SUB.Properties.Resources.icons8_github_30;
             this.GitIthalo.Location = new System.Drawing.Point(110, 311);
             this.GitIthalo.Name = "GitIthalo";
             this.GitIthalo.Size = new System.Drawing.Size(30, 30);
@@ -139,7 +139,7 @@
             // GitLuis
             // 
             this.GitLuis.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitLuis.Image = global::BibliotecaApp.Properties.Resources.icons8_github_30;
+            this.GitLuis.Image = global::SUB.Properties.Resources.icons8_github_30;
             this.GitLuis.Location = new System.Drawing.Point(110, 272);
             this.GitLuis.Name = "GitLuis";
             this.GitLuis.Size = new System.Drawing.Size(30, 30);
@@ -150,7 +150,7 @@
             // GitRenato
             // 
             this.GitRenato.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitRenato.Image = global::BibliotecaApp.Properties.Resources.icons8_github_30;
+            this.GitRenato.Image = global::SUB.Properties.Resources.icons8_github_30;
             this.GitRenato.Location = new System.Drawing.Point(110, 233);
             this.GitRenato.Name = "GitRenato";
             this.GitRenato.Size = new System.Drawing.Size(30, 30);
@@ -167,9 +167,9 @@
             this.btnTerm.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(145)))), ((int)(((byte)(245)))));
             this.btnTerm.Location = new System.Drawing.Point(151, 576);
             this.btnTerm.Name = "btnTerm";
-            this.btnTerm.Size = new System.Drawing.Size(98, 17);
+            this.btnTerm.Size = new System.Drawing.Size(78, 17);
             this.btnTerm.TabIndex = 23;
-            this.btnTerm.Text = "Termos de Uso";
+            this.btnTerm.Text = "Licença MIT";
             this.btnTerm.Click += new System.EventHandler(this.btnTerm_Click);
             // 
             // BtnOk
@@ -196,7 +196,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(253, 20);
             this.label7.TabIndex = 21;
-            this.label7.Text = "© 2025 – Todos os direitos reservados";
+            this.label7.Text = "© 2026 – Todos os direitos reservados";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label4
@@ -251,22 +251,11 @@
             this.label3.TabIndex = 12;
             this.label3.Text = "Sistema de Gestão de Acervos Literarios";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(109, 53);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(187, 37);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "BilbiotecaApp";
-            // 
             // picExit
             // 
             this.picExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picExit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picExit.Image = global::BibliotecaApp.Properties.Resources.icons8_x_20;
+            this.picExit.Image = global::SUB.Properties.Resources.icons8_x_20;
             this.picExit.Location = new System.Drawing.Point(377, 3);
             this.picExit.Name = "picExit";
             this.picExit.Size = new System.Drawing.Size(20, 20);

@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Login
+namespace SUB.Forms.Login
 {
     public partial class AboutForm : Form
     {
@@ -70,8 +70,8 @@ namespace BibliotecaApp.Forms.Login
 
         private void btnTerm_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Sistema open source sob licença MIT.\nConsulte o arquivo LICENSE no repositório.",
-                "Licença", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Este projeto é distribuído sob a licença MIT.",
+                "Licença MIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void gradientPanel1_Paint(object sender, PaintEventArgs e)
@@ -113,3 +113,4 @@ namespace BibliotecaApp.Forms.Login
         }
     }
 }
+

@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp
+﻿namespace SUB
 {
     partial class AlterarCadLivroForm
     {
@@ -83,7 +83,7 @@
             this.btnGerarEtiqueta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGerarEtiqueta.Font = new System.Drawing.Font("Segoe UI Semibold", 11.5F, System.Drawing.FontStyle.Bold);
             this.btnGerarEtiqueta.ForeColor = System.Drawing.Color.White;
-            this.btnGerarEtiqueta.Image = global::BibliotecaApp.Properties.Resources.icons8_refresh_barcode_25;
+            this.btnGerarEtiqueta.Image = global::SUB.Properties.Resources.icons8_refresh_barcode_25;
             this.btnGerarEtiqueta.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnGerarEtiqueta.Location = new System.Drawing.Point(823, 140);
             this.btnGerarEtiqueta.Name = "btnGerarEtiqueta";

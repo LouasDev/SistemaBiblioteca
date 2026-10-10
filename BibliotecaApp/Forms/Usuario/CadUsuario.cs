@@ -1,5 +1,5 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
+﻿using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,15 +10,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Froms.Usuario
+namespace SUB.Froms.Usuario
 {
     public partial class CadUsuario : Form
     {
         #region Construtores e Variáveis
         private List<string> turmasCadastradas = new List<string>();
 
-
-        private static bool IsAdminLogado()=> string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
 
         public event EventHandler UsuarioCriado;
 
@@ -213,16 +211,6 @@ namespace BibliotecaApp.Froms.Usuario
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
-            string tipoUsuario = cbUsuario.SelectedItem?.ToString() ?? string.Empty;
-            if(tipoUsuario!= "Bibliotecário(a)")
-            {
-                if (IsAdminLogado())
-                {
-                    MessageBox.Show("Administradores não podem cadastrar usuários diferentes do tipo: Bibliotecário(a).", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
-                }
-            }
-
             if (!ValidarCamposObrigatorios())
                 return;
 
@@ -299,7 +287,7 @@ namespace BibliotecaApp.Froms.Usuario
             var turma = txtTurma.Text.Trim();
             if (string.IsNullOrEmpty(turma)) return; // obrigatoriedade tratada no botão Cadastrar
 
-            if (!BibliotecaApp.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
+            if (!SUB.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
             {
                 e.Cancel = true; // impede perder o foco neste momento
                 MessageBox.Show(
@@ -632,7 +620,7 @@ namespace BibliotecaApp.Froms.Usuario
             // Gera hash/salt somente se for Bibliotecário(a) e os campos estiverem ativos e preenchidos
             if (tipoUsuario == "Bibliotecário(a)" && txtSenha.Visible && txtSenha.Enabled && !string.IsNullOrWhiteSpace(txtSenha.Text))
             {
-                BibliotecaApp.Utils.CriptografiaSenha.CriarHash(txtSenha.Text, out hash, out salt);
+                SUB.Utils.CriptografiaSenha.CriarHash(txtSenha.Text, out hash, out salt);
             }
 
             using (SqlCeConnection conexao = Conexao.ObterConexao())
@@ -677,9 +665,9 @@ VALUES
             UsuarioCriado?.Invoke(this, EventArgs.Empty);
 
             if (cbUsuario.Text == "Bibliotecário(a)")
-                BibliotecaApp.Utils.EventosGlobais.OnBibliotecariaCadastrada();
+                SUB.Utils.EventosGlobais.OnBibliotecariaCadastrada();
             if (cbUsuario.Text == "Professor(a)")
-                BibliotecaApp.Utils.EventosGlobais.OnProfessorCadastrado();
+                SUB.Utils.EventosGlobais.OnProfessorCadastrado();
 
             this.DialogResult = DialogResult.OK;
             LimparCampos();
@@ -880,7 +868,7 @@ VALUES
             }
 
             // Buscar sugestões apenas nas turmas permitidas
-            var sugestoes = BibliotecaApp.Utils.TurmasUtil.BuscarSugestoes(texto);
+            var sugestoes = SUB.Utils.TurmasUtil.BuscarSugestoes(texto);
 
             lstSugestoesTurma.Items.Clear();
 

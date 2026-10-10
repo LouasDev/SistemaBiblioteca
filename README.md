@@ -1,4 +1,4 @@
-# Sistema Biblioteca - Gestão de Biblioteca Escolar
+﻿# SUB — Sistema Único Bibliotecário
 
 <div align="center">
   
@@ -138,9 +138,9 @@ O **Sistema Biblioteca** é uma aplicação desktop desenvolvida em C# (.NET Fra
 
 ### Configuração do Banco de Dados
 
-O banco de dados SQLite (`bibliotecaDB.sdf`) está localizado em:
+O banco SQL Server Compact do **Sistema Único Bibliotecário** é criado somente após a primeira configuração e fica em:
 ```
-BibliotecaApp/bin/Debug/bibliotecaDB/bibliotecaDB.sdf
+%LOCALAPPDATA%\SUB\SUB\sub.sdf
 ```
 
 ### Arquivos de Configuração
@@ -156,7 +156,7 @@ BibliotecaApp/bin/Debug/bibliotecaDB/bibliotecaDB.sdf
 
 ```
 SistemaBiblioteca/
-├── BibliotecaApp/
+├── SUB/
 │   ├── Data/                      # Dados e conexões (se houver)
 │   ├── Elements/                  # Componentes customizados
 │   │   ├── AnimatedToggle.cs      # Toggle animado
@@ -201,9 +201,8 @@ SistemaBiblioteca/
 │   ├── Resources/                # Imagens e ícones
 │   └── Utils/                    # Utilitários
 │       ├── AppPaths.cs           # Caminhos do sistema
-│       ├── BackupManager.cs      # Gerenciamento de backup
-│       └── TermsForm.cs          # Termos de uso
-├── BibliotecaApp.sln             # Solução Visual Studio
+│       └── BackupManager.cs      # Gerenciamento de backup
+├── SUB.sln             # Solução Visual Studio
 └── README.md                     # Este arquivo
 ```
 
@@ -220,7 +219,6 @@ SistemaBiblioteca/
 - Campo para senha (criptografada)
 - Opção "Lembrar-me"
 - Link para recuperação de senha
-- Aceite dos termos de uso na primeira execução
 
 ### Tela Principal (Dashboard)
 <div align="center">
@@ -324,24 +322,18 @@ SistemaBiblioteca/
    - Salt único por usuário
    - Nunca armazenar senhas em texto puro
 
-2. **Sistema de Licenciamento**
-   - Validação de licença via chave pública
-   - Verificação de expiração
-   - Termos de uso obrigatórios
-
-3. **Controle de Acesso**
+2. **Controle de Acesso**
    - Permissões baseadas em tipo de usuário
    - Sessões autenticadas
    - Logout automático
 
-4. **Proteção de Dados**
+3. **Proteção de Dados**
    - Backup automático
    - Sincronização com nuvem
    - Integridade do banco de dados
 
 ### Boas Práticas de Segurança
 
-- Mantenha o `publicKey.xml` em local seguro
 - Não compartilha credenciais de backup
 - Realize backups regulares
 - Mantenha o sistema atualizado
@@ -352,7 +344,7 @@ SistemaBiblioteca/
 
 ### Canais de Suporte
 
-- **E-mail**: [contato@gastaovalle.com](mailto:contato@gastaovalle.com)
+- **Sistema**: SUB — Sistema Único Bibliotecário
 - **GitHub Issues**: [Abrir Issue](https://github.com/LouasDev/SistemaBiblioteca/issues)
 - **Documentação**: [Wiki do Projeto](https://github.com/LouasDev/SistemaBiblioteca/wiki)
 
@@ -385,7 +377,7 @@ Este projeto é distribuído sob a licença **MIT**. Sinta-se livre para usar, m
 
 ## 🙏 Agradecimentos
 
-Agradecemos à equipe da **E.E. Professor Gastão Valle** pelo suporte e feedback durante o desenvolvimento do sistema.
+O SUB foi desenvolvido para apoiar a organização e a operação de bibliotecas escolares.
 
 ---
 
@@ -394,3 +386,4 @@ Agradecemos à equipe da **E.E. Professor Gastão Valle** pelo suporte e feedbac
   <p>Desenvolvido com 💙 para escolas públicas</p>
   <p>© 2024 - 2026 LouasDev</p>
 </div>
+

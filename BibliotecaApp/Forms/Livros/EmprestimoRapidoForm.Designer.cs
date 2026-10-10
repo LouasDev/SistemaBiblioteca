@@ -1,7 +1,7 @@
 ﻿// EmprestimoRapidoForm.Designer.cs
 using System;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     partial class EmprestimoRapidoForm
     {
@@ -494,3 +494,4 @@ namespace BibliotecaApp.Forms.Livros
         private System.Windows.Forms.Label label7;
     }
 }
+

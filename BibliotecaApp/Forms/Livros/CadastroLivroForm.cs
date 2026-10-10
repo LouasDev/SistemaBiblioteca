@@ -1,6 +1,6 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
-using BibliotecaApp.Utils.Etiquetas;
+﻿using SUB.Models;
+using SUB.Utils;
+using SUB.Utils.Etiquetas;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -13,14 +13,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     public partial class CadastroLivroForm : Form
     {
         #region Propriedades e Campos
         public event EventHandler LivroAtualizado;
-
-        private static bool IsAdminLogado() => string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
 
         private readonly List<string> generosPadronizados = new List<string>
         {
@@ -142,12 +140,6 @@ namespace BibliotecaApp.Forms.Livros
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
-
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode cadastrar livros.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
 
             if (!ValidarCampos()) return;
             if (!ValidarQuantidade(out int quantidade)) return;
@@ -497,7 +489,7 @@ namespace BibliotecaApp.Forms.Livros
                         MessageBox.Show("Livro salvo com sucesso!",
                                         "Cadastro realizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LivroAtualizado?.Invoke(this, EventArgs.Empty);
-                        BibliotecaApp.Utils.EventosGlobais.OnLivroCadastradoOuAlterado();
+                        SUB.Utils.EventosGlobais.OnLivroCadastradoOuAlterado();
 
                         LimparFormulario();
                     }
@@ -771,17 +763,6 @@ namespace BibliotecaApp.Forms.Livros
 
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (Program.IsOfflineMode)
-            {
-                MessageBox.Show("A busca online de livros (Google Books/OpenLibrary) está indisponível no Modo Offline.\n\n" +
-                                "Por favor, preencha os dados do livro manualmente.",
-                                "Modo Offline", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Foca no campo Nome para agilizar o preenchimento manual
-                txtNome.Focus();
-                return; // Interrompe a execução para não tentar conectar
-            }
-
             string isbn = new string(mtxCodigoBarras.Text.Where(char.IsDigit).ToArray());
             if (isbn.Length != 13)
             {
@@ -797,7 +778,7 @@ namespace BibliotecaApp.Forms.Livros
 
                 if (resultado == null)
                 {
-                    MessageBox.Show("Nenhum livro encontrado para o ISBN informado.", "Não encontrado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Não foi possível localizar os dados do livro. Você pode preencher os campos manualmente.", "Busca indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     txtNome.Focus();
                     return;
                 }
@@ -841,6 +822,12 @@ namespace BibliotecaApp.Forms.Livros
                 else
                     txtQuantidade.Focus();
             }
+            catch
+            {
+                MessageBox.Show("A busca externa não está disponível no momento. Você pode preencher os dados do livro manualmente.",
+                    "Busca indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtNome.Focus();
+            }
             finally
             {
                 btnBuscar.Enabled = true;
@@ -855,20 +842,10 @@ namespace BibliotecaApp.Forms.Livros
             public string Genero { get; set; }
         }
 
-        // Busca nas duas APIs
+        // Busca opcional de metadados sem exigir autenticação externa.
         private async Task<LivroBuscaResultado> BuscarLivroPorIsbnAsync(string isbn)
         {
-            // 1. Tenta Open Library
-            var resultado = await BuscarOpenLibraryAsync(isbn);
-            if (resultado != null && (!string.IsNullOrEmpty(resultado.Nome) || !string.IsNullOrEmpty(resultado.Autor)))
-                return resultado;
-
-            // 2. Tenta Google Books
-            resultado = await BuscarGoogleBooksAsync(isbn);
-            if (resultado != null && (!string.IsNullOrEmpty(resultado.Nome) || !string.IsNullOrEmpty(resultado.Autor)))
-                return resultado;
-
-            return null;
+            return await BuscarOpenLibraryAsync(isbn);
         }
 
         private async Task<LivroBuscaResultado> BuscarOpenLibraryAsync(string isbn)
@@ -893,41 +870,6 @@ namespace BibliotecaApp.Forms.Livros
             }
         }
 
-        private async Task<LivroBuscaResultado> BuscarGoogleBooksAsync(string isbn)
-        {
-            using (var client = new HttpClient())
-            {
-                string apiKey = "AIzaSyAl09C8xUcIavKjzK3M4-L39_n0E46lE_Y";
-                string url = $"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={apiKey}";
-                var resp = await client.GetAsync(url);
-                if (!resp.IsSuccessStatusCode) return null;
-
-                var json = await resp.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(json);
-                var item = obj["items"]?.First;
-                if (item == null) return null;
-
-                var volumeInfo = item["volumeInfo"];
-                string genero = null;
-                if (volumeInfo["categories"] != null)
-                {
-                    // Tenta casar com os gêneros padronizados
-                    var categorias = volumeInfo["categories"].Select(c => c.ToString());
-                    genero = categorias.Select(cat =>
-                        generosPadronizados.FirstOrDefault(g => cat.IndexOf(g, StringComparison.OrdinalIgnoreCase) >= 0)
-                    ).FirstOrDefault(g => g != null);
-                }
-
-                return new LivroBuscaResultado
-                {
-                    Nome = volumeInfo["title"]?.ToString(),
-                    Autor = volumeInfo["authors"]?.First?.ToString(),
-                    Genero = genero
-                };
-            }
-        }
-
-
         #endregion
 
         #region Infra de Accept/Cancel “mute”
@@ -949,3 +891,4 @@ namespace BibliotecaApp.Forms.Livros
         #endregion
     }
 }
+

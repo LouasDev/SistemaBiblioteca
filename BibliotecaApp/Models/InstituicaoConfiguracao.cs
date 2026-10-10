@@ -1,0 +1,23 @@
+﻿using System;
+using Newtonsoft.Json;
+
+namespace SUB.Models
+{
+    public class InstituicaoConfiguracao
+    {
+        public string Nome { get; set; }
+        public string CorPrimaria { get; set; }
+        [JsonProperty("NomeUsuarioAdministrador")]
+        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
+        public string EmailAdministrador { get; set; }
+        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
+        public string SenhaAdministradorHash { get; set; }
+        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
+        public string SenhaAdministradorSalt { get; set; }
+        public string CodigoMestreHash { get; set; }
+        public string CodigoMestreSalt { get; set; }
+        public DateTime ConfiguradaEm { get; set; }
+        public DateTime AtualizadaEm { get; set; }
+    }
+}
+

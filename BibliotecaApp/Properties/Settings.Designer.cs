@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BibliotecaApp.Properties
+namespace SUB.Properties
 {
 
 
@@ -28,3 +28,4 @@ namespace BibliotecaApp.Properties
         }
     }
 }
+

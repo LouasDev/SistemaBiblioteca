@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Usuario
+﻿namespace SUB.Forms.Usuario
 {
     partial class UsuarioForm
     {
@@ -81,7 +81,7 @@
             this.btnFiltrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnFiltrar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnFiltrar.ForeColor = System.Drawing.Color.White;
-            this.btnFiltrar.Image = global::BibliotecaApp.Properties.Resources.material_symbols___tab_search_rounded_25px;
+            this.btnFiltrar.Image = global::SUB.Properties.Resources.material_symbols___tab_search_rounded_25px;
             this.btnFiltrar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnFiltrar.Location = new System.Drawing.Point(1121, 117);
             this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);

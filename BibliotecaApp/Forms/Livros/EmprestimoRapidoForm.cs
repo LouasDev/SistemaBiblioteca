@@ -1,6 +1,5 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Services;
-using BibliotecaApp.Forms.Utils;
+﻿using SUB.Models;
+using SUB.Forms.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,9 +9,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using BibliotecaApp.Utils;
+using SUB.Utils;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
     public partial class EmprestimoRapidoForm : Form
     {
@@ -26,18 +25,15 @@ namespace BibliotecaApp.Forms.Livros
         // Limite de caracteres do código de barras (igual ao EmprestimoForm)
         private const int LIMITE_CODIGO_BARRAS = 13;
 
-        private static bool IsAdminLogado()
-            => string.Equals(Sessao.NomeBibliotecariaLogada, "Administrador", StringComparison.OrdinalIgnoreCase);
-
         public EmprestimoRapidoForm()
         {
             InitializeComponent();
             this.KeyPreview = true;
             this.KeyDown += EmprestimoRapidoForm_KeyDown;
 
-            BibliotecaApp.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarSugestoesECombo();
-            BibliotecaApp.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => CarregarSugestoesECombo();
-            BibliotecaApp.Utils.EventosGlobais.LivroDidaticoCadastrado += (s, e) => CarregarSugestoesECombo();
+            SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarSugestoesECombo();
+            SUB.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => CarregarSugestoesECombo();
+            SUB.Utils.EventosGlobais.LivroDidaticoCadastrado += (s, e) => CarregarSugestoesECombo();
         }
 
         private Timer horaTimer;
@@ -341,7 +337,7 @@ namespace BibliotecaApp.Forms.Livros
             }
 
             // Buscar sugestões inteligentes nas turmas permitidas
-            var sugestoes = BibliotecaApp.Utils.TurmasUtil.BuscarSugestoes(texto);
+            var sugestoes = SUB.Utils.TurmasUtil.BuscarSugestoes(texto);
 
             lstSugestoesTurma.Items.Clear();
 
@@ -381,7 +377,7 @@ namespace BibliotecaApp.Forms.Livros
                     lstSugestoesTurma.Visible = false;
                     // Impede sair do campo se não for uma turma permitida
                     var turma = txtTurma.Text.Trim();
-                    if (!string.IsNullOrEmpty(turma) && !BibliotecaApp.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
+                    if (!string.IsNullOrEmpty(turma) && !SUB.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
                     {
                         MessageBox.Show("Selecione uma turma válida da lista de turmas permitidas.", "Turma inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         txtTurma.Text = "";
@@ -778,13 +774,6 @@ namespace BibliotecaApp.Forms.Livros
         #region Registrar Empréstimo Rápido
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            // Bloqueia ação por administrador
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode realizar empréstimos rápidos.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
-
             // validações
             if (string.IsNullOrWhiteSpace(txtProfessor.Text) ||
                 string.IsNullOrWhiteSpace(txtLivro.Text) ||
@@ -1111,13 +1100,6 @@ ORDER BY r.Id DESC";
         {
             if (e.RowIndex < 0) return;
             if (dgvRapidos.Columns[e.ColumnIndex].Name != "Finalizar") return;
-
-            // Impede devolução pelo admin
-            if (IsAdminLogado())
-            {
-                MessageBox.Show("Administrador não pode finalizar devoluções.", "Acesso negado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                return;
-            }
 
             var row = dgvRapidos.Rows[e.RowIndex];
             var status = row.Cells["Status"].Value?.ToString();

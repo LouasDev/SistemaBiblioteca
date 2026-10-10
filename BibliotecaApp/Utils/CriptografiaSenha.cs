@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace BibliotecaApp.Utils
+namespace SUB.Utils
 {
     public static class CriptografiaSenha
     {

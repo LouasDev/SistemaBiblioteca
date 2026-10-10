@@ -1,7 +1,7 @@
-﻿using BibliotecaApp.Forms.Usuario;
-using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
-using BibliotecaApp.Utils.Etiquetas; // + Etiquetas
+﻿using SUB.Forms.Usuario;
+using SUB.Models;
+using SUB.Utils;
+using SUB.Utils.Etiquetas; // + Etiquetas
 using System;
 using System.Collections.Generic;
 using System.ComponentModel; // MaskedTextProvider
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.IO; // + IO
 
-namespace BibliotecaApp
+namespace SUB
 {
     public partial class AlterarCadLivroForm : Form
     {
@@ -331,7 +331,7 @@ namespace BibliotecaApp
 
                 while (true)
                 {
-                    using (var act = new BibliotecaApp.Utils.Etiquetas.LabelActionDialog(titulo, maxQtd))
+                    using (var act = new SUB.Utils.Etiquetas.LabelActionDialog(titulo, maxQtd))
                     {
                         // Aqui, em AlterarCadLivroForm, mantemos a seleção de quantidade visível (padrão)
 
@@ -707,3 +707,5 @@ namespace BibliotecaApp
         #endregion
     }
 }
+
+

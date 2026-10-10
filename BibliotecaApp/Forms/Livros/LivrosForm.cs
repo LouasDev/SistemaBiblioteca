@@ -1,4 +1,4 @@
-﻿using BibliotecaApp.Utils;
+﻿using SUB.Utils;
 using System;
 using System.Data;
 using System.Data.SqlServerCe;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Threading.Tasks;
 
-namespace BibliotecaApp.Forms.Livros
+namespace SUB.Forms.Livros
 {
 
     public partial class LivrosForm : Form
@@ -30,7 +30,7 @@ namespace BibliotecaApp.Forms.Livros
             btnProcurar.PerformClick();
 
             // Assina o evento global para atualizar a lista automaticamente
-            BibliotecaApp.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => CarregarLivros();
+            SUB.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => CarregarLivros();
 
             filtroTimer = new Timer();
             filtroTimer.Interval = 250; // 250ms de espera
@@ -607,3 +607,4 @@ END AS Status
        
     }
 }
+

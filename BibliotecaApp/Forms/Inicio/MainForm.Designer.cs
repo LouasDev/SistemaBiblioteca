@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 
-namespace BibliotecaApp.Forms.Inicio
+namespace SUB.Forms.Inicio
 {
     partial class MainForm
     {
@@ -102,7 +102,7 @@ namespace BibliotecaApp.Forms.Inicio
             // picExit
             // 
             this.picExit.BackColor = System.Drawing.Color.Transparent;
-            this.picExit.BackgroundImage = global::BibliotecaApp.Properties.Resources.icons8_x_20;
+            this.picExit.BackgroundImage = global::SUB.Properties.Resources.icons8_x_20;
             this.picExit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picExit.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picExit.Location = new System.Drawing.Point(80, 3);
@@ -117,7 +117,7 @@ namespace BibliotecaApp.Forms.Inicio
             // picMax
             // 
             this.picMax.BackColor = System.Drawing.Color.Transparent;
-            this.picMax.BackgroundImage = global::BibliotecaApp.Properties.Resources.icons8_verificar_todos_os_20;
+            this.picMax.BackgroundImage = global::SUB.Properties.Resources.icons8_verificar_todos_os_20;
             this.picMax.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picMax.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picMax.Location = new System.Drawing.Point(49, 3);
@@ -132,7 +132,7 @@ namespace BibliotecaApp.Forms.Inicio
             // picMin
             // 
             this.picMin.BackColor = System.Drawing.Color.Transparent;
-            this.picMin.BackgroundImage = global::BibliotecaApp.Properties.Resources.icons8_menos_20;
+            this.picMin.BackgroundImage = global::SUB.Properties.Resources.icons8_menos_20;
             this.picMin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picMin.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picMin.Location = new System.Drawing.Point(18, 3);
@@ -151,7 +151,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSair.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnSair.ForeColor = System.Drawing.Color.White;
-            this.btnSair.Image = global::BibliotecaApp.Properties.Resources.icons8_sair_25;
+            this.btnSair.Image = global::SUB.Properties.Resources.icons8_sair_25;
             this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSair.Location = new System.Drawing.Point(3, 343);
             this.btnSair.Name = "btnSair";
@@ -180,7 +180,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnRel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRel.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnRel.ForeColor = System.Drawing.Color.White;
-            this.btnRel.Image = global::BibliotecaApp.Properties.Resources.icons8_relatório_25;
+            this.btnRel.Image = global::SUB.Properties.Resources.icons8_relatório_25;
             this.btnRel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnRel.Location = new System.Drawing.Point(0, -3);
             this.btnRel.Name = "btnRel";
@@ -212,7 +212,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUser.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnUser.ForeColor = System.Drawing.Color.Transparent;
-            this.btnUser.Image = global::BibliotecaApp.Properties.Resources.icons8_usuário_masculino_25;
+            this.btnUser.Image = global::SUB.Properties.Resources.icons8_usuário_masculino_25;
             this.btnUser.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUser.Location = new System.Drawing.Point(0, 59);
             this.btnUser.Name = "btnUser";
@@ -231,7 +231,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnUserCad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUserCad.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnUserCad.ForeColor = System.Drawing.Color.Transparent;
-            this.btnUserCad.Image = global::BibliotecaApp.Properties.Resources.icons8_adicionar_usuário_masculino_25;
+            this.btnUserCad.Image = global::SUB.Properties.Resources.icons8_adicionar_usuário_masculino_25;
             this.btnUserCad.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUserCad.Location = new System.Drawing.Point(0, 119);
             this.btnUserCad.Name = "btnUserCad";
@@ -250,7 +250,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnUsuario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUsuario.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnUsuario.ForeColor = System.Drawing.Color.White;
-            this.btnUsuario.Image = global::BibliotecaApp.Properties.Resources.icons8_chamada_em_conferência_25;
+            this.btnUsuario.Image = global::SUB.Properties.Resources.icons8_chamada_em_conferência_25;
             this.btnUsuario.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUsuario.Location = new System.Drawing.Point(0, -3);
             this.btnUsuario.Name = "btnUsuario";
@@ -269,7 +269,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnUserEdit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUserEdit.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnUserEdit.ForeColor = System.Drawing.Color.White;
-            this.btnUserEdit.Image = global::BibliotecaApp.Properties.Resources.icons8_registration_25;
+            this.btnUserEdit.Image = global::SUB.Properties.Resources.icons8_registration_25;
             this.btnUserEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnUserEdit.Location = new System.Drawing.Point(0, 179);
             this.btnUserEdit.Name = "btnUserEdit";
@@ -298,7 +298,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnInicio.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInicio.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnInicio.ForeColor = System.Drawing.Color.White;
-            this.btnInicio.Image = global::BibliotecaApp.Properties.Resources.icons8_página_inicial_25;
+            this.btnInicio.Image = global::SUB.Properties.Resources.icons8_página_inicial_25;
             this.btnInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnInicio.Location = new System.Drawing.Point(0, -3);
             this.btnInicio.Name = "btnInicio";
@@ -387,7 +387,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.btnLivros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLivros.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnLivros.ForeColor = System.Drawing.Color.Transparent;
-            this.btnLivros.Image = global::BibliotecaApp.Properties.Resources.icons8_livro_25;
+            this.btnLivros.Image = global::SUB.Properties.Resources.icons8_livro_25;
             this.btnLivros.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLivros.Location = new System.Drawing.Point(0, 59);
             this.btnLivros.Name = "btnLivros";
@@ -501,7 +501,7 @@ namespace BibliotecaApp.Forms.Inicio
             this.IsMdiContainer = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
-            this.Text = "BibliotecaApp";
+            this.Text = "SUB";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.panelControl.ResumeLayout(false);
             this.ControlPanel.ResumeLayout(false);
@@ -550,4 +550,5 @@ namespace BibliotecaApp.Forms.Inicio
         public System.Windows.Forms.Button btnUserEdit;
     }
 }
+
 

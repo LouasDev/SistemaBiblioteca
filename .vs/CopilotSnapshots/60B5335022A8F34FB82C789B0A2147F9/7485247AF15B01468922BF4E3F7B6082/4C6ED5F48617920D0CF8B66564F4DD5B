@@ -1,0 +1,69 @@
+﻿# Inventário de generalização do Sistema de Biblioteca
+
+## Diretrizes confirmadas
+
+- Aplicativo desktop local por instituição escolar.
+- Uma base local independente por instituição.
+- Primeira instalação com base nova, sem migração automática.
+- Remover backup externo, Google Drive, e-mail, SMTP e demais integrações que exijam autenticação ou dependência externa.
+- Manter somente fluxos autossuficientes no aplicativo.
+- Manter a busca de livros por Google Books/OpenLibrary somente se ela não exigir login ou autenticação externa; deve ser opcional e não impedir o cadastro manual/offline.
+- Manter os links externos atualmente exibidos na tela Sobre.
+
+## Integrações e funcionalidades externas
+
+| Área | Evidência | Ação planejada | Estado |
+|---|---|---|---|
+| Backup/Google Drive | `Utils/AppPaths.cs`, `credentials.json`, referências no `.csproj` | Remover tokens, credenciais, pastas e dependências de backup/sincronização | Remover |
+| E-mail/API | `Utils/EmailService.cs`, `Utils/EmailRequest.cs`, `App.config`, chamadas nos Forms | Remover serviço, DTO, configurações, chamadas de envio e fluxos dependentes | Remover |
+| Recuperação de senha | `Forms/Login/EsqueceuSenhaForm.cs` | Substituir por recuperação local administrada; não enviar códigos | Redesenhar |
+| Busca de livros | `Forms/Livros/CadastroLivroForm.cs` | Manter apenas sem autenticação, com fallback manual e funcionamento offline | Avaliar implementação |
+| Links da tela Sobre | `Forms/Login/AboutForm.cs` | Manter conforme orientação do usuário | Manter |
+
+## Acoplamentos institucionais encontrados
+
+| Local | Acoplamento | Ação planejada |
+|---|---|---|
+| `Forms/Login/LoginForm.cs` | Biblioteca Monteiro Lobato, secretaria, destinatário fixo, relatórios e e-mails | Remover fluxos de e-mail e tornar textos institucionais neutros/configuráveis |
+| `Forms/Login/EsqueceuSenhaForm.cs` | Biblioteca Monteiro Lobato e e-mail de recuperação | Remover tela/fluxo de código por e-mail |
+| `Forms/Inicio/InicioForm.cs` | Escola Estadual Professor Gastão Valle e Biblioteca Gastão Valle em relatório/mensagem | Substituir por dados da configuração local |
+| `Forms/Livros/EmprestimoForm.cs` | Biblioteca Monteiro Lobato e secretaria em notificações | Remover e-mail e textos fixos |
+| `Resources/*` e `Properties/Resources.resx` | Brasão e ícones de Gastão Valle | Substituir por identidade neutra/configurável |
+| `BibliotecaApp.csproj` | Ícone institucional e recursos específicos | Revisar recursos e ícone da distribuição |
+| `README.md` | Nome, regras, backup, Google Drive, e-mail e contatos específicos | Atualizar após a implementação |
+
+## Configuração e dados
+
+| Área | Situação atual | Necessidade |
+|---|---|---|
+| Banco | SQL Server Compact local em `BibliotecaDB\\bibliotecaDB.sdf` | Manter base por instituição inicialmente; avaliar tecnologia antes de alterações grandes no schema |
+| Conexão | `Utils/Conexao.cs` monta caminho e senha a partir de `App.config` | Manter operação local e revisar proteção/gestão de segredo |
+| Usuários | Modelo provisório, campos escolares e perfis misturados | Centralizar perfis, status, validação e autorização |
+| Livros | Livro agregado com quantidade/disponibilidade | Avaliar necessidade de exemplares individuais e histórico |
+| Empréstimos | Modelo simples, regras espalhadas nos Forms | Centralizar status, prazos, atrasos, limites e prorrogações |
+| Turmas | `TurmasUtil` e regras fixas de turma | Tornar turmas e progressão configuráveis por instituição |
+| Auditoria | Não identificada como camada formal | Adicionar registros locais para operações administrativas e circulação |
+
+## Arquivos prioritários para a próxima etapa
+
+1. `BibliotecaApp/App.config`
+2. `BibliotecaApp/BibliotecaApp.csproj`
+3. `BibliotecaApp/packages.config`
+4. `BibliotecaApp/Utils/AppPaths.cs`
+5. `BibliotecaApp/Utils/EmailService.cs`
+6. `BibliotecaApp/Utils/EmailRequest.cs`
+7. `BibliotecaApp/Forms/Login/LoginForm.cs`
+8. `BibliotecaApp/Forms/Login/EsqueceuSenhaForm.cs`
+9. `BibliotecaApp/Forms/Inicio/InicioForm.cs`
+10. `BibliotecaApp/Forms/Livros/CadastroLivroForm.cs`
+11. `BibliotecaApp/Forms/Livros/EmprestimoForm.cs`
+12. `BibliotecaApp/Models/*.cs`
+13. `BibliotecaApp/Utils/Conexao.cs`
+
+## Critérios para remoção
+
+- Não remover referências chamadas “backup” que representem apenas cópia temporária de controles de UI, como `_acceptBackup`/`_cancelBackup`.
+- Não remover links da tela Sobre.
+- Não permitir que a busca externa de livros seja obrigatória para cadastrar um livro.
+- Não deixar configurações, credenciais ou assemblies sem uso no projeto após a limpeza.
+- Não alterar o banco atual nesta etapa; a primeira versão generalizada deverá inicializar uma base nova.

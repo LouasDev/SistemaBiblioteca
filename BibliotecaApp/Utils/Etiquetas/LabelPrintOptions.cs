@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using ZXing;
 using ZXing.Common;
 
-namespace BibliotecaApp.Utils.Etiquetas
+namespace SUB.Utils.Etiquetas
 {
     public sealed class LabelPrintOptions
     {
@@ -202,7 +202,7 @@ namespace BibliotecaApp.Utils.Etiquetas
 
                 e.Graphics.SmoothingMode = oldSmoothing;
 
-                startPosition = 1; // próximas páginas sempre iniciam do slot 1
+                startPosition = 1; // prï¿½ximas pï¿½ginas sempre iniciam do slot 1
                 e.HasMorePages = currentIndex < items.Count;
             };
 
@@ -253,12 +253,12 @@ namespace BibliotecaApp.Utils.Etiquetas
         }
 
         private static string NormalizeGenre(string genero)
-            => string.IsNullOrWhiteSpace(genero) ? "Sem gênero" : genero.Trim();
+            => string.IsNullOrWhiteSpace(genero) ? "Sem gï¿½nero" : genero.Trim();
 
         private static string BuildPageHeaderGenresText(IList<EtiquetaLabelItem> items, int startIndex, int pageCapacity)
         {
             if (pageCapacity <= 0 || startIndex >= items.Count)
-                return "Vários gêneros";
+                return "Vï¿½rios gï¿½neros";
             int endExclusive = Math.Min(items.Count, startIndex + pageCapacity);
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var list = new List<string>();
@@ -267,7 +267,7 @@ namespace BibliotecaApp.Utils.Etiquetas
                 var g = NormalizeGenre(items[i].Genero);
                 if (set.Add(g)) list.Add(g);
             }
-            return list.Count == 1 ? $"Gênero: {list[0]}" : "Gêneros: " + string.Join(", ", list);
+            return list.Count == 1 ? $"Gï¿½nero: {list[0]}" : "Gï¿½neros: " + string.Join(", ", list);
         }
 
         private static void DrawLabel(Graphics g, Rectangle bounds, EtiquetaLabelItem item)

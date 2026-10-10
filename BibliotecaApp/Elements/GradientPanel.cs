@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.ElementosPersonalizados
+namespace SUB.ElementosPersonalizados
 {
     public class GradientPanel : Panel
     {

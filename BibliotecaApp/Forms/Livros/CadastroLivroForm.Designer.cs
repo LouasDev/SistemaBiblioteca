@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class CadastroLivroForm
     {
@@ -186,7 +186,7 @@
             this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
-            this.btnBuscar.Image = global::BibliotecaApp.Properties.Resources.icons8_search_25;
+            this.btnBuscar.Image = global::SUB.Properties.Resources.icons8_search_25;
             this.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnBuscar.Location = new System.Drawing.Point(753, 188);
             this.btnBuscar.Name = "btnBuscar";

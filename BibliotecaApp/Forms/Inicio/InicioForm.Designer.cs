@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp.Forms.Inicio
+﻿namespace SUB.Forms.Inicio
 {
     partial class InicioForm
     {

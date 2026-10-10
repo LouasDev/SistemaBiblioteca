@@ -1,4 +1,4 @@
-﻿namespace BibliotecaApp
+﻿namespace SUB
 {
     partial class Component1
     {
@@ -34,3 +34,4 @@
         #endregion
     }
 }
+

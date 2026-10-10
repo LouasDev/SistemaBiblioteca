@@ -1,43 +1,43 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace BibliotecaApp.Utils
+namespace SUB.Utils
 {
     public static class TurmasUtil
     {
         // --- Lista padronizada de turmas permitidas (adicione aqui outras que precise) ---
         public static readonly List<string> TurmasPermitidas = new List<string>
         {
-            "1º ADMINISTRAÇÃO EP PRO 1",
-            "1º DESENV DE SISTEMAS EM INT 1",
-            "1º DESENV DE SISTEMAS EM INT 2",
-            "1º EM INT 1",
-            "1º EM INT 2",
-            "1º EM REG 1",
+            "1ï¿½ ADMINISTRAï¿½ï¿½O EP PRO 1",
+            "1ï¿½ DESENV DE SISTEMAS EM INT 1",
+            "1ï¿½ DESENV DE SISTEMAS EM INT 2",
+            "1ï¿½ EM INT 1",
+            "1ï¿½ EM INT 2",
+            "1ï¿½ EM REG 1",
 
-            "2º AGRONEGÓCIO EM INT 1",
-            "2º DESENV DE SISTEMAS EM INT 1",
-            "2º DESENV DE SISTEMAS EM INT 2",
-            "2º ELETROMECÂNICA EP PRO 1",
-            "2º ELETROMECÂNICA EP PRO 2",
-            "2º EM INT 1",
-            "2º EM REG 1",
+            "2ï¿½ AGRONEGï¿½CIO EM INT 1",
+            "2ï¿½ DESENV DE SISTEMAS EM INT 1",
+            "2ï¿½ DESENV DE SISTEMAS EM INT 2",
+            "2ï¿½ ELETROMECï¿½NICA EP PRO 1",
+            "2ï¿½ ELETROMECï¿½NICA EP PRO 2",
+            "2ï¿½ EM INT 1",
+            "2ï¿½ EM REG 1",
 
-            "3º AGRONEGÓCIO EM INT 1",
-            "3º DESENV DE SISTEMAS EM INT 1",
-            "3º EM INT 1",
-            "3º EM REG 1",
-            "3º EM REG 2",
+            "3ï¿½ AGRONEGï¿½CIO EM INT 1",
+            "3ï¿½ DESENV DE SISTEMAS EM INT 1",
+            "3ï¿½ EM INT 1",
+            "3ï¿½ EM REG 1",
+            "3ï¿½ EM REG 2",
 
-            "6º EF AF REG 1", "6º EF AF REG 2", "6º EF AF REG 3", "6º EF AF REG 4",
-            "7º EF AF REG 1", "7º EF AF REG 2", "7º EF AF REG 3", "7º EF AF REG 4",
-            "8º EF AF REG 1", "8º EF AF REG 2", "8º EF AF REG 3", "8º EF AF REG 4", "8º EF AF REG 5",
-            "9º EF AF REG 1", "9º EF AF REG 2", "9º EF AF REG 3", "9º EF AF REG 4", "9º EF AF REG 5"
+            "6ï¿½ EF AF REG 1", "6ï¿½ EF AF REG 2", "6ï¿½ EF AF REG 3", "6ï¿½ EF AF REG 4",
+            "7ï¿½ EF AF REG 1", "7ï¿½ EF AF REG 2", "7ï¿½ EF AF REG 3", "7ï¿½ EF AF REG 4",
+            "8ï¿½ EF AF REG 1", "8ï¿½ EF AF REG 2", "8ï¿½ EF AF REG 3", "8ï¿½ EF AF REG 4", "8ï¿½ EF AF REG 5",
+            "9ï¿½ EF AF REG 1", "9ï¿½ EF AF REG 2", "9ï¿½ EF AF REG 3", "9ï¿½ EF AF REG 4", "9ï¿½ EF AF REG 5"
         };
 
-        // Abreviações que os usuários podem digitar (mapeia pra forma curta usada na normalização)
+        // Abreviaï¿½ï¿½es que os usuï¿½rios podem digitar (mapeia pra forma curta usada na normalizaï¿½ï¿½o)
         private static readonly Dictionary<string, string> Abreviacoes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { "d", "desenv" }, { "des", "desenv" }, { "desenv", "desenv" },
@@ -47,8 +47,8 @@ namespace BibliotecaApp.Utils
         };
 
         /// <summary>
-        /// Busca sugestões inteligentes a partir do texto digitado pelo usuário.
-        /// Suporta variações como "2d", "2 d", "2 des", "2ºd", abreviações e erros leves de digitação.
+        /// Busca sugestï¿½es inteligentes a partir do texto digitado pelo usuï¿½rio.
+        /// Suporta variaï¿½ï¿½es como "2d", "2 d", "2 des", "2ï¿½d", abreviaï¿½ï¿½es e erros leves de digitaï¿½ï¿½o.
         /// </summary>
         public static List<string> BuscarSugestoes(string texto)
         {
@@ -72,7 +72,7 @@ namespace BibliotecaApp.Utils
             var matchNumero = Regex.Match(entradaOriginal, @"^(\d+)");
             if (matchNumero.Success)
             {
-                string numeroDigitado = matchNumero.Groups[1].Value + "º";
+                string numeroDigitado = matchNumero.Groups[1].Value + "ï¿½";
                 tabelaTurmas = tabelaTurmas
                     .Where(t => t.Original.StartsWith(numeroDigitado, StringComparison.OrdinalIgnoreCase))
                     .ToList();
@@ -119,8 +119,8 @@ namespace BibliotecaApp.Utils
 
         // --- Helpers privados ---
 
-        // Gera variantes úteis a partir do que o usuário digitou:
-        // ex: "2d" -> ["2d", "2 d", "2º d", "2ºd", "2 desenv"]
+        // Gera variantes ï¿½teis a partir do que o usuï¿½rio digitou:
+        // ex: "2d" -> ["2d", "2 d", "2ï¿½ d", "2ï¿½d", "2 desenv"]
         private static IEnumerable<string> GerarVariantesEntrada(string entrada)
         {
             var list = new List<string>();
@@ -129,19 +129,19 @@ namespace BibliotecaApp.Utils
             var s = entrada.Trim();
             list.Add(s);
 
-            // inserir formas com/sem espaço, com º, etc
-            var m = Regex.Match(s, @"^(\d+)[°º]?\s*(.*)$", RegexOptions.IgnoreCase);
+            // inserir formas com/sem espaï¿½o, com ï¿½, etc
+            var m = Regex.Match(s, @"^(\d+)[ï¿½ï¿½]?\s*(.*)$", RegexOptions.IgnoreCase);
             if (m.Success)
             {
                 var num = m.Groups[1].Value;
                 var resto = (m.Groups[2].Value ?? "").Trim();
 
-                list.Add($"{num}º {resto}".Trim());
-                list.Add($"{num}º{resto}".Trim());
+                list.Add($"{num}ï¿½ {resto}".Trim());
+                list.Add($"{num}ï¿½{resto}".Trim());
                 list.Add($"{num} {resto}".Trim());
                 list.Add($"{num}{resto}".Trim());
 
-                // se o "resto" for uma abreviação conhecida, expandir
+                // se o "resto" for uma abreviaï¿½ï¿½o conhecida, expandir
                 if (!string.IsNullOrWhiteSpace(resto))
                 {
                     var token = Regex.Replace(resto.ToLowerInvariant(), @"[^a-z0-9]", "");
@@ -151,28 +151,28 @@ namespace BibliotecaApp.Utils
                         {
                             var exp = kv.Value;
                             list.Add($"{num} {exp}".Trim());
-                            list.Add($"{num}º {exp}".Trim());
+                            list.Add($"{num}ï¿½ {exp}".Trim());
                         }
                     }
                 }
                 else
                 {
-                    list.Add($"{num}º");
+                    list.Add($"{num}ï¿½");
                     list.Add($"{num}");
                 }
             }
             else
             {
-                // tenta separar letras e números caso escrevam como "2des" sem espaço
+                // tenta separar letras e nï¿½meros caso escrevam como "2des" sem espaï¿½o
                 var mm = Regex.Match(s, @"^(\d+)([A-Za-z].*)$", RegexOptions.IgnoreCase);
                 if (mm.Success)
                 {
                     list.Add($"{mm.Groups[1].Value} {mm.Groups[2].Value}".Trim());
-                    list.Add($"{mm.Groups[1].Value}º {mm.Groups[2].Value}".Trim());
+                    list.Add($"{mm.Groups[1].Value}ï¿½ {mm.Groups[2].Value}".Trim());
                 }
             }
 
-            // formas sem espaços ex: transformar "2 d" em "2d"
+            // formas sem espaï¿½os ex: transformar "2 d" em "2d"
             list.Add(s.Replace(" ", ""));
 
             // garantir unicidade e limpar
@@ -183,34 +183,34 @@ namespace BibliotecaApp.Utils
                 .ToList();
         }
 
-        // Normaliza string para comparação (lower, sem acentos, sem pontuação exceto números e letras)
+        // Normaliza string para comparaï¿½ï¿½o (lower, sem acentos, sem pontuaï¿½ï¿½o exceto nï¿½meros e letras)
         private static string NormalizarParaComparacao(string s)
         {
             if (string.IsNullOrWhiteSpace(s)) return "";
             s = s.ToLowerInvariant().Trim();
             s = s.Normalize(System.Text.NormalizationForm.FormD);
             s = Regex.Replace(s, @"\p{M}", ""); // remove acentos
-            s = Regex.Replace(s, @"[^a-z0-9\s]", ""); // mantém letras/números/espaços
+            s = Regex.Replace(s, @"[^a-z0-9\s]", ""); // mantï¿½m letras/nï¿½meros/espaï¿½os
             s = Regex.Replace(s, @"\s+", " ").Trim();
             return s;
         }
 
-        // Remove prefixo numérico (ex: "2º DESENV ...") e normaliza o restante
+        // Remove prefixo numï¿½rico (ex: "2ï¿½ DESENV ...") e normaliza o restante
         private static string RemoverPrefixoNumeroENormalizar(string turma)
         {
             if (string.IsNullOrWhiteSpace(turma)) return "";
-            var m = Regex.Match(turma.Trim(), @"^\s*(\d+)[°º]?\s*(.+)$", RegexOptions.IgnoreCase);
+            var m = Regex.Match(turma.Trim(), @"^\s*(\d+)[ï¿½ï¿½]?\s*(.+)$", RegexOptions.IgnoreCase);
             if (m.Success) return NormalizarParaComparacao(m.Groups[2].Value);
             return NormalizarParaComparacao(turma);
         }
 
-        // Score: menor é melhor. >=100 = rejeitado
-        // Estratégia:
+        // Score: menor ï¿½ melhor. >=100 = rejeitado
+        // Estratï¿½gia:
         // 0 = exato (normalizado)
         // 1 = startswith
-        // 2 = restante (sem número) exatamente igual
+        // 2 = restante (sem nï¿½mero) exatamente igual
         // 3 = contains
-        // 4+ = distancia Levenshtein aceitável (4..7)
+        // 4+ = distancia Levenshtein aceitï¿½vel (4..7)
         // 100 = irrelevante
         private static int CalcularScore(string entradaNorm, string turmaNorm, string restanteNorm)
         {
@@ -226,10 +226,10 @@ namespace BibliotecaApp.Utils
             if (!string.IsNullOrWhiteSpace(restanteNorm) &&
                 restanteNorm.Equals(entradaNorm, StringComparison.OrdinalIgnoreCase)) return 2;
 
-            // contains (compatível com .NET Framework)
+            // contains (compatï¿½vel com .NET Framework)
             if (turmaNorm.IndexOf(entradaNorm, StringComparison.OrdinalIgnoreCase) >= 0) return 3;
 
-            // sem espaços
+            // sem espaï¿½os
             if (turmaNorm.Replace(" ", "")
                          .IndexOf(entradaNorm.Replace(" ", ""), StringComparison.OrdinalIgnoreCase) >= 0)
                 return 3;
@@ -238,7 +238,7 @@ namespace BibliotecaApp.Utils
             int lev = Levenshtein(entradaNorm, turmaNorm);
             if (lev <= 3) return 4 + lev; // 4..7
 
-            // entrada curta (1–2 chars) e contida no restante
+            // entrada curta (1ï¿½2 chars) e contida no restante
             if (entradaNorm.Length <= 2 &&
                 !string.IsNullOrWhiteSpace(restanteNorm) &&
                 restanteNorm.IndexOf(entradaNorm, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -248,7 +248,7 @@ namespace BibliotecaApp.Utils
         }
 
 
-        // Levenshtein (implementação padrão)
+        // Levenshtein (implementaï¿½ï¿½o padrï¿½o)
         private static int Levenshtein(string s, string t)
         {
             if (string.IsNullOrEmpty(s)) return t?.Length ?? 0;
@@ -273,3 +273,4 @@ namespace BibliotecaApp.Utils
         }
     }
 }
+

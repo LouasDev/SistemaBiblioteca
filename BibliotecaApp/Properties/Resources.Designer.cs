@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BibliotecaApp.Properties {
+namespace SUB.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BibliotecaApp.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BibliotecaApp.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SUB.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -77,56 +77,6 @@ namespace BibliotecaApp.Properties {
             get {
                 object obj = ResourceManager.GetObject("botão redondo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Brasão_da_Gastão59x65 {
-            get {
-                object obj = ResourceManager.GetObject("Brasão da Gastão59x65", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Brasão_da_Gastão75x82 {
-            get {
-                object obj = ResourceManager.GetObject("Brasão da Gastão75x82", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gast_removebg_preview_100x100_1_ {
-            get {
-                object obj = ResourceManager.GetObject("gast-removebg-preview 100x100(1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gast_removebg_preview60x60__1_ {
-            get {
-                object obj = ResourceManager.GetObject("gast-removebg-preview60x60 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Icon semelhante a (Ícone).
-        /// </summary>
-        internal static System.Drawing.Icon icon_gastao_valle_zoomed_v2 {
-            get {
-                object obj = ResourceManager.GetObject("icon_gastao_valle_zoomed_v2", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -623,16 +573,6 @@ namespace BibliotecaApp.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap png_logo {
-            get {
-                object obj = ResourceManager.GetObject("png logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap sub_200x200px {
             get {
                 object obj = ResourceManager.GetObject("sub-200x200px", resourceCulture);
@@ -651,3 +591,4 @@ namespace BibliotecaApp.Properties {
         }
     }
 }
+

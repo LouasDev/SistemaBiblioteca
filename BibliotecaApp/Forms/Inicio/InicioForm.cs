@@ -1,7 +1,7 @@
-﻿using BibliotecaApp.Forms.Livros;
-using BibliotecaApp.Forms.Relatorio;
-using BibliotecaApp.Models;
-using BibliotecaApp.Utils;
+﻿using SUB.Forms.Livros;
+using SUB.Forms.Relatorio;
+using SUB.Models;
+using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,12 +19,9 @@ using System.Windows.Forms;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Diagnostics;
-using ZXing;
-using ZXing.QrCode;
-using ZXing.Common;
 using System.Drawing.Imaging;
 
-namespace BibliotecaApp.Forms.Inicio
+namespace SUB.Forms.Inicio
 {
     public partial class InicioForm : Form
     {
@@ -65,13 +62,13 @@ namespace BibliotecaApp.Forms.Inicio
             this.KeyPreview = true;
             this.KeyDown += InicioForm_KeyDown;
 
-            BibliotecaApp.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.LivroDidaticoCadastrado += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.LivroDevolvido += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoProrrogado += (s, e) => _ = CarregarEstatisticasAsync();
-            BibliotecaApp.Utils.EventosGlobais.EmprestimoRealizado += (s, e) => SafeInvoke(() => _ = CarregarEstatisticasAsync());
+            SUB.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.LivroDidaticoCadastrado += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.LivroDevolvido += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.EmprestimoProrrogado += (s, e) => _ = CarregarEstatisticasAsync();
+            SUB.Utils.EventosGlobais.EmprestimoRealizado += (s, e) => SafeInvoke(() => _ = CarregarEstatisticasAsync());
 
 
             this.Activated += (s, e) => _ = CarregarEstatisticasAsync();
@@ -1424,37 +1421,31 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 var fontBold = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
                 var fontSmall = FontFactory.GetFont(FontFactory.HELVETICA, 9);
 
-                // Cabeçalho com brasões
-                iTextSharp.text.Image imgEsq = null, imgDir = null;
-                using (var ms = new MemoryStream())
+                var configuracao = InstituicaoConfiguracaoStore.Carregar();
+                string nomeInstituicao = string.IsNullOrWhiteSpace(configuracao?.Nome)
+                    ? "Biblioteca Escolar"
+                    : configuracao.Nome;
+
+                var headerTable = new PdfPTable(2) { WidthPercentage = 100 };
+                headerTable.SetWidths(new float[] { 1f, 5f });
+
+                var cellLogo = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_MIDDLE };
+                // Usar logo embutida (quadrada SUB) nos relatórios, sem depender de arquivo configurável.
+                try
                 {
-                    Properties.Resources.sub_200x200px.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    imgEsq = iTextSharp.text.Image.GetInstance(ms.ToArray());
-                    imgEsq.ScaleAbsolute(48f, 48f);
-                    imgEsq.Alignment = Element.ALIGN_LEFT;
+                    var logoPdf = iTextSharp.text.Image.GetInstance(Properties.Resources.sub_200x200px, System.Drawing.Imaging.ImageFormat.Png);
+                    logoPdf.ScaleToFit(48f, 48f);
+                    cellLogo.AddElement(logoPdf);
                 }
-                using (var ms = new MemoryStream())
+                catch
                 {
-                    Properties.Resources.sub_200x200px.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                    imgDir = iTextSharp.text.Image.GetInstance(ms.ToArray());
-                    imgDir.ScaleAbsolute(48f, 48f);
-                    imgDir.Alignment = Element.ALIGN_RIGHT;
+                    // se houver problema ao carregar o recurso embarcado, deixar a célula vazia (silencioso)
                 }
+                headerTable.AddCell(cellLogo);
 
-                var headerTable = new PdfPTable(3) { WidthPercentage = 100 };
-                headerTable.SetWidths(new float[] { 1.2f, 5f, 1.2f });
-
-                var cellImgEsq = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_MIDDLE };
-                if (imgEsq != null) cellImgEsq.AddElement(imgEsq);
-                headerTable.AddCell(cellImgEsq);
-
-                var cellTitle = new PdfPCell(new Phrase("ESCOLA ESTADUAL PROFESSOR GASTÃO VALLE   EEPGV", fontTitle))
+                var cellTitle = new PdfPCell(new Phrase(nomeInstituicao, fontTitle))
                 { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE };
                 headerTable.AddCell(cellTitle);
-
-                var cellImgDir = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT, VerticalAlignment = Element.ALIGN_MIDDLE };
-                if (imgDir != null) cellImgDir.AddElement(imgDir);
-                headerTable.AddCell(cellImgDir);
                 headerTable.SpacingAfter = 30f;
                 doc.Add(headerTable);
 
@@ -1464,7 +1455,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 var pCompromisso = new Paragraph();
                 pCompromisso.Add(new Chunk("Assumo a responsabilidade de devolver todos os livros (descritos abaixo) que estão em meu poder. Ciente que a ", fontNormal));
                 pCompromisso.Add(new Chunk("não devolução", fontBold));
-                pCompromisso.Add(new Chunk(" dos mesmos, poderá gerar pendência na liberação da bibliotecária, podendo impedir a expedição dos meus documentos quando for solicitado.", fontNormal));
+                pCompromisso.Add(new Chunk(" dos mesmos poderá resultar em bloqueio temporário de novos empréstimos, conforme as regras da biblioteca.", fontNormal));
                 pCompromisso.SpacingAfter = 18f;
                 doc.Add(pCompromisso);
 
@@ -1488,24 +1479,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
 
                 doc.Add(new Paragraph("\n", fontNormal));
 
-                // ===== Bloco Único: Esquerda (Nome/Turma/Data/Contato) + Direita (QR Code) =====
-                // Normalizador de telefone para wa.me (adiciona DDI 55 quando apropriado)
-                string NormalizePhoneForWa(string phone)
-                {
-                    if (string.IsNullOrWhiteSpace(phone)) return null;
-                    var digits = new string(phone.Where(char.IsDigit).ToArray());
-                    if (string.IsNullOrEmpty(digits)) return null;
-                    // já tem DDI Brasil?
-                    if (digits.StartsWith("55")) return digits;
-                    // números locais com 10 ou 11 dígitos: adiciona 55
-                    if (digits.Length == 10 || digits.Length == 11) return "55" + digits;
-                    // se estiver no formato internacional mas sem 55, tenta usar como está
-                    if (digits.Length > 4) return digits;
-                    return null;
-                }
-
-                var infoTable = new PdfPTable(2) { WidthPercentage = 100, SpacingBefore = 4f, SpacingAfter = 26f };
-                infoTable.SetWidths(new float[] { 3.6f, 1.4f });
+                var infoTable = new PdfPTable(1) { WidthPercentage = 100, SpacingBefore = 4f, SpacingAfter = 26f };
 
                 var leftCell = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, PaddingRight = 10f, VerticalAlignment = Element.ALIGN_MIDDLE };
 
@@ -1534,46 +1508,6 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 leftCell.AddElement(new Paragraph(" ", fontSmall));
                 leftCell.AddElement(pContato);
                 infoTable.AddCell(leftCell);
-
-                // Direita: somente QR Code (maior) ou vazio se não houver telefone
-                var rightCell = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_RIGHT, VerticalAlignment = Element.ALIGN_MIDDLE };
-                var waNumber = NormalizePhoneForWa(telefone);
-                if (!string.IsNullOrEmpty(waNumber))
-                {
-                    // Monta mensagem do WhatsApp usando a Versão 2 (cordial)
-                    string turmaParaMsg = string.IsNullOrWhiteSpace(devedor?.Turma) ? "" : $" da Turma {devedor.Turma}";
-                    string nomeParaMsg = string.IsNullOrWhiteSpace(devedor?.Nome) ? "responsável" : devedor.Nome;
-                    string livroParaMsg = string.IsNullOrWhiteSpace(devedor?.Livro) ? "livro" : $@"o livro *""{devedor.Livro}""*";
-
-                    // Versão 2: cordial e direta
-                    string msg = $"📚 Biblioteca Gastão Valle\nOlá! Tudo bem? Verificamos que {livroParaMsg}, emprestado em nome de *{nomeParaMsg}*{turmaParaMsg}, está com atraso na devolução.\nPodemos conversar sobre isso?";
-                    string waUrl = $"https://wa.me/{waNumber}?text={Uri.EscapeDataString(msg)}";
-
-                    var qrWriter = new ZXing.BarcodeWriter
-                    {
-                        Format = ZXing.BarcodeFormat.QR_CODE,
-                        Options = new QrCodeEncodingOptions
-                        {
-                            Width = 280,
-                            Height = 280,
-                            Margin = 1,
-                            CharacterSet = "UTF-8",
-                            ErrorCorrection = ZXing.QrCode.Internal.ErrorCorrectionLevel.M
-                        }
-                    };
-
-                    using (var qrBmp = qrWriter.Write(waUrl))
-                    using (var msQr = new MemoryStream())
-                    {
-                        qrBmp.Save(msQr, System.Drawing.Imaging.ImageFormat.Png);
-                        var qrImg = iTextSharp.text.Image.GetInstance(msQr.ToArray());
-                        qrImg.ScaleAbsolute(106f, 106f); // tamanho maior
-                        qrImg.Alignment = Element.ALIGN_RIGHT;
-                        rightCell.AddElement(qrImg);
-                    }
-                }
-                // se waNumber for null/empty, rightCell fica vazio (sem QR)
-                infoTable.AddCell(rightCell);
 
                 doc.Add(infoTable);
                 // ===== Fim do bloco único =====

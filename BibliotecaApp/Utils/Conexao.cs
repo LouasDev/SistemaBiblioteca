@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.SqlServerCe;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Utils
+namespace SUB.Utils
 {
     public static class Conexao
     {
-        public static string CaminhoBanco => Application.StartupPath + @"\bibliotecaDB\bibliotecaDB.sdf";
+        public static string CaminhoBanco => Path.Combine(AppPaths.AppDataFolder, "SUB", "sub.sdf");
 
         public static string Conectar
         {
             get
             {
-                var connStrTemplate = ConfigurationManager.ConnectionStrings["BibliotecaDB"]?.ConnectionString;
+                var connStrTemplate = ConfigurationManager.ConnectionStrings["SUBDB"]?.ConnectionString;
                 if (string.IsNullOrWhiteSpace(connStrTemplate))
-                    throw new InvalidOperationException("ConnectionString 'BibliotecaDB' não encontrada em App.config.");
+                    throw new InvalidOperationException("ConnectionString 'SUBDB' não encontrada em App.config.");
 
                 var senha = GetDatabasePasswordProtected();
                 if (string.IsNullOrEmpty(senha))
@@ -44,4 +45,6 @@ namespace BibliotecaApp.Utils
         }
     }
 }
+
+
 

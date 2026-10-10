@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace BibliotecaApp.Forms.Usuario
+namespace SUB.Forms.Usuario
 {
     public partial class PasswordForm : Form
     {

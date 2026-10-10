@@ -1,6 +1,6 @@
 # Sistema Único Bibliotecário   (SUB)
 
-Repositório de desenvolvimento do **Sistema de Biblioteca (SUB)**, uma aplicação desktop para apoiar a gestão de bibliotecas escolares. O projeto centraliza o cadastro de acervo e usuários, empréstimos, devoluções e relatórios.
+Repositório de desenvolvimento do **Sistema Único Bibliotecário (SUB)**, uma aplicação desktop para apoiar a gestão de bibliotecas escolares. O projeto centraliza o cadastro de acervo e usuários, empréstimos, devoluções e relatórios.
 
 > Este repositório é destinado ao desenvolvimento do sistema. Regras operacionais e configurações de cada instalação devem ser validadas com a equipe responsável antes de serem alteradas.
 

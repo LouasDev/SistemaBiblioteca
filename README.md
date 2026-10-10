@@ -1,4 +1,4 @@
-# Sistema Biblioteca (SUB)
+# Sistema Único Bibliotecário   (SUB)
 
 Repositório de desenvolvimento do **Sistema de Biblioteca (SUB)**, uma aplicação desktop para apoiar a gestão de bibliotecas escolares. O projeto centraliza o cadastro de acervo e usuários, empréstimos, devoluções e relatórios.
 
@@ -99,6 +99,6 @@ O backlog do produto está disponível em [Product Backlog - Library Management 
 ---
 
 <div align="center">
-  <p><strong>Sistema Biblioteca (SUB)</strong></p>
+  <p><strong>Sistema Único Bibliotecário   (SUB)</strong></p>
   <p>Desenvolvido para apoiar bibliotecas escolares.</p>
 </div>

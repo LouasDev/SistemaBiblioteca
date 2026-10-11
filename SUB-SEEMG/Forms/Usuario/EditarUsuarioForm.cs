@@ -221,11 +221,42 @@ namespace SUB.Forms.Usuario
             }
 
             // Validar e-mail antes de salvar
-            string email = txtEmail.Text.Trim();
+            string email = txtEmail.Text.Trim().ToLowerInvariant();
+            bool bibliotecaria = string.Equals(
+                _usuarioSelecionado.TipoUsuario,
+                "Bibliotecário(a)",
+                StringComparison.OrdinalIgnoreCase);
+
+            if (bibliotecaria && string.IsNullOrEmpty(email))
+            {
+                MessageBox.Show("O e-mail é obrigatório para contas de bibliotecária.", "E-mail obrigatório", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
+                return;
+            }
+
             if (!string.IsNullOrEmpty(email) && !EmailValido(email))
             {
                 MessageBox.Show("E-mail inválido. Digite um e-mail válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEmail.Focus();
                 return;
+            }
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                try
+                {
+                    if (EmailJaExiste(email, _usuarioSelecionado.Id))
+                    {
+                        MessageBox.Show("Este e-mail já está cadastrado para outro usuário.", "E-mail duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtEmail.Focus();
+                        return;
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Não foi possível verificar o e-mail. Tente novamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
 
             // Normalizar CPF (apenas dígitos)
@@ -819,6 +850,23 @@ private void lstSugestoesUsuario_SelectedIndexChanged(object sender, EventArgs e
 
                     int count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
                     return count > 0;
+                }
+            }
+        }
+
+        private bool EmailJaExiste(string email, int usuarioIdAtual)
+        {
+            using (var conexao = Conexao.ObterConexao())
+            {
+                conexao.Open();
+                const string sql = @"SELECT COUNT(*) FROM usuarios
+WHERE Email = @Email AND Id <> @IdAtual";
+
+                using (var cmd = new SqlCeCommand(sql, conexao))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email.Trim().ToLowerInvariant());
+                    cmd.Parameters.AddWithValue("@IdAtual", usuarioIdAtual);
+                    return Convert.ToInt32(cmd.ExecuteScalar() ?? 0) > 0;
                 }
             }
         }

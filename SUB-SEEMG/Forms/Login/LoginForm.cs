@@ -8,6 +8,7 @@ using System.Data.SqlServerCe;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -24,6 +25,9 @@ namespace SUB.Forms.Login
 
         // Evita reentrância no clique (duplo Enter/click)
         private bool _isAuthenticating = false;
+        private Color _corPrimariaAtual = ThemeManager.DefaultColor;
+        private readonly Color _corBordaPadrao = Color.FromArgb(174, 188, 204);
+        private readonly Color _corErro = Color.FromArgb(184, 50, 50);
         #endregion
 
         #region Construtor
@@ -36,49 +40,72 @@ namespace SUB.Forms.Login
 
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
-            this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+            this.DesenharBorda(Color.FromArgb(188, 199, 212), meuRaio, 1);
+            this.AcceptButton = BtnEntrar;
 
-
-            // AcceptButton só será ativado quando o foco estiver em txtSenha
-            this.AcceptButton = null;
-
-            // Ativa/desativa AcceptButton conforme foco na senha
-            this.txtSenha.Enter += txtSenha_Enter;
-            this.txtSenha.Leave += txtSenha_Leave;
-
-            // Removido: KeyDown já está inscrito no Designer
-            // txtEmail.KeyDown += txtEmail_KeyDown;
-            // txtSenha.KeyDown += txtSenha_KeyDown;
+            txtEmail.TextChanged += (s, e) => LimparErroCampo(txtEmail, lblErroEmail);
+            txtSenha.TextChanged += (s, e) => LimparErroCampo(txtSenha, lblErroSenha);
         }
 
         //Fecharo form se o login for cancelado externamente
         private void LoginForm_Load(object sender, EventArgs e)
         {
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
-            if (configuracao == null)
-                return;
-
-            lblNomeEscola.Text = configuracao.Nome;
-            
+            lblNomeEscola.Text = configuracao == null || string.IsNullOrWhiteSpace(configuracao.Nome)
+                ? "Biblioteca da instituição"
+                : configuracao.Nome.Trim();
 
             Color corPrimaria = ThemeManager.DefaultColor;
-            try
+            if (configuracao != null)
             {
-                corPrimaria = ColorTranslator.FromHtml(configuracao.CorPrimaria ?? "#1F487E");
-                if (corPrimaria.IsEmpty)
-                    corPrimaria = Color.FromArgb(31, 72, 126);
-                ThemeManager.Apply(this, corPrimaria);
-                pnInicial.BackColor = corPrimaria;
-                BtnEntrar.BaseColor = corPrimaria;
-                BtnEntrar.BackgroundColor = corPrimaria;
-                BtnEntrar.BorderColor = corPrimaria;
-            }
-            catch
-            {
-                pnInicial.BackColor = Color.FromArgb(31, 72, 126);
+                try
+                {
+                    corPrimaria = ColorTranslator.FromHtml(configuracao.CorPrimaria ?? "#1F487E");
+                }
+                catch
+                {
+                    corPrimaria = ThemeManager.DefaultColor;
+                }
             }
 
-            SubLogoManager.SetImage(picLogoLogin, SubLogoVariant.Square, corPrimaria, Color.WhiteSmoke);
+            AplicarTema(corPrimaria);
+            txtEmail.Focus();
+        }
+
+        private void AplicarTema(Color corPrimaria)
+        {
+            _corPrimariaAtual = ThemeManager.Normalize(corPrimaria);
+            ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(_corPrimariaAtual));
+            Color superficie = tema.AccentColor;
+            Color focoSuave = ThemeManager.Lighten(_corPrimariaAtual, 0.94f);
+
+            BackColor = superficie;
+            pnInicial.BackColor = superficie;
+            panel1.BackColor = _corPrimariaAtual;
+            gradientPanel2.BackColor = Color.FromArgb(250, 252, 255);
+            gradientPanel2.Gradientetop = gradientPanel2.BackColor;
+            gradientPanel2.Gradientebottom = gradientPanel2.BackColor;
+            pnlLogo.BackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.88f);
+            linhaMarca.BackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.48f);
+
+            lblAcessoInstitucional.ForeColor = _corPrimariaAtual;
+            lblEsqueceuSenha.LinkColor = _corPrimariaAtual;
+            lblEsqueceuSenha.ActiveLinkColor = ThemeManager.Darken(_corPrimariaAtual, 0.18f);
+            lblEsqueceuSenha.VisitedLinkColor = _corPrimariaAtual;
+
+            foreach (RoundedTextBox campo in new[] { txtEmail, txtSenha })
+            {
+                campo.BorderColor = _corBordaPadrao;
+                campo.BorderFocusColor = _corPrimariaAtual;
+                campo.HoverBackColor = focoSuave;
+                campo.Invalidate();
+            }
+
+            BtnEntrar.BaseColor = _corPrimariaAtual;
+            BtnEntrar.BackgroundColor = _corPrimariaAtual;
+            BtnEntrar.BorderColor = _corPrimariaAtual;
+            BtnEntrar.Invalidate();
+            SubLogoManager.SetImage(picLogoLogin, SubLogoVariant.Square, _corPrimariaAtual, pnlLogo.BackColor);
         }
         #endregion
 
@@ -191,34 +218,21 @@ namespace SUB.Forms.Login
         #endregion
 
         #region Eventos de Teclado
-        private void txtEmail_KeyDown(object sender, KeyEventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (keyData == Keys.Enter && txtEmail.ContainsFocus)
             {
-                // Impede o AcceptButton e vai para a senha
-                e.Handled = true;
-                e.SuppressKeyPress = true;
                 txtSenha.Focus();
+                return true;
             }
-        }
 
-        private void txtSenha_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            if (keyData == Keys.Enter && txtSenha.ContainsFocus)
             {
-                // Deixe o AcceptButton (BtnEntrar) cuidar do Enter no campo senha
+                BtnEntrar.PerformClick();
+                return true;
             }
-        }
 
-        // Ativa o AcceptButton apenas quando a senha tem foco
-        private void txtSenha_Enter(object sender, EventArgs e)
-        {
-            this.AcceptButton = BtnEntrar;
-        }
-
-        private void txtSenha_Leave(object sender, EventArgs e)
-        {
-            this.AcceptButton = null;
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         #endregion
 
@@ -226,97 +240,342 @@ namespace SUB.Forms.Login
         {
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
             if (configuracao == null)
+            {
+                MostrarStatusLogin("A configuração da instituição não foi encontrada. Reinicie o SUB e tente novamente.");
+                return;
+            }
+
+            if (!ConfirmarCodigoRecuperacao(configuracao))
                 return;
 
-            using (var promptCodigo = new Form { Text = "Redefinir senha", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, ClientSize = new Size(360, 145), MaximizeBox = false, MinimizeBox = false })
-            using (var codigo = new TextBox { Location = new Point(20, 34), Width = 320, UseSystemPasswordChar = true })
-            using (var redefinir = new Button { Text = "Validar código", Location = new Point(225, 80), DialogResult = DialogResult.OK })
+            if (DefinirNovaSenha())
+                MostrarStatusLogin("Senha atualizada. Você já pode entrar com a nova senha.", true);
+        }
+
+        private bool ConfirmarCodigoRecuperacao(InstituicaoConfiguracao configuracao)
+        {
+            bool confirmado = false;
+
+            using (var dialogo = CriarDialogoRecuperacao("Recuperar acesso", new Size(440, 250)))
+            using (var codigo = new TextBox
             {
-                promptCodigo.Controls.Add(new Label { Text = "Informe o código-mestre da instituição:", Location = new Point(20, 12), AutoSize = true });
-                promptCodigo.Controls.Add(codigo);
-                promptCodigo.Controls.Add(redefinir);
-                promptCodigo.AcceptButton = redefinir;
-                if (promptCodigo.ShowDialog(this) != DialogResult.OK ||
-                    !CriptografiaSenha.VerificarSenha(codigo.Text, configuracao.CodigoMestreHash, configuracao.CodigoMestreSalt))
-                {
-                    MessageBox.Show(this, "Código-mestre inválido.", "Redefinição não autorizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-            }
-
-            using (var promptSenha = new Form { Text = "Nova senha da bibliotecária", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, ClientSize = new Size(360, 190), MaximizeBox = false, MinimizeBox = false })
-            using (var senha = new TextBox { Location = new Point(20, 38), Width = 320, MaxLength = 25, UseSystemPasswordChar = true })
-            using (var confirmar = new TextBox { Location = new Point(20, 94), Width = 320, MaxLength = 25, UseSystemPasswordChar = true })
-            using (var salvar = new Button { Text = "Salvar nova senha", Location = new Point(190, 140), DialogResult = DialogResult.OK })
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10.5F),
+                Location = new Point(30, 91),
+                Size = new Size(380, 34),
+                UseSystemPasswordChar = true
+            })
+            using (var mostrar = new CheckBox
             {
-                promptSenha.Controls.Add(new Label { Text = "Nova senha (6 a 25 caracteres):", Location = new Point(20, 16), AutoSize = true });
-                promptSenha.Controls.Add(senha);
-                promptSenha.Controls.Add(new Label { Text = "Confirme a nova senha:", Location = new Point(20, 72), AutoSize = true });
-                promptSenha.Controls.Add(confirmar);
-                promptSenha.Controls.Add(salvar);
-                promptSenha.AcceptButton = salvar;
-                if (promptSenha.ShowDialog(this) != DialogResult.OK)
-                    return;
-
-                if (senha.Text.Length < 6 || senha.Text.Length > 25 || senha.Text != confirmar.Text)
+                AutoSize = true,
+                Font = new Font("Segoe UI", 9F),
+                Location = new Point(30, 133),
+                Text = "Mostrar código"
+            })
+            using (var erro = CriarLabelErro(new Point(30, 158), new Size(380, 34)))
+            using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 202), new Size(96, 36)))
+            using (var validar = CriarBotaoPrimario("Validar código", new Point(306, 202), new Size(104, 36)))
+            {
+                dialogo.Controls.Add(new Label
                 {
-                    MessageBox.Show(this, "As senhas devem ser iguais e conter entre 6 e 25 caracteres.", "Senha inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                CriptografiaSenha.CriarHash(senha.Text, out string hash, out string salt);
-                try
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(23, 36, 52),
+                    Location = new Point(27, 20),
+                    Text = "Recuperar acesso"
+                });
+                dialogo.Controls.Add(new Label
                 {
-                    using (SqlCeConnection conexao = Conexao.ObterConexao())
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 9.5F),
+                    ForeColor = Color.FromArgb(91, 104, 120),
+                    Location = new Point(30, 60),
+                    Text = "Informe o código de recuperação salvo na configuração inicial."
+                });
+                dialogo.Controls.Add(codigo);
+                dialogo.Controls.Add(mostrar);
+                dialogo.Controls.Add(erro);
+                dialogo.Controls.Add(cancelar);
+                dialogo.Controls.Add(validar);
+
+                mostrar.CheckedChanged += (s, e) => codigo.UseSystemPasswordChar = !mostrar.Checked;
+                codigo.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                cancelar.Click += (s, e) => dialogo.Close();
+                validar.Click += (s, e) =>
+                {
+                    if (string.IsNullOrWhiteSpace(codigo.Text))
                     {
-                        conexao.Open();
-                        using (SqlCeCommand comando = conexao.CreateCommand())
-                        {
-                            comando.CommandText = @"UPDATE usuarios
-SET Senha_Hash = @Hash, Senha_Salt = @Salt
-WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(a)' ORDER BY Id)";
-                            comando.Parameters.AddWithValue("@Hash", hash);
-                            comando.Parameters.AddWithValue("@Salt", salt);
-                            if (comando.ExecuteNonQuery() == 0)
-                            {
-                                MessageBox.Show(this, "Não foi encontrada uma conta de bibliotecária para redefinir.", "Conta não encontrada",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                        }
+                        erro.Text = "Informe o código de recuperação.";
+                        erro.Visible = true;
+                        codigo.Focus();
+                        return;
                     }
 
-                    MessageBox.Show(this, "Senha da primeira bibliotecária atualizada.", "Senha redefinida", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(this, "Não foi possível atualizar a senha: " + ex.Message, "Erro",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    if (!CriptografiaSenha.VerificarSenha(codigo.Text.Trim(), configuracao.CodigoMestreHash, configuracao.CodigoMestreSalt))
+                    {
+                        erro.Text = "O código não confere. Revise o arquivo salvo e tente novamente.";
+                        erro.Visible = true;
+                        codigo.Focus();
+                        codigo.SelectAll();
+                        return;
+                    }
+
+                    confirmado = true;
+                    dialogo.DialogResult = DialogResult.OK;
+                    dialogo.Close();
+                };
+
+                dialogo.AcceptButton = validar;
+                dialogo.CancelButton = cancelar;
+                dialogo.Shown += (s, e) => codigo.Focus();
+                dialogo.ShowDialog(this);
             }
+
+            return confirmado;
+        }
+
+        private bool DefinirNovaSenha()
+        {
+            bool atualizada = false;
+
+            using (var dialogo = CriarDialogoRecuperacao("Nova senha da bibliotecária", new Size(440, 360)))
+            using (var senha = new TextBox
+            {
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10.5F),
+                Location = new Point(30, 116),
+                MaxLength = 25,
+                Size = new Size(380, 34),
+                UseSystemPasswordChar = true
+            })
+            using (var confirmar = new TextBox
+            {
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10.5F),
+                Location = new Point(30, 186),
+                MaxLength = 25,
+                Size = new Size(380, 34),
+                UseSystemPasswordChar = true
+            })
+            using (var mostrar = new CheckBox
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 9F),
+                Location = new Point(30, 230),
+                Text = "Mostrar senhas"
+            })
+            using (var erro = CriarLabelErro(new Point(30, 255), new Size(380, 40)))
+            using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 307), new Size(96, 38)))
+            using (var salvar = CriarBotaoPrimario("Salvar senha", new Point(306, 307), new Size(104, 38)))
+            {
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(23, 36, 52),
+                    Location = new Point(27, 20),
+                    Text = "Crie uma nova senha"
+                });
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 9.5F),
+                    ForeColor = Color.FromArgb(91, 104, 120),
+                    Location = new Point(30, 60),
+                    Text = "Use entre 6 e 25 caracteres."
+                });
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(43, 55, 69),
+                    Location = new Point(30, 94),
+                    Text = "Nova senha"
+                });
+                dialogo.Controls.Add(senha);
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(43, 55, 69),
+                    Location = new Point(30, 164),
+                    Text = "Confirmar senha"
+                });
+                dialogo.Controls.Add(confirmar);
+                dialogo.Controls.Add(mostrar);
+                dialogo.Controls.Add(erro);
+                dialogo.Controls.Add(cancelar);
+                dialogo.Controls.Add(salvar);
+
+                mostrar.CheckedChanged += (s, e) =>
+                {
+                    bool ocultar = !mostrar.Checked;
+                    senha.UseSystemPasswordChar = ocultar;
+                    confirmar.UseSystemPasswordChar = ocultar;
+                };
+                senha.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                confirmar.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                senha.KeyDown += (s, e) =>
+                {
+                    if (e.KeyCode == Keys.Enter)
+                    {
+                        e.Handled = true;
+                        e.SuppressKeyPress = true;
+                        confirmar.Focus();
+                    }
+                };
+                cancelar.Click += (s, e) => dialogo.Close();
+                salvar.Click += (s, e) =>
+                {
+                    if (senha.Text.Length < 6 || senha.Text.Length > 25)
+                    {
+                        erro.Text = "A senha deve conter entre 6 e 25 caracteres.";
+                        erro.Visible = true;
+                        senha.Focus();
+                        return;
+                    }
+
+                    if (senha.Text != confirmar.Text)
+                    {
+                        erro.Text = "As senhas não coincidem.";
+                        erro.Visible = true;
+                        confirmar.Focus();
+                        confirmar.SelectAll();
+                        return;
+                    }
+
+                    salvar.Enabled = false;
+                    salvar.Text = "Salvando...";
+
+                    CriptografiaSenha.CriarHash(senha.Text, out string hash, out string salt);
+                    try
+                    {
+                        using (SqlCeConnection conexao = Conexao.ObterConexao())
+                        {
+                            conexao.Open();
+                            using (SqlCeCommand comando = conexao.CreateCommand())
+                            {
+                                comando.CommandText = @"UPDATE usuarios
+SET Senha_Hash = @Hash, Senha_Salt = @Salt
+WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(a)' ORDER BY Id)";
+                                comando.Parameters.AddWithValue("@Hash", hash);
+                                comando.Parameters.AddWithValue("@Salt", salt);
+                                if (comando.ExecuteNonQuery() == 0)
+                                    throw new InvalidOperationException("Não foi encontrada uma conta de bibliotecária para redefinir.");
+                            }
+                        }
+
+                        atualizada = true;
+                        dialogo.DialogResult = DialogResult.OK;
+                        dialogo.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        erro.Text = "Não foi possível salvar a nova senha. " + ex.Message;
+                        erro.Visible = true;
+                        salvar.Enabled = true;
+                        salvar.Text = "Salvar senha";
+                    }
+                };
+
+                dialogo.AcceptButton = salvar;
+                dialogo.CancelButton = cancelar;
+                dialogo.Shown += (s, e) => senha.Focus();
+                dialogo.ShowDialog(this);
+            }
+
+            return atualizada;
+        }
+
+        private Form CriarDialogoRecuperacao(string titulo, Size tamanho)
+        {
+            return new Form
+            {
+                BackColor = Color.FromArgb(250, 252, 255),
+                ClientSize = tamanho,
+                Font = new Font("Segoe UI", 9F),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false,
+                ShowInTaskbar = false,
+                StartPosition = FormStartPosition.CenterParent,
+                Text = titulo
+            };
+        }
+
+        private CustomButton CriarBotaoPrimario(string texto, Point local, Size tamanho)
+        {
+            return new CustomButton
+            {
+                BaseColor = _corPrimariaAtual,
+                BorderRadius = 8,
+                Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                Location = local,
+                Size = tamanho,
+                Text = texto
+            };
+        }
+
+        private Button CriarBotaoSecundario(string texto, Point local, Size tamanho)
+        {
+            var botao = new Button
+            {
+                BackColor = Color.FromArgb(250, 252, 255),
+                Cursor = Cursors.Hand,
+                DialogResult = DialogResult.Cancel,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                ForeColor = _corPrimariaAtual,
+                Location = local,
+                Size = tamanho,
+                Text = texto,
+                UseVisualStyleBackColor = false
+            };
+            botao.FlatAppearance.BorderColor = ThemeManager.Lighten(_corPrimariaAtual, 0.42f);
+            botao.FlatAppearance.MouseOverBackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.92f);
+            return botao;
+        }
+
+        private Label CriarLabelErro(Point local, Size tamanho)
+        {
+            return new Label
+            {
+                AutoEllipsis = true,
+                Font = new Font("Segoe UI", 8.5F),
+                ForeColor = _corErro,
+                Location = local,
+                Size = tamanho,
+                Visible = false
+            };
         }
 
         private void lblVersion_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            Hide();
 
-            using (AboutForm popup = new AboutForm())
+            try
             {
-                popup.ShowDialog(); // Abre como modal
+                using (AboutForm popup = new AboutForm())
+                    popup.ShowDialog();
             }
-
-            this.Show();
+            finally
+            {
+                if (!IsDisposed)
+                {
+                    Show();
+                    Activate();
+                }
+            }
         }
 
         private void lblVersion_MouseEnter(object sender, EventArgs e)
         {
-            lblVersion.ForeColor = Color.SkyBlue;
+            lblVersion.LinkColor = ThemeManager.Lighten(Color.White, 0.08f);
         }
 
         private void lblVersion_MouseLeave(object sender, EventArgs e)
         {
-            lblVersion.ForeColor = Color.White;
-
+            lblVersion.LinkColor = Color.White;
         }
 
 
@@ -333,45 +592,111 @@ WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(
 
         private void cbMostrarSenha_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbMostrarSenha.Checked) {
-                txtSenha.UseSystemPasswordChar = false;
-            } else {
-                txtSenha.UseSystemPasswordChar = true;
+            txtSenha.UseSystemPasswordChar = !cbMostrarSenha.Checked;
+        }
+
+        private bool ValidarCamposLogin()
+        {
+            bool valido = true;
+            string email = txtEmail.Text.Trim();
+
+            LimparStatusLogin();
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                MostrarErroCampo(txtEmail, lblErroEmail, "Informe seu e-mail.");
+                valido = false;
             }
+            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                MostrarErroCampo(txtEmail, lblErroEmail, "Informe um e-mail válido.");
+                valido = false;
+            }
+
+            if (string.IsNullOrEmpty(txtSenha.Text))
+            {
+                MostrarErroCampo(txtSenha, lblErroSenha, "Informe sua senha.");
+                valido = false;
+            }
+
+            if (!valido)
+            {
+                if (lblErroEmail.Visible)
+                    txtEmail.Focus();
+                else
+                    txtSenha.Focus();
+            }
+
+            return valido;
+        }
+
+        private void MostrarErroCampo(RoundedTextBox campo, Label label, string mensagem)
+        {
+            campo.BorderColor = _corErro;
+            campo.BorderFocusColor = _corErro;
+            campo.Invalidate();
+            label.Text = mensagem;
+            label.Visible = true;
+        }
+
+        private void LimparErroCampo(RoundedTextBox campo, Label label)
+        {
+            campo.BorderColor = _corBordaPadrao;
+            campo.BorderFocusColor = _corPrimariaAtual;
+            campo.Invalidate();
+            label.Text = string.Empty;
+            label.Visible = false;
+            LimparStatusLogin();
+        }
+
+        private void MostrarStatusLogin(string mensagem, bool sucesso = false)
+        {
+            lblStatusLogin.Text = mensagem;
+            lblStatusLogin.BackColor = sucesso ? Color.FromArgb(237, 247, 241) : Color.FromArgb(253, 240, 240);
+            lblStatusLogin.ForeColor = sucesso ? Color.FromArgb(31, 122, 73) : Color.FromArgb(143, 38, 38);
+            lblStatusLogin.Visible = true;
+        }
+
+        private void LimparStatusLogin()
+        {
+            lblStatusLogin.Text = string.Empty;
+            lblStatusLogin.Visible = false;
+        }
+
+        private void DefinirEstadoAutenticacao(bool autenticando)
+        {
+            _isAuthenticating = autenticando;
+            BtnEntrar.Enabled = !autenticando;
+            BtnEntrar.Text = autenticando ? "Entrando..." : "Entrar";
+            BtnEntrar.BaseColor = autenticando ? Color.FromArgb(130, 139, 150) : _corPrimariaAtual;
+            BtnEntrar.Cursor = autenticando ? Cursors.WaitCursor : Cursors.Hand;
+            UseWaitCursor = autenticando;
+            BtnEntrar.Invalidate();
         }
 
         private async void BtnEntrar_Click(object sender, EventArgs e)
         {
-            if (_isAuthenticating) return;
-            _isAuthenticating = true;
-            if (BtnEntrar != null) BtnEntrar.Enabled = false;
+            if (_isAuthenticating || !ValidarCamposLogin())
+                return;
+
+            DefinirEstadoAutenticacao(true);
 
             try
             {
-                string nomeUsuario = txtEmail.Text.Trim();
+                string email = txtEmail.Text.Trim().ToLowerInvariant();
                 string senha = txtSenha.Text;
-
-                if (string.IsNullOrEmpty(nomeUsuario) || string.IsNullOrEmpty(senha))
-                {
-                    MessageBox.Show("Por favor, preencha todos os campos.", "Campos obrigatórios",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    if (string.IsNullOrEmpty(nomeUsuario)) txtEmail.Focus();
-                    else txtSenha.Focus();
-                    return;
-                }
 
                 try
                 {
                     using (SqlCeConnection conexao = Conexao.ObterConexao())
                     {
                         conexao.Open();
-                        string query = @"SELECT Id, Nome, Senha_hash, Senha_salt FROM usuarios 
-                    WHERE (Email = @email OR Nome = @nomeUsuario) AND TipoUsuario = 'Bibliotecário(a)'";
+                        string query = @"SELECT Id, Nome, Senha_hash, Senha_salt FROM usuarios
+                    WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)'";
 
                         using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                         {
-                            comando.Parameters.AddWithValue("@email", nomeUsuario);
-                            comando.Parameters.AddWithValue("@nomeUsuario", nomeUsuario);
+                            comando.Parameters.AddWithValue("@email", email);
 
                             using (SqlCeDataReader reader = comando.ExecuteReader())
                             {
@@ -400,33 +725,36 @@ WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(
                                     }
                                     else
                                     {
-                                        MessageBox.Show("Senha incorreta.", "Erro de autenticação",
-                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MostrarErroCampo(txtEmail, lblErroEmail, string.Empty);
+                                        MostrarErroCampo(txtSenha, lblErroSenha, string.Empty);
+                                        MostrarStatusLogin("E-mail ou senha não conferem. Revise os dados e tente novamente.");
                                         txtSenha.Focus();
+                                        txtSenha.SelectAll();
                                         return;
                                     }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Usuário não encontrado ou sem permissão.", "Erro de autenticação",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    txtEmail.Focus();
+                                    MostrarErroCampo(txtEmail, lblErroEmail, string.Empty);
+                                    MostrarErroCampo(txtSenha, lblErroSenha, string.Empty);
+                                    MostrarStatusLogin("E-mail ou senha não conferem. Revise os dados e tente novamente.");
+                                    txtSenha.Focus();
+                                    txtSenha.SelectAll();
                                     return;
                                 }
                             }
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    MessageBox.Show("Erro na autenticação: " + ex.Message, "Erro",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MostrarStatusLogin("Não foi possível entrar agora. Verifique o banco de dados e tente novamente.");
                 }
             }
             finally
             {
-                _isAuthenticating = false;
-                if (!IsDisposed && BtnEntrar != null) BtnEntrar.Enabled = true;
+                if (!IsDisposed && BtnEntrar != null)
+                    DefinirEstadoAutenticacao(false);
             }
         }
 

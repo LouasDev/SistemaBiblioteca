@@ -3,25 +3,67 @@ namespace SUB.Forms.Setup
     partial class PrimeiroUsoForm
     {
         private System.ComponentModel.IContainer components = null;
+
+        private SUB.ElementosPersonalizados.GradientPanel pnlInstitucional;
+        private System.Windows.Forms.Panel pnlLogo;
+        private System.Windows.Forms.PictureBox picLogo;
+        private System.Windows.Forms.PictureBox btnFechar;
+        private System.Windows.Forms.Label lblSub;
+        private System.Windows.Forms.Label lblNomeSistema;
+        private System.Windows.Forms.Label lblConfiguracaoInicial;
+        private System.Windows.Forms.Label lblTextoInstitucional;
+        private System.Windows.Forms.Label lblRoteiro;
+        private System.Windows.Forms.Label lblPasso1Numero;
+        private System.Windows.Forms.Label lblPasso1Texto;
+        private System.Windows.Forms.Panel linhaRoteiro;
+        private System.Windows.Forms.Label lblPasso2Numero;
+        private System.Windows.Forms.Label lblPasso2Texto;
+        private System.Windows.Forms.Label lblIniciativa;
+        private System.Windows.Forms.Panel linhaInstitucional;
+        private System.Windows.Forms.Panel pnlConteudo;
+        private System.Windows.Forms.Label lblTitulo;
+        private System.Windows.Forms.Label lblSubtitulo;
+        private System.Windows.Forms.Label lblEtapaAtual;
+        private System.Windows.Forms.Panel indicadorEtapa1;
+        private System.Windows.Forms.Panel indicadorEtapa2;
+        private System.Windows.Forms.Label lblErroGeral;
+        private System.Windows.Forms.Panel pnlEtapa1;
+        private System.Windows.Forms.Label lblTituloEtapa1;
         private System.Windows.Forms.Label lblNomeInstituicao;
-        private System.Windows.Forms.TextBox _nomeInstituicao;
+        private RoundedTextBox _nomeInstituicao;
+        private System.Windows.Forms.Label lblErroNomeInstituicao;
         private System.Windows.Forms.Label lblTema;
+        private RoundedComboBox _tema;
         private System.Windows.Forms.Panel _visualizadorCor;
+        private System.Windows.Forms.Label lblErroTema;
+        private CustomButton btnAvancar;
+        private System.Windows.Forms.Panel pnlEtapa2;
+        private System.Windows.Forms.Label lblTituloEtapa2;
         private System.Windows.Forms.Label lblNomeBibliotecaria;
-        private System.Windows.Forms.TextBox _nomeBibliotecaria;
+        private RoundedTextBox _nomeBibliotecaria;
+        private System.Windows.Forms.Label lblErroNomeBibliotecaria;
         private System.Windows.Forms.Label lblEmailBibliotecaria;
-        private System.Windows.Forms.TextBox _emailBibliotecaria;
+        private RoundedTextBox _emailBibliotecaria;
+        private System.Windows.Forms.Label lblAuxiliarEmail;
+        private System.Windows.Forms.Label lblErroEmailBibliotecaria;
         private System.Windows.Forms.Label lblTelefoneBibliotecaria;
-        private System.Windows.Forms.TextBox _telefoneBibliotecaria;
+        private RoundedTextBox _telefoneBibliotecaria;
+        private System.Windows.Forms.Label lblErroTelefoneBibliotecaria;
         private System.Windows.Forms.Label lblSenhaBibliotecaria;
-        private System.Windows.Forms.TextBox _senhaBibliotecaria;
+        private RoundedTextBox _senhaBibliotecaria;
+        private System.Windows.Forms.Label lblErroSenhaBibliotecaria;
         private System.Windows.Forms.Label lblConfirmarSenhaBibliotecaria;
-        private System.Windows.Forms.TextBox _confirmarSenhaBibliotecaria;
-        private System.Windows.Forms.Label lblCodigoMestre;
+        private RoundedTextBox _confirmarSenhaBibliotecaria;
+        private System.Windows.Forms.Label lblErroConfirmarSenhaBibliotecaria;
+        private System.Windows.Forms.CheckBox chkMostrarSenhas;
+        private System.Windows.Forms.Panel pnlCodigoRecuperacao;
+        private System.Windows.Forms.Label lblCodigoTitulo;
+        private System.Windows.Forms.Label lblCodigoAuxiliar;
         private System.Windows.Forms.TextBox _codigoMestre;
         private System.Windows.Forms.Button exportarCodigo;
         private System.Windows.Forms.Label statusCodigo;
-        private System.Windows.Forms.Button salvar;
+        private System.Windows.Forms.Button btnVoltar;
+        private CustomButton salvar;
 
         protected override void Dispose(bool disposing)
         {
@@ -33,498 +75,939 @@ namespace SUB.Forms.Setup
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrimeiroUsoForm));
-            this.lblApresentacao = new System.Windows.Forms.Label();
-            this.salvar = new System.Windows.Forms.Button();
-            this.gradientPanel = new SUB.ElementosPersonalizados.GradientPanel();
-            this.label1 = new System.Windows.Forms.Label();
-            this._visualizadorCor = new System.Windows.Forms.Panel();
-            this.panel8 = new System.Windows.Forms.Panel();
-            this.panel7 = new System.Windows.Forms.Panel();
-            this._codigoMestre = new System.Windows.Forms.TextBox();
-            this.panel6 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.statusCodigo = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.exportarCodigo = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.lblCodigoMestre = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this._confirmarSenhaBibliotecaria = new System.Windows.Forms.TextBox();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.lblConfirmarSenhaBibliotecaria = new System.Windows.Forms.Label();
-            this._senhaBibliotecaria = new System.Windows.Forms.TextBox();
-            this.lblNomeInstituicao = new System.Windows.Forms.Label();
-            this.lblSenhaBibliotecaria = new System.Windows.Forms.Label();
-            this._nomeInstituicao = new System.Windows.Forms.TextBox();
-            this._telefoneBibliotecaria = new System.Windows.Forms.TextBox();
-            this.lblTema = new System.Windows.Forms.Label();
-            this.lblTelefoneBibliotecaria = new System.Windows.Forms.Label();
-            this._tema = new System.Windows.Forms.ComboBox();
-            this.lblEmailBibliotecaria = new System.Windows.Forms.Label();
-            this._nomeBibliotecaria = new System.Windows.Forms.TextBox();
-            this.lblNomeBibliotecaria = new System.Windows.Forms.Label();
-            this._emailBibliotecaria = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pnlInstitucional = new SUB.ElementosPersonalizados.GradientPanel();
+            this.pnlLogo = new System.Windows.Forms.Panel();
+            this.picLogo = new System.Windows.Forms.PictureBox();
+            this.lblSub = new System.Windows.Forms.Label();
+            this.lblNomeSistema = new System.Windows.Forms.Label();
+            this.lblConfiguracaoInicial = new System.Windows.Forms.Label();
+            this.lblTextoInstitucional = new System.Windows.Forms.Label();
+            this.lblRoteiro = new System.Windows.Forms.Label();
+            this.lblPasso1Numero = new System.Windows.Forms.Label();
+            this.lblPasso1Texto = new System.Windows.Forms.Label();
+            this.linhaRoteiro = new System.Windows.Forms.Panel();
+            this.lblPasso2Numero = new System.Windows.Forms.Label();
+            this.lblPasso2Texto = new System.Windows.Forms.Label();
+            this.linhaInstitucional = new System.Windows.Forms.Panel();
+            this.lblIniciativa = new System.Windows.Forms.Label();
             this.gradientPanel1 = new SUB.ElementosPersonalizados.GradientPanel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.gradientPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.gradientPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.btnFechar = new System.Windows.Forms.PictureBox();
+            this.pnlConteudo = new System.Windows.Forms.Panel();
+            this.lblTitulo = new System.Windows.Forms.Label();
+            this.lblSubtitulo = new System.Windows.Forms.Label();
+            this.lblEtapaAtual = new System.Windows.Forms.Label();
+            this.indicadorEtapa1 = new System.Windows.Forms.Panel();
+            this.indicadorEtapa2 = new System.Windows.Forms.Panel();
+            this.lblErroGeral = new System.Windows.Forms.Label();
+            this.pnlEtapa1 = new System.Windows.Forms.Panel();
+            this.lblTituloEtapa1 = new System.Windows.Forms.Label();
+            this.lblNomeInstituicao = new System.Windows.Forms.Label();
+            this._nomeInstituicao = new RoundedTextBox();
+            this.lblErroNomeInstituicao = new System.Windows.Forms.Label();
+            this.lblTema = new System.Windows.Forms.Label();
+            this._tema = new RoundedComboBox();
+            this._visualizadorCor = new System.Windows.Forms.Panel();
+            this.lblErroTema = new System.Windows.Forms.Label();
+            this.btnAvancar = new CustomButton();
+            this.pnlEtapa2 = new System.Windows.Forms.Panel();
+            this.lblTituloEtapa2 = new System.Windows.Forms.Label();
+            this.lblNomeBibliotecaria = new System.Windows.Forms.Label();
+            this._nomeBibliotecaria = new RoundedTextBox();
+            this.lblErroNomeBibliotecaria = new System.Windows.Forms.Label();
+            this.lblEmailBibliotecaria = new System.Windows.Forms.Label();
+            this._emailBibliotecaria = new RoundedTextBox();
+            this.lblAuxiliarEmail = new System.Windows.Forms.Label();
+            this.lblErroEmailBibliotecaria = new System.Windows.Forms.Label();
+            this.lblTelefoneBibliotecaria = new System.Windows.Forms.Label();
+            this._telefoneBibliotecaria = new RoundedTextBox();
+            this.lblErroTelefoneBibliotecaria = new System.Windows.Forms.Label();
+            this.lblSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this._senhaBibliotecaria = new RoundedTextBox();
+            this.lblErroSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this.lblConfirmarSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this._confirmarSenhaBibliotecaria = new RoundedTextBox();
+            this.lblErroConfirmarSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this.chkMostrarSenhas = new System.Windows.Forms.CheckBox();
+            this.pnlCodigoRecuperacao = new System.Windows.Forms.Panel();
+            this.lblCodigoTitulo = new System.Windows.Forms.Label();
+            this.lblCodigoAuxiliar = new System.Windows.Forms.Label();
+            this._codigoMestre = new System.Windows.Forms.TextBox();
+            this.exportarCodigo = new System.Windows.Forms.Button();
+            this.statusCodigo = new System.Windows.Forms.Label();
+            this.btnVoltar = new System.Windows.Forms.Button();
+            this.salvar = new CustomButton();
+            this.pnlInstitucional.SuspendLayout();
+            this.pnlLogo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).BeginInit();
+            this.pnlConteudo.SuspendLayout();
+            this.pnlEtapa1.SuspendLayout();
+            this.pnlEtapa2.SuspendLayout();
+            this.pnlCodigoRecuperacao.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblApresentacao
-            // 
-            this.lblApresentacao.BackColor = System.Drawing.Color.Transparent;
-            this.lblApresentacao.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblApresentacao.ForeColor = System.Drawing.Color.White;
-            this.lblApresentacao.Location = new System.Drawing.Point(45, 52);
-            this.lblApresentacao.Name = "lblApresentacao";
-            this.lblApresentacao.Size = new System.Drawing.Size(297, 45);
-            this.lblApresentacao.TabIndex = 28;
-            this.lblApresentacao.Text = "Apresentamos o SUB:";
-            this.lblApresentacao.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // salvar
-            // 
-            this.salvar.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.salvar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.salvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.salvar.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.salvar.ForeColor = System.Drawing.Color.White;
-            this.salvar.Location = new System.Drawing.Point(180, 621);
-            this.salvar.Name = "salvar";
-            this.salvar.Size = new System.Drawing.Size(216, 42);
-            this.salvar.TabIndex = 20;
-            this.salvar.Text = "Concluir configuração";
-            this.salvar.UseVisualStyleBackColor = false;
-            this.salvar.Click += new System.EventHandler(this.salvar_Click);
-            // 
-            // gradientPanel
-            // 
-            this.gradientPanel.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.gradientPanel.BorderRadius = 10;
-            this.gradientPanel.Controls.Add(this.label1);
-            this.gradientPanel.Controls.Add(this._visualizadorCor);
-            this.gradientPanel.Controls.Add(this.panel8);
-            this.gradientPanel.Controls.Add(this.panel7);
-            this.gradientPanel.Controls.Add(this._codigoMestre);
-            this.gradientPanel.Controls.Add(this.panel6);
-            this.gradientPanel.Controls.Add(this.salvar);
-            this.gradientPanel.Controls.Add(this.panel5);
-            this.gradientPanel.Controls.Add(this.statusCodigo);
-            this.gradientPanel.Controls.Add(this.panel4);
-            this.gradientPanel.Controls.Add(this.exportarCodigo);
-            this.gradientPanel.Controls.Add(this.panel3);
-            this.gradientPanel.Controls.Add(this.lblCodigoMestre);
-            this.gradientPanel.Controls.Add(this.panel1);
-            this.gradientPanel.Controls.Add(this._confirmarSenhaBibliotecaria);
-            this.gradientPanel.Controls.Add(this.panel2);
-            this.gradientPanel.Controls.Add(this.lblConfirmarSenhaBibliotecaria);
-            this.gradientPanel.Controls.Add(this._senhaBibliotecaria);
-            this.gradientPanel.Controls.Add(this.lblNomeInstituicao);
-            this.gradientPanel.Controls.Add(this.lblSenhaBibliotecaria);
-            this.gradientPanel.Controls.Add(this._nomeInstituicao);
-            this.gradientPanel.Controls.Add(this._telefoneBibliotecaria);
-            this.gradientPanel.Controls.Add(this.lblTema);
-            this.gradientPanel.Controls.Add(this.lblTelefoneBibliotecaria);
-            this.gradientPanel.Controls.Add(this._tema);
-            this.gradientPanel.Controls.Add(this.lblEmailBibliotecaria);
-            this.gradientPanel.Controls.Add(this._nomeBibliotecaria);
-            this.gradientPanel.Controls.Add(this.lblNomeBibliotecaria);
-            this.gradientPanel.Controls.Add(this._emailBibliotecaria);
-            this.gradientPanel.Gradientebottom = System.Drawing.Color.WhiteSmoke;
-            this.gradientPanel.Gradientetop = System.Drawing.Color.WhiteSmoke;
-            this.gradientPanel.Location = new System.Drawing.Point(409, 28);
-            this.gradientPanel.Name = "gradientPanel";
-            this.gradientPanel.Size = new System.Drawing.Size(555, 696);
-            this.gradientPanel.TabIndex = 27;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(53, 37);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(444, 32);
-            this.label1.TabIndex = 27;
-            this.label1.Text = "Configure o sistema para a sua instituição:";
-            // 
-            // _visualizadorCor
-            // 
-            this._visualizadorCor.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._visualizadorCor.Location = new System.Drawing.Point(444, 185);
-            this._visualizadorCor.Name = "_visualizadorCor";
-            this._visualizadorCor.Size = new System.Drawing.Size(61, 31);
-            this._visualizadorCor.TabIndex = 5;
-            // 
-            // panel8
-            // 
-            this.panel8.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel8.Location = new System.Drawing.Point(58, 210);
-            this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(367, 2);
-            this.panel8.TabIndex = 23;
-            // 
-            // panel7
-            // 
-            this.panel7.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel7.Location = new System.Drawing.Point(58, 550);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(447, 2);
-            this.panel7.TabIndex = 26;
-            // 
-            // _codigoMestre
-            // 
-            this._codigoMestre.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._codigoMestre.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._codigoMestre.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._codigoMestre.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._codigoMestre.Location = new System.Drawing.Point(58, 531);
-            this._codigoMestre.Name = "_codigoMestre";
-            this._codigoMestre.ReadOnly = true;
-            this._codigoMestre.Size = new System.Drawing.Size(447, 19);
-            this._codigoMestre.TabIndex = 17;
-            // 
-            // panel6
-            // 
-            this.panel6.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel6.Location = new System.Drawing.Point(295, 466);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(210, 2);
-            this.panel6.TabIndex = 25;
-            // 
-            // panel5
-            // 
-            this.panel5.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel5.Location = new System.Drawing.Point(58, 464);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(210, 2);
-            this.panel5.TabIndex = 24;
-            // 
-            // statusCodigo
-            // 
-            this.statusCodigo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.statusCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold);
-            this.statusCodigo.ForeColor = System.Drawing.Color.DarkRed;
-            this.statusCodigo.Location = new System.Drawing.Point(55, 555);
-            this.statusCodigo.Name = "statusCodigo";
-            this.statusCodigo.Size = new System.Drawing.Size(222, 17);
-            this.statusCodigo.TabIndex = 19;
-            this.statusCodigo.Text = "Ainda não exportado";
-            // 
-            // panel4
-            // 
-            this.panel4.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel4.Location = new System.Drawing.Point(58, 396);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(447, 2);
-            this.panel4.TabIndex = 24;
-            // 
-            // exportarCodigo
-            // 
-            this.exportarCodigo.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.exportarCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.exportarCodigo.Location = new System.Drawing.Point(360, 558);
-            this.exportarCodigo.Name = "exportarCodigo";
-            this.exportarCodigo.Size = new System.Drawing.Size(145, 42);
-            this.exportarCodigo.TabIndex = 18;
-            this.exportarCodigo.Text = "Salvar arquivo...";
-            this.exportarCodigo.Click += new System.EventHandler(this.exportarCodigo_Click);
-            // 
-            // panel3
-            // 
-            this.panel3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel3.Location = new System.Drawing.Point(58, 334);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(444, 2);
-            this.panel3.TabIndex = 23;
-            // 
-            // lblCodigoMestre
-            // 
-            this.lblCodigoMestre.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblCodigoMestre.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblCodigoMestre.Location = new System.Drawing.Point(55, 493);
-            this.lblCodigoMestre.Name = "lblCodigoMestre";
-            this.lblCodigoMestre.Size = new System.Drawing.Size(238, 35);
-            this.lblCodigoMestre.TabIndex = 16;
-            this.lblCodigoMestre.Text = "Código-mestre gerado automaticamente. \r\nExporte e guarde fora deste computador:";
-            // 
-            // panel1
-            // 
-            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel1.Location = new System.Drawing.Point(58, 271);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(447, 2);
-            this.panel1.TabIndex = 22;
-            // 
-            // _confirmarSenhaBibliotecaria
-            // 
-            this._confirmarSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._confirmarSenhaBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._confirmarSenhaBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._confirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._confirmarSenhaBibliotecaria.Location = new System.Drawing.Point(295, 445);
-            this._confirmarSenhaBibliotecaria.MaxLength = 25;
-            this._confirmarSenhaBibliotecaria.Name = "_confirmarSenhaBibliotecaria";
-            this._confirmarSenhaBibliotecaria.Size = new System.Drawing.Size(210, 19);
-            this._confirmarSenhaBibliotecaria.TabIndex = 15;
-            this._confirmarSenhaBibliotecaria.UseSystemPasswordChar = true;
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel2.Location = new System.Drawing.Point(58, 140);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(447, 2);
-            this.panel2.TabIndex = 21;
-            // 
-            // lblConfirmarSenhaBibliotecaria
-            // 
-            this.lblConfirmarSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblConfirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(292, 427);
-            this.lblConfirmarSenhaBibliotecaria.Name = "lblConfirmarSenhaBibliotecaria";
-            this.lblConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(120, 17);
-            this.lblConfirmarSenhaBibliotecaria.TabIndex = 14;
-            this.lblConfirmarSenhaBibliotecaria.Text = "Confirme a senha: *";
-            // 
-            // _senhaBibliotecaria
-            // 
-            this._senhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._senhaBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._senhaBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._senhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._senhaBibliotecaria.Location = new System.Drawing.Point(58, 445);
-            this._senhaBibliotecaria.MaxLength = 25;
-            this._senhaBibliotecaria.Name = "_senhaBibliotecaria";
-            this._senhaBibliotecaria.Size = new System.Drawing.Size(210, 19);
-            this._senhaBibliotecaria.TabIndex = 13;
-            this._senhaBibliotecaria.UseSystemPasswordChar = true;
-            // 
-            // lblNomeInstituicao
-            // 
-            this.lblNomeInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblNomeInstituicao.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblNomeInstituicao.Location = new System.Drawing.Point(55, 104);
-            this.lblNomeInstituicao.Name = "lblNomeInstituicao";
-            this.lblNomeInstituicao.Size = new System.Drawing.Size(238, 15);
-            this.lblNomeInstituicao.TabIndex = 1;
-            this.lblNomeInstituicao.Text = "Nome da instituição: *";
-            // 
-            // lblSenhaBibliotecaria
-            // 
-            this.lblSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblSenhaBibliotecaria.Location = new System.Drawing.Point(55, 427);
-            this.lblSenhaBibliotecaria.Name = "lblSenhaBibliotecaria";
-            this.lblSenhaBibliotecaria.Size = new System.Drawing.Size(171, 17);
-            this.lblSenhaBibliotecaria.TabIndex = 12;
-            this.lblSenhaBibliotecaria.Text = "Senha (6 a 25 caracteres): *";
-            // 
-            // _nomeInstituicao
-            // 
-            this._nomeInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._nomeInstituicao.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._nomeInstituicao.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._nomeInstituicao.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._nomeInstituicao.Location = new System.Drawing.Point(58, 122);
-            this._nomeInstituicao.Name = "_nomeInstituicao";
-            this._nomeInstituicao.Size = new System.Drawing.Size(447, 19);
-            this._nomeInstituicao.TabIndex = 2;
-            // 
-            // _telefoneBibliotecaria
-            // 
-            this._telefoneBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._telefoneBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._telefoneBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._telefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._telefoneBibliotecaria.Location = new System.Drawing.Point(58, 379);
-            this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
-            this._telefoneBibliotecaria.Size = new System.Drawing.Size(447, 19);
-            this._telefoneBibliotecaria.TabIndex = 11;
-            // 
-            // lblTema
-            // 
-            this.lblTema.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblTema.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblTema.Location = new System.Drawing.Point(55, 167);
-            this.lblTema.Name = "lblTema";
-            this.lblTema.Size = new System.Drawing.Size(222, 15);
-            this.lblTema.TabIndex = 3;
-            this.lblTema.Text = "Tema da interface: *";
-            // 
-            // lblTelefoneBibliotecaria
-            // 
-            this.lblTelefoneBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblTelefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblTelefoneBibliotecaria.Location = new System.Drawing.Point(55, 359);
-            this.lblTelefoneBibliotecaria.Name = "lblTelefoneBibliotecaria";
-            this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(63, 17);
-            this.lblTelefoneBibliotecaria.TabIndex = 10;
-            this.lblTelefoneBibliotecaria.Text = "Telefone: *";
-            // 
-            // _tema
-            // 
-            this._tema.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._tema.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._tema.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._tema.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._tema.Location = new System.Drawing.Point(58, 185);
-            this._tema.Name = "_tema";
-            this._tema.Size = new System.Drawing.Size(367, 27);
-            this._tema.TabIndex = 4;
-            // 
-            // lblEmailBibliotecaria
-            // 
-            this.lblEmailBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblEmailBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblEmailBibliotecaria.Location = new System.Drawing.Point(55, 296);
-            this.lblEmailBibliotecaria.Name = "lblEmailBibliotecaria";
-            this.lblEmailBibliotecaria.Size = new System.Drawing.Size(113, 17);
-            this.lblEmailBibliotecaria.TabIndex = 8;
-            this.lblEmailBibliotecaria.Text = "E-mail para login: *";
-            // 
-            // _nomeBibliotecaria
-            // 
-            this._nomeBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._nomeBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._nomeBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._nomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._nomeBibliotecaria.Location = new System.Drawing.Point(58, 250);
-            this._nomeBibliotecaria.Name = "_nomeBibliotecaria";
-            this._nomeBibliotecaria.Size = new System.Drawing.Size(447, 19);
-            this._nomeBibliotecaria.TabIndex = 7;
-            // 
-            // lblNomeBibliotecaria
-            // 
-            this.lblNomeBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.lblNomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
-            this.lblNomeBibliotecaria.Location = new System.Drawing.Point(55, 232);
-            this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
-            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(295, 15);
-            this.lblNomeBibliotecaria.TabIndex = 6;
-            this.lblNomeBibliotecaria.Text = "Nome da primeira bibliotecária: *";
-            // 
-            // _emailBibliotecaria
-            // 
-            this._emailBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this._emailBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
-            this._emailBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._emailBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
-            this._emailBibliotecaria.Location = new System.Drawing.Point(58, 316);
-            this._emailBibliotecaria.Name = "_emailBibliotecaria";
-            this._emailBibliotecaria.Size = new System.Drawing.Size(447, 19);
-            this._emailBibliotecaria.TabIndex = 9;
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(55, 121);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(275, 28);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "Sistema Único Bibliotecário";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureBox1.Image = global::SUB.Properties.Resources.icons8_x_20;
-            this.pictureBox1.Location = new System.Drawing.Point(978, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(20, 20);
-            this.pictureBox1.TabIndex = 29;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // pnlInstitucional
+            // 
+            this.pnlInstitucional.BorderRadius = 0;
+            this.pnlInstitucional.Controls.Add(this.pnlLogo);
+            this.pnlInstitucional.Controls.Add(this.lblSub);
+            this.pnlInstitucional.Controls.Add(this.lblNomeSistema);
+            this.pnlInstitucional.Controls.Add(this.lblConfiguracaoInicial);
+            this.pnlInstitucional.Controls.Add(this.lblTextoInstitucional);
+            this.pnlInstitucional.Controls.Add(this.lblRoteiro);
+            this.pnlInstitucional.Controls.Add(this.lblPasso1Numero);
+            this.pnlInstitucional.Controls.Add(this.lblPasso1Texto);
+            this.pnlInstitucional.Controls.Add(this.linhaRoteiro);
+            this.pnlInstitucional.Controls.Add(this.lblPasso2Numero);
+            this.pnlInstitucional.Controls.Add(this.lblPasso2Texto);
+            this.pnlInstitucional.Controls.Add(this.linhaInstitucional);
+            this.pnlInstitucional.Controls.Add(this.lblIniciativa);
+            this.pnlInstitucional.Controls.Add(this.gradientPanel1);
+            this.pnlInstitucional.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlInstitucional.Gradientebottom = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(87)))), ((int)(((byte)(174)))));
+            this.pnlInstitucional.Gradientetop = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.pnlInstitucional.Location = new System.Drawing.Point(0, 0);
+            this.pnlInstitucional.Name = "pnlInstitucional";
+            this.pnlInstitucional.Size = new System.Drawing.Size(365, 750);
+            this.pnlInstitucional.TabIndex = 2;
+            // 
+            // pnlLogo
+            // 
+            this.pnlLogo.BackColor = System.Drawing.Color.White;
+            this.pnlLogo.Controls.Add(this.picLogo);
+            this.pnlLogo.Location = new System.Drawing.Point(40, 40);
+            this.pnlLogo.Name = "pnlLogo";
+            this.pnlLogo.Size = new System.Drawing.Size(84, 84);
+            this.pnlLogo.TabIndex = 0;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogo.Image = global::SUB.Properties.Resources.sub_200x200px;
+            this.picLogo.Location = new System.Drawing.Point(0, 0);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Padding = new System.Windows.Forms.Padding(4);
+            this.picLogo.Size = new System.Drawing.Size(84, 84);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 0;
+            this.picLogo.TabStop = false;
+            // 
+            // lblSub
+            // 
+            this.lblSub.BackColor = System.Drawing.Color.Transparent;
+            this.lblSub.Font = new System.Drawing.Font("Segoe UI", 22F, System.Drawing.FontStyle.Bold);
+            this.lblSub.ForeColor = System.Drawing.Color.White;
+            this.lblSub.Location = new System.Drawing.Point(142, 40);
+            this.lblSub.Name = "lblSub";
+            this.lblSub.Size = new System.Drawing.Size(180, 44);
+            this.lblSub.TabIndex = 1;
+            this.lblSub.Text = "SUB";
+            this.lblSub.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblNomeSistema
+            // 
+            this.lblNomeSistema.BackColor = System.Drawing.Color.Transparent;
+            this.lblNomeSistema.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lblNomeSistema.ForeColor = System.Drawing.Color.White;
+            this.lblNomeSistema.Location = new System.Drawing.Point(145, 80);
+            this.lblNomeSistema.Name = "lblNomeSistema";
+            this.lblNomeSistema.Size = new System.Drawing.Size(180, 44);
+            this.lblNomeSistema.TabIndex = 2;
+            this.lblNomeSistema.Text = "Sistema Único Bibliotecário";
+            // 
+            // lblConfiguracaoInicial
+            // 
+            this.lblConfiguracaoInicial.BackColor = System.Drawing.Color.Transparent;
+            this.lblConfiguracaoInicial.Font = new System.Drawing.Font("Segoe UI", 21F, System.Drawing.FontStyle.Bold);
+            this.lblConfiguracaoInicial.ForeColor = System.Drawing.Color.White;
+            this.lblConfiguracaoInicial.Location = new System.Drawing.Point(40, 175);
+            this.lblConfiguracaoInicial.Name = "lblConfiguracaoInicial";
+            this.lblConfiguracaoInicial.Size = new System.Drawing.Size(285, 77);
+            this.lblConfiguracaoInicial.TabIndex = 3;
+            this.lblConfiguracaoInicial.Text = "Vamos preparar sua biblioteca";
+            this.lblConfiguracaoInicial.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblTextoInstitucional
+            // 
+            this.lblTextoInstitucional.BackColor = System.Drawing.Color.Transparent;
+            this.lblTextoInstitucional.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.lblTextoInstitucional.ForeColor = System.Drawing.Color.White;
+            this.lblTextoInstitucional.Location = new System.Drawing.Point(40, 274);
+            this.lblTextoInstitucional.Name = "lblTextoInstitucional";
+            this.lblTextoInstitucional.Size = new System.Drawing.Size(285, 70);
+            this.lblTextoInstitucional.TabIndex = 4;
+            this.lblTextoInstitucional.Text = "Prepare o ambiente da sua instituição para organizar acervo, usuários e empréstim" +
+    "os em um único sistema.";
+            // 
+            // lblRoteiro
+            // 
+            this.lblRoteiro.AutoSize = true;
+            this.lblRoteiro.BackColor = System.Drawing.Color.Transparent;
+            this.lblRoteiro.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblRoteiro.ForeColor = System.Drawing.Color.White;
+            this.lblRoteiro.Location = new System.Drawing.Point(40, 372);
+            this.lblRoteiro.Name = "lblRoteiro";
+            this.lblRoteiro.Size = new System.Drawing.Size(166, 15);
+            this.lblRoteiro.TabIndex = 5;
+            this.lblRoteiro.Text = "ROTEIRO DE CONFIGURAÇÃO";
+            // 
+            // lblPasso1Numero
+            // 
+            this.lblPasso1Numero.BackColor = System.Drawing.Color.White;
+            this.lblPasso1Numero.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblPasso1Numero.Location = new System.Drawing.Point(40, 408);
+            this.lblPasso1Numero.Name = "lblPasso1Numero";
+            this.lblPasso1Numero.Size = new System.Drawing.Size(28, 28);
+            this.lblPasso1Numero.TabIndex = 6;
+            this.lblPasso1Numero.Text = "1";
+            this.lblPasso1Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPasso1Texto
+            // 
+            this.lblPasso1Texto.BackColor = System.Drawing.Color.Transparent;
+            this.lblPasso1Texto.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lblPasso1Texto.ForeColor = System.Drawing.Color.White;
+            this.lblPasso1Texto.Location = new System.Drawing.Point(82, 405);
+            this.lblPasso1Texto.Name = "lblPasso1Texto";
+            this.lblPasso1Texto.Size = new System.Drawing.Size(220, 34);
+            this.lblPasso1Texto.TabIndex = 7;
+            this.lblPasso1Texto.Text = "Instituição e identidade visual";
+            this.lblPasso1Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // linhaRoteiro
+            // 
+            this.linhaRoteiro.BackColor = System.Drawing.Color.White;
+            this.linhaRoteiro.Location = new System.Drawing.Point(53, 436);
+            this.linhaRoteiro.Name = "linhaRoteiro";
+            this.linhaRoteiro.Size = new System.Drawing.Size(2, 48);
+            this.linhaRoteiro.TabIndex = 8;
+            // 
+            // lblPasso2Numero
+            // 
+            this.lblPasso2Numero.BackColor = System.Drawing.Color.White;
+            this.lblPasso2Numero.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblPasso2Numero.Location = new System.Drawing.Point(40, 484);
+            this.lblPasso2Numero.Name = "lblPasso2Numero";
+            this.lblPasso2Numero.Size = new System.Drawing.Size(28, 28);
+            this.lblPasso2Numero.TabIndex = 9;
+            this.lblPasso2Numero.Text = "2";
+            this.lblPasso2Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPasso2Texto
+            // 
+            this.lblPasso2Texto.BackColor = System.Drawing.Color.Transparent;
+            this.lblPasso2Texto.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPasso2Texto.ForeColor = System.Drawing.Color.White;
+            this.lblPasso2Texto.Location = new System.Drawing.Point(82, 481);
+            this.lblPasso2Texto.Name = "lblPasso2Texto";
+            this.lblPasso2Texto.Size = new System.Drawing.Size(220, 34);
+            this.lblPasso2Texto.TabIndex = 10;
+            this.lblPasso2Texto.Text = "Acesso da primeira bibliotecária";
+            this.lblPasso2Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // linhaInstitucional
+            // 
+            this.linhaInstitucional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.linhaInstitucional.Location = new System.Drawing.Point(54, 631);
+            this.linhaInstitucional.Name = "linhaInstitucional";
+            this.linhaInstitucional.Size = new System.Drawing.Size(256, 1);
+            this.linhaInstitucional.TabIndex = 5;
+            // 
+            // lblIniciativa
+            // 
+            this.lblIniciativa.BackColor = System.Drawing.Color.Transparent;
+            this.lblIniciativa.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblIniciativa.ForeColor = System.Drawing.Color.White;
+            this.lblIniciativa.Location = new System.Drawing.Point(42, 646);
+            this.lblIniciativa.Name = "lblIniciativa";
+            this.lblIniciativa.Size = new System.Drawing.Size(280, 30);
+            this.lblIniciativa.TabIndex = 6;
+            this.lblIniciativa.Text = "Uma iniciativa da SEE/MG";
+            this.lblIniciativa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // gradientPanel1
             // 
-            this.gradientPanel1.BackColor = System.Drawing.Color.White;
-            this.gradientPanel1.BorderRadius = 20;
-            this.gradientPanel1.Controls.Add(this.pictureBox2);
+            this.gradientPanel1.BackColor = System.Drawing.Color.Transparent;
+            this.gradientPanel1.BorderRadius = 0;
             this.gradientPanel1.Gradientebottom = System.Drawing.Color.White;
-            this.gradientPanel1.Gradientetop = System.Drawing.Color.White;
-            this.gradientPanel1.Location = new System.Drawing.Point(79, 168);
+            this.gradientPanel1.Gradientetop = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(226, 225);
-            this.gradientPanel1.TabIndex = 30;
+            this.gradientPanel1.Size = new System.Drawing.Size(1, 1);
+            this.gradientPanel1.TabIndex = 7;
+            this.gradientPanel1.Visible = false;
             // 
-            // pictureBox2
+            // btnFechar
             // 
-            this.pictureBox2.Image = global::SUB.Properties.Resources.sub_200x200px;
-            this.pictureBox2.Location = new System.Drawing.Point(14, 13);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(200, 200);
-            this.pictureBox2.TabIndex = 0;
-            this.pictureBox2.TabStop = false;
+            this.btnFechar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFechar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFechar.Image = global::SUB.Properties.Resources.icons8_x_20;
+            this.btnFechar.Location = new System.Drawing.Point(975, 0);
+            this.btnFechar.Name = "btnFechar";
+            this.btnFechar.Size = new System.Drawing.Size(25, 25);
+            this.btnFechar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btnFechar.TabIndex = 0;
+            this.btnFechar.TabStop = false;
+            this.btnFechar.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // label3
+            // pnlConteudo
             // 
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(47, 439);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(297, 163);
-            this.label3.TabIndex = 31;
-            this.label3.Text = "Desenvolvido em parceria com a SEEMG para toda rede estudal de ensino";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pnlConteudo.BackColor = System.Drawing.Color.White;
+            this.pnlConteudo.Controls.Add(this.lblTitulo);
+            this.pnlConteudo.Controls.Add(this.lblSubtitulo);
+            this.pnlConteudo.Controls.Add(this.lblEtapaAtual);
+            this.pnlConteudo.Controls.Add(this.indicadorEtapa1);
+            this.pnlConteudo.Controls.Add(this.indicadorEtapa2);
+            this.pnlConteudo.Controls.Add(this.lblErroGeral);
+            this.pnlConteudo.Controls.Add(this.pnlEtapa1);
+            this.pnlConteudo.Controls.Add(this.pnlEtapa2);
+            this.pnlConteudo.Location = new System.Drawing.Point(397, 27);
+            this.pnlConteudo.Name = "pnlConteudo";
+            this.pnlConteudo.Size = new System.Drawing.Size(574, 696);
+            this.pnlConteudo.TabIndex = 1;
+            // 
+            // lblTitulo
+            // 
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 24F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this.lblTitulo.Location = new System.Drawing.Point(38, 24);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(269, 45);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "Configure o SUB";
+            // 
+            // lblSubtitulo
+            // 
+            this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(101)))), ((int)(((byte)(115)))));
+            this.lblSubtitulo.Location = new System.Drawing.Point(42, 72);
+            this.lblSubtitulo.Name = "lblSubtitulo";
+            this.lblSubtitulo.Size = new System.Drawing.Size(380, 24);
+            this.lblSubtitulo.TabIndex = 1;
+            this.lblSubtitulo.Text = "Informe os dados iniciais da sua instituição.";
+            // 
+            // lblEtapaAtual
+            // 
+            this.lblEtapaAtual.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblEtapaAtual.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.lblEtapaAtual.Location = new System.Drawing.Point(421, 39);
+            this.lblEtapaAtual.Name = "lblEtapaAtual";
+            this.lblEtapaAtual.Size = new System.Drawing.Size(112, 22);
+            this.lblEtapaAtual.TabIndex = 2;
+            this.lblEtapaAtual.Text = "Etapa 1 de 2";
+            this.lblEtapaAtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // indicadorEtapa1
+            // 
+            this.indicadorEtapa1.Location = new System.Drawing.Point(42, 108);
+            this.indicadorEtapa1.Name = "indicadorEtapa1";
+            this.indicadorEtapa1.Size = new System.Drawing.Size(238, 5);
+            this.indicadorEtapa1.TabIndex = 3;
+            // 
+            // indicadorEtapa2
+            // 
+            this.indicadorEtapa2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(227)))), ((int)(((byte)(234)))));
+            this.indicadorEtapa2.Location = new System.Drawing.Point(286, 108);
+            this.indicadorEtapa2.Name = "indicadorEtapa2";
+            this.indicadorEtapa2.Size = new System.Drawing.Size(247, 5);
+            this.indicadorEtapa2.TabIndex = 4;
+            // 
+            // lblErroGeral
+            // 
+            this.lblErroGeral.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(242)))), ((int)(((byte)(242)))));
+            this.lblErroGeral.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblErroGeral.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
+            this.lblErroGeral.Location = new System.Drawing.Point(42, 119);
+            this.lblErroGeral.Name = "lblErroGeral";
+            this.lblErroGeral.Padding = new System.Windows.Forms.Padding(8, 3, 8, 3);
+            this.lblErroGeral.Size = new System.Drawing.Size(491, 34);
+            this.lblErroGeral.TabIndex = 5;
+            this.lblErroGeral.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblErroGeral.Visible = false;
+            // 
+            // pnlEtapa1
+            // 
+            this.pnlEtapa1.Controls.Add(this.lblTituloEtapa1);
+            this.pnlEtapa1.Controls.Add(this.lblNomeInstituicao);
+            this.pnlEtapa1.Controls.Add(this._nomeInstituicao);
+            this.pnlEtapa1.Controls.Add(this.lblErroNomeInstituicao);
+            this.pnlEtapa1.Controls.Add(this.lblTema);
+            this.pnlEtapa1.Controls.Add(this._tema);
+            this.pnlEtapa1.Controls.Add(this._visualizadorCor);
+            this.pnlEtapa1.Controls.Add(this.lblErroTema);
+            this.pnlEtapa1.Controls.Add(this.btnAvancar);
+            this.pnlEtapa1.Location = new System.Drawing.Point(42, 153);
+            this.pnlEtapa1.Name = "pnlEtapa1";
+            this.pnlEtapa1.Size = new System.Drawing.Size(491, 517);
+            this.pnlEtapa1.TabIndex = 6;
+            // 
+            // lblTituloEtapa1
+            // 
+            this.lblTituloEtapa1.Font = new System.Drawing.Font("Segoe UI Semibold", 15F, System.Drawing.FontStyle.Bold);
+            this.lblTituloEtapa1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this.lblTituloEtapa1.Location = new System.Drawing.Point(0, 12);
+            this.lblTituloEtapa1.Name = "lblTituloEtapa1";
+            this.lblTituloEtapa1.Size = new System.Drawing.Size(420, 32);
+            this.lblTituloEtapa1.TabIndex = 0;
+            this.lblTituloEtapa1.Text = "Instituição e tema";
+            // 
+            // lblNomeInstituicao
+            // 
+            this.lblNomeInstituicao.AutoSize = true;
+            this.lblNomeInstituicao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblNomeInstituicao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblNomeInstituicao.Location = new System.Drawing.Point(0, 73);
+            this.lblNomeInstituicao.Name = "lblNomeInstituicao";
+            this.lblNomeInstituicao.Size = new System.Drawing.Size(140, 17);
+            this.lblNomeInstituicao.TabIndex = 1;
+            this.lblNomeInstituicao.Text = "Nome da instituição *";
+            // 
+            // _nomeInstituicao
+            // 
+            this._nomeInstituicao.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._nomeInstituicao.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._nomeInstituicao.BackColor = System.Drawing.Color.White;
+            this._nomeInstituicao.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._nomeInstituicao.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._nomeInstituicao.BorderRadius = 8;
+            this._nomeInstituicao.BorderThickness = 1;
+            this._nomeInstituicao.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._nomeInstituicao.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._nomeInstituicao.Location = new System.Drawing.Point(3, 96);
+            this._nomeInstituicao.Name = "_nomeInstituicao";
+            this._nomeInstituicao.PlaceholderColor = System.Drawing.Color.Gray;
+            this._nomeInstituicao.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._nomeInstituicao.PlaceholderMarginLeft = 12;
+            this._nomeInstituicao.PlaceholderText = "Ex.: Escola Estadual...";
+            this._nomeInstituicao.SelectedText = "";
+            this._nomeInstituicao.SelectionLength = 0;
+            this._nomeInstituicao.SelectionStart = 0;
+            this._nomeInstituicao.Size = new System.Drawing.Size(485, 34);
+            this._nomeInstituicao.TabIndex = 0;
+            this._nomeInstituicao.TextColor = System.Drawing.Color.Black;
+            this._nomeInstituicao.UseSystemPasswordChar = false;
+            // 
+            // lblErroNomeInstituicao
+            // 
+            this.lblErroNomeInstituicao.AutoEllipsis = true;
+            this.lblErroNomeInstituicao.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroNomeInstituicao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroNomeInstituicao.Location = new System.Drawing.Point(2, 132);
+            this.lblErroNomeInstituicao.Name = "lblErroNomeInstituicao";
+            this.lblErroNomeInstituicao.Size = new System.Drawing.Size(485, 17);
+            this.lblErroNomeInstituicao.TabIndex = 2;
+            this.lblErroNomeInstituicao.Visible = false;
+            // 
+            // lblTema
+            // 
+            this.lblTema.AutoSize = true;
+            this.lblTema.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblTema.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblTema.Location = new System.Drawing.Point(0, 155);
+            this.lblTema.Name = "lblTema";
+            this.lblTema.Size = new System.Drawing.Size(120, 17);
+            this.lblTema.TabIndex = 3;
+            this.lblTema.Text = "Tema do sistema *";
+            // 
+            // _tema
+            // 
+            this._tema.BackColor = System.Drawing.Color.White;
+            this._tema.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._tema.BorderRadius = 8;
+            this._tema.BorderThickness = 1;
+            this._tema.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this._tema.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._tema.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._tema.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._tema.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this._tema.ItemsFont = new System.Drawing.Font("Segoe UI", 10F);
+            this._tema.Location = new System.Drawing.Point(3, 178);
+            this._tema.Name = "_tema";
+            this._tema.PlaceholderFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic);
+            this._tema.PlaceholderMargin = 10;
+            this._tema.PlaceholderText = "Selecione...";
+            this._tema.Size = new System.Drawing.Size(421, 27);
+            this._tema.TabIndex = 1;
+            // 
+            // _visualizadorCor
+            // 
+            this._visualizadorCor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._visualizadorCor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._visualizadorCor.Location = new System.Drawing.Point(438, 170);
+            this._visualizadorCor.Name = "_visualizadorCor";
+            this._visualizadorCor.Size = new System.Drawing.Size(51, 42);
+            this._visualizadorCor.TabIndex = 4;
+            // 
+            // lblErroTema
+            // 
+            this.lblErroTema.AutoEllipsis = true;
+            this.lblErroTema.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroTema.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroTema.Location = new System.Drawing.Point(1, 205);
+            this.lblErroTema.Name = "lblErroTema";
+            this.lblErroTema.Size = new System.Drawing.Size(423, 17);
+            this.lblErroTema.TabIndex = 5;
+            this.lblErroTema.Visible = false;
+            // 
+            // btnAvancar
+            // 
+            this.btnAvancar.BackgroundColor = System.Drawing.Color.Empty;
+            this.btnAvancar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.btnAvancar.BorderColor = System.Drawing.Color.Empty;
+            this.btnAvancar.BorderThickness = 0;
+            this.btnAvancar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAvancar.FlatAppearance.BorderSize = 0;
+            this.btnAvancar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnAvancar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnAvancar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAvancar.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
+            this.btnAvancar.ForeColor = System.Drawing.Color.White;
+            this.btnAvancar.HoverColor = System.Drawing.Color.Empty;
+            this.btnAvancar.Location = new System.Drawing.Point(313, 458);
+            this.btnAvancar.Name = "btnAvancar";
+            this.btnAvancar.PressedColor = System.Drawing.Color.Empty;
+            this.btnAvancar.ShowBorder = false;
+            this.btnAvancar.Size = new System.Drawing.Size(175, 44);
+            this.btnAvancar.TabIndex = 2;
+            this.btnAvancar.Text = "Avançar";
+            this.btnAvancar.Click += new System.EventHandler(this.btnAvancar_Click);
+            // 
+            // pnlEtapa2
+            // 
+            this.pnlEtapa2.Controls.Add(this.lblTituloEtapa2);
+            this.pnlEtapa2.Controls.Add(this.lblNomeBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this._nomeBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblErroNomeBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblEmailBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this._emailBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblAuxiliarEmail);
+            this.pnlEtapa2.Controls.Add(this.lblErroEmailBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblTelefoneBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this._telefoneBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblErroTelefoneBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblSenhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this._senhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblErroSenhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblConfirmarSenhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this._confirmarSenhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.lblErroConfirmarSenhaBibliotecaria);
+            this.pnlEtapa2.Controls.Add(this.chkMostrarSenhas);
+            this.pnlEtapa2.Controls.Add(this.pnlCodigoRecuperacao);
+            this.pnlEtapa2.Controls.Add(this.btnVoltar);
+            this.pnlEtapa2.Controls.Add(this.salvar);
+            this.pnlEtapa2.Location = new System.Drawing.Point(42, 153);
+            this.pnlEtapa2.Name = "pnlEtapa2";
+            this.pnlEtapa2.Size = new System.Drawing.Size(491, 517);
+            this.pnlEtapa2.TabIndex = 7;
+            this.pnlEtapa2.Visible = false;
+            // 
+            // lblTituloEtapa2
+            // 
+            this.lblTituloEtapa2.Font = new System.Drawing.Font("Segoe UI Semibold", 15F, System.Drawing.FontStyle.Bold);
+            this.lblTituloEtapa2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this.lblTituloEtapa2.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloEtapa2.Name = "lblTituloEtapa2";
+            this.lblTituloEtapa2.Size = new System.Drawing.Size(460, 30);
+            this.lblTituloEtapa2.TabIndex = 0;
+            this.lblTituloEtapa2.Text = "Acesso da primeira bibliotecária";
+            // 
+            // lblNomeBibliotecaria
+            // 
+            this.lblNomeBibliotecaria.AutoSize = true;
+            this.lblNomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblNomeBibliotecaria.Location = new System.Drawing.Point(0, 35);
+            this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(132, 15);
+            this.lblNomeBibliotecaria.TabIndex = 1;
+            this.lblNomeBibliotecaria.Text = "Nome da bibliotecária *";
+            // 
+            // _nomeBibliotecaria
+            // 
+            this._nomeBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._nomeBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._nomeBibliotecaria.BackColor = System.Drawing.Color.White;
+            this._nomeBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._nomeBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._nomeBibliotecaria.BorderRadius = 8;
+            this._nomeBibliotecaria.BorderThickness = 1;
+            this._nomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._nomeBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._nomeBibliotecaria.Location = new System.Drawing.Point(3, 54);
+            this._nomeBibliotecaria.Name = "_nomeBibliotecaria";
+            this._nomeBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
+            this._nomeBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._nomeBibliotecaria.PlaceholderMarginLeft = 12;
+            this._nomeBibliotecaria.PlaceholderText = "Nome completo";
+            this._nomeBibliotecaria.SelectedText = "";
+            this._nomeBibliotecaria.SelectionLength = 0;
+            this._nomeBibliotecaria.SelectionStart = 0;
+            this._nomeBibliotecaria.Size = new System.Drawing.Size(485, 34);
+            this._nomeBibliotecaria.TabIndex = 0;
+            this._nomeBibliotecaria.TextColor = System.Drawing.Color.Black;
+            this._nomeBibliotecaria.UseSystemPasswordChar = false;
+            // 
+            // lblErroNomeBibliotecaria
+            // 
+            this.lblErroNomeBibliotecaria.AutoEllipsis = true;
+            this.lblErroNomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroNomeBibliotecaria.Location = new System.Drawing.Point(3, 90);
+            this.lblErroNomeBibliotecaria.Name = "lblErroNomeBibliotecaria";
+            this.lblErroNomeBibliotecaria.Size = new System.Drawing.Size(485, 17);
+            this.lblErroNomeBibliotecaria.TabIndex = 2;
+            this.lblErroNomeBibliotecaria.Visible = false;
+            // 
+            // lblEmailBibliotecaria
+            // 
+            this.lblEmailBibliotecaria.AutoSize = true;
+            this.lblEmailBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblEmailBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblEmailBibliotecaria.Location = new System.Drawing.Point(0, 111);
+            this.lblEmailBibliotecaria.Name = "lblEmailBibliotecaria";
+            this.lblEmailBibliotecaria.Size = new System.Drawing.Size(133, 15);
+            this.lblEmailBibliotecaria.TabIndex = 3;
+            this.lblEmailBibliotecaria.Text = "E-mail da bibliotecária *";
+            // 
+            // _emailBibliotecaria
+            // 
+            this._emailBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._emailBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._emailBibliotecaria.BackColor = System.Drawing.Color.White;
+            this._emailBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._emailBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._emailBibliotecaria.BorderRadius = 8;
+            this._emailBibliotecaria.BorderThickness = 1;
+            this._emailBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._emailBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._emailBibliotecaria.Location = new System.Drawing.Point(3, 130);
+            this._emailBibliotecaria.Name = "_emailBibliotecaria";
+            this._emailBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
+            this._emailBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._emailBibliotecaria.PlaceholderMarginLeft = 12;
+            this._emailBibliotecaria.PlaceholderText = "nome@instituicao.gov.br";
+            this._emailBibliotecaria.SelectedText = "";
+            this._emailBibliotecaria.SelectionLength = 0;
+            this._emailBibliotecaria.SelectionStart = 0;
+            this._emailBibliotecaria.Size = new System.Drawing.Size(485, 34);
+            this._emailBibliotecaria.TabIndex = 1;
+            this._emailBibliotecaria.TextColor = System.Drawing.Color.Black;
+            this._emailBibliotecaria.UseSystemPasswordChar = false;
+            // 
+            // lblAuxiliarEmail
+            // 
+            this.lblAuxiliarEmail.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblAuxiliarEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(114)))), ((int)(((byte)(126)))));
+            this.lblAuxiliarEmail.Location = new System.Drawing.Point(3, 166);
+            this.lblAuxiliarEmail.Name = "lblAuxiliarEmail";
+            this.lblAuxiliarEmail.Size = new System.Drawing.Size(250, 16);
+            this.lblAuxiliarEmail.TabIndex = 4;
+            this.lblAuxiliarEmail.Text = "Será usado para entrar no SUB.";
+            // 
+            // lblErroEmailBibliotecaria
+            // 
+            this.lblErroEmailBibliotecaria.AutoEllipsis = true;
+            this.lblErroEmailBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroEmailBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroEmailBibliotecaria.Location = new System.Drawing.Point(255, 166);
+            this.lblErroEmailBibliotecaria.Name = "lblErroEmailBibliotecaria";
+            this.lblErroEmailBibliotecaria.Size = new System.Drawing.Size(233, 17);
+            this.lblErroEmailBibliotecaria.TabIndex = 5;
+            this.lblErroEmailBibliotecaria.Visible = false;
+            // 
+            // lblTelefoneBibliotecaria
+            // 
+            this.lblTelefoneBibliotecaria.AutoSize = true;
+            this.lblTelefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblTelefoneBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblTelefoneBibliotecaria.Location = new System.Drawing.Point(0, 191);
+            this.lblTelefoneBibliotecaria.Name = "lblTelefoneBibliotecaria";
+            this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(144, 15);
+            this.lblTelefoneBibliotecaria.TabIndex = 6;
+            this.lblTelefoneBibliotecaria.Text = "Telefone da bibliotecária *";
+            // 
+            // _telefoneBibliotecaria
+            // 
+            this._telefoneBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._telefoneBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._telefoneBibliotecaria.BackColor = System.Drawing.Color.White;
+            this._telefoneBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._telefoneBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._telefoneBibliotecaria.BorderRadius = 8;
+            this._telefoneBibliotecaria.BorderThickness = 1;
+            this._telefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._telefoneBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._telefoneBibliotecaria.Location = new System.Drawing.Point(3, 210);
+            this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
+            this._telefoneBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
+            this._telefoneBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._telefoneBibliotecaria.PlaceholderMarginLeft = 12;
+            this._telefoneBibliotecaria.PlaceholderText = "(31) 99999-9999";
+            this._telefoneBibliotecaria.SelectedText = "";
+            this._telefoneBibliotecaria.SelectionLength = 0;
+            this._telefoneBibliotecaria.SelectionStart = 0;
+            this._telefoneBibliotecaria.Size = new System.Drawing.Size(485, 34);
+            this._telefoneBibliotecaria.TabIndex = 2;
+            this._telefoneBibliotecaria.TextColor = System.Drawing.Color.Black;
+            this._telefoneBibliotecaria.UseSystemPasswordChar = false;
+            // 
+            // lblErroTelefoneBibliotecaria
+            // 
+            this.lblErroTelefoneBibliotecaria.AutoEllipsis = true;
+            this.lblErroTelefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroTelefoneBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroTelefoneBibliotecaria.Location = new System.Drawing.Point(3, 247);
+            this.lblErroTelefoneBibliotecaria.Name = "lblErroTelefoneBibliotecaria";
+            this.lblErroTelefoneBibliotecaria.Size = new System.Drawing.Size(485, 17);
+            this.lblErroTelefoneBibliotecaria.TabIndex = 7;
+            this.lblErroTelefoneBibliotecaria.Visible = false;
+            // 
+            // lblSenhaBibliotecaria
+            // 
+            this.lblSenhaBibliotecaria.AutoSize = true;
+            this.lblSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblSenhaBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblSenhaBibliotecaria.Location = new System.Drawing.Point(0, 267);
+            this.lblSenhaBibliotecaria.Name = "lblSenhaBibliotecaria";
+            this.lblSenhaBibliotecaria.Size = new System.Drawing.Size(48, 15);
+            this.lblSenhaBibliotecaria.TabIndex = 8;
+            this.lblSenhaBibliotecaria.Text = "Senha *";
+            // 
+            // _senhaBibliotecaria
+            // 
+            this._senhaBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._senhaBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._senhaBibliotecaria.BackColor = System.Drawing.Color.White;
+            this._senhaBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._senhaBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._senhaBibliotecaria.BorderRadius = 8;
+            this._senhaBibliotecaria.BorderThickness = 1;
+            this._senhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._senhaBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._senhaBibliotecaria.Location = new System.Drawing.Point(3, 286);
+            this._senhaBibliotecaria.Name = "_senhaBibliotecaria";
+            this._senhaBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
+            this._senhaBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._senhaBibliotecaria.PlaceholderMarginLeft = 12;
+            this._senhaBibliotecaria.PlaceholderText = "6 a 25 caracteres";
+            this._senhaBibliotecaria.SelectedText = "";
+            this._senhaBibliotecaria.SelectionLength = 0;
+            this._senhaBibliotecaria.SelectionStart = 0;
+            this._senhaBibliotecaria.Size = new System.Drawing.Size(235, 34);
+            this._senhaBibliotecaria.TabIndex = 3;
+            this._senhaBibliotecaria.TextColor = System.Drawing.Color.Black;
+            this._senhaBibliotecaria.UseSystemPasswordChar = true;
+            // 
+            // lblErroSenhaBibliotecaria
+            // 
+            this.lblErroSenhaBibliotecaria.AutoEllipsis = true;
+            this.lblErroSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroSenhaBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroSenhaBibliotecaria.Location = new System.Drawing.Point(3, 322);
+            this.lblErroSenhaBibliotecaria.Name = "lblErroSenhaBibliotecaria";
+            this.lblErroSenhaBibliotecaria.Size = new System.Drawing.Size(235, 17);
+            this.lblErroSenhaBibliotecaria.TabIndex = 9;
+            this.lblErroSenhaBibliotecaria.Visible = false;
+            // 
+            // lblConfirmarSenhaBibliotecaria
+            // 
+            this.lblConfirmarSenhaBibliotecaria.AutoSize = true;
+            this.lblConfirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblConfirmarSenhaBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
+            this.lblConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(250, 267);
+            this.lblConfirmarSenhaBibliotecaria.Name = "lblConfirmarSenhaBibliotecaria";
+            this.lblConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(102, 15);
+            this.lblConfirmarSenhaBibliotecaria.TabIndex = 10;
+            this.lblConfirmarSenhaBibliotecaria.Text = "Confirmar senha *";
+            // 
+            // _confirmarSenhaBibliotecaria
+            // 
+            this._confirmarSenhaBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this._confirmarSenhaBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this._confirmarSenhaBibliotecaria.BackColor = System.Drawing.Color.White;
+            this._confirmarSenhaBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
+            this._confirmarSenhaBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._confirmarSenhaBibliotecaria.BorderRadius = 8;
+            this._confirmarSenhaBibliotecaria.BorderThickness = 1;
+            this._confirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._confirmarSenhaBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._confirmarSenhaBibliotecaria.Location = new System.Drawing.Point(253, 286);
+            this._confirmarSenhaBibliotecaria.Name = "_confirmarSenhaBibliotecaria";
+            this._confirmarSenhaBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
+            this._confirmarSenhaBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._confirmarSenhaBibliotecaria.PlaceholderMarginLeft = 12;
+            this._confirmarSenhaBibliotecaria.PlaceholderText = "Repita a senha";
+            this._confirmarSenhaBibliotecaria.SelectedText = "";
+            this._confirmarSenhaBibliotecaria.SelectionLength = 0;
+            this._confirmarSenhaBibliotecaria.SelectionStart = 0;
+            this._confirmarSenhaBibliotecaria.Size = new System.Drawing.Size(235, 34);
+            this._confirmarSenhaBibliotecaria.TabIndex = 4;
+            this._confirmarSenhaBibliotecaria.TextColor = System.Drawing.Color.Black;
+            this._confirmarSenhaBibliotecaria.UseSystemPasswordChar = true;
+            // 
+            // lblErroConfirmarSenhaBibliotecaria
+            // 
+            this.lblErroConfirmarSenhaBibliotecaria.AutoEllipsis = true;
+            this.lblErroConfirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblErroConfirmarSenhaBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(253, 322);
+            this.lblErroConfirmarSenhaBibliotecaria.Name = "lblErroConfirmarSenhaBibliotecaria";
+            this.lblErroConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(235, 17);
+            this.lblErroConfirmarSenhaBibliotecaria.TabIndex = 11;
+            this.lblErroConfirmarSenhaBibliotecaria.Visible = false;
+            // 
+            // chkMostrarSenhas
+            // 
+            this.chkMostrarSenhas.AutoSize = true;
+            this.chkMostrarSenhas.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.chkMostrarSenhas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(82)))), ((int)(((byte)(94)))));
+            this.chkMostrarSenhas.Location = new System.Drawing.Point(3, 344);
+            this.chkMostrarSenhas.Name = "chkMostrarSenhas";
+            this.chkMostrarSenhas.Size = new System.Drawing.Size(106, 19);
+            this.chkMostrarSenhas.TabIndex = 5;
+            this.chkMostrarSenhas.Text = "Mostrar senhas";
+            this.chkMostrarSenhas.CheckedChanged += new System.EventHandler(this.chkMostrarSenhas_CheckedChanged);
+            // 
+            // pnlCodigoRecuperacao
+            // 
+            this.pnlCodigoRecuperacao.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(249)))), ((int)(((byte)(252)))));
+            this.pnlCodigoRecuperacao.Controls.Add(this.lblCodigoTitulo);
+            this.pnlCodigoRecuperacao.Controls.Add(this.lblCodigoAuxiliar);
+            this.pnlCodigoRecuperacao.Controls.Add(this._codigoMestre);
+            this.pnlCodigoRecuperacao.Controls.Add(this.exportarCodigo);
+            this.pnlCodigoRecuperacao.Controls.Add(this.statusCodigo);
+            this.pnlCodigoRecuperacao.Location = new System.Drawing.Point(3, 367);
+            this.pnlCodigoRecuperacao.Name = "pnlCodigoRecuperacao";
+            this.pnlCodigoRecuperacao.Size = new System.Drawing.Size(485, 104);
+            this.pnlCodigoRecuperacao.TabIndex = 12;
+            // 
+            // lblCodigoTitulo
+            // 
+            this.lblCodigoTitulo.AutoSize = true;
+            this.lblCodigoTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblCodigoTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(48)))), ((int)(((byte)(61)))));
+            this.lblCodigoTitulo.Location = new System.Drawing.Point(12, 8);
+            this.lblCodigoTitulo.Name = "lblCodigoTitulo";
+            this.lblCodigoTitulo.Size = new System.Drawing.Size(148, 17);
+            this.lblCodigoTitulo.TabIndex = 0;
+            this.lblCodigoTitulo.Text = "Código de recuperação";
+            // 
+            // lblCodigoAuxiliar
+            // 
+            this.lblCodigoAuxiliar.Font = new System.Drawing.Font("Segoe UI", 8.3F);
+            this.lblCodigoAuxiliar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(101)))), ((int)(((byte)(115)))));
+            this.lblCodigoAuxiliar.Location = new System.Drawing.Point(12, 28);
+            this.lblCodigoAuxiliar.Name = "lblCodigoAuxiliar";
+            this.lblCodigoAuxiliar.Size = new System.Drawing.Size(458, 17);
+            this.lblCodigoAuxiliar.TabIndex = 1;
+            this.lblCodigoAuxiliar.Text = "Guarde este código para recuperar o acesso administrativo.";
+            // 
+            // _codigoMestre
+            // 
+            this._codigoMestre.BackColor = System.Drawing.Color.White;
+            this._codigoMestre.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._codigoMestre.Font = new System.Drawing.Font("Consolas", 8.5F);
+            this._codigoMestre.Location = new System.Drawing.Point(14, 50);
+            this._codigoMestre.Name = "_codigoMestre";
+            this._codigoMestre.ReadOnly = true;
+            this._codigoMestre.Size = new System.Drawing.Size(269, 21);
+            this._codigoMestre.TabIndex = 2;
+            // 
+            // exportarCodigo
+            // 
+            this.exportarCodigo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.exportarCodigo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.exportarCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
+            this.exportarCodigo.Location = new System.Drawing.Point(291, 48);
+            this.exportarCodigo.Name = "exportarCodigo";
+            this.exportarCodigo.Size = new System.Drawing.Size(180, 28);
+            this.exportarCodigo.TabIndex = 6;
+            this.exportarCodigo.Text = "Salvar código...";
+            this.exportarCodigo.Click += new System.EventHandler(this.exportarCodigo_Click);
+            // 
+            // statusCodigo
+            // 
+            this.statusCodigo.AutoEllipsis = true;
+            this.statusCodigo.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.statusCodigo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(114)))), ((int)(((byte)(126)))));
+            this.statusCodigo.Location = new System.Drawing.Point(12, 80);
+            this.statusCodigo.Name = "statusCodigo";
+            this.statusCodigo.Size = new System.Drawing.Size(459, 17);
+            this.statusCodigo.TabIndex = 7;
+            this.statusCodigo.Text = "Pendente de salvamento. Salve o código para concluir.";
+            // 
+            // btnVoltar
+            // 
+            this.btnVoltar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVoltar.FlatAppearance.BorderSize = 0;
+            this.btnVoltar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVoltar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnVoltar.Location = new System.Drawing.Point(3, 480);
+            this.btnVoltar.Name = "btnVoltar";
+            this.btnVoltar.Size = new System.Drawing.Size(92, 34);
+            this.btnVoltar.TabIndex = 7;
+            this.btnVoltar.Text = "Voltar";
+            this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
+            // 
+            // salvar
+            // 
+            this.salvar.BackgroundColor = System.Drawing.Color.Empty;
+            this.salvar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(139)))), ((int)(((byte)(150)))));
+            this.salvar.BorderColor = System.Drawing.Color.Empty;
+            this.salvar.BorderThickness = 0;
+            this.salvar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.salvar.Enabled = false;
+            this.salvar.FlatAppearance.BorderSize = 0;
+            this.salvar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.salvar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.salvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.salvar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.salvar.ForeColor = System.Drawing.Color.White;
+            this.salvar.HoverColor = System.Drawing.Color.Empty;
+            this.salvar.Location = new System.Drawing.Point(288, 477);
+            this.salvar.Name = "salvar";
+            this.salvar.PressedColor = System.Drawing.Color.Empty;
+            this.salvar.ShowBorder = false;
+            this.salvar.Size = new System.Drawing.Size(200, 40);
+            this.salvar.TabIndex = 8;
+            this.salvar.Text = "Concluir configuração";
+            this.salvar.Click += new System.EventHandler(this.salvar_Click);
             // 
             // PrimeiroUsoForm
             // 
-            this.AcceptButton = this.salvar;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.AcceptButton = this.btnAvancar;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(244)))), ((int)(((byte)(250)))));
             this.ClientSize = new System.Drawing.Size(1000, 750);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.gradientPanel1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.lblApresentacao);
-            this.Controls.Add(this.gradientPanel);
+            this.Controls.Add(this.btnFechar);
+            this.Controls.Add(this.pnlConteudo);
+            this.Controls.Add(this.pnlInstitucional);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "PrimeiroUsoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Bem vindo ao SUB!";
-            this.gradientPanel.ResumeLayout(false);
-            this.gradientPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.gradientPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.Text = "Configuração inicial do SUB";
+            this.pnlInstitucional.ResumeLayout(false);
+            this.pnlInstitucional.PerformLayout();
+            this.pnlLogo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).EndInit();
+            this.pnlConteudo.ResumeLayout(false);
+            this.pnlConteudo.PerformLayout();
+            this.pnlEtapa1.ResumeLayout(false);
+            this.pnlEtapa1.PerformLayout();
+            this.pnlEtapa2.ResumeLayout(false);
+            this.pnlEtapa2.PerformLayout();
+            this.pnlCodigoRecuperacao.ResumeLayout(false);
+            this.pnlCodigoRecuperacao.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel6;
-        private System.Windows.Forms.Panel panel7;
-        private System.Windows.Forms.ComboBox _tema;
-        private System.Windows.Forms.Panel panel8;
-        private ElementosPersonalizados.GradientPanel gradientPanel;
-        private System.Windows.Forms.Label lblApresentacao;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Label label2;
         private ElementosPersonalizados.GradientPanel gradientPanel1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label3;
     }
 }

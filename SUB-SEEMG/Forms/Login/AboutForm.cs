@@ -1,44 +1,177 @@
 ﻿using SeuProjeto;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using SUB.Models;
+using SUB.Utils;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SUB.Forms.Login
 {
     public partial class AboutForm : Form
     {
+        private Color _corPrimariaAtual = ThemeManager.DefaultColor;
+        private Bitmap _iconeFecharTema;
+        private Bitmap _iconeGithubTema;
+        private Bitmap _logoCompletaTema;
+
         public AboutForm()
         {
             InitializeComponent();
 
-            //aredondar cantos e desenhar borda cinza
-
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
-            this.DesenharBorda(Color.Red, meuRaio, 1);
+            this.DesenharBorda(Color.FromArgb(188, 199, 212), meuRaio, 1);
+        }
+
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
+            var configuracao = InstituicaoConfiguracaoStore.Carregar();
+            Color corPrimaria = ThemeManager.DefaultColor;
+
+            if (configuracao != null)
+            {
+                try
+                {
+                    corPrimaria = ColorTranslator.FromHtml(configuracao.CorPrimaria ?? "#1F487E");
+                }
+                catch
+                {
+                    corPrimaria = ThemeManager.DefaultColor;
+                }
+            }
+
+            AplicarTema(corPrimaria);
+
+            Version versao = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            label5.Text = versao.Build > 0
+                ? string.Format("Versão {0}.{1}.{2}", versao.Major, versao.Minor, versao.Build)
+                : string.Format("Versão {0}.{1}", versao.Major, versao.Minor);
+            label7.Text = string.Format("© {0} Sistema Único Bibliotecário · SEE/MG", DateTime.Now.Year);
+            BtnOk.Focus();
+        }
+
+        private void AplicarTema(Color corPrimaria)
+        {
+            Color primaria = ThemeManager.Normalize(corPrimaria);
+            ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(primaria));
+            _corPrimariaAtual = primaria;
+
+            BackColor = tema.AccentColor;
+            panel5.BackColor = Color.FromArgb(250, 252, 255);
+            pnlMarcaAbout.BackColor = primaria;
+            pnlLogoAbout.BackColor = primaria;
+            panel2.BackColor = ThemeManager.Lighten(primaria, 0.72f);
+            linhaRodape.BackColor = ThemeManager.Lighten(primaria, 0.72f);
+
+            BtnOk.BaseColor = primaria;
+            BtnOk.Invalidate();
+            foreach (LinkLabel link in new[] { btnTerm, linkRepositorio })
+            {
+                link.LinkColor = primaria;
+                link.ActiveLinkColor = ThemeManager.Darken(primaria, 0.18f);
+                link.VisitedLinkColor = primaria;
+            }
+
+            foreach (LinkLabel link in new[] { label4, label8, label9, label10 })
+            {
+                link.LinkColor = Color.FromArgb(43, 55, 69);
+                link.ActiveLinkColor = primaria;
+                link.VisitedLinkColor = Color.FromArgb(43, 55, 69);
+            }
+
+            AtualizarIconesGithub(primaria);
+            AtualizarIconeFechar(ThemeManager.GetContrastColor(primaria));
+            picExit.BackColor = Color.Transparent;
+            AtualizarLogoCompleta(primaria);
+            pnlLogoAbout.BringToFront();
+        }
+
+        private void AtualizarIconesGithub(Color cor)
+        {
+            Bitmap origem = Properties.Resources.icons8_github_30;
+            Bitmap novoIcone = new Bitmap(
+                origem.Width,
+                origem.Height,
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            for (int y = 0; y < origem.Height; y++)
+            {
+                for (int x = 0; x < origem.Width; x++)
+                {
+                    Color pixel = origem.GetPixel(x, y);
+                    if (pixel.A > 0)
+                        novoIcone.SetPixel(x, y, Color.FromArgb(pixel.A, cor));
+                }
+            }
+
+            Bitmap iconeAnterior = _iconeGithubTema;
+            _iconeGithubTema = novoIcone;
+
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus, GitBryan })
+                icone.Image = novoIcone;
+
+            if (iconeAnterior != null)
+                iconeAnterior.Dispose();
+        }
+
+        private void AtualizarLogoCompleta(Color primaria)
+        {
+            Bitmap origem = SubLogoManager.Get(
+                SubLogoVariant.Full,
+                primaria,
+                Color.FromArgb(250, 252, 255));
+            Bitmap logo = new Bitmap(
+                picLogoAbout.Width * 2,
+                picLogoAbout.Height * 2,
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            using (Graphics grafico = Graphics.FromImage(logo))
+            {
+                grafico.CompositingQuality = CompositingQuality.HighQuality;
+                grafico.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                grafico.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                grafico.SmoothingMode = SmoothingMode.HighQuality;
+                grafico.DrawImage(origem, new Rectangle(0, 0, logo.Width, logo.Height));
+            }
+
+            Bitmap logoAnterior = _logoCompletaTema;
+            _logoCompletaTema = logo;
+            picLogoAbout.Image = logo;
+            if (logoAnterior != null)
+                logoAnterior.Dispose();
+        }
+
+        private void AtualizarIconeFechar(Color cor)
+        {
+            Bitmap novoIcone = new Bitmap(20, 20);
+
+            using (Graphics grafico = Graphics.FromImage(novoIcone))
+            using (Pen caneta = new Pen(cor, 2.2F))
+            {
+                grafico.SmoothingMode = SmoothingMode.AntiAlias;
+                caneta.StartCap = LineCap.Round;
+                caneta.EndCap = LineCap.Round;
+                grafico.DrawLine(caneta, 5F, 5F, 15F, 15F);
+                grafico.DrawLine(caneta, 15F, 5F, 5F, 15F);
+            }
+
+            Bitmap iconeAnterior = _iconeFecharTema;
+            _iconeFecharTema = novoIcone;
+            picExit.Image = novoIcone;
+            if (iconeAnterior != null)
+                iconeAnterior.Dispose();
         }
 
         private void picExit_Click(object sender, EventArgs e)
         {
-            const string msg = "Tem certeza de que quer fechar a Aplicação?";
-            const string box = "Confirmação de Encerramento";
-            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirma == DialogResult.Yes)
-            {
-                Application.Exit();
-            }
+            Close();
         }
 
         private void picExit_MouseEnter(object sender, EventArgs e)
         {
-            picExit.BackColor = Color.Gainsboro;
+            picExit.BackColor = ThemeManager.Darken(_corPrimariaAtual, 0.12F);
         }
 
         private void picExit_MouseLeave(object sender, EventArgs e)
@@ -46,22 +179,36 @@ namespace SUB.Forms.Login
             picExit.BackColor = Color.Transparent;
         }
 
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus, GitBryan })
+                icone.Image = null;
+            if (_iconeGithubTema != null)
+            {
+                _iconeGithubTema.Dispose();
+                _iconeGithubTema = null;
+            }
+
+            picExit.Image = null;
+            if (_iconeFecharTema != null)
+            {
+                _iconeFecharTema.Dispose();
+                _iconeFecharTema = null;
+            }
+
+            picLogoAbout.Image = null;
+            if (_logoCompletaTema != null)
+            {
+                _logoCompletaTema.Dispose();
+                _logoCompletaTema = null;
+            }
+
+            base.OnFormClosed(e);
+        }
+
         private void BtnOk_Click(object sender, EventArgs e)
         {
-            Form loginForm = Application.OpenForms["LoginForm"];
-
-            if (loginForm != null)
-            {
-                this.Hide();
-                loginForm.Show();
-                loginForm.BringToFront();
-            }
-            else
-            {
-                this.Hide();
-                LoginForm novoLogin = new LoginForm();
-                novoLogin.Show();
-            }
+            Close();
         }
 
         private void label7_Click(object sender, EventArgs e)
@@ -81,29 +228,34 @@ namespace SUB.Forms.Login
 
         private void GitRenato_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/renato0x"); // substitua pela URL correta
+            OpenUrl("https://github.com/renato0x");
         }
 
         private void GitLuis_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/LouasDev"); // substitua pela URL correta
+            OpenUrl("https://github.com/louasdev");
         }
 
         private void GitIthalo_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/Ithaloluzdepanela"); // substitua pela URL correta
+            OpenUrl("https://github.com/Ithaloluzdepanela");
         }
 
         private void GitMatheus_Click(object sender, EventArgs e)
         {
-            OpenUrl("https://github.com/MatheusAlmeida10"); // substitua pela URL correta
+            OpenUrl("https://github.com/MatheusAlmeida10");
+        }
+
+        private void linkRepositorio_Click(object sender, EventArgs e)
+        {
+            OpenUrl("https://github.com/LouasDev/SistemaBiblioteca");
         }
 
         private static void OpenUrl(string url)
         {
             try
             {
-                Process.Start(url); // .NET Framework 4.8: abre no navegador padrão
+                Process.Start(url);
             }
             catch (Exception ex)
             {

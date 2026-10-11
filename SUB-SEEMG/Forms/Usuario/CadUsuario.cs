@@ -178,6 +178,7 @@ namespace SUB.Froms.Usuario
 
             // Ao final, limpa TODOS os campos ocultos/desabilitados
             LimparCamposOcultos();
+            AtualizarAvisoEmail();
         }
 
         // Limpa valores de todos os controles invisíveis ou desabilitados (TextBox, MaskedTextBox, ComboBox, CheckBox)
@@ -257,7 +258,7 @@ namespace SUB.Froms.Usuario
         }
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
-            lblAvisoEmail.Visible = string.IsNullOrWhiteSpace(txtEmail.Text);
+            AtualizarAvisoEmail();
 
             if (_suppressEmailTextChanged) return;
 
@@ -278,6 +279,19 @@ namespace SUB.Froms.Usuario
                 tb.SelectionLength = selLen;
                 _suppressEmailTextChanged = false;
             }
+        }
+
+        private void AtualizarAvisoEmail()
+        {
+            bool bibliotecaria = string.Equals(
+                cbUsuario.SelectedItem?.ToString(),
+                "Bibliotecário(a)",
+                StringComparison.OrdinalIgnoreCase);
+
+            lblAvisoEmail.Text = bibliotecaria
+                ? "Será usado para entrar no SUB."
+                : "*Caso não cadastrar um e-mail, não receberá notificações...";
+            lblAvisoEmail.Visible = bibliotecaria || string.IsNullOrWhiteSpace(txtEmail.Text);
         }
 
         private void txtTurma_Validating(object sender, CancelEventArgs e)
@@ -546,6 +560,7 @@ namespace SUB.Froms.Usuario
             string tipoUsuario = cbUsuario.SelectedItem?.ToString() ?? string.Empty;
             string telefone = RemoverMascara(mtxTelefone.Text);
             string turma = txtTurma.Text.Trim();
+            string email = txtEmail.Text.Trim();
             string senha = txtSenha.Text.Trim();
             string confirmar = txtConfirmSenha.Text.Trim();
 
@@ -553,6 +568,7 @@ namespace SUB.Froms.Usuario
             if (string.IsNullOrWhiteSpace(nome) ||
                 string.IsNullOrWhiteSpace(tipoUsuario) ||
                 string.IsNullOrWhiteSpace(telefone) ||
+                (tipoUsuario == "Bibliotecário(a)" && string.IsNullOrWhiteSpace(email)) ||
                 (txtTurma.Enabled && string.IsNullOrWhiteSpace(turma)) ||
                 (txtSenha.Visible && string.IsNullOrWhiteSpace(senha)) ||
                 (txtConfirmSenha.Visible && string.IsNullOrWhiteSpace(confirmar)))
@@ -596,6 +612,23 @@ namespace SUB.Froms.Usuario
                 return false;
             }
 
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                try
+                {
+                    if (EmailJaCadastrado(email))
+                    {
+                        MessageBox.Show("Este e-mail já está cadastrado.", "E-mail duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Não foi possível verificar o e-mail. Tente novamente.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
             if (senha != confirmar)
             {
                 MessageBox.Show("As senhas não coincidem.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -611,9 +644,24 @@ namespace SUB.Froms.Usuario
             return true;
         }
 
+        private bool EmailJaCadastrado(string email)
+        {
+            using (SqlCeConnection conexao = Conexao.ObterConexao())
+            {
+                conexao.Open();
+                using (SqlCeCommand comando = conexao.CreateCommand())
+                {
+                    comando.CommandText = "SELECT COUNT(*) FROM usuarios WHERE Email = @Email";
+                    comando.Parameters.AddWithValue("@Email", email.Trim().ToLowerInvariant());
+                    return Convert.ToInt32(comando.ExecuteScalar()) > 0;
+                }
+            }
+        }
+
         private void CadastrarNovoUsuario()
         {
             string tipoUsuario = cbUsuario.Text;
+            string email = txtEmail.Text.Trim().ToLowerInvariant();
             string hash = null;
             string salt = null;
 
@@ -637,7 +685,7 @@ VALUES
 (@Nome, @Email, @Senha_hash, @Senha_salt, @CPF, @DataNascimento, @Turma, @Telefone, @TipoUsuario)";
 
                         comando.Parameters.AddWithValue("@Nome", (object)(txtNome.Text ?? string.Empty).ToString().Trim());
-                        comando.Parameters.AddWithValue("@Email", DbValue(txtEmail));
+                        comando.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
                         comando.Parameters.AddWithValue("@Senha_hash", string.IsNullOrEmpty(hash) ? (object)DBNull.Value : hash);
                         comando.Parameters.AddWithValue("@Senha_salt", string.IsNullOrEmpty(salt) ? (object)DBNull.Value : salt);
                         comando.Parameters.AddWithValue("@CPF", DbValue(mtxCPF));

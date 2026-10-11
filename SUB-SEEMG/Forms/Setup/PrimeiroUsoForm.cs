@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 namespace SUB.Forms.Setup
 {
+    [System.ComponentModel.DesignerCategory("Form")]
     public partial class PrimeiroUsoForm : Form
     {
         private readonly string _codigoMestreGerado = GerarCodigoMestre();
@@ -20,23 +21,37 @@ namespace SUB.Forms.Setup
         public PrimeiroUsoForm()
         {
             InitializeComponent();
+
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
+                return;
+
             _tema.DropDownStyle = ComboBoxStyle.DropDownList;
+            _tema.SelectedIndexChanged += Tema_SelectedIndexChanged;
             foreach (var preset in ThemeManager.Presets)
                 _tema.Items.Add(preset);
             _tema.SelectedIndex = 0;
-            _visualizadorCor.BackColor = ((ThemePreset)_tema.SelectedItem).PrimaryColor;
+            _visualizadorCor.BorderStyle = BorderStyle.FixedSingle;
+            AtualizarVisualizacaoTema();
             _codigoMestre.Text = _codigoMestreGerado;
         }
 
 
         private void Tema_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var tema = _tema.SelectedItem as ThemePreset;
-            if (tema != null)
-                _visualizadorCor.BackColor = tema.PrimaryColor;
+            AtualizarVisualizacaoTema();
         }
 
-        private void ExportarCodigo_Click(object sender, EventArgs e)
+        private void AtualizarVisualizacaoTema()
+        {
+            var tema = _tema.SelectedItem as ThemePreset;
+            if (tema == null)
+                return;
+
+            _visualizadorCor.BackColor = tema.PrimaryColor;
+            _visualizadorCor.Refresh();
+        }
+
+        private void exportarCodigo_Click(object sender, EventArgs e)
         {
             using (var dialogo = new SaveFileDialog
             {
@@ -76,7 +91,7 @@ namespace SUB.Forms.Setup
             return BitConverter.ToString(bytes).Replace("-", string.Empty);
         }
 
-        private void Salvar_Click(object sender, EventArgs e)
+        private void salvar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(_nomeInstituicao.Text) ||
                 string.IsNullOrWhiteSpace(_nomeBibliotecaria.Text) ||
@@ -105,9 +120,9 @@ namespace SUB.Forms.Setup
                 return;
             }
 
-            if (_senhaBibliotecaria.Text.Length < 8)
+            if (_senhaBibliotecaria.Text.Length < 6 || _senhaBibliotecaria.Text.Length > 25)
             {
-                MessageBox.Show(this, "A senha deve ter pelo menos 8 caracteres.", "Senha fraca",
+                MessageBox.Show(this, "A senha deve ter entre 6 e 25 caracteres.", "Senha inválida",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -211,5 +226,19 @@ VALUES
                 return false;
             }
         }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            const string msg = "Tem certeza de que quer fechar a Aplicação?";
+            const string box = "Confirmação de Encerramento";
+            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirma == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        
     }
+    
 }

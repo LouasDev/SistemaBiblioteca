@@ -59,7 +59,7 @@ namespace SUB.Forms.Login
                 return;
 
             lblNomeEscola.Text = configuracao.Nome;
-            lblBiblioteca.Text = "Sistema de Biblioteca";
+            
 
             Color corPrimaria = ThemeManager.DefaultColor;
             try
@@ -245,11 +245,11 @@ namespace SUB.Forms.Login
             }
 
             using (var promptSenha = new Form { Text = "Nova senha da bibliotecária", StartPosition = FormStartPosition.CenterParent, FormBorderStyle = FormBorderStyle.FixedDialog, ClientSize = new Size(360, 190), MaximizeBox = false, MinimizeBox = false })
-            using (var senha = new TextBox { Location = new Point(20, 38), Width = 320, UseSystemPasswordChar = true })
-            using (var confirmar = new TextBox { Location = new Point(20, 94), Width = 320, UseSystemPasswordChar = true })
+            using (var senha = new TextBox { Location = new Point(20, 38), Width = 320, MaxLength = 25, UseSystemPasswordChar = true })
+            using (var confirmar = new TextBox { Location = new Point(20, 94), Width = 320, MaxLength = 25, UseSystemPasswordChar = true })
             using (var salvar = new Button { Text = "Salvar nova senha", Location = new Point(190, 140), DialogResult = DialogResult.OK })
             {
-                promptSenha.Controls.Add(new Label { Text = "Nova senha (mínimo 8 caracteres):", Location = new Point(20, 16), AutoSize = true });
+                promptSenha.Controls.Add(new Label { Text = "Nova senha (6 a 25 caracteres):", Location = new Point(20, 16), AutoSize = true });
                 promptSenha.Controls.Add(senha);
                 promptSenha.Controls.Add(new Label { Text = "Confirme a nova senha:", Location = new Point(20, 72), AutoSize = true });
                 promptSenha.Controls.Add(confirmar);
@@ -258,9 +258,9 @@ namespace SUB.Forms.Login
                 if (promptSenha.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                if (senha.Text.Length < 8 || senha.Text != confirmar.Text)
+                if (senha.Text.Length < 6 || senha.Text.Length > 25 || senha.Text != confirmar.Text)
                 {
-                    MessageBox.Show(this, "As senhas devem ser iguais e conter ao menos 8 caracteres.", "Senha inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(this, "As senhas devem ser iguais e conter entre 6 e 25 caracteres.", "Senha inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 

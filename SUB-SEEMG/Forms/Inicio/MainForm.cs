@@ -870,6 +870,10 @@ namespace SUB.Forms.Inicio
                 child.Dock = DockStyle.Fill;
                 ThemeManager.Apply(child, corPrimaria);
 
+                var inicioForm = child as InicioForm;
+                if (inicioForm != null)
+                    inicioForm.AplicarTema(corPrimaria);
+
                 // Se o form já está criado mas escondido, apenas BringToFront
                 if (!child.Visible)
                     child.Show();

@@ -205,29 +205,21 @@ namespace SUB.Forms.Livros
 
                     // Inserção do novo empréstimo
                     string sqlInserir = @"
-    INSERT INTO Emprestimo 
-        (Alocador, Livro, LivroNome, Responsavel, DataEmprestimo, DataDevolucao, DataProrrogacao, DataRealDevolucao, Status, CodigoBarras)
-    VALUES 
-        (@alocador, @livro, @livroNome, @responsavel, @dataEmprestimo, @dataDevolucao, NULL, NULL, 'Ativo', @codigoBarras)";
+    INSERT INTO Emprestimo
+        (UsuarioId, LivroId, Alocador, Responsavel, DataEmprestimo, DataDevolucao, DataProrrogacao, DataRealDevolucao, Status)
+    VALUES
+        (@usuarioId, @livroId, @alocador, @responsavel, @dataEmprestimo, @dataDevolucao, NULL, NULL, 'Ativo')";
 
                     using (var cmdInsert = new SqlCeCommand(sqlInserir, conexao))
                     {
+                        cmdInsert.Parameters.AddWithValue("@usuarioId", usuario.Id);
+                        cmdInsert.Parameters.AddWithValue("@livroId", livro.Id);
                         cmdInsert.Parameters.AddWithValue("@alocador", usuario.Id);
-                        cmdInsert.Parameters.AddWithValue("@livro", livro.Id);
-                        cmdInsert.Parameters.AddWithValue("@livroNome", livro.Nome);
                         cmdInsert.Parameters.AddWithValue("@responsavel", responsavel.Id);
                         cmdInsert.Parameters.AddWithValue("@dataEmprestimo", DateTime.Now);
 
                         var dataDevolucaoParaInserir = dtpDataDevolucao.Value; // respeita o DTP (professor pode ter prazo maior)
                         cmdInsert.Parameters.AddWithValue("@dataDevolucao", dataDevolucaoParaInserir);
-
-                        // Prioriza texto do scanner; se vazio usa o código do livro; se ainda vazio grava string vazia ""
-                        string codigoBarras = !string.IsNullOrWhiteSpace(txtBarcode.Text)
-                            ? txtBarcode.Text.Trim()
-                            : (string.IsNullOrWhiteSpace(livro.CodigoDeBarras) ? "" : livro.CodigoDeBarras);
-
-                        // grava sempre uma string (vazia quando não existir)
-                        cmdInsert.Parameters.AddWithValue("@codigoBarras", codigoBarras);
 
                         cmdInsert.ExecuteNonQuery();
                     }

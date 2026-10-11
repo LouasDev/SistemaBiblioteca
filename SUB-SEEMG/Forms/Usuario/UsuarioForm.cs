@@ -423,9 +423,9 @@ namespace SUB.Forms.Usuario
             {
                 e.PaintBackground(e.CellBounds, true);
 
-                // Cores do seu tema
-                Color corFundo = Color.FromArgb(30, 61, 88);  // igual ao cabeçalho
-                Color corTexto = Color.White;
+                // Reutiliza as cores aplicadas pelo ThemeManager ao cabeçalho da grade.
+                Color corFundo = dgvUsuarios.ColumnHeadersDefaultCellStyle.BackColor;
+                Color corTexto = dgvUsuarios.ColumnHeadersDefaultCellStyle.ForeColor;
 
                 // Desenha botão arredondado
                 int borderRadius = 8;

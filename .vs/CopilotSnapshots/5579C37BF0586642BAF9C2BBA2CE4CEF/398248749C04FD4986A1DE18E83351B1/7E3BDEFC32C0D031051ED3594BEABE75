@@ -1,0 +1,527 @@
+﻿namespace SUB.Forms.Setup
+{
+    partial class PrimeiroUsoForm
+    {
+        private System.ComponentModel.IContainer components = null;
+        private System.Windows.Forms.Label lblNomeInstituicao;
+        private System.Windows.Forms.TextBox _nomeInstituicao;
+        private System.Windows.Forms.Label lblTema;
+        private System.Windows.Forms.Panel _visualizadorCor;
+        private System.Windows.Forms.Label lblNomeBibliotecaria;
+        private System.Windows.Forms.TextBox _nomeBibliotecaria;
+        private System.Windows.Forms.Label lblEmailBibliotecaria;
+        private System.Windows.Forms.TextBox _emailBibliotecaria;
+        private System.Windows.Forms.Label lblTelefoneBibliotecaria;
+        private System.Windows.Forms.TextBox _telefoneBibliotecaria;
+        private System.Windows.Forms.Label lblSenhaBibliotecaria;
+        private System.Windows.Forms.TextBox _senhaBibliotecaria;
+        private System.Windows.Forms.Label lblConfirmarSenhaBibliotecaria;
+        private System.Windows.Forms.TextBox _confirmarSenhaBibliotecaria;
+        private System.Windows.Forms.Label lblCodigoMestre;
+        private System.Windows.Forms.TextBox _codigoMestre;
+        private System.Windows.Forms.Button exportarCodigo;
+        private System.Windows.Forms.Label statusCodigo;
+        private System.Windows.Forms.Button salvar;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+                components.Dispose();
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrimeiroUsoForm));
+            this.lblApresentacao = new System.Windows.Forms.Label();
+            this.salvar = new System.Windows.Forms.Button();
+            this.gradientPanel = new SUB.ElementosPersonalizados.GradientPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this._visualizadorCor = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this._codigoMestre = new System.Windows.Forms.TextBox();
+            this.panel6 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.statusCodigo = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.exportarCodigo = new System.Windows.Forms.Button();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.lblCodigoMestre = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this._confirmarSenhaBibliotecaria = new System.Windows.Forms.TextBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.lblConfirmarSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this._senhaBibliotecaria = new System.Windows.Forms.TextBox();
+            this.lblNomeInstituicao = new System.Windows.Forms.Label();
+            this.lblSenhaBibliotecaria = new System.Windows.Forms.Label();
+            this._nomeInstituicao = new System.Windows.Forms.TextBox();
+            this._telefoneBibliotecaria = new System.Windows.Forms.TextBox();
+            this.lblTema = new System.Windows.Forms.Label();
+            this.lblTelefoneBibliotecaria = new System.Windows.Forms.Label();
+            this._tema = new System.Windows.Forms.ComboBox();
+            this.lblEmailBibliotecaria = new System.Windows.Forms.Label();
+            this._nomeBibliotecaria = new System.Windows.Forms.TextBox();
+            this.lblNomeBibliotecaria = new System.Windows.Forms.Label();
+            this._emailBibliotecaria = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.gradientPanel1 = new SUB.ElementosPersonalizados.GradientPanel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.gradientPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gradientPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // lblApresentacao
+            // 
+            this.lblApresentacao.BackColor = System.Drawing.Color.Transparent;
+            this.lblApresentacao.Font = new System.Drawing.Font("Segoe UI", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblApresentacao.ForeColor = System.Drawing.Color.White;
+            this.lblApresentacao.Location = new System.Drawing.Point(45, 52);
+            this.lblApresentacao.Name = "lblApresentacao";
+            this.lblApresentacao.Size = new System.Drawing.Size(297, 45);
+            this.lblApresentacao.TabIndex = 28;
+            this.lblApresentacao.Text = "Apresentamos o SUB:";
+            this.lblApresentacao.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // salvar
+            // 
+            this.salvar.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.salvar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.salvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.salvar.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.salvar.ForeColor = System.Drawing.Color.White;
+            this.salvar.Location = new System.Drawing.Point(180, 621);
+            this.salvar.Name = "salvar";
+            this.salvar.Size = new System.Drawing.Size(216, 42);
+            this.salvar.TabIndex = 20;
+            this.salvar.Text = "Concluir configuração";
+            this.salvar.UseVisualStyleBackColor = false;
+            // 
+            // gradientPanel
+            // 
+            this.gradientPanel.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel.BorderRadius = 10;
+            this.gradientPanel.Controls.Add(this.label1);
+            this.gradientPanel.Controls.Add(this._visualizadorCor);
+            this.gradientPanel.Controls.Add(this.panel8);
+            this.gradientPanel.Controls.Add(this.panel7);
+            this.gradientPanel.Controls.Add(this._codigoMestre);
+            this.gradientPanel.Controls.Add(this.panel6);
+            this.gradientPanel.Controls.Add(this.salvar);
+            this.gradientPanel.Controls.Add(this.panel5);
+            this.gradientPanel.Controls.Add(this.statusCodigo);
+            this.gradientPanel.Controls.Add(this.panel4);
+            this.gradientPanel.Controls.Add(this.exportarCodigo);
+            this.gradientPanel.Controls.Add(this.panel3);
+            this.gradientPanel.Controls.Add(this.lblCodigoMestre);
+            this.gradientPanel.Controls.Add(this.panel1);
+            this.gradientPanel.Controls.Add(this._confirmarSenhaBibliotecaria);
+            this.gradientPanel.Controls.Add(this.panel2);
+            this.gradientPanel.Controls.Add(this.lblConfirmarSenhaBibliotecaria);
+            this.gradientPanel.Controls.Add(this._senhaBibliotecaria);
+            this.gradientPanel.Controls.Add(this.lblNomeInstituicao);
+            this.gradientPanel.Controls.Add(this.lblSenhaBibliotecaria);
+            this.gradientPanel.Controls.Add(this._nomeInstituicao);
+            this.gradientPanel.Controls.Add(this._telefoneBibliotecaria);
+            this.gradientPanel.Controls.Add(this.lblTema);
+            this.gradientPanel.Controls.Add(this.lblTelefoneBibliotecaria);
+            this.gradientPanel.Controls.Add(this._tema);
+            this.gradientPanel.Controls.Add(this.lblEmailBibliotecaria);
+            this.gradientPanel.Controls.Add(this._nomeBibliotecaria);
+            this.gradientPanel.Controls.Add(this.lblNomeBibliotecaria);
+            this.gradientPanel.Controls.Add(this._emailBibliotecaria);
+            this.gradientPanel.Gradientebottom = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel.Gradientetop = System.Drawing.Color.WhiteSmoke;
+            this.gradientPanel.Location = new System.Drawing.Point(409, 28);
+            this.gradientPanel.Name = "gradientPanel";
+            this.gradientPanel.Size = new System.Drawing.Size(555, 696);
+            this.gradientPanel.TabIndex = 27;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(53, 37);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(444, 32);
+            this.label1.TabIndex = 27;
+            this.label1.Text = "Configure o sistema para a sua instituição:";
+            // 
+            // _visualizadorCor
+            // 
+            this._visualizadorCor.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._visualizadorCor.Location = new System.Drawing.Point(444, 185);
+            this._visualizadorCor.Name = "_visualizadorCor";
+            this._visualizadorCor.Size = new System.Drawing.Size(61, 31);
+            this._visualizadorCor.TabIndex = 5;
+            // 
+            // panel8
+            // 
+            this.panel8.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel8.Location = new System.Drawing.Point(58, 210);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(367, 2);
+            this.panel8.TabIndex = 23;
+            // 
+            // panel7
+            // 
+            this.panel7.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel7.Location = new System.Drawing.Point(58, 550);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(447, 2);
+            this.panel7.TabIndex = 26;
+            // 
+            // _codigoMestre
+            // 
+            this._codigoMestre.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._codigoMestre.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._codigoMestre.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._codigoMestre.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._codigoMestre.Location = new System.Drawing.Point(58, 531);
+            this._codigoMestre.Name = "_codigoMestre";
+            this._codigoMestre.ReadOnly = true;
+            this._codigoMestre.Size = new System.Drawing.Size(447, 19);
+            this._codigoMestre.TabIndex = 17;
+            // 
+            // panel6
+            // 
+            this.panel6.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel6.Location = new System.Drawing.Point(295, 466);
+            this.panel6.Name = "panel6";
+            this.panel6.Size = new System.Drawing.Size(210, 2);
+            this.panel6.TabIndex = 25;
+            // 
+            // panel5
+            // 
+            this.panel5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel5.Location = new System.Drawing.Point(58, 464);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(210, 2);
+            this.panel5.TabIndex = 24;
+            // 
+            // statusCodigo
+            // 
+            this.statusCodigo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.statusCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold);
+            this.statusCodigo.ForeColor = System.Drawing.Color.DarkRed;
+            this.statusCodigo.Location = new System.Drawing.Point(58, 555);
+            this.statusCodigo.Name = "statusCodigo";
+            this.statusCodigo.Size = new System.Drawing.Size(238, 17);
+            this.statusCodigo.TabIndex = 19;
+            this.statusCodigo.Text = "Ainda não exportado";
+            // 
+            // panel4
+            // 
+            this.panel4.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel4.Location = new System.Drawing.Point(58, 396);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(447, 2);
+            this.panel4.TabIndex = 24;
+            // 
+            // exportarCodigo
+            // 
+            this.exportarCodigo.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.exportarCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.exportarCodigo.Location = new System.Drawing.Point(360, 558);
+            this.exportarCodigo.Name = "exportarCodigo";
+            this.exportarCodigo.Size = new System.Drawing.Size(145, 42);
+            this.exportarCodigo.TabIndex = 18;
+            this.exportarCodigo.Text = "Salvar arquivo...";
+            // 
+            // panel3
+            // 
+            this.panel3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel3.Location = new System.Drawing.Point(58, 334);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(444, 2);
+            this.panel3.TabIndex = 23;
+            // 
+            // lblCodigoMestre
+            // 
+            this.lblCodigoMestre.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblCodigoMestre.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblCodigoMestre.Location = new System.Drawing.Point(58, 493);
+            this.lblCodigoMestre.Name = "lblCodigoMestre";
+            this.lblCodigoMestre.Size = new System.Drawing.Size(338, 35);
+            this.lblCodigoMestre.TabIndex = 16;
+            this.lblCodigoMestre.Text = "Código-mestre gerado automaticamente. \r\nExporte e guarde fora deste computador:";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel1.Location = new System.Drawing.Point(58, 271);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(447, 2);
+            this.panel1.TabIndex = 22;
+            // 
+            // _confirmarSenhaBibliotecaria
+            // 
+            this._confirmarSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._confirmarSenhaBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._confirmarSenhaBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._confirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._confirmarSenhaBibliotecaria.Location = new System.Drawing.Point(295, 445);
+            this._confirmarSenhaBibliotecaria.Name = "_confirmarSenhaBibliotecaria";
+            this._confirmarSenhaBibliotecaria.Size = new System.Drawing.Size(210, 19);
+            this._confirmarSenhaBibliotecaria.TabIndex = 15;
+            this._confirmarSenhaBibliotecaria.UseSystemPasswordChar = true;
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.panel2.Location = new System.Drawing.Point(58, 140);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(447, 2);
+            this.panel2.TabIndex = 21;
+            // 
+            // lblConfirmarSenhaBibliotecaria
+            // 
+            this.lblConfirmarSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblConfirmarSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(295, 427);
+            this.lblConfirmarSenhaBibliotecaria.Name = "lblConfirmarSenhaBibliotecaria";
+            this.lblConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(120, 17);
+            this.lblConfirmarSenhaBibliotecaria.TabIndex = 14;
+            this.lblConfirmarSenhaBibliotecaria.Text = "Confirme a senha: *";
+            // 
+            // _senhaBibliotecaria
+            // 
+            this._senhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._senhaBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._senhaBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._senhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._senhaBibliotecaria.Location = new System.Drawing.Point(58, 445);
+            this._senhaBibliotecaria.Name = "_senhaBibliotecaria";
+            this._senhaBibliotecaria.MaxLength = 25;
+            this._senhaBibliotecaria.Size = new System.Drawing.Size(210, 19);
+            this._senhaBibliotecaria.TabIndex = 13;
+            this._senhaBibliotecaria.UseSystemPasswordChar = true;
+            // 
+            // lblNomeInstituicao
+            // 
+            this.lblNomeInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblNomeInstituicao.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblNomeInstituicao.Location = new System.Drawing.Point(58, 104);
+            this.lblNomeInstituicao.Name = "lblNomeInstituicao";
+            this.lblNomeInstituicao.Size = new System.Drawing.Size(238, 15);
+            this.lblNomeInstituicao.TabIndex = 1;
+            this.lblNomeInstituicao.Text = "Nome da instituição: *";
+            // 
+            // lblSenhaBibliotecaria
+            // 
+            this.lblSenhaBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblSenhaBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblSenhaBibliotecaria.Location = new System.Drawing.Point(58, 427);
+            this.lblSenhaBibliotecaria.Name = "lblSenhaBibliotecaria";
+            this.lblSenhaBibliotecaria.Size = new System.Drawing.Size(171, 17);
+            this.lblSenhaBibliotecaria.TabIndex = 12;
+            this.lblSenhaBibliotecaria.Text = "Senha (6 a 25 caracteres): *";
+            // 
+            // _nomeInstituicao
+            // 
+            this._nomeInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._nomeInstituicao.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._nomeInstituicao.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._nomeInstituicao.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._nomeInstituicao.Location = new System.Drawing.Point(58, 122);
+            this._nomeInstituicao.Name = "_nomeInstituicao";
+            this._nomeInstituicao.Size = new System.Drawing.Size(447, 19);
+            this._nomeInstituicao.TabIndex = 2;
+            // 
+            // _telefoneBibliotecaria
+            // 
+            this._telefoneBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._telefoneBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._telefoneBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._telefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._telefoneBibliotecaria.Location = new System.Drawing.Point(58, 379);
+            this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
+            this._telefoneBibliotecaria.Size = new System.Drawing.Size(447, 19);
+            this._telefoneBibliotecaria.TabIndex = 11;
+            // 
+            // lblTema
+            // 
+            this.lblTema.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblTema.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblTema.Location = new System.Drawing.Point(58, 167);
+            this.lblTema.Name = "lblTema";
+            this.lblTema.Size = new System.Drawing.Size(222, 15);
+            this.lblTema.TabIndex = 3;
+            this.lblTema.Text = "Tema da interface: *";
+            // 
+            // lblTelefoneBibliotecaria
+            // 
+            this.lblTelefoneBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblTelefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblTelefoneBibliotecaria.Location = new System.Drawing.Point(58, 359);
+            this.lblTelefoneBibliotecaria.Name = "lblTelefoneBibliotecaria";
+            this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(66, 17);
+            this.lblTelefoneBibliotecaria.TabIndex = 10;
+            this.lblTelefoneBibliotecaria.Text = "Telefone: *";
+            // 
+            // _tema
+            // 
+            this._tema.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._tema.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._tema.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._tema.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._tema.Location = new System.Drawing.Point(58, 185);
+            this._tema.Name = "_tema";
+            this._tema.Size = new System.Drawing.Size(367, 27);
+            this._tema.TabIndex = 4;
+            // 
+            // lblEmailBibliotecaria
+            // 
+            this.lblEmailBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblEmailBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblEmailBibliotecaria.Location = new System.Drawing.Point(58, 297);
+            this.lblEmailBibliotecaria.Name = "lblEmailBibliotecaria";
+            this.lblEmailBibliotecaria.Size = new System.Drawing.Size(222, 17);
+            this.lblEmailBibliotecaria.TabIndex = 8;
+            this.lblEmailBibliotecaria.Text = "E-mail para login: *";
+            // 
+            // _nomeBibliotecaria
+            // 
+            this._nomeBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._nomeBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._nomeBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._nomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._nomeBibliotecaria.Location = new System.Drawing.Point(58, 250);
+            this._nomeBibliotecaria.Name = "_nomeBibliotecaria";
+            this._nomeBibliotecaria.Size = new System.Drawing.Size(447, 19);
+            this._nomeBibliotecaria.TabIndex = 7;
+            // 
+            // lblNomeBibliotecaria
+            // 
+            this.lblNomeBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.lblNomeBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 8.8F, System.Drawing.FontStyle.Bold);
+            this.lblNomeBibliotecaria.Location = new System.Drawing.Point(58, 232);
+            this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(295, 15);
+            this.lblNomeBibliotecaria.TabIndex = 6;
+            this.lblNomeBibliotecaria.Text = "Nome da primeira bibliotecária: *";
+            // 
+            // _emailBibliotecaria
+            // 
+            this._emailBibliotecaria.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this._emailBibliotecaria.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._emailBibliotecaria.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._emailBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this._emailBibliotecaria.Location = new System.Drawing.Point(58, 316);
+            this._emailBibliotecaria.Name = "_emailBibliotecaria";
+            this._emailBibliotecaria.Size = new System.Drawing.Size(447, 19);
+            this._emailBibliotecaria.TabIndex = 9;
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 15.75F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(55, 121);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(275, 28);
+            this.label2.TabIndex = 28;
+            this.label2.Text = "Sistema Único Bibliotecário";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureBox1.Image = global::SUB.Properties.Resources.icons8_x_20;
+            this.pictureBox1.Location = new System.Drawing.Point(978, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(20, 20);
+            this.pictureBox1.TabIndex = 29;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // gradientPanel1
+            // 
+            this.gradientPanel1.BackColor = System.Drawing.Color.White;
+            this.gradientPanel1.BorderRadius = 20;
+            this.gradientPanel1.Controls.Add(this.pictureBox2);
+            this.gradientPanel1.Gradientebottom = System.Drawing.Color.White;
+            this.gradientPanel1.Gradientetop = System.Drawing.Color.White;
+            this.gradientPanel1.Location = new System.Drawing.Point(79, 168);
+            this.gradientPanel1.Name = "gradientPanel1";
+            this.gradientPanel1.Size = new System.Drawing.Size(226, 225);
+            this.gradientPanel1.TabIndex = 30;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::SUB.Properties.Resources.sub_200x200px;
+            this.pictureBox2.Location = new System.Drawing.Point(14, 13);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(200, 200);
+            this.pictureBox2.TabIndex = 0;
+            this.pictureBox2.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(47, 439);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(297, 163);
+            this.label3.TabIndex = 31;
+            this.label3.Text = "Desenvolvido em parceria com a SEEMG para toda rede estudal de ensino";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // PrimeiroUsoForm
+            // 
+            this.AcceptButton = this.salvar;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.ClientSize = new System.Drawing.Size(1000, 750);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.gradientPanel1);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.lblApresentacao);
+            this.Controls.Add(this.gradientPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "PrimeiroUsoForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Bem vindo ao SUB!";
+            this.gradientPanel.ResumeLayout(false);
+            this.gradientPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.gradientPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.ComboBox _tema;
+        private System.Windows.Forms.Panel panel8;
+        private ElementosPersonalizados.GradientPanel gradientPanel;
+        private System.Windows.Forms.Label lblApresentacao;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label2;
+        private ElementosPersonalizados.GradientPanel gradientPanel1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label3;
+    }
+}

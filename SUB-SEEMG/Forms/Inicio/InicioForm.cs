@@ -25,6 +25,13 @@ namespace SUB.Forms.Inicio
 {
     public partial class InicioForm : Form
     {
+        public void AplicarTema(Color corPrimaria)
+        {
+            Color cor = ThemeManager.Normalize(corPrimaria);
+            ThemeManager.Apply(this, cor);
+            lblOla.ForeColor = ThemeManager.GetLabelColor(cor);
+        }
+
         private class EmprestimoAtrasadoInfo
         {
             public int Id { get; set; }
@@ -775,7 +782,7 @@ SELECT
     DATEDIFF(day, COALESCE(e.DataProrrogacao, e.DataDevolucao), GETDATE()) AS DiasAtraso
 FROM Emprestimo e
 INNER JOIN Usuarios u ON e.Alocador = u.Id
-INNER JOIN Livros l ON e.Livro = l.Id
+INNER JOIN Livros l ON e.LivroId = l.Id
 WHERE e.Status <> 'Devolvido'
   AND COALESCE(e.DataProrrogacao, e.DataDevolucao) < GETDATE()
 ORDER BY DiasAtraso DESC, DataLimite ASC";
@@ -1106,7 +1113,7 @@ SELECT TOP {topN}
     l.Quantidade
 FROM Livros l
 INNER JOIN Emprestimo e 
-    ON l.Id = e.Livro
+    ON l.Id = e.LivroId
     AND e.DataEmprestimo >= @inicio
 WHERE 
     (l.Genero IS NULL OR (l.Genero NOT LIKE 'Didático%' AND l.Genero NOT LIKE 'Didatico%'))
@@ -1537,7 +1544,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                     string sql = @"
 SELECT l.Id, l.Nome, l.Autor
 FROM Emprestimo e
-INNER JOIN Livros l ON e.Livro = l.Id
+INNER JOIN Livros l ON e.LivroId = l.Id
 WHERE e.Alocador = @usuarioId
   AND e.Status <> 'Devolvido'
   AND COALESCE(e.DataProrrogacao, e.DataDevolucao) < GETDATE()";

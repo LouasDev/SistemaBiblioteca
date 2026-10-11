@@ -30,8 +30,9 @@ namespace SUB
                         return;
                 }
 
-                DatabaseInitializer.EnsureCreated();
             }
+
+            DatabaseInitializer.EnsureCreated();
 
             while (true)
             {

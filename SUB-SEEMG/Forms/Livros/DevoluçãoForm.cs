@@ -125,7 +125,6 @@ namespace SUB.Forms.Livros
 
             InicializarFormulario();
             VerificarAtrasos(); // Atualiza status de atrasos antes de buscar
-            BuscarEmprestimos(); // Exibe todos os empréstimos atualizados no grid
         }
 
         // ---- INÍCIO: handlers e helpers para sugestões de usuário ----
@@ -512,17 +511,17 @@ namespace SUB.Forms.Livros
         SELECT 
             e.Id AS [ID do Empréstimo],
             uAlocador.Nome AS [Alocador],
-            uResponsavel.Nome AS [Responsável],
-            e.Alocador AS [IdResponsavel],
-            COALESCE(l.Nome, e.LivroNome) AS [Livro],
+            COALESCE(uResponsavel.Nome, 'Não informado') AS [Responsável],
+            e.Responsavel AS [IdResponsavel],
+            l.Nome AS [Livro],
             l.CodigoBarras AS [Código De Barras],
             e.DataEmprestimo AS [Data do Empréstimo],
             e.DataDevolucao AS [Data de Devolução],
             e.Status AS [Status]
         FROM Emprestimo e
         JOIN Usuarios uAlocador ON e.Alocador = uAlocador.Id
-        JOIN Usuarios uResponsavel ON e.Responsavel = uResponsavel.Id
-        JOIN Livros l ON e.Livro = l.Id
+        LEFT JOIN Usuarios uResponsavel ON e.Responsavel = uResponsavel.Id
+        JOIN Livros l ON e.LivroId = l.Id
         WHERE l.Nome LIKE @LivroNome";
 
             if (filtros.FiltrarCodigoBarras)
@@ -996,7 +995,7 @@ namespace SUB.Forms.Livros
 
         private int ObterIdLivroDoEmprestimo(SqlCeConnection conexao, int idEmprestimo, SqlCeTransaction transacao)
         {
-            string query = "SELECT Livro FROM Emprestimo WHERE Id = @Id";
+            string query = "SELECT LivroId FROM Emprestimo WHERE Id = @Id";
             using (SqlCeCommand cmd = new SqlCeCommand(query, conexao, transacao))
             {
                 cmd.Parameters.AddWithValue("@Id", idEmprestimo);

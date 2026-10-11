@@ -1,0 +1,234 @@
+﻿using SUB.Models;
+using SUB.Utils;
+using System;
+using System.Data;
+using System.Data.SqlServerCe;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Net.Mail;
+using System.Windows.Forms;
+
+namespace SUB.Forms.Setup
+{
+    [System.ComponentModel.DesignerCategory("Form")]
+    public partial class PrimeiroUsoForm : Form
+    {
+        private readonly string _codigoMestreGerado = GerarCodigoMestre();
+        private string _caminhoCodigoMestre;
+
+        public PrimeiroUsoForm()
+        {
+            InitializeComponent();
+
+            if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
+                return;
+
+            _tema.DropDownStyle = ComboBoxStyle.DropDownList;
+            foreach (var preset in ThemeManager.Presets)
+                _tema.Items.Add(preset);
+            _tema.SelectedIndex = 0;
+            _visualizadorCor.BackColor = ((ThemePreset)_tema.SelectedItem).PrimaryColor;
+            _codigoMestre.Text = _codigoMestreGerado;
+        }
+
+
+        private void Tema_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var tema = _tema.SelectedItem as ThemePreset;
+            if (tema != null)
+                _visualizadorCor.BackColor = tema.PrimaryColor;
+        }
+
+        private void ExportarCodigo_Click(object sender, EventArgs e)
+        {
+            using (var dialogo = new SaveFileDialog
+            {
+                Filter = "Arquivo de texto|*.txt",
+                FileName = "codigo-mestre-biblioteca.txt",
+                Title = "Exporte o código-mestre para armazenamento institucional"
+            })
+            {
+                if (dialogo.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    File.WriteAllText(dialogo.FileName, "Código-mestre da instituição: " + _codigoMestreGerado);
+                    _caminhoCodigoMestre = dialogo.FileName;
+                    var status = Controls["statusCodigo"] as Label;
+                    if (status != null)
+                    {
+                        status.Text = "Exportado para: " + _caminhoCodigoMestre;
+                        status.ForeColor = Color.DarkGreen;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(this, "Não foi possível exportar o código-mestre: " + ex.Message, "Erro de exportação",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private static string GerarCodigoMestre()
+        {
+            var bytes = new byte[24];
+            using (var gerador = RandomNumberGenerator.Create())
+                gerador.GetBytes(bytes);
+
+            return BitConverter.ToString(bytes).Replace("-", string.Empty);
+        }
+
+        private void Salvar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_nomeInstituicao.Text) ||
+                string.IsNullOrWhiteSpace(_nomeBibliotecaria.Text) ||
+                string.IsNullOrWhiteSpace(_emailBibliotecaria.Text) ||
+                string.IsNullOrWhiteSpace(_telefoneBibliotecaria.Text) ||
+                string.IsNullOrWhiteSpace(_senhaBibliotecaria.Text))
+            {
+                MessageBox.Show(this, "Preencha todos os campos obrigatórios.", "Configuração incompleta",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string email = _emailBibliotecaria.Text.Trim();
+            if (!EmailValido(email))
+            {
+                MessageBox.Show(this, "Informe um endereço de e-mail válido para a bibliotecária.", "E-mail inválido",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _emailBibliotecaria.Focus();
+                return;
+            }
+
+            if (_senhaBibliotecaria.Text != _confirmarSenhaBibliotecaria.Text)
+            {
+                MessageBox.Show(this, "A confirmação da senha deve ser igual à senha informada.", "Verifique os dados",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (_senhaBibliotecaria.Text.Length < 8)
+            {
+                MessageBox.Show(this, "A senha deve ter pelo menos 8 caracteres.", "Senha fraca",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string telefone = new string(Array.FindAll(_telefoneBibliotecaria.Text.ToCharArray(), char.IsDigit));
+            if (telefone.Length < 11 || telefone.Length > 12)
+            {
+                MessageBox.Show(this, "Informe um telefone válido com DDD.", "Telefone inválido",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _telefoneBibliotecaria.Focus();
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(_caminhoCodigoMestre) || !File.Exists(_caminhoCodigoMestre))
+            {
+                MessageBox.Show(this, "Exporte o código-mestre para um local externo antes de concluir a configuração.", "Código-mestre não exportado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var tema = _tema.SelectedItem as ThemePreset;
+            if (tema == null)
+                return;
+
+            CriptografiaSenha.CriarHash(_senhaBibliotecaria.Text, out string senhaHash, out string senhaSalt);
+            CriptografiaSenha.CriarHash(_codigoMestreGerado, out string codigoHash, out string codigoSalt);
+
+            try
+            {
+                DatabaseInitializer.EnsureCreated();
+
+                using (SqlCeConnection conexao = Conexao.ObterConexao())
+                {
+                    conexao.Open();
+                    using (SqlCeTransaction transacao = conexao.BeginTransaction())
+                    {
+                        using (SqlCeCommand verificarEmail = conexao.CreateCommand())
+                        {
+                            verificarEmail.Transaction = transacao;
+                            verificarEmail.CommandText = "SELECT COUNT(*) FROM usuarios WHERE Email = @Email";
+                            verificarEmail.Parameters.AddWithValue("@Email", email);
+                            if (Convert.ToInt32(verificarEmail.ExecuteScalar()) > 0)
+                            {
+                                MessageBox.Show(this, "Este e-mail já está cadastrado no sistema.", "E-mail em uso",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                _emailBibliotecaria.Focus();
+                                return;
+                            }
+                        }
+
+                        using (SqlCeCommand inserir = conexao.CreateCommand())
+                        {
+                            inserir.Transaction = transacao;
+                            inserir.CommandText = @"INSERT INTO usuarios
+(Nome, Email, Senha_Hash, Senha_Salt, CPF, DataNascimento, Turma, Telefone, TipoUsuario)
+VALUES
+(@Nome, @Email, @Senha_Hash, @Senha_Salt, @CPF, @DataNascimento, @Turma, @Telefone, @TipoUsuario)";
+                            inserir.Parameters.AddWithValue("@Nome", _nomeBibliotecaria.Text.Trim());
+                            inserir.Parameters.AddWithValue("@Email", email);
+                            inserir.Parameters.AddWithValue("@Senha_Hash", senhaHash);
+                            inserir.Parameters.AddWithValue("@Senha_Salt", senhaSalt);
+                            inserir.Parameters.AddWithValue("@CPF", DBNull.Value);
+                            inserir.Parameters.AddWithValue("@DataNascimento", DateTime.Today);
+                            inserir.Parameters.AddWithValue("@Turma", DBNull.Value);
+                            inserir.Parameters.AddWithValue("@Telefone", _telefoneBibliotecaria.Text.Trim());
+                            inserir.Parameters.AddWithValue("@TipoUsuario", "Bibliotecário(a)");
+                            inserir.ExecuteNonQuery();
+                        }
+
+                        InstituicaoConfiguracaoStore.Salvar(new InstituicaoConfiguracao
+                        {
+                            Nome = _nomeInstituicao.Text.Trim(),
+                            CorPrimaria = ColorTranslator.ToHtml(tema.PrimaryColor),
+                            CodigoMestreHash = codigoHash,
+                            CodigoMestreSalt = codigoSalt
+                        });
+
+                        transacao.Commit();
+                    }
+                }
+
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Não foi possível salvar a configuração: " + ex.Message, "Erro",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private static bool EmailValido(string email)
+        {
+            try
+            {
+                var endereco = new MailAddress(email);
+                return string.Equals(endereco.Address, email, StringComparison.OrdinalIgnoreCase);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            const string msg = "Tem certeza de que quer fechar a Aplicação?";
+            const string box = "Confirmação de Encerramento";
+            var confirma = MessageBox.Show(msg, box, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirma == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
+        }
+
+        
+    }
+    
+}

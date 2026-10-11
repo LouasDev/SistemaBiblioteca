@@ -30,9 +30,7 @@ namespace SUB.Utils
                     return cached;
 
                 Bitmap original = GetOriginal(variant);
-                Bitmap themed = IsDefaultTheme(primaryColor, backgroundColor)
-                    ? original
-                    : CreateVariant(original, primaryColor, backgroundColor);
+                Bitmap themed = CreateVariant(original, primaryColor, backgroundColor);
                 Cache[key] = themed;
                 return themed;
             }
@@ -56,6 +54,7 @@ namespace SUB.Utils
 
         private static Bitmap CreateVariant(Bitmap source, Color primaryColor, Color backgroundColor)
         {
+            Color logoColor = GetLogoColor(primaryColor, backgroundColor);
             Bitmap result = new Bitmap(source.Width, source.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             for (int y = 0; y < source.Height; y++)
             {
@@ -65,7 +64,7 @@ namespace SUB.Utils
                     if (IsWhite(pixel))
                         result.SetPixel(x, y, Color.FromArgb(pixel.A, backgroundColor));
                     else if (IsBlue(pixel))
-                        result.SetPixel(x, y, Color.FromArgb(pixel.A, primaryColor));
+                        result.SetPixel(x, y, Color.FromArgb(pixel.A, logoColor));
                     else
                         result.SetPixel(x, y, pixel);
                 }
@@ -74,10 +73,15 @@ namespace SUB.Utils
             return result;
         }
 
-        private static bool IsDefaultTheme(Color primaryColor, Color backgroundColor)
+        private static Color GetLogoColor(Color primaryColor, Color backgroundColor)
         {
-            ThemePreset preset = ThemeManager.Presets[0];
-            return primaryColor.ToArgb() == preset.PrimaryColor.ToArgb();
+            double luminance = (0.299 * backgroundColor.R) +
+                               (0.587 * backgroundColor.G) +
+                               (0.114 * backgroundColor.B);
+
+            return luminance >= 180
+                ? primaryColor
+                : ThemeManager.GetContrastColor(backgroundColor);
         }
 
         private static bool IsWhite(Color color)

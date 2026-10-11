@@ -37,7 +37,7 @@ namespace SUB.Utils
 
         public static IList<ThemePreset> Presets { get; } = new List<ThemePreset>
         {
-            new ThemePreset("Azul clássico", Color.FromArgb(31, 72, 126), Color.FromArgb(16, 87, 174), Color.FromArgb(238, 244, 250)),
+            new ThemePreset("Azul (padrão)", Color.FromArgb(31, 72, 126), Color.FromArgb(16, 87, 174), Color.FromArgb(238, 244, 250)),
             new ThemePreset("Verde", Color.FromArgb(35, 105, 82), Color.FromArgb(25, 125, 91), Color.FromArgb(237, 246, 241)),
             new ThemePreset("Vinho", Color.FromArgb(126, 48, 67), Color.FromArgb(153, 58, 78), Color.FromArgb(249, 239, 241)),
             new ThemePreset("Grafite", Color.FromArgb(59, 67, 78), Color.FromArgb(78, 91, 108), Color.FromArgb(240, 243, 246))
@@ -115,7 +115,7 @@ namespace SUB.Utils
                 }
                 else
                 {
-                    gradientPanel.Gradientetop = Lighten(primaryColor, 0.12f);
+                    gradientPanel.Gradientetop = primaryColor;
                     gradientPanel.Gradientebottom = Darken(primaryColor, 0.12f);
                 }
                 gradientPanel.Invalidate();
@@ -168,7 +168,9 @@ namespace SUB.Utils
                 ApplyGridTheme(grid, primaryColor);
 
             var panel = control as Panel;
-            if (panel != null && IsNavigationContainer(control))
+            if (panel != null && IsThemeLinePanel(control))
+                panel.BackColor = primaryColor;
+            else if (panel != null && IsNavigationContainer(control))
                 panel.BackColor = primaryColor;
             else if (panel != null && isNavigation && panel.BackColor != Color.Transparent)
                 panel.BackColor = Darken(primaryColor, 0.08f);
@@ -199,6 +201,12 @@ namespace SUB.Utils
                    name.IndexOf("navContainer", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
+        private static bool IsThemeLinePanel(Control control)
+        {
+            string name = control.Name ?? string.Empty;
+            return name.StartsWith("sublinha", StringComparison.OrdinalIgnoreCase);
+        }
+
         private static bool IsLoginGradient(Control control)
         {
             return control.Name.Equals("gradientPanel2", StringComparison.OrdinalIgnoreCase) &&
@@ -212,10 +220,9 @@ namespace SUB.Utils
             return hue <= 15 || hue >= 345 || (hue >= 25 && hue <= 165);
         }
 
-        private static Color GetLabelColor(Color primaryColor)
+        public static Color GetLabelColor(Color primaryColor)
         {
-            double luminance = (0.299 * primaryColor.R) + (0.587 * primaryColor.G) + (0.114 * primaryColor.B);
-            return luminance < 150 ? Lighten(primaryColor, 0.72f) : Darken(primaryColor, 0.55f);
+            return Darken(primaryColor, 0.55f);
         }
 
         private static bool IsSemanticLabel(Label label)
@@ -256,6 +263,23 @@ namespace SUB.Utils
             grid.RowHeadersDefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
             grid.RowHeadersDefaultCellStyle.SelectionBackColor = selected;
             grid.RowHeadersDefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
+
+            foreach (DataGridViewColumn column in grid.Columns)
+            {
+                column.HeaderCell.Style.BackColor = primaryColor;
+                column.HeaderCell.Style.ForeColor = contrast;
+                column.HeaderCell.Style.SelectionBackColor = primaryColor;
+                column.HeaderCell.Style.SelectionForeColor = contrast;
+
+                if (!column.DefaultCellStyle.BackColor.IsEmpty)
+                    column.DefaultCellStyle.BackColor = surface;
+                if (!column.DefaultCellStyle.ForeColor.IsEmpty)
+                    column.DefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
+                if (!column.DefaultCellStyle.SelectionBackColor.IsEmpty)
+                    column.DefaultCellStyle.SelectionBackColor = selected;
+                if (!column.DefaultCellStyle.SelectionForeColor.IsEmpty)
+                    column.DefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
+            }
         }
     }
 }

@@ -39,8 +39,8 @@
             this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
             this.BtnEntrar = new CustomButton();
             this.cbMostrarSenha = new System.Windows.Forms.CheckBox();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.sublinha2 = new System.Windows.Forms.Panel();
+            this.sublinha = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSenha = new System.Windows.Forms.TextBox();
             this.txtEmail = new System.Windows.Forms.TextBox();
@@ -63,9 +63,9 @@
             this.lblVersion.ForeColor = System.Drawing.Color.White;
             this.lblVersion.Location = new System.Drawing.Point(12, 574);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(71, 17);
+            this.lblVersion.Size = new System.Drawing.Size(81, 17);
             this.lblVersion.TabIndex = 3;
-            this.lblVersion.Text = "Version 1.0";
+            this.lblVersion.Text = "Saiba mais...";
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             this.lblVersion.MouseEnter += new System.EventHandler(this.lblVersion_MouseEnter);
             this.lblVersion.MouseLeave += new System.EventHandler(this.lblVersion_MouseLeave);
@@ -73,13 +73,13 @@
             // lblBiblioteca
             // 
             this.lblBiblioteca.BackColor = System.Drawing.Color.Transparent;
-            this.lblBiblioteca.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBiblioteca.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBiblioteca.ForeColor = System.Drawing.Color.White;
-            this.lblBiblioteca.Location = new System.Drawing.Point(56, 399);
+            this.lblBiblioteca.Location = new System.Drawing.Point(56, 383);
             this.lblBiblioteca.Name = "lblBiblioteca";
-            this.lblBiblioteca.Size = new System.Drawing.Size(284, 147);
+            this.lblBiblioteca.Size = new System.Drawing.Size(284, 45);
             this.lblBiblioteca.TabIndex = 2;
-            this.lblBiblioteca.Text = "Sistema de Biblioteca";
+            this.lblBiblioteca.Text = "Sistema Único Bibliotecário";
             this.lblBiblioteca.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblNomeEscola
@@ -148,8 +148,8 @@
             this.gradientPanel2.BorderRadius = 10;
             this.gradientPanel2.Controls.Add(this.BtnEntrar);
             this.gradientPanel2.Controls.Add(this.cbMostrarSenha);
-            this.gradientPanel2.Controls.Add(this.panel4);
-            this.gradientPanel2.Controls.Add(this.panel2);
+            this.gradientPanel2.Controls.Add(this.sublinha2);
+            this.gradientPanel2.Controls.Add(this.sublinha);
             this.gradientPanel2.Controls.Add(this.label4);
             this.gradientPanel2.Controls.Add(this.txtSenha);
             this.gradientPanel2.Controls.Add(this.txtEmail);
@@ -158,13 +158,14 @@
             this.gradientPanel2.Controls.Add(this.lblEsqueceuSenha);
             this.gradientPanel2.Gradientebottom = System.Drawing.Color.WhiteSmoke;
             this.gradientPanel2.Gradientetop = System.Drawing.Color.WhiteSmoke;
-            this.gradientPanel2.Location = new System.Drawing.Point(488, 22);
+            this.gradientPanel2.Location = new System.Drawing.Point(488, 74);
             this.gradientPanel2.Name = "gradientPanel2";
-            this.gradientPanel2.Size = new System.Drawing.Size(387, 557);
+            this.gradientPanel2.Size = new System.Drawing.Size(387, 438);
             this.gradientPanel2.TabIndex = 26;
             // 
             // BtnEntrar
             // 
+            this.BtnEntrar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnEntrar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(105)))), ((int)(((byte)(111)))));
             this.BtnEntrar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.BtnEntrar.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(105)))), ((int)(((byte)(111)))));
@@ -174,14 +175,14 @@
             this.BtnEntrar.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.BtnEntrar.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.BtnEntrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.BtnEntrar.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.BtnEntrar.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BtnEntrar.ForeColor = System.Drawing.Color.White;
             this.BtnEntrar.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(12)))), ((int)(((byte)(78)))), ((int)(((byte)(84)))));
-            this.BtnEntrar.Location = new System.Drawing.Point(114, 440);
+            this.BtnEntrar.Location = new System.Drawing.Point(115, 363);
             this.BtnEntrar.Name = "BtnEntrar";
             this.BtnEntrar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(54)))), ((int)(((byte)(56)))));
             this.BtnEntrar.ShowBorder = false;
-            this.BtnEntrar.Size = new System.Drawing.Size(140, 42);
+            this.BtnEntrar.Size = new System.Drawing.Size(140, 41);
             this.BtnEntrar.TabIndex = 28;
             this.BtnEntrar.Text = "Entrar";
             this.BtnEntrar.UseVisualStyleBackColor = true;
@@ -190,7 +191,7 @@
             // cbMostrarSenha
             // 
             this.cbMostrarSenha.AutoSize = true;
-            this.cbMostrarSenha.Location = new System.Drawing.Point(50, 330);
+            this.cbMostrarSenha.Location = new System.Drawing.Point(50, 280);
             this.cbMostrarSenha.Name = "cbMostrarSenha";
             this.cbMostrarSenha.Size = new System.Drawing.Size(102, 19);
             this.cbMostrarSenha.TabIndex = 27;
@@ -198,27 +199,27 @@
             this.cbMostrarSenha.UseVisualStyleBackColor = true;
             this.cbMostrarSenha.CheckedChanged += new System.EventHandler(this.cbMostrarSenha_CheckedChanged);
             // 
-            // panel4
+            // sublinha2
             // 
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel4.Location = new System.Drawing.Point(50, 322);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(271, 2);
-            this.panel4.TabIndex = 14;
+            this.sublinha2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.sublinha2.Location = new System.Drawing.Point(50, 272);
+            this.sublinha2.Name = "sublinha2";
+            this.sublinha2.Size = new System.Drawing.Size(271, 2);
+            this.sublinha2.TabIndex = 14;
             // 
-            // panel2
+            // sublinha
             // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.panel2.Location = new System.Drawing.Point(50, 234);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(271, 2);
-            this.panel2.TabIndex = 14;
+            this.sublinha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
+            this.sublinha.Location = new System.Drawing.Point(50, 184);
+            this.sublinha.Name = "sublinha";
+            this.sublinha.Size = new System.Drawing.Size(271, 2);
+            this.sublinha.TabIndex = 14;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(47, 274);
+            this.label4.Location = new System.Drawing.Point(47, 224);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(37, 13);
             this.label4.TabIndex = 11;
@@ -231,7 +232,7 @@
             this.txtSenha.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtSenha.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtSenha.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSenha.Location = new System.Drawing.Point(50, 301);
+            this.txtSenha.Location = new System.Drawing.Point(50, 251);
             this.txtSenha.Name = "txtSenha";
             this.txtSenha.Size = new System.Drawing.Size(271, 19);
             this.txtSenha.TabIndex = 2;
@@ -245,7 +246,7 @@
             this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(50, 217);
+            this.txtEmail.Location = new System.Drawing.Point(50, 167);
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(271, 19);
             this.txtEmail.TabIndex = 1;
@@ -255,7 +256,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(47, 189);
+            this.label3.Location = new System.Drawing.Point(47, 139);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(97, 13);
             this.label3.TabIndex = 11;
@@ -278,7 +279,7 @@
             this.lblEsqueceuSenha.BackColor = System.Drawing.Color.Transparent;
             this.lblEsqueceuSenha.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblEsqueceuSenha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(154)))), ((int)(((byte)(245)))));
-            this.lblEsqueceuSenha.Location = new System.Drawing.Point(204, 331);
+            this.lblEsqueceuSenha.Location = new System.Drawing.Point(204, 281);
             this.lblEsqueceuSenha.Name = "lblEsqueceuSenha";
             this.lblEsqueceuSenha.Size = new System.Drawing.Size(117, 15);
             this.lblEsqueceuSenha.TabIndex = 16;
@@ -319,10 +320,10 @@
         private System.Windows.Forms.Label lblVersion;
         private ElementosPersonalizados.GradientPanel gradientPanel2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel sublinha2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtSenha;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel sublinha;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtEmail;
         private System.Windows.Forms.Label lblEsqueceuSenha;

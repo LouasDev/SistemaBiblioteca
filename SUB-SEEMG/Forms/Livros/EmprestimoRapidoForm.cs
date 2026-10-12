@@ -28,6 +28,7 @@ namespace SUB.Forms.Livros
         public EmprestimoRapidoForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
             this.KeyPreview = true;
             this.KeyDown += EmprestimoRapidoForm_KeyDown;
 

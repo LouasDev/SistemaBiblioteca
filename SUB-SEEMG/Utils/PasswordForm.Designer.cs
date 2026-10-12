@@ -35,7 +35,7 @@
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(400, 50);
+            this.panelHeader.Size = new System.Drawing.Size(440, 50);
             this.panelHeader.TabIndex = 0;
             // 
             // lblTitulo
@@ -45,17 +45,17 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(0, 0);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(400, 50);
+            this.lblTitulo.Size = new System.Drawing.Size(440, 50);
             this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "Confirmação de Senha";
+            this.lblTitulo.Text = "Confirmação de senha";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblMensagem
             // 
             this.lblMensagem.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
-            this.lblMensagem.Location = new System.Drawing.Point(20, 68);
+            this.lblMensagem.Location = new System.Drawing.Point(24, 66);
             this.lblMensagem.Name = "lblMensagem";
-            this.lblMensagem.Size = new System.Drawing.Size(360, 40);
+            this.lblMensagem.Size = new System.Drawing.Size(392, 40);
             this.lblMensagem.TabIndex = 1;
             this.lblMensagem.Text = "Digite sua senha para confirmar a operação:";
             this.lblMensagem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -63,13 +63,14 @@
             // btnConfirmar
             // 
             this.btnConfirmar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnConfirmar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnConfirmar.FlatAppearance.BorderSize = 0;
             this.btnConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnConfirmar.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmar.Location = new System.Drawing.Point(260, 163);
+            this.btnConfirmar.Location = new System.Drawing.Point(286, 170);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(120, 35);
+            this.btnConfirmar.Size = new System.Drawing.Size(130, 42);
             this.btnConfirmar.TabIndex = 1;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = false;
@@ -79,23 +80,25 @@
             // 
             this.lblErro.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblErro.ForeColor = System.Drawing.Color.Red;
-            this.lblErro.Location = new System.Drawing.Point(20, 132);
+            this.lblErro.Location = new System.Drawing.Point(24, 140);
             this.lblErro.Name = "lblErro";
-            this.lblErro.Size = new System.Drawing.Size(360, 15);
+            this.lblErro.Size = new System.Drawing.Size(392, 15);
             this.lblErro.TabIndex = 3;
             this.lblErro.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErro.Visible = false;
             // 
             // btnCancelar
             // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Gray;
-            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
+            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelar.FlatAppearance.BorderSize = 1;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(128, 163);
+            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnCancelar.Location = new System.Drawing.Point(164, 170);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(110, 35);
+            this.btnCancelar.Size = new System.Drawing.Size(110, 42);
             this.btnCancelar.TabIndex = 2;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -115,7 +118,7 @@
             this.txtSenha.Font = new System.Drawing.Font("Segoe UI", 11.25F);
             this.txtSenha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtSenha.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtSenha.Location = new System.Drawing.Point(20, 104);
+            this.txtSenha.Location = new System.Drawing.Point(24, 106);
             this.txtSenha.Name = "txtSenha";
             this.txtSenha.Padding = new System.Windows.Forms.Padding(7);
             this.txtSenha.PlaceholderColor = System.Drawing.Color.Gray;
@@ -125,7 +128,7 @@
             this.txtSenha.SelectedText = "";
             this.txtSenha.SelectionLength = 0;
             this.txtSenha.SelectionStart = 0;
-            this.txtSenha.Size = new System.Drawing.Size(360, 25);
+            this.txtSenha.Size = new System.Drawing.Size(392, 34);
             this.txtSenha.TabIndex = 64;
             this.txtSenha.TextColor = System.Drawing.Color.Black;
             this.txtSenha.UseSystemPasswordChar = false;
@@ -135,7 +138,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(400, 210);
+            this.ClientSize = new System.Drawing.Size(440, 226);
             this.Controls.Add(this.lblErro);
             this.Controls.Add(this.txtSenha);
             this.Controls.Add(this.btnCancelar);

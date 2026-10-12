@@ -302,7 +302,17 @@ namespace SUB.Forms.Setup
 
         private string ValidarNomeBibliotecaria()
         {
-            return string.IsNullOrWhiteSpace(_nomeBibliotecaria.Text) ? "Informe o nome da bibliotecária." : null;
+            string nome = (_nomeBibliotecaria.Text ?? string.Empty).Trim();
+            if (nome.Length == 0)
+                return "Informe o nome completo da bibliotecária.";
+
+            string[] partes = nome.Split(
+                new[] { ' ', '\t', '\r', '\n' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            return partes.Length >= 2
+                ? null
+                : "Digite o nome e o sobrenome da bibliotecária.";
         }
 
         private string ValidarEmail()

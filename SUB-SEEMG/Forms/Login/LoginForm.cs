@@ -69,7 +69,11 @@ namespace SUB.Forms.Login
             }
 
             AplicarTema(corPrimaria);
-            txtEmail.Focus();
+        }
+
+        private void LoginForm_Shown(object sender, EventArgs e)
+        {
+            BeginInvoke(new Action(() => txtEmail.Focus()));
         }
 
         private void AplicarTema(Color corPrimaria)

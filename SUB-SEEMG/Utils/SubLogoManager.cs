@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
 namespace SUB.Utils
@@ -19,9 +20,16 @@ namespace SUB.Utils
 
         public static Bitmap Get(SubLogoVariant variant, Color primaryColor, Color backgroundColor)
         {
+            return Get(variant, primaryColor, backgroundColor, Size.Empty);
+        }
+
+        public static Bitmap Get(SubLogoVariant variant, Color primaryColor, Color backgroundColor, Size renderSize)
+        {
             primaryColor = ThemeManager.Normalize(primaryColor);
             backgroundColor = backgroundColor.IsEmpty ? Color.White : backgroundColor;
-            string key = string.Format("{0}:{1}:{2}", variant, ColorTranslator.ToHtml(primaryColor), ColorTranslator.ToHtml(backgroundColor));
+            bool redimensionar = renderSize.Width > 0 && renderSize.Height > 0;
+            string tamanho = redimensionar ? string.Format(":{0}x{1}", renderSize.Width, renderSize.Height) : string.Empty;
+            string key = string.Format("{0}:{1}:{2}{3}", variant, ColorTranslator.ToHtml(primaryColor), ColorTranslator.ToHtml(backgroundColor), tamanho);
 
             lock (SyncRoot)
             {
@@ -29,8 +37,20 @@ namespace SUB.Utils
                 if (Cache.TryGetValue(key, out cached))
                     return cached;
 
-                Bitmap original = GetOriginal(variant);
-                Bitmap themed = CreateVariant(original, primaryColor, backgroundColor);
+                Bitmap themed;
+                using (Bitmap original = GetOriginal(variant))
+                {
+                    if (redimensionar)
+                    {
+                        using (Bitmap reduzido = Redimensionar(original, renderSize))
+                            themed = CreateVariant(reduzido, primaryColor, backgroundColor);
+                    }
+                    else
+                    {
+                        themed = CreateVariant(original, primaryColor, backgroundColor);
+                    }
+                }
+
                 Cache[key] = themed;
                 return themed;
             }
@@ -69,8 +89,22 @@ namespace SUB.Utils
                         result.SetPixel(x, y, pixel);
                 }
             }
-            source.Dispose();
             return result;
+        }
+
+        private static Bitmap Redimensionar(Bitmap source, Size tamanho)
+        {
+            Bitmap resultado = new Bitmap(tamanho.Width, tamanho.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            using (Graphics grafico = Graphics.FromImage(resultado))
+            {
+                grafico.CompositingQuality = CompositingQuality.HighQuality;
+                grafico.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                grafico.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                grafico.SmoothingMode = SmoothingMode.HighQuality;
+                grafico.DrawImage(source, new Rectangle(Point.Empty, tamanho));
+            }
+
+            return resultado;
         }
 
         private static Color GetLogoColor(Color primaryColor, Color backgroundColor)

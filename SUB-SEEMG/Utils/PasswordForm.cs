@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Usuario
 {
@@ -13,6 +14,7 @@ namespace SUB.Forms.Usuario
         public PasswordForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
             this.StartPosition = FormStartPosition.CenterParent;
         }
 

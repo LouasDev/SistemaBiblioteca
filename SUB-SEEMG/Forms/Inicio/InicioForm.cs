@@ -25,11 +25,15 @@ namespace SUB.Forms.Inicio
 {
     public partial class InicioForm : Form
     {
+        private Color dashboardThemeColor = ThemeManager.DefaultColor;
+
         public void AplicarTema(Color corPrimaria)
         {
             Color cor = ThemeManager.Normalize(corPrimaria);
+            dashboardThemeColor = cor;
             ThemeManager.Apply(this, cor);
             lblOla.ForeColor = ThemeManager.GetLabelColor(cor);
+            AplicarTemaNoDashboard();
         }
 
         private class EmprestimoAtrasadoInfo
@@ -51,8 +55,6 @@ namespace SUB.Forms.Inicio
 
 
         // controls dinâmicos
-        private FlowLayoutPanel flowCards;
-        private Panel topPanelInside;         // container para cards
         private Panel actionsPanel;           // painel no canto superior direito com botão de Empréstimo Rápido
         private Button btnEmprestimoRapido;   // botão principal no topo-direito, bem visível (maior)
         private Label lblStatusSmall;
@@ -62,10 +64,12 @@ namespace SUB.Forms.Inicio
         private System.Windows.Forms.Timer timerAutoRefresh;
 
         private Dictionary<string, bool> mainButtonsOriginalState = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<DataGridView, Label> emptyGridLabels = new Dictionary<DataGridView, Label>();
 
         public InicioForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
             this.KeyPreview = true;
             this.KeyDown += InicioForm_KeyDown;
 
@@ -124,49 +128,32 @@ namespace SUB.Forms.Inicio
             // remover controles dinâmicos antigos do panel1 (se houver)
             foreach (Control c in panel1.Controls.OfType<Control>().ToArray())
             {
-                if (!(c is TabControl && c.Name == "tabEstatisticas"))
+                if (c != topPanelInside && !(c is TabControl && c.Name == "tabEstatisticas"))
                 {
                     panel1.Controls.Remove(c);
                     c.Dispose();
                 }
             }
 
-            // === TOP PANEL INSIDE (cards) ===
-            if (topPanelInside != null) { panel1.Controls.Remove(topPanelInside); topPanelInside.Dispose(); }
-            topPanelInside = new Panel
+            foreach (Control card in flowCards.Controls.OfType<Control>().ToArray())
             {
-                Name = "topPanelInside",
-                Dock = DockStyle.Top,
-                Height = 160,
-                BackColor = Color.White
-            };
-            panel1.Controls.Add(topPanelInside);
-
-            flowCards = new FlowLayoutPanel
-            {
-                Name = "flowCards",
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = true,
-                AutoScroll = true,
-                Padding = new Padding(12),
-                BackColor = Color.White
-            };
-            topPanelInside.Controls.Add(flowCards);
+                flowCards.Controls.Remove(card);
+                card.Dispose();
+            }
 
             var cardsInfo = new[]
             {
-                new { Key = "Usuarios", Title = "Usuários", Sub = "Total de usuários", Color = Color.FromArgb(30,61,88) },
-                new { Key = "Livros", Title = "Livros", Sub = "Total de livros", Color = Color.FromArgb(9,74,158) },
-                new { Key = "EmpAtivos", Title = "Empréstimos Ativos", Sub = "Empréstimos não devolvidos", Color = Color.FromArgb(34,139,34) },
+                new { Key = "Usuarios", Title = "Usuários", Sub = "Total de usuários", Color = Color.FromArgb(30, 61, 88) },
+                new { Key = "Livros", Title = "Acervo", Sub = "Total de livros", Color = Color.FromArgb(9, 74, 158) },
+                new { Key = "EmpAtivos", Title = "Empréstimos ativos", Sub = "Empréstimos não devolvidos", Color = Color.FromArgb(34, 139, 34) },
                 new { Key = "Atrasados", Title = "Atrasados", Sub = "Empréstimos em atraso", Color = Color.FromArgb(178,34,34) },
-                new { Key = "RapidosHoje", Title = "Rápidos (hoje)", Sub = "Empréstimos rápidos hoje", Color = Color.FromArgb(92,92,205) },
-                new { Key = "MediaMes", Title = "Média/Mês", Sub = "Média de empréstimos deste mês", Color = Color.FromArgb(255, 140, 0) },
-                new { Key = "TopUsuario", Title = "Top Usuário 🏆", Sub = "Usuário que mais emprestou", Color = Color.FromArgb(0, 123, 167) }
+                new { Key = "RapidosHoje", Title = "Rápidos hoje", Sub = "Empréstimos rápidos hoje", Color = Color.FromArgb(92, 92, 205) },
+                new { Key = "MediaMes", Title = "Média mensal", Sub = "Média de empréstimos deste mês", Color = Color.FromArgb(255, 140, 0) },
+                new { Key = "TopUsuario", Title = "Leitor mais ativo", Sub = "Usuário que mais emprestou", Color = Color.FromArgb(0, 123, 167) }
             };
 
             // Calcula o tamanho ideal para os cards
-            int cardWidth = 210; // 16 = margem
+            int cardWidth = 210;
             int cardHeight = 110;
 
             foreach (var c in cardsInfo) flowCards.Controls.Add(CriarCard(c.Key, c.Title, c.Sub, c.Color, cardWidth, cardHeight));
@@ -269,9 +256,9 @@ namespace SUB.Forms.Inicio
                 var rect = e.Bounds;
                 var isSelected = tabControl.SelectedIndex == e.Index;
 
-                var backColor = isSelected ? Color.White : Color.FromArgb(250, 250, 250);
-                var textColor = isSelected ? Color.FromArgb(30, 61, 88) : Color.FromArgb(110, 110, 110);
-                var borderColor = Color.FromArgb(230, 230, 230);
+                var backColor = isSelected ? Color.White : ThemeManager.Lighten(dashboardThemeColor, 0.94F);
+                var textColor = isSelected ? ThemeManager.GetLabelColor(dashboardThemeColor) : Color.FromArgb(110, 110, 110);
+                var borderColor = ThemeManager.Lighten(dashboardThemeColor, 0.72F);
 
                 using (var brush = new SolidBrush(backColor)) e.Graphics.FillRectangle(brush, rect);
                 using (var pen = new Pen(borderColor)) e.Graphics.DrawRectangle(pen, rect);
@@ -403,7 +390,7 @@ namespace SUB.Forms.Inicio
             try
             {
                 lblOla.Font = new System.Drawing.Font("Segoe UI", 20F, FontStyle.Bold);   // aumentada
-                lblOla.ForeColor = Color.FromArgb(30, 61, 88);
+                lblOla.ForeColor = ThemeManager.GetLabelColor(dashboardThemeColor);
 
                 lblRelogio.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Regular); // já aumentado anteriormente
                 lblRelogio.ForeColor = Color.FromArgb(60, 60, 60);
@@ -412,6 +399,46 @@ namespace SUB.Forms.Inicio
                 CenterClock();
             }
             catch { /* ignore se labels não existirem no designer */ }
+
+            AplicarTemaNoDashboard();
+        }
+
+        private void AplicarTemaNoDashboard()
+        {
+            Color text = ThemeManager.GetLabelColor(dashboardThemeColor);
+
+            if (btnEmprestimoRapido != null)
+            {
+                btnEmprestimoRapido.BackColor = Color.FromArgb(9, 74, 158);
+                btnEmprestimoRapido.ForeColor = Color.White;
+                btnEmprestimoRapido.FlatAppearance.MouseOverBackColor = Color.FromArgb(7, 62, 132);
+            }
+
+            if (flowCards == null)
+                return;
+
+            foreach (Panel card in flowCards.Controls.OfType<Panel>())
+            {
+                card.BackColor = Color.White;
+                card.Invalidate();
+                Panel header = card.Controls.OfType<Panel>().FirstOrDefault(p => p.Dock == DockStyle.Top);
+                string key = card.Tag as string;
+                if (header != null)
+                {
+                    if (string.Equals(key, "Usuarios", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(key, "Livros", StringComparison.OrdinalIgnoreCase))
+                    {
+                        header.BackColor = dashboardThemeColor;
+                    }
+
+                    Label headerLabel = header.Controls.OfType<Label>().FirstOrDefault();
+                    if (headerLabel != null)
+                        headerLabel.ForeColor = ThemeManager.GetContrastColor(header.BackColor);
+                }
+                var value = card.Controls.Find("val_" + key, true).FirstOrDefault() as Label;
+                if (value != null)
+                    value.ForeColor = text;
+            }
         }
 
         private void dgvDevedores_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -726,40 +753,54 @@ namespace SUB.Forms.Inicio
         {
             var name = "emptyOverlay_" + dgv.Name;
             var parent = dgv.Parent ?? panel1;
-            var existing = parent.Controls.Find(name, true).FirstOrDefault() as Label;
 
-            if (dgv.Rows.Count == 0)
+            Label emptyLabel;
+            if (!emptyGridLabels.TryGetValue(dgv, out emptyLabel) || emptyLabel.IsDisposed)
             {
-                if (existing == null)
+                var legacyOverlay = parent.Controls[name] as Label;
+                if (legacyOverlay != null)
                 {
-                    var lbl = new Label
-                    {
-                        Name = name,
-                        Text = message,
-                        AutoSize = false,
-                        Size = dgv.Size,
-                        Location = dgv.Location,
-                        TextAlign = ContentAlignment.MiddleCenter,
-                        ForeColor = Color.Gray,
-                        BackColor = Color.Transparent,
-                        Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Regular)
-                    };
-                    parent.Controls.Add(lbl);
-                    lbl.BringToFront();
+                    parent.Controls.Remove(legacyOverlay);
+                    legacyOverlay.Dispose();
                 }
-                else
+
+                emptyLabel = new Label
                 {
-                    existing.Text = message;
-                    existing.Visible = true;
-                    existing.Location = dgv.Location;
-                    existing.Size = dgv.Size;
-                    existing.BringToFront();
-                }
+                    Name = name,
+                    AutoSize = false,
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    ForeColor = Color.Gray,
+                    BackColor = Color.White,
+                    Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Regular),
+                    Visible = false
+                };
+
+                parent.Controls.Add(emptyLabel);
+                emptyGridLabels[dgv] = emptyLabel;
+
+                dgv.DataBindingComplete += (s, e) => AtualizarEmptyLabel(dgv);
             }
-            else if (existing != null)
-            {
-                existing.Visible = false;
-            }
+
+            emptyLabel.Text = message;
+            AtualizarEmptyLabel(dgv);
+        }
+
+        private void AtualizarEmptyLabel(DataGridView dgv)
+        {
+            Label emptyLabel;
+            if (dgv == null || dgv.IsDisposed ||
+                !emptyGridLabels.TryGetValue(dgv, out emptyLabel) || emptyLabel.IsDisposed)
+                return;
+
+            bool vazio = dgv.Rows.Count == 0;
+            dgv.Visible = !vazio;
+            emptyLabel.Visible = vazio;
+
+            if (vazio)
+                emptyLabel.BringToFront();
+            else
+                dgv.BringToFront();
         }
 
         private List<EmprestimoAtrasadoInfo> ObterEmprestimosAtrasados()
@@ -981,11 +1022,16 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
                             }
                             if (dgvLivros != null)
                             {
-                                dgvLivros.DataSource = null;
-                                dgvLivros.DataSource = livrosPopulares;
+                                // Uma consulta vazia transitória não deve apagar uma
+                                // lista válida que já esteja visível durante a atualização.
+                                if (livrosPopulares.Count > 0 || dgvLivros.Rows.Count == 0)
+                                {
+                                    dgvLivros.DataSource = null;
+                                    dgvLivros.DataSource = livrosPopulares;
+                                }
                                 dgvLivros.ClearSelection();
                                 dgvLivros.Refresh();
-                                EnsureEmptyOverlay(dgvLivros, "Nenhum livro encontrado por enquanto");
+                                EnsureEmptyOverlay(dgvLivros, "Nenhum livro encontrado por enquanto.");
                             }
                         }
 

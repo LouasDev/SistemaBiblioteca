@@ -16,11 +16,11 @@ namespace SUB.Forms.Usuario
 {
     public partial class UsuarioForm : Form
     {
-
         private Timer filtroTimer;
         public UsuarioForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
             this.Load += UsuarioForm_Load;
         }
 
@@ -365,7 +365,7 @@ namespace SUB.Forms.Usuario
 
             if (dgvUsuarios.Columns.Contains("Id"))
             {
-                var colId = dgvUsuarios.Columns["ID"];
+                var colId = dgvUsuarios.Columns["Id"];
 
                 colId.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
@@ -396,7 +396,9 @@ namespace SUB.Forms.Usuario
         // NOVO: coloração condicional da coluna de empréstimo
         private void DgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvUsuarios.Columns.Count)
+                return;
+
             if (dgvUsuarios.Columns[e.ColumnIndex].Name != "EmprestimoStatus") return;
             if (e.Value == null) return;
 
@@ -419,7 +421,10 @@ namespace SUB.Forms.Usuario
 
         private void DgvUsuarios_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (e.RowIndex >= 0 && dgvUsuarios.Columns[e.ColumnIndex].Name == "Editar")
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvUsuarios.Columns.Count)
+                return;
+
+            if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Editar")
             {
                 e.PaintBackground(e.CellBounds, true);
 
@@ -685,6 +690,7 @@ namespace SUB.Forms.Usuario
             }
         }
 
+       
     }
 }
 

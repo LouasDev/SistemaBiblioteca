@@ -26,22 +26,50 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.topPanelInside = new System.Windows.Forms.Panel();
+            this.flowCards = new System.Windows.Forms.FlowLayoutPanel();
             this.lblRelogio = new System.Windows.Forms.Label();
             this.lblOla = new System.Windows.Forms.Label();
             this.timerRelogio = new System.Windows.Forms.Timer(this.components);
             this.panelTop = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
+            this.topPanelInside.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.topPanelInside);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 86);
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(18);
             this.panel1.Size = new System.Drawing.Size(1040, 574);
             this.panel1.TabIndex = 3;
+            // 
+            // topPanelInside
+            // 
+            this.topPanelInside.BackColor = System.Drawing.Color.White;
+            this.topPanelInside.Controls.Add(this.flowCards);
+            this.topPanelInside.Dock = System.Windows.Forms.DockStyle.Top;
+            this.topPanelInside.Location = new System.Drawing.Point(18, 18);
+            this.topPanelInside.Name = "topPanelInside";
+            this.topPanelInside.Size = new System.Drawing.Size(1004, 160);
+            this.topPanelInside.TabIndex = 0;
+            // 
+            // flowCards
+            // 
+            this.flowCards.AutoScroll = true;
+            this.flowCards.BackColor = System.Drawing.Color.White;
+            this.flowCards.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowCards.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
+            this.flowCards.Location = new System.Drawing.Point(0, 0);
+            this.flowCards.Name = "flowCards";
+            this.flowCards.Padding = new System.Windows.Forms.Padding(12);
+            this.flowCards.Size = new System.Drawing.Size(1004, 160);
+            this.flowCards.TabIndex = 0;
+            this.flowCards.WrapContents = false;
             // 
             // lblRelogio
             // 
@@ -85,6 +113,7 @@
             // InicioForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1040, 660);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panelTop);
@@ -96,6 +125,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Início";
             this.Load += new System.EventHandler(this.InicioForm_Load);
+            this.panel1.ResumeLayout(false);
+            this.topPanelInside.ResumeLayout(false);
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.ResumeLayout(false);
@@ -109,5 +140,7 @@
         private System.Windows.Forms.Label lblOla;
         private System.Windows.Forms.Timer timerRelogio;
         private System.Windows.Forms.Panel panelTop;
+        private System.Windows.Forms.Panel topPanelInside;
+        private System.Windows.Forms.FlowLayoutPanel flowCards;
     }
 }

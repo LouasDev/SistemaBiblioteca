@@ -20,7 +20,6 @@ namespace SUB.Forms.Usuario
 {
     public partial class EditarUsuarioForm : Form
     {
-        private Size originalSize;
         private List<string> turmasCadastradas = new List<string>();
         
         public event EventHandler UsuarioAtualizado;
@@ -28,6 +27,7 @@ namespace SUB.Forms.Usuario
         public EditarUsuarioForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             this.KeyPreview = true;
             this.KeyDown += EditarUsuarioForm_KeyDown;
@@ -41,10 +41,6 @@ namespace SUB.Forms.Usuario
             dtpDataNasc.KeyDown += Control_KeyDown;
 
             EstilizarListBoxSugestao(lstSugestoesUsuario);
-            originalSize = this.Size;
-            foreach (Control ctrl in this.Controls) ctrl.Tag = ctrl.Bounds;
-
-            this.Resize += EditarUsuarioForm_Resize;
 
             txtTurma.Enter += txtTurma_Enter;
             txtTurma.MouseClick += txtTurma_MouseClick;
@@ -121,31 +117,6 @@ namespace SUB.Forms.Usuario
         }
 
         
-
-        private void EditarUsuarioForm_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-                return; // não faz nada se estiver minimizado
-
-            float xRatio = (float)this.Width / originalSize.Width;
-            float yRatio = (float)this.Height / originalSize.Height;
-
-            foreach (Control ctrl in this.Controls)
-            {
-                if (ctrl.Tag is Rectangle originalBounds)
-                {
-                    ctrl.Width = (int)(originalBounds.Width * xRatio);
-                    ctrl.Height = (int)(originalBounds.Height * yRatio);
-                    ctrl.Left = (int)(originalBounds.Left * xRatio);
-                    ctrl.Top = (int)(originalBounds.Top * yRatio);
-
-                    // Ajustar fonte junto
-                    ctrl.Font = new Font(ctrl.Font.FontFamily,
-                        10 * Math.Min(xRatio, yRatio), // 10 = tamanho base, ajuste se quiser
-                        ctrl.Font.Style);
-                }
-            }
-        }
 
         private bool _suppressSuggestionOnPrefill = false;
         private List<Usuarios> _cacheUsuarios = new List<Usuarios>();
@@ -779,8 +750,6 @@ private void lstSugestoesUsuario_SelectedIndexChanged(object sender, EventArgs e
             HabilitarCampos();
             txtTurma.Visible = false;
             lblTurma.Visible = false;
-            panel1.Location = new Point(538, 387);
-            panel1.Anchor = AnchorStyles.Top;
         }
 
         private void ConfigurarEdicaoParaProfessor()
@@ -788,22 +757,16 @@ private void lstSugestoesUsuario_SelectedIndexChanged(object sender, EventArgs e
             HabilitarCampos();
             txtTurma.Visible = false;
             lblTurma.Visible = false;
-            panel1.Location = new Point(538, 387);
-            panel1.Anchor = AnchorStyles.Top;
         }
 
         private void ConfigurarEdicaoParaAluno()
         {
             HabilitarCampos();
-            panel1.Location = new Point(538, 468);
-            panel1.Anchor = AnchorStyles.Top;
         }
 
         private void ConfigurarEdicaoParaOutros()
         {
             HabilitarCampos();
-            panel1.Location = new Point(538, 387);
-            panel1.Anchor = AnchorStyles.Top;
             txtEmail.Visible = true;
             txtTurma.Visible = false;
             lblTurma.Visible = true;

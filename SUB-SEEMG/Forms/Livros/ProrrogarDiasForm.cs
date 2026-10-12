@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Livros
 {
@@ -13,6 +14,7 @@ namespace SUB.Forms.Livros
         public ProrrogarDiasForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             numQuantidade.KeyPress += numQuantidade_KeyPress;
             numQuantidade.TextChanged += numQuantidade_TextChanged;

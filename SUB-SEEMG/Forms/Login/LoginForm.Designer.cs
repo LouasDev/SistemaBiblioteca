@@ -147,7 +147,7 @@ namespace SUB.Forms.Login
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
             this.label3.Location = new System.Drawing.Point(88, 210);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 17);
+            this.label3.Size = new System.Drawing.Size(48, 17);
             this.label3.TabIndex = 4;
             this.label3.Text = "E-mail:";
             // 
@@ -469,7 +469,8 @@ namespace SUB.Forms.Login
             this.gradientPanel1.Location = new System.Drawing.Point(41, 40);
             this.gradientPanel1.Name = "gradientPanel1";
             this.gradientPanel1.Size = new System.Drawing.Size(90, 90);
-            this.gradientPanel1.TabIndex = 8;
+            this.gradientPanel1.TabIndex = 12;
+            this.gradientPanel1.Visible = false;
             // 
             // LoginForm
             // 
@@ -488,6 +489,7 @@ namespace SUB.Forms.Login
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SUB — Acesso institucional";
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.Shown += new System.EventHandler(this.LoginForm_Shown);
             this.pnInicial.ResumeLayout(false);
             this.gradientPanel2.ResumeLayout(false);
             this.gradientPanel2.PerformLayout();

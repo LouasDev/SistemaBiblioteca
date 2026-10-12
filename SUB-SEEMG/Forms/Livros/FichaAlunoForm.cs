@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SUB.Utils;
 using static Usuarios;
 
 namespace SUB.Forms.Livros
@@ -16,6 +17,7 @@ namespace SUB.Forms.Livros
         public FichaAlunoForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
         }
         public void PreencherAluno(Aluno aluno)
         {

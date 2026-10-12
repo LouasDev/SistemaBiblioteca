@@ -30,6 +30,7 @@ namespace SUB.Forms.Livros
         public EmprestimoForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             EstilizarListBoxSugestao(lstSugestoesUsuario);
             EstilizarListBoxSugestao(lstLivros);

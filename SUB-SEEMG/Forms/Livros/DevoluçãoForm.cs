@@ -25,6 +25,7 @@ namespace SUB.Forms.Livros
         public DevoluçãoForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
        
             InicializarSugestoesUsuario();
@@ -1186,6 +1187,10 @@ namespace SUB.Forms.Livros
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private void gradientPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 
     #region Classes Auxiliares

@@ -32,6 +32,8 @@ namespace SUB.Utils
     {
         private static readonly ConditionalWeakTable<Control, object> ControlsWithThemeHandler =
             new ConditionalWeakTable<Control, object>();
+        private static readonly ConditionalWeakTable<DataGridView, object> GridsWithThemeHandler =
+            new ConditionalWeakTable<DataGridView, object>();
 
         public static Color DefaultColor { get { return Presets[0].PrimaryColor; } }
 
@@ -94,9 +96,27 @@ namespace SUB.Utils
             ApplyRecursive(root, Normalize(primaryColor), false);
         }
 
+        public static void ApplyConfiguredTheme(Control root)
+        {
+            Color primaryColor = DefaultColor;
+
+            try
+            {
+                var configuracao = InstituicaoConfiguracaoStore.Carregar();
+                if (configuracao != null && !string.IsNullOrWhiteSpace(configuracao.CorPrimaria))
+                    primaryColor = ColorTranslator.FromHtml(configuracao.CorPrimaria);
+            }
+            catch
+            {
+                primaryColor = DefaultColor;
+            }
+
+            Apply(root, primaryColor);
+        }
+
         private static void ApplyRecursive(Control control, Color primaryColor, bool insideNavigation)
         {
-            bool isNavigation = insideNavigation || IsNavigationContainer(control);
+            bool isNavigation = insideNavigation || IsNavigationContainer(control) || IsThemedHeaderPanel(control);
 
             if (!ControlsWithThemeHandler.TryGetValue(control, out _))
             {
@@ -105,7 +125,7 @@ namespace SUB.Utils
             }
 
             var gradientPanel = control as GradientPanel;
-            if (gradientPanel != null)
+            if (gradientPanel != null && !PreserveDesignerGradient(control))
             {
                 if (IsLoginGradient(control))
                 {
@@ -165,28 +185,30 @@ namespace SUB.Utils
 
             var grid = control as DataGridView;
             if (grid != null)
+            {
                 ApplyGridTheme(grid, primaryColor);
+                ConfigureGridThemeHandlers(grid, primaryColor);
+            }
 
             var panel = control as Panel;
-            if (panel != null && IsThemeLinePanel(control))
+            if (panel != null && (IsThemeLinePanel(control) || IsThemedHeaderPanel(control)))
                 panel.BackColor = primaryColor;
+            else if (panel != null && IsFilterSurfacePanel(control))
+                panel.BackColor = Color.White;
+            else if (panel != null && IsResultSurfacePanel(control))
+                panel.BackColor = Lighten(primaryColor, 0.84f);
             else if (panel != null && IsNavigationContainer(control))
                 panel.BackColor = primaryColor;
             else if (panel != null && isNavigation && panel.BackColor != Color.Transparent)
                 panel.BackColor = Darken(primaryColor, 0.08f);
 
             var button = control as Button;
-            if (button != null && !(control is CustomButton) &&
-                (isNavigation || (button.BackColor != SystemColors.Control && button.BackColor != SystemColors.Window && !IsSemanticColor(button.BackColor))))
+            if (button != null && !(control is CustomButton))
             {
-                button.BackColor = isNavigation ? Darken(primaryColor, 0.08f) : primaryColor;
-                button.ForeColor = GetContrastColor(button.BackColor);
-                if (button.FlatStyle != FlatStyle.System)
-                {
-                    button.FlatAppearance.BorderColor = Darken(button.BackColor, 0.12f);
-                    button.FlatAppearance.MouseOverBackColor = Darken(button.BackColor, 0.1f);
-                    button.FlatAppearance.MouseDownBackColor = Darken(button.BackColor, 0.2f);
-                }
+                if (isNavigation)
+                    ApplyNavigationButton(button, primaryColor);
+                else
+                    ApplyActionButton(button, primaryColor);
             }
 
             foreach (Control child in control.Controls)
@@ -201,10 +223,108 @@ namespace SUB.Utils
                    name.IndexOf("navContainer", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
+        private static bool PreserveDesignerGradient(Control control)
+        {
+            return string.Equals(control.Name, "pnlAcoesDev", StringComparison.OrdinalIgnoreCase);
+        }
+
         private static bool IsThemeLinePanel(Control control)
         {
             string name = control.Name ?? string.Empty;
-            return name.StartsWith("sublinha", StringComparison.OrdinalIgnoreCase);
+            return name.StartsWith("sublinha", StringComparison.OrdinalIgnoreCase) ||
+                   name.StartsWith("pnlLinha", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsThemedHeaderPanel(Control control)
+        {
+            string name = control.Name ?? string.Empty;
+            return name.Equals("panelHeader", StringComparison.OrdinalIgnoreCase) ||
+                   name.Equals("pnlHeader", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsFilterSurfacePanel(Control control)
+        {
+            return (control.Name ?? string.Empty).StartsWith("pnlFiltros", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsResultSurfacePanel(Control control)
+        {
+            return (control.Name ?? string.Empty).StartsWith("pnlResultados", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static void ApplyNavigationButton(Button button, Color primaryColor)
+        {
+            button.BackColor = Darken(primaryColor, 0.08f);
+            button.ForeColor = GetContrastColor(button.BackColor);
+            if (button.FlatStyle != FlatStyle.System)
+            {
+                button.FlatAppearance.BorderColor = Darken(button.BackColor, 0.12f);
+                button.FlatAppearance.MouseOverBackColor = Darken(button.BackColor, 0.1f);
+                button.FlatAppearance.MouseDownBackColor = Darken(button.BackColor, 0.2f);
+            }
+        }
+
+        private static void ApplyActionButton(Button button, Color primaryColor)
+        {
+            if (IsCompactUtilityButton(button))
+            {
+                ApplyCompactUtilityButton(button, primaryColor);
+                return;
+            }
+
+            bool isDestructive = IsDestructiveActionButton(button);
+            bool isSecondary = !isDestructive && IsSecondaryActionButton(button);
+            Color baseColor = isDestructive
+                ? Color.FromArgb(178, 34, 34)
+                : (isSecondary ? Lighten(primaryColor, 0.86f) : primaryColor);
+
+            button.UseVisualStyleBackColor = false;
+            button.BackColor = baseColor;
+            button.ForeColor = isSecondary ? GetLabelColor(primaryColor) : GetContrastColor(baseColor);
+            button.FlatAppearance.BorderColor = isSecondary ? Lighten(primaryColor, 0.62f) : Darken(baseColor, 0.12f);
+            button.FlatAppearance.MouseOverBackColor = isSecondary ? Lighten(primaryColor, 0.76f) : Darken(baseColor, 0.1f);
+            button.FlatAppearance.MouseDownBackColor = isSecondary ? Lighten(primaryColor, 0.68f) : Darken(baseColor, 0.2f);
+        }
+
+        private static void ApplyCompactUtilityButton(Button button, Color primaryColor)
+        {
+            button.UseVisualStyleBackColor = false;
+            button.BackColor = Color.White;
+            button.ForeColor = primaryColor;
+            button.FlatAppearance.BorderColor = Lighten(primaryColor, 0.55f);
+            button.FlatAppearance.MouseOverBackColor = Lighten(primaryColor, 0.90f);
+            button.FlatAppearance.MouseDownBackColor = Lighten(primaryColor, 0.80f);
+        }
+
+        private static bool IsCompactUtilityButton(Button button)
+        {
+            string name = button.Name ?? string.Empty;
+            return name.Equals("btnMais", StringComparison.OrdinalIgnoreCase) ||
+                   name.Equals("btnMenos", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool IsSecondaryActionButton(Button button)
+        {
+            string name = button.Name ?? string.Empty;
+            return name.IndexOf("cancel", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("voltar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("anterior", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("limpar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("sair", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("fechar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("export", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("etiqueta", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("prorrogar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static bool IsDestructiveActionButton(Button button)
+        {
+            string name = button.Name ?? string.Empty;
+            return name.IndexOf("excluir", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("remover", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("apagar", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("deletar", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static bool IsLoginGradient(Control control)
@@ -248,7 +368,6 @@ namespace SUB.Utils
             grid.EnableHeadersVisualStyles = false;
             grid.BackgroundColor = surface;
             grid.GridColor = Lighten(primaryColor, 0.58f);
-            grid.BorderStyle = BorderStyle.None;
             grid.DefaultCellStyle.BackColor = surface;
             grid.DefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
             grid.DefaultCellStyle.SelectionBackColor = selected;
@@ -281,6 +400,17 @@ namespace SUB.Utils
                     column.DefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
             }
         }
+
+        private static void ConfigureGridThemeHandlers(DataGridView grid, Color primaryColor)
+        {
+            if (GridsWithThemeHandler.TryGetValue(grid, out _))
+                return;
+
+            GridsWithThemeHandler.Add(grid, new object());
+            grid.ColumnAdded += (sender, args) => ApplyGridTheme(grid, primaryColor);
+            grid.DataBindingComplete += (sender, args) => ApplyGridTheme(grid, primaryColor);
+        }
+
     }
 }
 

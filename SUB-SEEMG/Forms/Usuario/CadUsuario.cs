@@ -24,11 +24,13 @@ namespace SUB.Froms.Usuario
         public CadUsuario(List<Usuarios> usuarios)
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
         }
 
         public CadUsuario()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
         }
         #endregion
 
@@ -356,7 +358,6 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
-            TelefoneAst.Location = new Point(105, 17);
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -367,12 +368,6 @@ namespace SUB.Froms.Usuario
             lblSenha.Visible = true;
             lblConfirmSenha.Visible = true;
             chkMostrarSenha.Visible = true;
-            panel2.Location = new Point(288,353);
-            btnCadastrar.Location = new Point(491, 485);
-            btnLimpar.Location = new Point(23, 485);
-            panel2.Anchor = AnchorStyles.Top;
-
-
             SetLabelColors(enabled: true);
            
 
@@ -399,7 +394,6 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
-            TelefoneAst.Location = new Point(105, 17);
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -410,11 +404,6 @@ namespace SUB.Froms.Usuario
             lblSenha.Visible = false;
             lblConfirmSenha.Visible = false;
             chkMostrarSenha.Visible = false;
-            btnCadastrar.Location = new Point(491, 304);
-            btnLimpar.Location = new Point(23, 304);
-            panel2.Location = new Point(288,353);
-            panel2.Anchor = AnchorStyles.Top;
-
             SetLabelColors(enabled: true);
 
             
@@ -439,7 +428,6 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
-            TelefoneAst.Location = new Point(105, 17);
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -451,11 +439,6 @@ namespace SUB.Froms.Usuario
             lblSenha.Visible = false;
             lblConfirmSenha.Visible = false;
             chkMostrarSenha.Visible = false;
-            btnCadastrar.Location = new Point(491, 304);
-            btnLimpar.Location = new Point(23, 304);
-            panel2.Location = new Point(288, 353);
-            panel2.Anchor = AnchorStyles.Top;
-
             SetLabelColors(enabled: true);
            
 
@@ -484,7 +467,6 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone do Aluno / Responsável:";
-            TelefoneAst.Location = new Point(311, 17);
             txtSenha.Enabled = false;
             txtConfirmSenha.Enabled = false;
             txtTurma.Visible = true;
@@ -503,13 +485,6 @@ namespace SUB.Froms.Usuario
             lblSenha.Visible = false;
             lblConfirmSenha.Visible = false;
             chkMostrarSenha.Visible = false;
-            btnCadastrar.Location = new Point(491, 304);
-            btnLimpar.Location = new Point(23, 304);
-            panel2.Location = new Point(288, 430);
-            panel2.Anchor = AnchorStyles.Top;
-
-
-
             SetAsteriscoVisibility(true);
             SenhaAst.ForeColor = Color.Transparent;
             ConfirmSenhaAst.ForeColor = Color.Transparent;
@@ -1117,10 +1092,11 @@ VALUES
         }
 
 
+
+
+
         #endregion
 
-       
-
-
+        
     }
 }

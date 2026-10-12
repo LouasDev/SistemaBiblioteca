@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Utils
 {
@@ -11,6 +12,7 @@ namespace SUB.Forms.Utils
         public frmProgresso()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             // Configurações iniciais
             _operationComplete = false;

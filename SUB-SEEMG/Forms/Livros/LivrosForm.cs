@@ -21,6 +21,7 @@ namespace SUB.Forms.Livros
         public LivrosForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             dgvLivros.CellFormatting += dgvLivros_CellFormatting;
 
@@ -38,6 +39,7 @@ namespace SUB.Forms.Livros
 
             // Assina o evento TextChanged
             txtNome.TextChanged += TxtNome_TextChanged;
+
         }
 
         #endregion
@@ -45,7 +47,7 @@ namespace SUB.Forms.Livros
         #region Métodos Utilitários
 
         /// <summary>
-        /// Configura aparência e colunas do DataGridView de livros
+        /// Ativa renderização suave no DataGridView de livros.
         /// </summary>
         private void ConfigurarGridLivros()
         {
@@ -171,6 +173,9 @@ namespace SUB.Forms.Livros
 
         private void dgvLivros_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
+                return;
+
             if (dgvLivros.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
                 string status = e.Value.ToString();
@@ -197,7 +202,6 @@ namespace SUB.Forms.Livros
         /// </summary>
         private void LivrosForm_Load(object sender, EventArgs e)
         {
-
             ConfigurarGridLivros();
             CarregarLivros();
             cbDisponibilidade.SelectedIndex = 0;
@@ -441,6 +445,9 @@ END AS Status
         // Formata células baseado na disponibilidade do livro
         private void Lista_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
+                return;
+
             if (dgvLivros.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
                 string valor = e.Value.ToString();
@@ -464,7 +471,10 @@ END AS Status
 
         private void dgvLivros_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
-            if (e.RowIndex >= 0 && dgvLivros.Columns[e.ColumnIndex].Name == "Editar")
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
+                return;
+
+            if (dgvLivros.Columns[e.ColumnIndex].Name == "Editar")
             {
                 e.PaintBackground(e.CellBounds, true);
 

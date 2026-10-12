@@ -37,6 +37,7 @@ namespace SUB
         public AlterarCadLivroForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             this.KeyPreview = true;
 

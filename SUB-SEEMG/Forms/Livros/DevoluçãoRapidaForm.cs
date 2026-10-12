@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Livros
 {
@@ -19,6 +20,7 @@ namespace SUB.Forms.Livros
         public DevoluçãoRapidaForm(int emprestimoId, string professor, string livro, string turma, int quantidadeEmprestada, DateTime dataEmprestimo, string codigoBarras)
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             // Nome do Professor
             txtProfessor.Text = professor;
@@ -60,6 +62,7 @@ namespace SUB.Forms.Livros
         public DevoluçãoRapidaForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
 
             numQuantidadeDevolvidos.Text = "1"; // valor inicial
             numQuantidadeDevolvidos.KeyPress += numQuantidade_KeyPress;

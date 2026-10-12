@@ -18,6 +18,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MapeamentoDeTurmasWizardForm));
             this.panelPrincipal = new System.Windows.Forms.Panel();
             this.pnlTutorial = new System.Windows.Forms.Panel();
+            this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblTutorialTexto = new System.Windows.Forms.Label();
             this.lblTutorialTitulo = new System.Windows.Forms.Label();
             this.progressBarWizard = new System.Windows.Forms.ProgressBar();
@@ -72,44 +73,51 @@
             this.pnlTutorial.BackColor = System.Drawing.Color.White;
             this.pnlTutorial.Controls.Add(this.lblTutorialTexto);
             this.pnlTutorial.Controls.Add(this.lblTutorialTitulo);
+            this.pnlTutorial.Controls.Add(this.pnlLinhaCabecalho);
             this.pnlTutorial.Location = new System.Drawing.Point(0, 0);
             this.pnlTutorial.Name = "pnlTutorial";
-            this.pnlTutorial.Size = new System.Drawing.Size(1200, 82);
+            this.pnlTutorial.Size = new System.Drawing.Size(1200, 92);
             this.pnlTutorial.TabIndex = 7;
             // 
             // lblTutorialTexto
             // 
-            this.lblTutorialTexto.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.lblTutorialTexto.AutoSize = true;
-            this.lblTutorialTexto.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblTutorialTexto.AutoSize = false;
+            this.lblTutorialTexto.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblTutorialTexto.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.lblTutorialTexto.Location = new System.Drawing.Point(621, 8);
+            this.lblTutorialTexto.Location = new System.Drawing.Point(36, 52);
             this.lblTutorialTexto.Name = "lblTutorialTexto";
-            this.lblTutorialTexto.Size = new System.Drawing.Size(535, 60);
+            this.lblTutorialTexto.Size = new System.Drawing.Size(1040, 20);
             this.lblTutorialTexto.TabIndex = 9;
-            this.lblTutorialTexto.Text = resources.GetString("lblTutorialTexto.Text");
+            this.lblTutorialTexto.Text = "Revise as turmas e confirme as mudanças com segurança antes de aplicá-las ao cadastro dos alunos.";
             this.lblTutorialTexto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblTutorialTitulo
             // 
-            this.lblTutorialTitulo.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lblTutorialTitulo.AutoSize = true;
-            this.lblTutorialTitulo.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTutorialTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
             this.lblTutorialTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.lblTutorialTitulo.Location = new System.Drawing.Point(60, 23);
+            this.lblTutorialTitulo.Location = new System.Drawing.Point(34, 14);
             this.lblTutorialTitulo.Name = "lblTutorialTitulo";
-            this.lblTutorialTitulo.Size = new System.Drawing.Size(424, 30);
+            this.lblTutorialTitulo.Size = new System.Drawing.Size(232, 38);
             this.lblTutorialTitulo.TabIndex = 8;
-            this.lblTutorialTitulo.Text = "📘 ETAPA 1: DEFINIR TURMAS PADRÃO";
-            this.lblTutorialTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTutorialTitulo.Text = "Mapeamento de turmas";
+            this.lblTutorialTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // pnlLinhaCabecalho
+            // 
+            this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 80);
+            this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
+            this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
+            this.pnlLinhaCabecalho.TabIndex = 10;
             // 
             // progressBarWizard
             // 
             this.progressBarWizard.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.progressBarWizard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.progressBarWizard.Location = new System.Drawing.Point(50, 95);
+            this.progressBarWizard.Location = new System.Drawing.Point(36, 104);
             this.progressBarWizard.Name = "progressBarWizard";
-            this.progressBarWizard.Size = new System.Drawing.Size(950, 12);
+            this.progressBarWizard.Size = new System.Drawing.Size(1010, 12);
             this.progressBarWizard.TabIndex = 1;
             // 
             // lblProgressoWizard
@@ -118,7 +126,7 @@
             this.lblProgressoWizard.AutoSize = true;
             this.lblProgressoWizard.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblProgressoWizard.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblProgressoWizard.Location = new System.Drawing.Point(1020, 93);
+            this.lblProgressoWizard.Location = new System.Drawing.Point(1064, 101);
             this.lblProgressoWizard.Name = "lblProgressoWizard";
             this.lblProgressoWizard.Size = new System.Drawing.Size(86, 19);
             this.lblProgressoWizard.TabIndex = 2;
@@ -129,9 +137,9 @@
             this.panelEtapa1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panelEtapa1.Controls.Add(this.lblInstrucaoEtapa1);
             this.panelEtapa1.Controls.Add(this.dgvPadroes);
-            this.panelEtapa1.Location = new System.Drawing.Point(30, 110);
+            this.panelEtapa1.Location = new System.Drawing.Point(30, 130);
             this.panelEtapa1.Name = "panelEtapa1";
-            this.panelEtapa1.Size = new System.Drawing.Size(1140, 600);
+            this.panelEtapa1.Size = new System.Drawing.Size(1140, 570);
             this.panelEtapa1.TabIndex = 3;
             // 
             // lblInstrucaoEtapa1
@@ -155,7 +163,7 @@
             this.dgvPadroes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.dgvPadroes.Location = new System.Drawing.Point(10, 45);
             this.dgvPadroes.Name = "dgvPadroes";
-            this.dgvPadroes.Size = new System.Drawing.Size(1120, 545);
+            this.dgvPadroes.Size = new System.Drawing.Size(1120, 515);
             this.dgvPadroes.TabIndex = 1;
             // 
             // panelEtapa2
@@ -167,9 +175,9 @@
             this.panelEtapa2.Controls.Add(this.lblFiltroEtapa2);
             this.panelEtapa2.Controls.Add(this.cmbFiltroTurmaEtapa2);
             this.panelEtapa2.Controls.Add(this.dgvAjustesIndividuais);
-            this.panelEtapa2.Location = new System.Drawing.Point(30, 110);
+            this.panelEtapa2.Location = new System.Drawing.Point(30, 130);
             this.panelEtapa2.Name = "panelEtapa2";
-            this.panelEtapa2.Size = new System.Drawing.Size(1140, 600);
+            this.panelEtapa2.Size = new System.Drawing.Size(1140, 570);
             this.panelEtapa2.TabIndex = 4;
             this.panelEtapa2.Visible = false;
             // 
@@ -210,7 +218,7 @@
             this.dgvAjustesIndividuais.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.dgvAjustesIndividuais.Location = new System.Drawing.Point(10, 80);
             this.dgvAjustesIndividuais.Name = "dgvAjustesIndividuais";
-            this.dgvAjustesIndividuais.Size = new System.Drawing.Size(1120, 510);
+            this.dgvAjustesIndividuais.Size = new System.Drawing.Size(1120, 480);
             this.dgvAjustesIndividuais.TabIndex = 3;
             // 
             // panelEtapa3
@@ -218,9 +226,9 @@
             this.panelEtapa3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panelEtapa3.Controls.Add(this.lblInstrucaoEtapa3);
             this.panelEtapa3.Controls.Add(this.txtResumoFinal);
-            this.panelEtapa3.Location = new System.Drawing.Point(30, 110);
+            this.panelEtapa3.Location = new System.Drawing.Point(30, 130);
             this.panelEtapa3.Name = "panelEtapa3";
-            this.panelEtapa3.Size = new System.Drawing.Size(1140, 600);
+            this.panelEtapa3.Size = new System.Drawing.Size(1140, 570);
             this.panelEtapa3.TabIndex = 5;
             this.panelEtapa3.Visible = false;
             // 
@@ -244,7 +252,7 @@
             this.txtResumoFinal.Name = "txtResumoFinal";
             this.txtResumoFinal.ReadOnly = true;
             this.txtResumoFinal.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtResumoFinal.Size = new System.Drawing.Size(1120, 545);
+            this.txtResumoFinal.Size = new System.Drawing.Size(1120, 515);
             this.txtResumoFinal.TabIndex = 1;
             // 
             // panelBotoes
@@ -260,11 +268,14 @@
             // 
             // btnAnterior
             // 
-            this.btnAnterior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.btnAnterior.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnAnterior.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
+            this.btnAnterior.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAnterior.FlatAppearance.BorderSize = 1;
             this.btnAnterior.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAnterior.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.btnAnterior.ForeColor = System.Drawing.Color.White;
-            this.btnAnterior.Location = new System.Drawing.Point(400, 10);
+            this.btnAnterior.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnAnterior.Location = new System.Drawing.Point(780, 10);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(120, 40);
             this.btnAnterior.TabIndex = 0;
@@ -275,10 +286,12 @@
             // btnProximo
             // 
             this.btnProximo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnProximo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnProximo.FlatAppearance.BorderSize = 0;
             this.btnProximo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProximo.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.btnProximo.ForeColor = System.Drawing.Color.White;
-            this.btnProximo.Location = new System.Drawing.Point(540, 10);
+            this.btnProximo.Location = new System.Drawing.Point(920, 10);
             this.btnProximo.Name = "btnProximo";
             this.btnProximo.Size = new System.Drawing.Size(120, 40);
             this.btnProximo.TabIndex = 1;
@@ -288,11 +301,14 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
+            this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelar.FlatAppearance.BorderSize = 1;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(680, 10);
+            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnCancelar.Location = new System.Drawing.Point(10, 10);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(120, 40);
             this.btnCancelar.TabIndex = 2;
@@ -402,6 +418,7 @@
         private System.Windows.Forms.Label lblTutorialTitulo;
         private System.Windows.Forms.Label lblFiltroNomeEtapa2;
         private RoundedTextBox txtBuscaAlunoEtapa2;
+        private System.Windows.Forms.Panel pnlLinhaCabecalho;
     }
 }
 

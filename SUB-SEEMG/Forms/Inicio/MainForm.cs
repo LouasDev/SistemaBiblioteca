@@ -35,6 +35,7 @@ namespace SUB.Forms.Inicio
         private NotifyIcon notifyIcon;
         private ContextMenuStrip notifyMenu;
         private Color corPrimaria = ThemeManager.DefaultColor;
+        private Button navAtiva;
 
         public MainForm()
         {
@@ -63,6 +64,8 @@ namespace SUB.Forms.Inicio
 
             menu.BackColor = corPrimaria;
             ThemeManager.Apply(this, corPrimaria);
+            VincularEventosNavegacao();
+            AplicarTemaDaNavegacao();
 
 
 
@@ -101,6 +104,89 @@ namespace SUB.Forms.Inicio
             notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
 
             
+        }
+
+        private void VincularEventosNavegacao()
+        {
+            btnInicio.Click += (s, e) => DefinirNavegacaoAtiva(btnInicio);
+            btnUsuario.Click += (s, e) => DefinirNavegacaoAtiva(btnUsuario);
+            btnLivro.Click += (s, e) => DefinirNavegacaoAtiva(btnLivro);
+            btnRel.Click += (s, e) => DefinirNavegacaoAtiva(btnRel);
+            VincularItemDeNavegacao(btnUser, btnUsuario);
+            VincularItemDeNavegacao(btnUserCad, btnUsuario);
+            VincularItemDeNavegacao(btnUserEdit, btnUsuario);
+            VincularItemDeNavegacao(btnLivros, btnLivro);
+            VincularItemDeNavegacao(btnEmprestimo, btnLivro);
+            VincularItemDeNavegacao(btnEmprestimoRap, btnLivro);
+            VincularItemDeNavegacao(btnLivroCad, btnLivro);
+            VincularItemDeNavegacao(btnDev, btnLivro);
+        }
+
+        private void VincularItemDeNavegacao(Button item, Button grupo)
+        {
+            item.Click += (s, e) =>
+            {
+                DefinirNavegacaoAtiva(grupo);
+                BeginInvoke(new Action(() =>
+                {
+                    if (!IsDisposed)
+                        item.Enabled = true;
+                }));
+            };
+        }
+
+        private void AplicarTemaDaNavegacao()
+        {
+            Color baseMenu = corPrimaria;
+            Color itemFilho = ThemeManager.Darken(baseMenu, 0.08F);
+            Color hover = ThemeManager.Lighten(baseMenu, 0.12F);
+            Color texto = ThemeManager.GetContrastColor(baseMenu);
+
+            menu.BackColor = baseMenu;
+            panel1.BackColor = baseMenu;
+            lblMarcaMenu.ForeColor = texto;
+            lblContextoMenu.ForeColor = ThemeManager.Lighten(texto, 0.18F);
+
+            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel })
+                EstilizarBotaoMenu(botao, baseMenu, hover, texto);
+
+            foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
+                EstilizarBotaoMenu(botao, itemFilho, hover, texto);
+
+            EstilizarBotaoMenu(btnSair, ThemeManager.Darken(baseMenu, 0.14F), hover, texto);
+            if (navAtiva != null)
+                DefinirNavegacaoAtiva(navAtiva);
+        }
+
+        private static void EstilizarBotaoMenu(Button botao, Color baseColor, Color hoverColor, Color foreColor)
+        {
+            botao.BackColor = baseColor;
+            botao.ForeColor = foreColor;
+            botao.FlatAppearance.MouseOverBackColor = hoverColor;
+            botao.FlatAppearance.MouseDownBackColor = ThemeManager.Darken(baseColor, 0.08F);
+        }
+
+        private void DefinirNavegacaoAtiva(Button botao)
+        {
+            if (botao == null)
+                return;
+
+            navAtiva = botao;
+            AplicarTemaDaNavegacaoSemRecursao();
+        }
+
+        private void AplicarTemaDaNavegacaoSemRecursao()
+        {
+            Color baseMenu = corPrimaria;
+            Color itemFilho = ThemeManager.Darken(baseMenu, 0.08F);
+            Color hover = ThemeManager.Lighten(baseMenu, 0.12F);
+            Color texto = ThemeManager.GetContrastColor(baseMenu);
+
+            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel })
+                EstilizarBotaoMenu(botao, botao == navAtiva ? ThemeManager.Lighten(baseMenu, 0.10F) : baseMenu, hover, texto);
+            foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
+                EstilizarBotaoMenu(botao, itemFilho, hover, texto);
+            EstilizarBotaoMenu(btnSair, ThemeManager.Darken(baseMenu, 0.14F), hover, texto);
         }
 
         #region Componentes de inicialização
@@ -327,12 +413,12 @@ namespace SUB.Forms.Inicio
             if (livroContainer.Height > 60)
             {
                 livroTransition.Start();
-                await Task.Delay(610);
+                await Task.Delay(150);
             }
 
             userTransition.Start();
 
-            await Task.Delay(400);
+            await Task.Delay(120);
             menuAnimating = false;
             btnUsuario.Enabled = true;
             // após a animação, garanta que o menu receba foco para não ativar outro MDI child
@@ -479,11 +565,11 @@ namespace SUB.Forms.Inicio
             if (userContainer.Height > 60)
             {
                 userTransition.Start();
-                await Task.Delay(400);
+                await Task.Delay(120);
             }
 
             livroTransition.Start();
-            await Task.Delay(500);
+            await Task.Delay(150);
             
             menuAnimating = false;
             btnLivro.Enabled = true;
@@ -765,6 +851,7 @@ namespace SUB.Forms.Inicio
 
 
             btnIn();
+            DefinirNavegacaoAtiva(btnInicio);
 
             if (LoginForm.cancelar == false)
             {
@@ -801,11 +888,13 @@ namespace SUB.Forms.Inicio
 
         private void userTransition_Tick(object sender, EventArgs e)
         {
+            int expandedHeight = userContainer.Tag is int value ? value : 200;
             if (userExpand == false)
             {
                 userContainer.Height += 10;
-                if (userContainer.Height >= 240)
+                if (userContainer.Height >= expandedHeight)
                 {
+                    userContainer.Height = expandedHeight;
                     userTransition.Stop();
                     userExpand = true;
                 }
@@ -813,8 +902,9 @@ namespace SUB.Forms.Inicio
             else
             {
                 userContainer.Height -= 10;
-                if (userContainer.Height <= 60)
+                if (userContainer.Height <= 56)
                 {
+                    userContainer.Height = 56;
                     userTransition.Stop();
                     userExpand = false;
                 }
@@ -822,12 +912,14 @@ namespace SUB.Forms.Inicio
         }
         private void livroTransition_Tick(object sender, EventArgs e)
         {
+            int expandedHeight = livroContainer.Tag is int value ? value : 296;
 
             if (livroExpand == false)
             {
                 livroContainer.Height += 10;
-                if (livroContainer.Height >= 360)
+                if (livroContainer.Height >= expandedHeight)
                 {
+                    livroContainer.Height = expandedHeight;
                     livroTransition.Stop();
                     livroExpand = true;
                 }
@@ -835,8 +927,9 @@ namespace SUB.Forms.Inicio
             else
             {
                 livroContainer.Height -= 10;
-                if (livroContainer.Height <= 60)
+                if (livroContainer.Height <= 56)
                 {
+                    livroContainer.Height = 56;
                     livroTransition.Stop();
                     livroExpand = false;
                 }
@@ -879,7 +972,6 @@ namespace SUB.Forms.Inicio
                     child.Show();
 
                 ThemeManager.Apply(child, corPrimaria);
-
                 child.BringToFront();
                 child.Activate();
 

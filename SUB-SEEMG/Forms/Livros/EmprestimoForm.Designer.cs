@@ -45,6 +45,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
+            this.lblSubtitulo = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -69,9 +71,11 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.pnlLinhaCabecalho);
+            this.panel1.Controls.Add(this.lblSubtitulo);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.panel1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
@@ -95,7 +99,7 @@
             this.dtpDataDevolucao.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataDevolucao.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataDevolucao.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataDevolucao.Location = new System.Drawing.Point(332, 573);
+            this.dtpDataDevolucao.Location = new System.Drawing.Point(660, 475);
             this.dtpDataDevolucao.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataDevolucao.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataDevolucao.Name = "dtpDataDevolucao";
@@ -103,7 +107,7 @@
             this.dtpDataDevolucao.PlaceholderFont = new System.Drawing.Font("Segoe UI", 12.2F);
             this.dtpDataDevolucao.PlaceholderText = "";
             this.dtpDataDevolucao.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
-            this.dtpDataDevolucao.Size = new System.Drawing.Size(245, 40);
+            this.dtpDataDevolucao.Size = new System.Drawing.Size(400, 40);
             this.dtpDataDevolucao.TabIndex = 128;
             this.dtpDataDevolucao.TabStop = false;
             this.dtpDataDevolucao.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
@@ -123,7 +127,7 @@
             this.dtpDataEmprestimo.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataEmprestimo.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataEmprestimo.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataEmprestimo.Location = new System.Drawing.Point(332, 496);
+            this.dtpDataEmprestimo.Location = new System.Drawing.Point(220, 475);
             this.dtpDataEmprestimo.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataEmprestimo.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataEmprestimo.Name = "dtpDataEmprestimo";
@@ -131,7 +135,7 @@
             this.dtpDataEmprestimo.PlaceholderFont = new System.Drawing.Font("Segoe UI", 12.2F);
             this.dtpDataEmprestimo.PlaceholderText = "";
             this.dtpDataEmprestimo.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
-            this.dtpDataEmprestimo.Size = new System.Drawing.Size(245, 40);
+            this.dtpDataEmprestimo.Size = new System.Drawing.Size(400, 40);
             this.dtpDataEmprestimo.TabIndex = 127;
             this.dtpDataEmprestimo.TabStop = false;
             this.dtpDataEmprestimo.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
@@ -143,11 +147,11 @@
             this.lstSugestoesUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.lstSugestoesUsuario.FormattingEnabled = true;
             this.lstSugestoesUsuario.ItemHeight = 25;
-            this.lstSugestoesUsuario.Location = new System.Drawing.Point(333, 210);
+            this.lstSugestoesUsuario.Location = new System.Drawing.Point(220, 225);
             this.lstSugestoesUsuario.Margin = new System.Windows.Forms.Padding(4);
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
-            this.lstSugestoesUsuario.Size = new System.Drawing.Size(616, 127);
+            this.lstSugestoesUsuario.Size = new System.Drawing.Size(840, 127);
             this.lstSugestoesUsuario.TabIndex = 98;
             this.lstSugestoesUsuario.Visible = false;
             this.lstSugestoesUsuario.Click += new System.EventHandler(this.lstSugestoesUsuario_Click);
@@ -161,11 +165,11 @@
             this.lstLivros.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.lstLivros.FormattingEnabled = true;
             this.lstLivros.ItemHeight = 25;
-            this.lstLivros.Location = new System.Drawing.Point(333, 291);
+            this.lstLivros.Location = new System.Drawing.Point(220, 315);
             this.lstLivros.Margin = new System.Windows.Forms.Padding(4);
             this.lstLivros.Name = "lstLivros";
             this.lstLivros.ScrollAlwaysVisible = true;
-            this.lstLivros.Size = new System.Drawing.Size(616, 127);
+            this.lstLivros.Size = new System.Drawing.Size(520, 127);
             this.lstLivros.TabIndex = 102;
             this.lstLivros.Visible = false;
             this.lstLivros.Click += new System.EventHandler(this.lstLivros_Click);
@@ -184,12 +188,12 @@
             this.cbBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbBibliotecaria.FormattingEnabled = true;
             this.cbBibliotecaria.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbBibliotecaria.Location = new System.Drawing.Point(332, 418);
+            this.cbBibliotecaria.Location = new System.Drawing.Point(220, 385);
             this.cbBibliotecaria.Name = "cbBibliotecaria";
             this.cbBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbBibliotecaria.PlaceholderMargin = 10;
             this.cbBibliotecaria.PlaceholderText = "Selecione a Bibliotecária...";
-            this.cbBibliotecaria.Size = new System.Drawing.Size(617, 34);
+            this.cbBibliotecaria.Size = new System.Drawing.Size(840, 34);
             this.cbBibliotecaria.TabIndex = 103;
             this.cbBibliotecaria.SelectedIndexChanged += new System.EventHandler(this.cbBibliotecaria_SelectedIndexChanged);
             // 
@@ -207,7 +211,7 @@
             this.txtBarcode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarcode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtBarcode.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtBarcode.Location = new System.Drawing.Point(332, 333);
+            this.txtBarcode.Location = new System.Drawing.Point(760, 275);
             this.txtBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
@@ -218,7 +222,7 @@
             this.txtBarcode.SelectedText = "";
             this.txtBarcode.SelectionLength = 0;
             this.txtBarcode.SelectionStart = 0;
-            this.txtBarcode.Size = new System.Drawing.Size(617, 40);
+            this.txtBarcode.Size = new System.Drawing.Size(300, 40);
             this.txtBarcode.TabIndex = 101;
             this.txtBarcode.TextColor = System.Drawing.Color.Black;
             this.txtBarcode.UseSystemPasswordChar = false;
@@ -231,7 +235,7 @@
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label7.Location = new System.Drawing.Point(327, 304);
+            this.label7.Location = new System.Drawing.Point(756, 247);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(162, 25);
@@ -245,7 +249,7 @@
             this.chkDevolucaoPersonalizada.BackColor = System.Drawing.Color.White;
             this.chkDevolucaoPersonalizada.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.chkDevolucaoPersonalizada.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.chkDevolucaoPersonalizada.Location = new System.Drawing.Point(332, 619);
+            this.chkDevolucaoPersonalizada.Location = new System.Drawing.Point(660, 521);
             this.chkDevolucaoPersonalizada.Margin = new System.Windows.Forms.Padding(4);
             this.chkDevolucaoPersonalizada.Name = "chkDevolucaoPersonalizada";
             this.chkDevolucaoPersonalizada.Size = new System.Drawing.Size(162, 24);
@@ -268,7 +272,7 @@
             this.txtLivro.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLivro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtLivro.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtLivro.Location = new System.Drawing.Point(332, 251);
+            this.txtLivro.Location = new System.Drawing.Point(220, 275);
             this.txtLivro.Margin = new System.Windows.Forms.Padding(4);
             this.txtLivro.Name = "txtLivro";
             this.txtLivro.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
@@ -279,7 +283,7 @@
             this.txtLivro.SelectedText = "";
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
-            this.txtLivro.Size = new System.Drawing.Size(616, 40);
+            this.txtLivro.Size = new System.Drawing.Size(520, 40);
             this.txtLivro.TabIndex = 95;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
@@ -300,7 +304,7 @@
             this.txtNomeUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNomeUsuario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtNomeUsuario.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtNomeUsuario.Location = new System.Drawing.Point(332, 170);
+            this.txtNomeUsuario.Location = new System.Drawing.Point(220, 185);
             this.txtNomeUsuario.Margin = new System.Windows.Forms.Padding(4);
             this.txtNomeUsuario.Name = "txtNomeUsuario";
             this.txtNomeUsuario.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
@@ -311,7 +315,7 @@
             this.txtNomeUsuario.SelectedText = "";
             this.txtNomeUsuario.SelectionLength = 0;
             this.txtNomeUsuario.SelectionStart = 0;
-            this.txtNomeUsuario.Size = new System.Drawing.Size(617, 40);
+            this.txtNomeUsuario.Size = new System.Drawing.Size(840, 40);
             this.txtNomeUsuario.TabIndex = 1;
             this.txtNomeUsuario.TextColor = System.Drawing.Color.Black;
             this.txtNomeUsuario.UseSystemPasswordChar = false;
@@ -321,14 +325,17 @@
             // 
             this.btnEmprestar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnEmprestar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnEmprestar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.btnEmprestar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEmprestar.FlatAppearance.BorderSize = 0;
+            this.btnEmprestar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEmprestar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnEmprestar.ForeColor = System.Drawing.Color.White;
-            this.btnEmprestar.Location = new System.Drawing.Point(794, 676);
+            this.btnEmprestar.Location = new System.Drawing.Point(880, 585);
             this.btnEmprestar.Margin = new System.Windows.Forms.Padding(4);
             this.btnEmprestar.Name = "btnEmprestar";
-            this.btnEmprestar.Size = new System.Drawing.Size(155, 70);
+            this.btnEmprestar.Size = new System.Drawing.Size(180, 48);
             this.btnEmprestar.TabIndex = 91;
-            this.btnEmprestar.Text = "EMPRESTRAR";
+            this.btnEmprestar.Text = "Registrar empréstimo";
             this.btnEmprestar.UseVisualStyleBackColor = false;
             this.btnEmprestar.Click += new System.EventHandler(this.btnEmprestar_Click);
             // 
@@ -338,12 +345,12 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label6.Location = new System.Drawing.Point(327, 390);
+            this.label6.Location = new System.Drawing.Point(216, 357);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(213, 25);
+            this.label6.Size = new System.Drawing.Size(229, 25);
             this.label6.TabIndex = 21;
-            this.label6.Text = "Bliotecária responsável:";
+            this.label6.Text = "Bibliotecária responsável:";
             // 
             // label5
             // 
@@ -351,7 +358,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label5.Location = new System.Drawing.Point(328, 546);
+            this.label5.Location = new System.Drawing.Point(656, 447);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(181, 25);
@@ -364,12 +371,12 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(328, 468);
+            this.label4.Location = new System.Drawing.Point(216, 447);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(192, 25);
+            this.label4.Size = new System.Drawing.Size(193, 25);
             this.label4.TabIndex = 19;
-            this.label4.Text = "Data de Empréstimo:";
+            this.label4.Text = "Data do empréstimo:";
             // 
             // label3
             // 
@@ -377,7 +384,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label3.Location = new System.Drawing.Point(328, 224);
+            this.label3.Location = new System.Drawing.Point(216, 247);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 25);
@@ -390,26 +397,44 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label2.Location = new System.Drawing.Point(328, 143);
+            this.label2.Location = new System.Drawing.Point(216, 157);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(167, 25);
+            this.label2.Size = new System.Drawing.Size(159, 25);
             this.label2.TabIndex = 17;
-            this.label2.Text = "Nome do Usuario:";
+            this.label2.Text = "Nome da pessoa:";
             this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // pnlLinhaCabecalho
+            // 
+            this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
+            this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
+            this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
+            this.pnlLinhaCabecalho.TabIndex = 105;
+            // 
+            // lblSubtitulo
+            // 
+            this.lblSubtitulo.AutoSize = true;
+            this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(105)))), ((int)(((byte)(120)))));
+            this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
+            this.lblSubtitulo.Name = "lblSubtitulo";
+            this.lblSubtitulo.Size = new System.Drawing.Size(353, 17);
+            this.lblSubtitulo.TabIndex = 104;
+            this.lblSubtitulo.Text = "Registre o empréstimo e acompanhe a devolução prevista.";
             // 
             // label1
             // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 25.25F, System.Drawing.FontStyle.Bold);
+            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.label1.Location = new System.Drawing.Point(440, 27);
+            this.label1.Location = new System.Drawing.Point(34, 20);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(401, 46);
+            this.label1.Size = new System.Drawing.Size(273, 38);
             this.label1.TabIndex = 16;
-            this.label1.Text = "EMPRÉSTIMO DE LIVRO";
+            this.label1.Text = "Empréstimo de livro";
             // 
             // EmprestimoForm
             // 
@@ -455,5 +480,7 @@
         public RoundedTextBox txtLivro;
         private RoundedDatePicker dtpDataDevolucao;
         private RoundedDatePicker dtpDataEmprestimo;
+        private System.Windows.Forms.Label lblSubtitulo;
+        private System.Windows.Forms.Panel pnlLinhaCabecalho;
     }
 }

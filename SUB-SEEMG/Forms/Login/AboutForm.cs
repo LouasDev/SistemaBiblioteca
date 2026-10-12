@@ -121,20 +121,9 @@ namespace SUB.Forms.Login
             Bitmap origem = SubLogoManager.Get(
                 SubLogoVariant.Full,
                 primaria,
-                Color.FromArgb(250, 252, 255));
-            Bitmap logo = new Bitmap(
-                picLogoAbout.Width * 2,
-                picLogoAbout.Height * 2,
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            using (Graphics grafico = Graphics.FromImage(logo))
-            {
-                grafico.CompositingQuality = CompositingQuality.HighQuality;
-                grafico.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                grafico.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                grafico.SmoothingMode = SmoothingMode.HighQuality;
-                grafico.DrawImage(origem, new Rectangle(0, 0, logo.Width, logo.Height));
-            }
+                Color.FromArgb(250, 252, 255),
+                new Size(picLogoAbout.Width * 2, picLogoAbout.Height * 2));
+            Bitmap logo = new Bitmap(origem);
 
             Bitmap logoAnterior = _logoCompletaTema;
             _logoCompletaTema = logo;

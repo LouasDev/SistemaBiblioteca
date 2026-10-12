@@ -244,6 +244,9 @@
     <Compile Include="Utils\Etiquetas\LabelActionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Utils\Etiquetas\LabelActionDialog.Designer.cs">
+      <DependentUpon>LabelActionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Etiquetas\LabelPdfExporter.cs" />
     <Compile Include="Utils\Etiquetas\SegoeUiFontResolver.cs" />
     <Compile Include="Utils\EventosGlobais.cs" />

@@ -48,7 +48,7 @@
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(384, 50);
+            this.panelHeader.Size = new System.Drawing.Size(440, 50);
             this.panelHeader.TabIndex = 65;
             // 
             // lblTitulo
@@ -58,33 +58,34 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(0, 0);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(384, 50);
+            this.lblTitulo.Size = new System.Drawing.Size(440, 50);
             this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "Prorrogar Empréstimo";
+            this.lblTitulo.Text = "Prorrogar empréstimo";
             this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblErro
             // 
             this.lblErro.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblErro.ForeColor = System.Drawing.Color.Red;
-            this.lblErro.Location = new System.Drawing.Point(20, 148);
+            this.lblErro.Location = new System.Drawing.Point(24, 158);
             this.lblErro.Name = "lblErro";
-            this.lblErro.Size = new System.Drawing.Size(360, 15);
+            this.lblErro.Size = new System.Drawing.Size(392, 15);
             this.lblErro.TabIndex = 69;
             this.lblErro.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErro.Visible = false;
             // 
             // btnCancelar
             // 
-            this.btnCancelar.BackColor = System.Drawing.Color.Gray;
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
             this.btnCancelar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCancelar.FlatAppearance.BorderSize = 0;
+            this.btnCancelar.FlatAppearance.BorderSize = 1;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
-            this.btnCancelar.ForeColor = System.Drawing.Color.White;
-            this.btnCancelar.Location = new System.Drawing.Point(23, 175);
+            this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnCancelar.Location = new System.Drawing.Point(164, 184);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(110, 35);
+            this.btnCancelar.Size = new System.Drawing.Size(110, 42);
             this.btnCancelar.TabIndex = 68;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -97,9 +98,9 @@
             this.btnConfirmar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnConfirmar.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmar.Location = new System.Drawing.Point(237, 175);
+            this.btnConfirmar.Location = new System.Drawing.Point(286, 184);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(120, 35);
+            this.btnConfirmar.Size = new System.Drawing.Size(130, 42);
             this.btnConfirmar.TabIndex = 66;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = false;
@@ -108,9 +109,9 @@
             // lblMensagem
             // 
             this.lblMensagem.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
-            this.lblMensagem.Location = new System.Drawing.Point(20, 59);
+            this.lblMensagem.Location = new System.Drawing.Point(24, 62);
             this.lblMensagem.Name = "lblMensagem";
-            this.lblMensagem.Size = new System.Drawing.Size(360, 40);
+            this.lblMensagem.Size = new System.Drawing.Size(392, 40);
             this.lblMensagem.TabIndex = 67;
             this.lblMensagem.Text = "Quantos dias você quer prorrogar:";
             this.lblMensagem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -119,7 +120,7 @@
             // 
             this.btnMenos.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnMenos.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenos.Location = new System.Drawing.Point(85, 119);
+            this.btnMenos.Location = new System.Drawing.Point(82, 131);
             this.btnMenos.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenos.Name = "btnMenos";
             this.btnMenos.Size = new System.Drawing.Size(18, 21);
@@ -142,7 +143,7 @@
             this.numQuantidade.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numQuantidade.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.numQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
-            this.numQuantidade.Location = new System.Drawing.Point(28, 100);
+            this.numQuantidade.Location = new System.Drawing.Point(24, 112);
             this.numQuantidade.Name = "numQuantidade";
             this.numQuantidade.Padding = new System.Windows.Forms.Padding(7);
             this.numQuantidade.PlaceholderColor = System.Drawing.Color.Gray;
@@ -161,7 +162,7 @@
             // 
             this.btnMais.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnMais.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMais.Location = new System.Drawing.Point(85, 97);
+            this.btnMais.Location = new System.Drawing.Point(82, 109);
             this.btnMais.Margin = new System.Windows.Forms.Padding(0);
             this.btnMais.Name = "btnMais";
             this.btnMais.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -174,9 +175,9 @@
             // lblPreviewData
             // 
             this.lblPreviewData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPreviewData.Location = new System.Drawing.Point(126, 111);
+            this.lblPreviewData.Location = new System.Drawing.Point(126, 123);
             this.lblPreviewData.Name = "lblPreviewData";
-            this.lblPreviewData.Size = new System.Drawing.Size(228, 18);
+            this.lblPreviewData.Size = new System.Drawing.Size(290, 18);
             this.lblPreviewData.TabIndex = 103;
             this.lblPreviewData.Text = "Nova data de devolução:";
             // 
@@ -185,7 +186,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(384, 225);
+            this.ClientSize = new System.Drawing.Size(440, 240);
             this.Controls.Add(this.lblPreviewData);
             this.Controls.Add(this.btnMenos);
             this.Controls.Add(this.numQuantidade);

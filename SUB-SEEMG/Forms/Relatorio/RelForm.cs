@@ -17,8 +17,6 @@ namespace SUB.Forms.Relatorio
     {
         public partial class RelForm : Form
         {
-            
-
             // nomes detectados das tabelas (serão preenchidos no Load)
             private string tblUsuarios = "Usuarios";
             private string tblLivros = "Livros";
@@ -29,7 +27,7 @@ namespace SUB.Forms.Relatorio
             public RelForm()
             {
                 InitializeComponent();
-                this.Load += RelForm_Load;
+                ThemeManager.ApplyConfiguredTheme(this);
 
             // garantir que btnFiltrar acione CarregarLog (caso designer não tenha feito)
             btnFiltrar.Click -= btnFiltrar_Click; 
@@ -78,6 +76,7 @@ namespace SUB.Forms.Relatorio
                     lstLivros.Items.Clear();
                     lstLivros.Items.AddRange(lista.ToArray());
                     lstLivros.Visible = true;
+                    lstLivros.BringToFront();
                 }
                 else
                 {
@@ -119,9 +118,6 @@ namespace SUB.Forms.Relatorio
 
             private void RelForm_Load(object sender, EventArgs e)
             {
-
-
-
                 EstilizarListBoxSugestao(lstSugestoesUsuario);
                 EstilizarListBoxSugestao(lstLivros);
 
@@ -190,10 +186,10 @@ namespace SUB.Forms.Relatorio
             // popula combobox de bibliotecárias
             PopularCbBibliotecaria();
 
-                CarregarLog();
-
                 // Configurações iniciais do DataGridView
                 ConfigurarGrid();
+
+                CarregarLog();
             }
 
             /// <summary>
@@ -220,6 +216,35 @@ namespace SUB.Forms.Relatorio
                         }
                     }
                 }
+                return null;
+            }
+
+            /// <summary>
+            /// Retorna o primeiro nome de coluna existente entre os candidatos.
+            /// Isso mantém o relatório compatível com bancos criados por versões
+            /// diferentes do SUB sem alterar o esquema durante uma simples consulta.
+            /// </summary>
+            private string GetExistingColumnName(SqlCeConnection conexao, string tabela, params string[] candidatos)
+            {
+                if (string.IsNullOrWhiteSpace(tabela) || candidatos == null)
+                    return null;
+
+                const string sql = @"SELECT COUNT(*)
+                                     FROM INFORMATION_SCHEMA.COLUMNS
+                                     WHERE TABLE_NAME = @tabela AND COLUMN_NAME = @coluna";
+
+                foreach (string candidato in candidatos)
+                {
+                    using (var cmd = new SqlCeCommand(sql, conexao))
+                    {
+                        cmd.Parameters.AddWithValue("@tabela", tabela);
+                        cmd.Parameters.AddWithValue("@coluna", candidato);
+
+                        if (Convert.ToInt32(cmd.ExecuteScalar() ?? 0) > 0)
+                            return candidato;
+                    }
+                }
+
                 return null;
             }
 
@@ -268,6 +293,7 @@ namespace SUB.Forms.Relatorio
                     lstSugestoesUsuario.Items.Clear();
                     lstSugestoesUsuario.Items.AddRange(lista.ToArray());
                     lstSugestoesUsuario.Visible = true;
+                    lstSugestoesUsuario.BringToFront();
                 }
                 else
                 {
@@ -363,43 +389,63 @@ namespace SUB.Forms.Relatorio
 
                         List<string> selects = new List<string>();
 
+                    string emprestimoId = GetExistingColumnName(conexao, tblEmprestimo, "Id");
+                    string emprestimoUsuario = GetExistingColumnName(conexao, tblEmprestimo, "Alocador", "UsuarioId");
+                    string emprestimoLivro = GetExistingColumnName(conexao, tblEmprestimo, "LivroId", "Livro");
+                    string emprestimoResponsavel = GetExistingColumnName(conexao, tblEmprestimo, "Responsavel");
+                    string dataEmprestimo = GetExistingColumnName(conexao, tblEmprestimo, "DataEmprestimo");
+                    string dataDevolucao = GetExistingColumnName(conexao, tblEmprestimo, "DataRealDevolucao", "DataDevolucao");
+
+                    string joinBibliotecariaEmprestimo = string.IsNullOrEmpty(emprestimoResponsavel)
+                        ? string.Empty
+                        : $"LEFT JOIN [{tblUsuarios}] b ON e.[{emprestimoResponsavel}] = b.Id";
+                    string bibliotecariaEmprestimo = string.IsNullOrEmpty(emprestimoResponsavel)
+                        ? "CAST('' AS nvarchar(200))"
+                        : "COALESCE(b.Nome, '')";
+
                     // 1) Empréstimo (registro inicial)
-                    if (!string.IsNullOrEmpty(tblEmprestimo))
+                    if (!string.IsNullOrEmpty(emprestimoId) &&
+                        !string.IsNullOrEmpty(emprestimoUsuario) &&
+                        !string.IsNullOrEmpty(emprestimoLivro) &&
+                        !string.IsNullOrEmpty(dataEmprestimo))
                     {
                         selects.Add($@"
         SELECT 
-            e.Id,
+            e.[{emprestimoId}] AS Id,
             u.Id AS UsuarioId,
             COALESCE(u.Nome, 'Excluído') AS NomeU,
             COALESCE(l.Nome, 'Livro não localizado') AS NomeL,
             'Empréstimo' AS Acao,
-            e.DataEmprestimo AS DataAcao,
-            b.Nome AS Bibliotecaria
+            e.[{dataEmprestimo}] AS DataAcao,
+            {bibliotecariaEmprestimo} AS Bibliotecaria
         FROM [{tblEmprestimo}] e
-        LEFT JOIN [{tblUsuarios}] u ON e.Alocador = u.Id
-        LEFT JOIN [{tblLivros}] l ON e.LivroId = l.Id
-        LEFT JOIN [{tblUsuarios}] b ON e.Responsavel = b.Id
-        WHERE e.DataEmprestimo IS NOT NULL
+        LEFT JOIN [{tblUsuarios}] u ON e.[{emprestimoUsuario}] = u.Id
+        LEFT JOIN [{tblLivros}] l ON e.[{emprestimoLivro}] = l.Id
+        {joinBibliotecariaEmprestimo}
+        WHERE e.[{dataEmprestimo}] IS NOT NULL
     ");
                     }
 
                     // 2) Devolução (quando DataRealDevolucao preenchida)
-                    if (!string.IsNullOrEmpty(tblEmprestimo))
+                    if (!string.IsNullOrEmpty(emprestimoId) &&
+                        !string.IsNullOrEmpty(emprestimoUsuario) &&
+                        !string.IsNullOrEmpty(emprestimoLivro) &&
+                        !string.IsNullOrEmpty(dataDevolucao))
                     {
                         selects.Add($@"
         SELECT 
-            e.Id,
+            e.[{emprestimoId}] AS Id,
             u.Id AS UsuarioId,
             COALESCE(u.Nome, 'Excluído') AS NomeU,
             COALESCE(l.Nome, 'Livro não localizado') AS NomeL,
             'Devolução' AS Acao,
-            e.DataRealDevolucao AS DataAcao,
-            b.Nome AS Bibliotecaria
+            e.[{dataDevolucao}] AS DataAcao,
+            {bibliotecariaEmprestimo} AS Bibliotecaria
         FROM [{tblEmprestimo}] e
-        LEFT JOIN [{tblUsuarios}] u ON e.Alocador = u.Id
-        LEFT JOIN [{tblLivros}] l ON e.LivroId = l.Id
-        LEFT JOIN [{tblUsuarios}] b ON e.Responsavel = b.Id
-        WHERE e.DataRealDevolucao IS NOT NULL
+        LEFT JOIN [{tblUsuarios}] u ON e.[{emprestimoUsuario}] = u.Id
+        LEFT JOIN [{tblLivros}] l ON e.[{emprestimoLivro}] = l.Id
+        {joinBibliotecariaEmprestimo}
+        WHERE e.[{dataDevolucao}] IS NOT NULL
     ");
                     }
 
@@ -408,60 +454,140 @@ namespace SUB.Forms.Relatorio
                     // 2.5) Prorrogação (quando DataProrrogacao preenchida)
                     if (!string.IsNullOrEmpty(tblLogProrrogacoes))
                     {
+                        string logId = GetExistingColumnName(conexao, tblLogProrrogacoes, "LogId", "Id");
+                        string logEmprestimoId = GetExistingColumnName(conexao, tblLogProrrogacoes, "EmprestimoId");
+                        string logUsuarioId = GetExistingColumnName(conexao, tblLogProrrogacoes, "UsuarioId");
+                        string logData = GetExistingColumnName(conexao, tblLogProrrogacoes, "DataDaAcao", "DataHora");
+                        string logBibliotecaria = GetExistingColumnName(conexao, tblLogProrrogacoes, "BibliotecariaNome");
+
+                        if (!string.IsNullOrEmpty(logId) && !string.IsNullOrEmpty(logData))
+                        {
+                            string joinEmprestimoLog = string.Empty;
+                            string joinUsuarioLog = string.Empty;
+                            string joinLivroLog = string.Empty;
+                            string usuarioIdLog = "CAST(NULL AS int)";
+                            string nomeUsuarioLog = "CAST('Excluído' AS nvarchar(200))";
+                            string nomeLivroLog = "CAST('Livro não localizado' AS nvarchar(250))";
+
+                            if (!string.IsNullOrEmpty(logEmprestimoId) &&
+                                !string.IsNullOrEmpty(emprestimoId))
+                            {
+                                joinEmprestimoLog = $"LEFT JOIN [{tblEmprestimo}] e ON lp.[{logEmprestimoId}] = e.[{emprestimoId}]";
+
+                                if (!string.IsNullOrEmpty(emprestimoUsuario))
+                                {
+                                    joinUsuarioLog = $"LEFT JOIN [{tblUsuarios}] u ON e.[{emprestimoUsuario}] = u.Id";
+                                    usuarioIdLog = "u.Id";
+                                    nomeUsuarioLog = "COALESCE(u.Nome, 'Excluído')";
+                                }
+
+                                if (!string.IsNullOrEmpty(emprestimoLivro))
+                                {
+                                    joinLivroLog = $"LEFT JOIN [{tblLivros}] l ON e.[{emprestimoLivro}] = l.Id";
+                                    nomeLivroLog = "COALESCE(l.Nome, 'Livro não localizado')";
+                                }
+                            }
+                            else if (!string.IsNullOrEmpty(logUsuarioId))
+                            {
+                                joinUsuarioLog = $"LEFT JOIN [{tblUsuarios}] u ON lp.[{logUsuarioId}] = u.Id";
+                                usuarioIdLog = "u.Id";
+                                nomeUsuarioLog = "COALESCE(u.Nome, 'Excluído')";
+                            }
+
+                            string bibliotecariaLog = string.IsNullOrEmpty(logBibliotecaria)
+                                ? "CAST('' AS nvarchar(200))"
+                                : $"COALESCE(lp.[{logBibliotecaria}], '')";
+
                         selects.Add($@"
         SELECT
-            lp.LogId AS Id,
-            u.Id AS UsuarioId,
-            COALESCE(u.Nome, 'Excluído') AS NomeU,
-            COALESCE(l.Nome, 'Livro não localizado') AS NomeL,
+            lp.[{logId}] AS Id,
+            {usuarioIdLog} AS UsuarioId,
+            {nomeUsuarioLog} AS NomeU,
+            {nomeLivroLog} AS NomeL,
             'Prorrogação' AS Acao,
-            lp.DataDaAcao AS DataAcao,
-            lp.BibliotecariaNome AS Bibliotecaria
+            lp.[{logData}] AS DataAcao,
+            {bibliotecariaLog} AS Bibliotecaria
         FROM [{tblLogProrrogacoes}] lp
-        LEFT JOIN [{tblEmprestimo}] e ON lp.EmprestimoId = e.Id
-        LEFT JOIN [{tblUsuarios}] u ON e.Alocador = u.Id
-        LEFT JOIN [{tblLivros}] l ON e.LivroId = l.Id
-        WHERE lp.DataDaAcao IS NOT NULL
+        {joinEmprestimoLog}
+        {joinUsuarioLog}
+        {joinLivroLog}
+        WHERE lp.[{logData}] IS NOT NULL
     ");
-                    
+                        }
                 }
 
                     // 3) Empréstimo Rápido (empréstimo / devolução)
                     if (!string.IsNullOrEmpty(tblEmprestimoRapido))
                     {
+                        string rapidoId = GetExistingColumnName(conexao, tblEmprestimoRapido, "Id");
+                        string rapidoUsuario = GetExistingColumnName(conexao, tblEmprestimoRapido, "ProfessorId", "UsuarioId");
+                        string rapidoLivro = GetExistingColumnName(conexao, tblEmprestimoRapido, "LivroId");
+                        string rapidoLivroNome = GetExistingColumnName(conexao, tblEmprestimoRapido, "LivroNome");
+                        string rapidoDataEmprestimo = GetExistingColumnName(conexao, tblEmprestimoRapido, "DataHoraEmprestimo");
+                        string rapidoDataDevolucao = GetExistingColumnName(conexao, tblEmprestimoRapido, "DataHoraDevolucaoReal", "DataDevolucao");
+                        string rapidoBibliotecaria = GetExistingColumnName(conexao, tblEmprestimoRapido, "Bibliotecaria", "BibliotecariaNome");
+
+                        if (!string.IsNullOrEmpty(rapidoId) &&
+                            !string.IsNullOrEmpty(rapidoDataEmprestimo))
+                        {
+                            string joinUsuarioRapido = string.IsNullOrEmpty(rapidoUsuario)
+                                ? string.Empty
+                                : $"LEFT JOIN [{tblUsuarios}] u ON r.[{rapidoUsuario}] = u.Id";
+                            string usuarioIdRapido = string.IsNullOrEmpty(rapidoUsuario) ? "CAST(NULL AS int)" : "u.Id";
+                            string nomeUsuarioRapido = string.IsNullOrEmpty(rapidoUsuario)
+                                ? "CAST('Excluído' AS nvarchar(200))"
+                                : "COALESCE(u.Nome, 'Excluído')";
+
+                            string joinLivroRapido = string.IsNullOrEmpty(rapidoLivro)
+                                ? string.Empty
+                                : $"LEFT JOIN [{tblLivros}] l ON r.[{rapidoLivro}] = l.Id";
+                            string nomeLivroRapido;
+                            if (!string.IsNullOrEmpty(rapidoLivro) && !string.IsNullOrEmpty(rapidoLivroNome))
+                                nomeLivroRapido = $"CASE WHEN l.Id IS NULL THEN COALESCE(r.[{rapidoLivroNome}], 'Livro não localizado') ELSE l.Nome END";
+                            else if (!string.IsNullOrEmpty(rapidoLivro))
+                                nomeLivroRapido = "COALESCE(l.Nome, 'Livro não localizado')";
+                            else if (!string.IsNullOrEmpty(rapidoLivroNome))
+                                nomeLivroRapido = $"COALESCE(r.[{rapidoLivroNome}], 'Livro não localizado')";
+                            else
+                                nomeLivroRapido = "CAST('Livro não localizado' AS nvarchar(250))";
+
+                            string bibliotecariaRapido = string.IsNullOrEmpty(rapidoBibliotecaria)
+                                ? "CAST('' AS nvarchar(200))"
+                                : $"COALESCE(r.[{rapidoBibliotecaria}], '')";
+
                         selects.Add($@"
         SELECT
-            r.Id,
-            u.Id AS UsuarioId,
-            COALESCE(u.Nome, 'Excluído') AS NomeU,
-            CASE WHEN l.Id IS NULL THEN r.LivroNome + ' (Excluído)' ELSE l.Nome END AS NomeL,
+            r.[{rapidoId}] AS Id,
+            {usuarioIdRapido} AS UsuarioId,
+            {nomeUsuarioRapido} AS NomeU,
+            {nomeLivroRapido} AS NomeL,
             'Empréstimo Rápido' AS Acao,
-            r.DataHoraEmprestimo AS DataAcao,
-            r.Bibliotecaria AS Bibliotecaria
+            r.[{rapidoDataEmprestimo}] AS DataAcao,
+            {bibliotecariaRapido} AS Bibliotecaria
         FROM [{tblEmprestimoRapido}] r
-        LEFT JOIN [{tblUsuarios}] u ON r.ProfessorId = u.Id
-        LEFT JOIN [{tblLivros}] l ON r.LivroId = l.Id
-        WHERE r.DataHoraEmprestimo IS NOT NULL
+        {joinUsuarioRapido}
+        {joinLivroRapido}
+        WHERE r.[{rapidoDataEmprestimo}] IS NOT NULL
     ");
 
+                            if (!string.IsNullOrEmpty(rapidoDataDevolucao))
+                            {
                         selects.Add($@"
         SELECT
-            r.Id,
-            u.Id AS UsuarioId,
-            COALESCE(u.Nome, 'Excluído') AS NomeU,
-            CASE WHEN l.Id IS NULL THEN r.LivroNome + ' (Excluído)' ELSE l.Nome END AS NomeL,
+            r.[{rapidoId}] AS Id,
+            {usuarioIdRapido} AS UsuarioId,
+            {nomeUsuarioRapido} AS NomeU,
+            {nomeLivroRapido} AS NomeL,
             'Devolução' AS Acao,
-            r.DataHoraDevolucaoReal AS DataAcao,
-            r.Bibliotecaria AS Bibliotecaria
+            r.[{rapidoDataDevolucao}] AS DataAcao,
+            {bibliotecariaRapido} AS Bibliotecaria
         FROM [{tblEmprestimoRapido}] r
-        LEFT JOIN [{tblUsuarios}] u ON r.ProfessorId = u.Id
-        LEFT JOIN [{tblLivros}] l ON r.LivroId = l.Id
-        WHERE r.DataHoraDevolucaoReal IS NOT NULL
+        {joinUsuarioRapido}
+        {joinLivroRapido}
+        WHERE r.[{rapidoDataDevolucao}] IS NOT NULL
     ");
-                    
-
-
-
+                            }
+                        }
                 }
 
                         if (selects.Count == 0)
@@ -648,7 +774,8 @@ namespace SUB.Forms.Relatorio
 
         private void DgvHistorico_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvHistorico.Columns.Count)
+                return;
 
             if (dgvHistorico.Columns[e.ColumnIndex].Name == "NomeU")
             {

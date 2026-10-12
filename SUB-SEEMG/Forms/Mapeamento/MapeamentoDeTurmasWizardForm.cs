@@ -30,6 +30,7 @@ namespace SUB.Forms.Usuario
         public MapeamentoDeTurmasWizardForm()
         {
             InitializeComponent();
+            ThemeManager.ApplyConfiguredTheme(this);
             AppPaths.EnsureFolders();
             _baseFolder = AppPaths.MappingFolder;
 
@@ -404,30 +405,21 @@ namespace SUB.Forms.Usuario
             switch (etapa)
             {
                 case 1:
-                    lblTutorialTitulo.Text = "📘 ETAPA 1: DEFINIR TURMAS PADRÃO";
+                    lblTutorialTitulo.Text = "Mapeamento de turmas";
                     lblTutorialTexto.Text =
-                        "Nesta etapa você define as **turmas padrão**.\n" +
-                        "➡ Cada turma atual do sistema terá uma sugestão automática do próximo ano ou curso técnico.\n" +
-                        "💡 Dica: revise as sugestões e ajuste apenas se necessário para evitar inconsistências.\n" +
-                        "✅ O sistema aplicará automaticamente essas escolhas na Etapa 2.";
+                        "Defina o padrão de progressão de cada turma. O sistema sugere o próximo ano ou curso e você ajusta somente o necessário.";
                     break;
 
                 case 2:
-                    lblTutorialTitulo.Text = "📝 ETAPA 2: AJUSTES INDIVIDUAIS";
+                    lblTutorialTitulo.Text = "Mapeamento de turmas";
                     lblTutorialTexto.Text =
-                        "Aqui você pode **ajustar cada aluno individualmente**.\n" +
-                        "➡ Alunos destacados possuem progressão ou status especial (EGRESSO, TRANSFERIDO, DESISTENTE).\n" +
-                        "💡 Dica: selecione apenas opções válidas no combo para garantir a progressão correta.\n" +
-                        "🔎 Use o filtro de *turma e nome* para facilitar a revisão.";
+                        "Ajuste apenas os alunos que precisem de exceção. Use os filtros para revisar os casos especiais com mais rapidez.";
                     break;
 
                 case 3:
-                    lblTutorialTitulo.Text = "✅ ETAPA 3: CONFIRMAÇÃO E APLICAÇÃO";
+                    lblTutorialTitulo.Text = "Mapeamento de turmas";
                     lblTutorialTexto.Text =
-                        "Revise o **resumo final do mapeamento** antes de aplicar.\n" +
-                        "➡ Confirme que todas as alterações estão corretas.\n" +
-                        "💡 Dica: o sistema salvará um registro de mapeamento para histórico e futuras consultas.\n" +
-                        "🔒 Será necessário confirmar sua senha para aplicar as alterações.";
+                        "Revise o resumo antes de aplicar. A confirmação registra o mapeamento no histórico e atualiza as turmas com segurança.";
                     break;
             }
         }

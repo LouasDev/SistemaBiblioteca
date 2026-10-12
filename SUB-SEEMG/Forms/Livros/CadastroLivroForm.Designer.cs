@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.Titulo = new System.Windows.Forms.Label();
+            this.lblSubtitulo = new System.Windows.Forms.Label();
+            this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblNome = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -49,15 +51,33 @@
             // 
             // Titulo
             // 
-            this.Titulo.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.Titulo.Font = new System.Drawing.Font("Segoe UI", 25.25F, System.Drawing.FontStyle.Bold);
+            this.Titulo.AutoSize = true;
+            this.Titulo.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
             this.Titulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.Titulo.Location = new System.Drawing.Point(451, 26);
+            this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
-            this.Titulo.Size = new System.Drawing.Size(379, 46);
+            this.Titulo.Size = new System.Drawing.Size(201, 38);
             this.Titulo.TabIndex = 93;
-            this.Titulo.Text = "CADASTRO DE LIVROS";
-            this.Titulo.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Titulo.Text = "Cadastrar livro";
+            // 
+            // lblSubtitulo
+            // 
+            this.lblSubtitulo.AutoSize = true;
+            this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(105)))), ((int)(((byte)(120)))));
+            this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
+            this.lblSubtitulo.Name = "lblSubtitulo";
+            this.lblSubtitulo.Size = new System.Drawing.Size(271, 17);
+            this.lblSubtitulo.TabIndex = 105;
+            this.lblSubtitulo.Text = "Inclua um novo livro no acervo da instituição.";
+            // 
+            // pnlLinhaCabecalho
+            // 
+            this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
+            this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
+            this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
+            this.pnlLinhaCabecalho.TabIndex = 106;
             // 
             // lblNome
             // 
@@ -66,11 +86,11 @@
             this.lblNome.BackColor = System.Drawing.Color.Transparent;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblNome.Location = new System.Drawing.Point(327, 246);
+            this.lblNome.Location = new System.Drawing.Point(218, 250);
             this.lblNome.Name = "lblNome";
-            this.lblNome.Size = new System.Drawing.Size(147, 25);
+            this.lblNome.Size = new System.Drawing.Size(140, 25);
             this.lblNome.TabIndex = 94;
-            this.lblNome.Text = "Nome Do Livro:";
+            this.lblNome.Text = "Nome do livro:";
             // 
             // label1
             // 
@@ -79,7 +99,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label1.Location = new System.Drawing.Point(327, 328);
+            this.label1.Location = new System.Drawing.Point(218, 340);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 25);
             this.label1.TabIndex = 96;
@@ -92,7 +112,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label2.Location = new System.Drawing.Point(327, 409);
+            this.label2.Location = new System.Drawing.Point(648, 340);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 25);
             this.label2.TabIndex = 98;
@@ -105,7 +125,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label3.Location = new System.Drawing.Point(327, 493);
+            this.label3.Location = new System.Drawing.Point(218, 430);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 25);
             this.label3.TabIndex = 100;
@@ -118,23 +138,26 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(327, 165);
+            this.label4.Location = new System.Drawing.Point(218, 160);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
             this.label4.TabIndex = 103;
-            this.label4.Text = "Código de Barras:";
+            this.label4.Text = "Código de barras:";
             // 
             // btnLimpar
             // 
             this.btnLimpar.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnLimpar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnLimpar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.btnLimpar.ForeColor = System.Drawing.Color.White;
-            this.btnLimpar.Location = new System.Drawing.Point(332, 636);
+            this.btnLimpar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnLimpar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnLimpar.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
+            this.btnLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLimpar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
+            this.btnLimpar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnLimpar.Location = new System.Drawing.Point(704, 550);
             this.btnLimpar.Name = "btnLimpar";
-            this.btnLimpar.Size = new System.Drawing.Size(150, 60);
+            this.btnLimpar.Size = new System.Drawing.Size(160, 48);
             this.btnLimpar.TabIndex = 104;
-            this.btnLimpar.Text = "LIMPAR";
+            this.btnLimpar.Text = "Limpar";
             this.btnLimpar.UseVisualStyleBackColor = false;
             this.btnLimpar.Click += new System.EventHandler(this.btnLimpar_Click);
             // 
@@ -142,13 +165,16 @@
             // 
             this.btnCadastrar.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnCadastrar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnCadastrar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.btnCadastrar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCadastrar.FlatAppearance.BorderSize = 0;
+            this.btnCadastrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCadastrar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnCadastrar.ForeColor = System.Drawing.Color.White;
-            this.btnCadastrar.Location = new System.Drawing.Point(799, 636);
+            this.btnCadastrar.Location = new System.Drawing.Point(880, 550);
             this.btnCadastrar.Name = "btnCadastrar";
-            this.btnCadastrar.Size = new System.Drawing.Size(150, 60);
+            this.btnCadastrar.Size = new System.Drawing.Size(180, 48);
             this.btnCadastrar.TabIndex = 6;
-            this.btnCadastrar.Text = "CADASTRAR";
+            this.btnCadastrar.Text = "Cadastrar livro";
             this.btnCadastrar.UseVisualStyleBackColor = false;
             this.btnCadastrar.Click += new System.EventHandler(this.btnCadastrar_Click);
             // 
@@ -170,9 +196,11 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.txtNome);
             this.panel1.Controls.Add(this.lblNome);
+            this.panel1.Controls.Add(this.pnlLinhaCabecalho);
+            this.panel1.Controls.Add(this.lblSubtitulo);
             this.panel1.Controls.Add(this.Titulo);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.panel1.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -183,15 +211,17 @@
             // 
             this.btnBuscar.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnBuscar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBuscar.FlatAppearance.BorderSize = 0;
             this.btnBuscar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.btnBuscar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Image = global::SUB.Properties.Resources.icons8_search_25;
             this.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBuscar.Location = new System.Drawing.Point(753, 188);
+            this.btnBuscar.Location = new System.Drawing.Point(844, 188);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Padding = new System.Windows.Forms.Padding(8, 8, 0, 10);
-            this.btnBuscar.Size = new System.Drawing.Size(169, 50);
+            this.btnBuscar.Padding = new System.Windows.Forms.Padding(8, 6, 0, 10);
+            this.btnBuscar.Size = new System.Drawing.Size(216, 40);
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "     Busca online";
             this.btnBuscar.UseVisualStyleBackColor = false;
@@ -201,10 +231,10 @@
             // 
             this.lstSugestoesGenero.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.lstSugestoesGenero.FormattingEnabled = true;
-            this.lstSugestoesGenero.ItemHeight = 25;
-            this.lstSugestoesGenero.Location = new System.Drawing.Point(332, 396);
+            this.lstSugestoesGenero.ItemHeight = 20;
+            this.lstSugestoesGenero.Location = new System.Drawing.Point(222, 408);
             this.lstSugestoesGenero.Name = "lstSugestoesGenero";
-            this.lstSugestoesGenero.Size = new System.Drawing.Size(617, 79);
+            this.lstSugestoesGenero.Size = new System.Drawing.Size(402, 64);
             this.lstSugestoesGenero.TabIndex = 106;
             this.lstSugestoesGenero.Visible = false;
             // 
@@ -221,13 +251,13 @@
             this.mtxCodigoBarras.HoverBackColor = System.Drawing.Color.LightGray;
             this.mtxCodigoBarras.HoverBorderColor = System.Drawing.Color.DarkGray;
             this.mtxCodigoBarras.LeftMargin = 0;
-            this.mtxCodigoBarras.Location = new System.Drawing.Point(332, 193);
+            this.mtxCodigoBarras.Location = new System.Drawing.Point(222, 188);
             this.mtxCodigoBarras.Margin = new System.Windows.Forms.Padding(4);
             this.mtxCodigoBarras.Mask = "0 000000 000000";
             this.mtxCodigoBarras.MaskTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(14, 8, 8, 14);
-            this.mtxCodigoBarras.Size = new System.Drawing.Size(379, 40);
+            this.mtxCodigoBarras.Size = new System.Drawing.Size(606, 40);
             this.mtxCodigoBarras.TabIndex = 1;
             this.mtxCodigoBarras.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mtxCodigoBarras_KeyDown);
             // 
@@ -245,7 +275,7 @@
             this.txtAutor.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAutor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtAutor.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtAutor.Location = new System.Drawing.Point(332, 521);
+            this.txtAutor.Location = new System.Drawing.Point(222, 458);
             this.txtAutor.Name = "txtAutor";
             this.txtAutor.Padding = new System.Windows.Forms.Padding(7);
             this.txtAutor.PlaceholderColor = System.Drawing.Color.Gray;
@@ -255,7 +285,7 @@
             this.txtAutor.SelectedText = "";
             this.txtAutor.SelectionLength = 0;
             this.txtAutor.SelectionStart = 0;
-            this.txtAutor.Size = new System.Drawing.Size(617, 40);
+            this.txtAutor.Size = new System.Drawing.Size(838, 40);
             this.txtAutor.TabIndex = 5;
             this.txtAutor.TextColor = System.Drawing.Color.Black;
             this.txtAutor.UseSystemPasswordChar = false;
@@ -274,7 +304,7 @@
             this.txtQuantidade.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtQuantidade.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtQuantidade.Location = new System.Drawing.Point(332, 437);
+            this.txtQuantidade.Location = new System.Drawing.Point(652, 368);
             this.txtQuantidade.Name = "txtQuantidade";
             this.txtQuantidade.Padding = new System.Windows.Forms.Padding(7);
             this.txtQuantidade.PlaceholderColor = System.Drawing.Color.Gray;
@@ -284,7 +314,7 @@
             this.txtQuantidade.SelectedText = "";
             this.txtQuantidade.SelectionLength = 0;
             this.txtQuantidade.SelectionStart = 0;
-            this.txtQuantidade.Size = new System.Drawing.Size(617, 40);
+            this.txtQuantidade.Size = new System.Drawing.Size(408, 40);
             this.txtQuantidade.TabIndex = 5;
             this.txtQuantidade.TextColor = System.Drawing.Color.Black;
             this.txtQuantidade.UseSystemPasswordChar = false;
@@ -303,7 +333,7 @@
             this.txtGenero.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtGenero.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtGenero.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtGenero.Location = new System.Drawing.Point(332, 356);
+            this.txtGenero.Location = new System.Drawing.Point(222, 368);
             this.txtGenero.Name = "txtGenero";
             this.txtGenero.Padding = new System.Windows.Forms.Padding(7);
             this.txtGenero.PlaceholderColor = System.Drawing.Color.Gray;
@@ -313,7 +343,7 @@
             this.txtGenero.SelectedText = "";
             this.txtGenero.SelectionLength = 0;
             this.txtGenero.SelectionStart = 0;
-            this.txtGenero.Size = new System.Drawing.Size(617, 40);
+            this.txtGenero.Size = new System.Drawing.Size(402, 40);
             this.txtGenero.TabIndex = 4;
             this.txtGenero.TextColor = System.Drawing.Color.Black;
             this.txtGenero.UseSystemPasswordChar = false;
@@ -332,7 +362,7 @@
             this.txtNome.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtNome.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtNome.Location = new System.Drawing.Point(332, 274);
+            this.txtNome.Location = new System.Drawing.Point(222, 278);
             this.txtNome.Name = "txtNome";
             this.txtNome.Padding = new System.Windows.Forms.Padding(7);
             this.txtNome.PlaceholderColor = System.Drawing.Color.Gray;
@@ -342,7 +372,7 @@
             this.txtNome.SelectedText = "";
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
-            this.txtNome.Size = new System.Drawing.Size(617, 40);
+            this.txtNome.Size = new System.Drawing.Size(838, 40);
             this.txtNome.TabIndex = 3;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
@@ -384,6 +414,8 @@
         private System.Windows.Forms.Button btnCadastrar;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label Titulo;
+        private System.Windows.Forms.Label lblSubtitulo;
+        private System.Windows.Forms.Panel pnlLinhaCabecalho;
         private System.Windows.Forms.ListBox lstSugestoesGenero;
         private System.Windows.Forms.Button btnBuscar;
     }

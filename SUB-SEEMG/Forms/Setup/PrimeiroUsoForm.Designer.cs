@@ -136,6 +136,7 @@ namespace SUB.Forms.Setup
             this.statusCodigo = new System.Windows.Forms.Label();
             this.btnVoltar = new System.Windows.Forms.Button();
             this.salvar = new CustomButton();
+            this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
             this.pnlInstitucional.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
@@ -163,6 +164,7 @@ namespace SUB.Forms.Setup
             this.pnlInstitucional.Controls.Add(this.linhaInstitucional);
             this.pnlInstitucional.Controls.Add(this.lblIniciativa);
             this.pnlInstitucional.Controls.Add(this.gradientPanel1);
+            this.pnlInstitucional.Controls.Add(this.gradientPanel2);
             this.pnlInstitucional.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlInstitucional.Gradientebottom = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(87)))), ((int)(((byte)(174)))));
             this.pnlInstitucional.Gradientetop = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -300,7 +302,7 @@ namespace SUB.Forms.Setup
             this.lblPasso2Texto.ForeColor = System.Drawing.Color.White;
             this.lblPasso2Texto.Location = new System.Drawing.Point(82, 481);
             this.lblPasso2Texto.Name = "lblPasso2Texto";
-            this.lblPasso2Texto.Size = new System.Drawing.Size(220, 34);
+            this.lblPasso2Texto.Size = new System.Drawing.Size(263, 34);
             this.lblPasso2Texto.TabIndex = 10;
             this.lblPasso2Texto.Text = "Acesso da primeira bibliotecária";
             this.lblPasso2Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -619,9 +621,9 @@ namespace SUB.Forms.Setup
             this.lblNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblNomeBibliotecaria.Location = new System.Drawing.Point(0, 35);
             this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
-            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(132, 15);
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(190, 15);
             this.lblNomeBibliotecaria.TabIndex = 1;
-            this.lblNomeBibliotecaria.Text = "Nome da bibliotecária *";
+            this.lblNomeBibliotecaria.Text = "Nome completo da bibliotecária *";
             // 
             // _nomeBibliotecaria
             // 
@@ -974,6 +976,18 @@ namespace SUB.Forms.Setup
             this.salvar.Text = "Concluir configuração";
             this.salvar.Click += new System.EventHandler(this.salvar_Click);
             // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BackColor = System.Drawing.Color.White;
+            this.gradientPanel2.BorderRadius = 0;
+            this.gradientPanel2.Gradientebottom = System.Drawing.Color.Transparent;
+            this.gradientPanel2.Gradientetop = System.Drawing.Color.Transparent;
+            this.gradientPanel2.Location = new System.Drawing.Point(37, 37);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(90, 90);
+            this.gradientPanel2.TabIndex = 11;
+            this.gradientPanel2.Visible = false;
+            // 
             // PrimeiroUsoForm
             // 
             this.AcceptButton = this.btnAvancar;
@@ -1009,5 +1023,6 @@ namespace SUB.Forms.Setup
         }
 
         private ElementosPersonalizados.GradientPanel gradientPanel1;
+        private ElementosPersonalizados.GradientPanel gradientPanel2;
     }
 }

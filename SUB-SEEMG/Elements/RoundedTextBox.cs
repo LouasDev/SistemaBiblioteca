@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Linq;
 using System.Windows.Forms;
 
 public class RoundedTextBox : UserControl
@@ -15,6 +16,7 @@ public class RoundedTextBox : UserControl
     public bool internalUpdate = false;
     private bool isMouseOver = false;
     private bool isFocused = false;
+    private bool onlyNumbers = false;
 
     public new event EventHandler TextChanged
     {
@@ -38,7 +40,16 @@ public class RoundedTextBox : UserControl
             UseSystemPasswordChar = useSystemPasswordChar
         };
 
-        innerTextBox.TextChanged += (s, e) => UpdatePlaceholder();
+        innerTextBox.TextChanged += (s, e) =>
+        {
+            RemoverCaracteresNaoNumericos();
+            UpdatePlaceholder();
+        };
+        innerTextBox.KeyPress += (s, e) =>
+        {
+            if (onlyNumbers && !char.IsControl(e.KeyChar) && (e.KeyChar < '0' || e.KeyChar > '9'))
+                e.Handled = true;
+        };
         innerTextBox.GotFocus += (s, e) => { isFocused = true; UpdatePlaceholder(); this.Invalidate(); };
         innerTextBox.LostFocus += (s, e) => { isFocused = false; UpdatePlaceholder(); this.Invalidate(); };
 
@@ -89,6 +100,22 @@ public class RoundedTextBox : UserControl
     private void UpdatePlaceholder()
     {
         placeholderLabel.Visible = string.IsNullOrEmpty(innerTextBox.Text) && !innerTextBox.Focused;
+    }
+
+    private void RemoverCaracteresNaoNumericos()
+    {
+        if (!onlyNumbers || string.IsNullOrEmpty(innerTextBox.Text))
+            return;
+
+        string textoOriginal = innerTextBox.Text;
+        string somenteDigitos = new string(textoOriginal.Where(c => c >= '0' && c <= '9').ToArray());
+        if (textoOriginal == somenteDigitos)
+            return;
+
+        int posicaoOriginal = Math.Min(innerTextBox.SelectionStart, textoOriginal.Length);
+        int novaPosicao = textoOriginal.Take(posicaoOriginal).Count(c => c >= '0' && c <= '9');
+        innerTextBox.Text = somenteDigitos;
+        innerTextBox.SelectionStart = Math.Min(novaPosicao, somenteDigitos.Length);
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -255,6 +282,20 @@ public class RoundedTextBox : UserControl
             useSystemPasswordChar = value;
             innerTextBox.UseSystemPasswordChar = value;
             this.Invalidate();
+        }
+    }
+
+    [Category("Comportamento")]
+    [Browsable(true)]
+    [DefaultValue(false)]
+    [Description("Permite apenas dígitos, inclusive ao colar texto.")]
+    public bool OnlyNumbers
+    {
+        get => onlyNumbers;
+        set
+        {
+            onlyNumbers = value;
+            RemoverCaracteresNaoNumericos();
         }
     }
 

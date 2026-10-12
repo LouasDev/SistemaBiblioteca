@@ -99,7 +99,7 @@
             this.dtpDataDevolucao.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataDevolucao.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataDevolucao.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataDevolucao.Location = new System.Drawing.Point(660, 475);
+            this.dtpDataDevolucao.Location = new System.Drawing.Point(660, 460);
             this.dtpDataDevolucao.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataDevolucao.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataDevolucao.Name = "dtpDataDevolucao";
@@ -127,7 +127,7 @@
             this.dtpDataEmprestimo.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataEmprestimo.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataEmprestimo.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataEmprestimo.Location = new System.Drawing.Point(220, 475);
+            this.dtpDataEmprestimo.Location = new System.Drawing.Point(220, 460);
             this.dtpDataEmprestimo.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataEmprestimo.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataEmprestimo.Name = "dtpDataEmprestimo";
@@ -147,7 +147,7 @@
             this.lstSugestoesUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.lstSugestoesUsuario.FormattingEnabled = true;
             this.lstSugestoesUsuario.ItemHeight = 25;
-            this.lstSugestoesUsuario.Location = new System.Drawing.Point(220, 225);
+            this.lstSugestoesUsuario.Location = new System.Drawing.Point(221, 225);
             this.lstSugestoesUsuario.Margin = new System.Windows.Forms.Padding(4);
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
@@ -165,7 +165,7 @@
             this.lstLivros.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.lstLivros.FormattingEnabled = true;
             this.lstLivros.ItemHeight = 25;
-            this.lstLivros.Location = new System.Drawing.Point(220, 315);
+            this.lstLivros.Location = new System.Drawing.Point(220, 314);
             this.lstLivros.Margin = new System.Windows.Forms.Padding(4);
             this.lstLivros.Name = "lstLivros";
             this.lstLivros.ScrollAlwaysVisible = true;
@@ -188,7 +188,7 @@
             this.cbBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbBibliotecaria.FormattingEnabled = true;
             this.cbBibliotecaria.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbBibliotecaria.Location = new System.Drawing.Point(220, 385);
+            this.cbBibliotecaria.Location = new System.Drawing.Point(220, 370);
             this.cbBibliotecaria.Name = "cbBibliotecaria";
             this.cbBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbBibliotecaria.PlaceholderMargin = 10;
@@ -214,6 +214,7 @@
             this.txtBarcode.Location = new System.Drawing.Point(760, 275);
             this.txtBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarcode.Name = "txtBarcode";
+            this.txtBarcode.OnlyNumbers = true;
             this.txtBarcode.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
             this.txtBarcode.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtBarcode.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -249,7 +250,7 @@
             this.chkDevolucaoPersonalizada.BackColor = System.Drawing.Color.White;
             this.chkDevolucaoPersonalizada.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.chkDevolucaoPersonalizada.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.chkDevolucaoPersonalizada.Location = new System.Drawing.Point(660, 521);
+            this.chkDevolucaoPersonalizada.Location = new System.Drawing.Point(660, 506);
             this.chkDevolucaoPersonalizada.Margin = new System.Windows.Forms.Padding(4);
             this.chkDevolucaoPersonalizada.Name = "chkDevolucaoPersonalizada";
             this.chkDevolucaoPersonalizada.Size = new System.Drawing.Size(162, 24);
@@ -330,7 +331,7 @@
             this.btnEmprestar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEmprestar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnEmprestar.ForeColor = System.Drawing.Color.White;
-            this.btnEmprestar.Location = new System.Drawing.Point(880, 585);
+            this.btnEmprestar.Location = new System.Drawing.Point(880, 570);
             this.btnEmprestar.Margin = new System.Windows.Forms.Padding(4);
             this.btnEmprestar.Name = "btnEmprestar";
             this.btnEmprestar.Size = new System.Drawing.Size(180, 48);
@@ -345,7 +346,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label6.Location = new System.Drawing.Point(216, 357);
+            this.label6.Location = new System.Drawing.Point(216, 342);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(229, 25);
@@ -358,7 +359,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label5.Location = new System.Drawing.Point(656, 447);
+            this.label5.Location = new System.Drawing.Point(656, 432);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(181, 25);
@@ -371,7 +372,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(216, 447);
+            this.label4.Location = new System.Drawing.Point(216, 432);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(193, 25);

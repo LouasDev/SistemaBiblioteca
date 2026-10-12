@@ -139,6 +139,10 @@ using System.Windows.Forms;
             {
                 try { OnKeyUp(e); } catch { /* não propagar exceções */ }
             };
+
+            // O conteúdo é digitado no MaskedTextBox interno. Repassar a alteração
+            // permite que formulários validem o controle como qualquer outro campo.
+            maskedTextBox.TextChanged += (s, e) => OnTextChanged(e);
         }
 
         // ==== DESENHO PERSONALIZADO ====

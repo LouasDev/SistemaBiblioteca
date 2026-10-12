@@ -188,7 +188,14 @@ namespace SUB
             string nome = txtNome.Text.Trim();
             string autor = txtAutor.Text.Trim();
             string genero = txtGenero.Text.Trim();
-            int quantidade = int.Parse(txtQuantidade.Text.Trim());
+            if (!int.TryParse(txtQuantidade.Text.Trim(), out int quantidade) || quantidade < 0)
+            {
+                MessageBox.Show("Informe uma quantidade válida usando apenas números.", "Quantidade inválida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtQuantidade.Focus();
+                txtQuantidade.SelectAll();
+                return;
+            }
 
             // >>> Salvar COM máscara, sempre que possível
             string codigoBarras = ObterCodigoDeBarrasFormatado();

@@ -281,6 +281,7 @@ namespace SUB.Forms.Livros
             this.txtBarcode.Location = new System.Drawing.Point(867, 140);
             this.txtBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarcode.Name = "txtBarcode";
+            this.txtBarcode.OnlyNumbers = true;
             this.txtBarcode.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
             this.txtBarcode.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtBarcode.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -336,6 +337,7 @@ namespace SUB.Forms.Livros
             this.numQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
             this.numQuantidade.Location = new System.Drawing.Point(867, 224);
             this.numQuantidade.Name = "numQuantidade";
+            this.numQuantidade.OnlyNumbers = true;
             this.numQuantidade.Padding = new System.Windows.Forms.Padding(7);
             this.numQuantidade.PlaceholderColor = System.Drawing.Color.Gray;
             this.numQuantidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

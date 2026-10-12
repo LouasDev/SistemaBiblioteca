@@ -63,7 +63,7 @@
             this.btnConfirmarDevolucao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmarDevolucao.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarDevolucao.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmarDevolucao.Location = new System.Drawing.Point(82, 50);
+            this.btnConfirmarDevolucao.Location = new System.Drawing.Point(100, 42);
             this.btnConfirmarDevolucao.Name = "btnConfirmarDevolucao";
             this.btnConfirmarDevolucao.Size = new System.Drawing.Size(136, 44);
             this.btnConfirmarDevolucao.TabIndex = 118;
@@ -80,7 +80,7 @@
             this.btnProrrogar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProrrogar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnProrrogar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnProrrogar.Location = new System.Drawing.Point(41, 106);
+            this.btnProrrogar.Location = new System.Drawing.Point(59, 101);
             this.btnProrrogar.Name = "btnProrrogar";
             this.btnProrrogar.Size = new System.Drawing.Size(177, 44);
             this.btnProrrogar.TabIndex = 117;
@@ -143,6 +143,7 @@
             this.dgvEmprestimos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmprestimos.Size = new System.Drawing.Size(1088, 425);
             this.dgvEmprestimos.TabIndex = 119;
+            this.dgvEmprestimos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellClick);
             this.dgvEmprestimos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellContentClick);
             this.dgvEmprestimos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmprestimos_CellFormatting);
             this.dgvEmprestimos.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvEmprestimos_CellPainting);
@@ -198,6 +199,7 @@
             this.mtxCodigoBarras.Location = new System.Drawing.Point(658, 183);
             this.mtxCodigoBarras.Margin = new System.Windows.Forms.Padding(4);
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
+            this.mtxCodigoBarras.OnlyNumbers = true;
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
             this.mtxCodigoBarras.PlaceholderColor = System.Drawing.Color.Gray;
             this.mtxCodigoBarras.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -296,7 +298,7 @@
             this.btnBuscarEmprestimo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscarEmprestimo.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnBuscarEmprestimo.ForeColor = System.Drawing.Color.White;
-            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(712, 245);
+            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(695, 245);
             this.btnBuscarEmprestimo.Name = "btnBuscarEmprestimo";
             this.btnBuscarEmprestimo.Size = new System.Drawing.Size(168, 41);
             this.btnBuscarEmprestimo.TabIndex = 151;
@@ -379,9 +381,9 @@
             this.pnlAcoesDev.Controls.Add(this.btnConfirmarDevolucao);
             this.pnlAcoesDev.Gradientebottom = System.Drawing.Color.Transparent;
             this.pnlAcoesDev.Gradientetop = System.Drawing.Color.Transparent;
-            this.pnlAcoesDev.Location = new System.Drawing.Point(952, 136);
+            this.pnlAcoesDev.Location = new System.Drawing.Point(934, 136);
             this.pnlAcoesDev.Name = "pnlAcoesDev";
-            this.pnlAcoesDev.Size = new System.Drawing.Size(234, 168);
+            this.pnlAcoesDev.Size = new System.Drawing.Size(252, 168);
             this.pnlAcoesDev.TabIndex = 159;
             this.pnlAcoesDev.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel1_Paint);
             // 
@@ -391,7 +393,7 @@
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label2.Location = new System.Drawing.Point(19, 19);
+            this.label2.Location = new System.Drawing.Point(13, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 25);
             this.label2.TabIndex = 151;

@@ -53,8 +53,12 @@ namespace SUB.Utils
             Execute(connection, @"CREATE TABLE NotificacoesDisponibilidade (
                 Id int IDENTITY(1,1) PRIMARY KEY, UsuarioId int NULL, LivroId int NULL,
                 DataSolicitacao datetime NULL, Ativo bit NOT NULL)", "NotificacoesDisponibilidade");
+            Execute(connection, @"CREATE TABLE Turmas (
+                Id int IDENTITY(1,1) PRIMARY KEY, Nome nvarchar(100) NOT NULL UNIQUE)", "Turmas");
             MigrarEmprestimo(connection);
-            GarantirVersaoSchema(connection, 2);
+            MigrarEmprestimoRapido(connection);
+            MigrarTurmasDosUsuariosExistentes(connection);
+            GarantirVersaoSchema(connection, 4);
         }
 
         private static void MigrarEmprestimo(SqlCeConnection connection)
@@ -68,6 +72,54 @@ namespace SUB.Utils
             if (ColumnExists(connection, "Emprestimo", "Livro"))
             {
                 Execute(connection, "UPDATE Emprestimo SET LivroId = Livro WHERE LivroId IS NULL AND Livro IS NOT NULL", null);
+            }
+        }
+
+        private static void MigrarEmprestimoRapido(SqlCeConnection connection)
+        {
+            if (!TableExists(connection, "EmprestimoRapido"))
+                return;
+
+            // Versões anteriores guardavam somente UsuarioId e DataDevolucao.
+            // O fluxo de empréstimo rápido usa estes campos adicionais desde então.
+            AddColumnIfMissing(connection, "EmprestimoRapido", "ProfessorId", "int NULL");
+            AddColumnIfMissing(connection, "EmprestimoRapido", "LivroNome", "nvarchar(250) NULL");
+            AddColumnIfMissing(connection, "EmprestimoRapido", "Turma", "nvarchar(100) NULL");
+            AddColumnIfMissing(connection, "EmprestimoRapido", "Quantidade", "int NULL");
+            AddColumnIfMissing(connection, "EmprestimoRapido", "DataHoraDevolucaoReal", "datetime NULL");
+            AddColumnIfMissing(connection, "EmprestimoRapido", "Bibliotecaria", "nvarchar(200) NULL");
+
+            if (ColumnExists(connection, "EmprestimoRapido", "UsuarioId"))
+                Execute(connection, "UPDATE EmprestimoRapido SET ProfessorId = UsuarioId WHERE ProfessorId IS NULL AND UsuarioId IS NOT NULL", null);
+
+            if (ColumnExists(connection, "EmprestimoRapido", "DataDevolucao"))
+                Execute(connection, "UPDATE EmprestimoRapido SET DataHoraDevolucaoReal = DataDevolucao WHERE DataHoraDevolucaoReal IS NULL AND DataDevolucao IS NOT NULL", null);
+
+            Execute(connection, "UPDATE EmprestimoRapido SET Quantidade = 1 WHERE Quantidade IS NULL", null);
+        }
+
+        private static void MigrarTurmasDosUsuariosExistentes(SqlCeConnection connection)
+        {
+            if (!TableExists(connection, "Turmas") || !TableExists(connection, "usuarios") ||
+                !ColumnExists(connection, "usuarios", "Turma"))
+                return;
+
+            var turmas = new System.Collections.Generic.List<string>();
+            using (var consulta = new SqlCeCommand("SELECT DISTINCT Turma FROM usuarios WHERE Turma IS NOT NULL AND Turma <> ''", connection))
+            using (var leitor = consulta.ExecuteReader())
+            {
+                while (leitor.Read())
+                    turmas.Add(leitor.GetString(0).Trim());
+            }
+
+            foreach (string turma in turmas)
+            {
+                using (var inserir = new SqlCeCommand(
+                    "INSERT INTO Turmas (Nome) SELECT @nome WHERE NOT EXISTS (SELECT 1 FROM Turmas WHERE Nome = @nome)", connection))
+                {
+                    inserir.Parameters.AddWithValue("@nome", turma);
+                    inserir.ExecuteNonQuery();
+                }
             }
         }
 

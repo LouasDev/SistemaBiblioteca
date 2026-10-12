@@ -157,6 +157,8 @@ namespace SUB.Forms.Livros
                 colId.FillWeight = 30f;    // peso relativo (aumente para dar mais espaço proporcional)
             }
 
+            
+
 
             dgvLivros.ResumeLayout();
         }
@@ -479,8 +481,8 @@ END AS Status
                 e.PaintBackground(e.CellBounds, true);
 
                 // Cores do tema
-                Color corFundo = Color.FromArgb(30, 61, 88);
-                Color corTexto = Color.White;
+                Color corFundo = dgvLivros.ColumnHeadersDefaultCellStyle.BackColor;
+                Color corTexto = dgvLivros.ColumnHeadersDefaultCellStyle.ForeColor;
 
                 // Desenha botão arredondado
                 int borderRadius = 8;

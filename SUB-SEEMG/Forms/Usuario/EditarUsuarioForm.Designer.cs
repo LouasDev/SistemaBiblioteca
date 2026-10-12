@@ -168,7 +168,7 @@
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnCancelar.Location = new System.Drawing.Point(724, 649);
+            this.btnCancelar.Location = new System.Drawing.Point(724, 622);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(160, 48);
@@ -186,7 +186,7 @@
             this.btnExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExcluir.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnExcluir.ForeColor = System.Drawing.Color.White;
-            this.btnExcluir.Location = new System.Drawing.Point(220, 649);
+            this.btnExcluir.Location = new System.Drawing.Point(220, 622);
             this.btnExcluir.Margin = new System.Windows.Forms.Padding(5);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
@@ -204,7 +204,7 @@
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSalvar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnSalvar.ForeColor = System.Drawing.Color.White;
-            this.btnSalvar.Location = new System.Drawing.Point(900, 649);
+            this.btnSalvar.Location = new System.Drawing.Point(900, 622);
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(5);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(160, 48);
@@ -401,7 +401,7 @@
             this.panel1.Controls.Add(this.lblTelefone);
             this.panel1.Controls.Add(this.lblCPF);
             this.panel1.Controls.Add(this.lblDataNasc);
-            this.panel1.Location = new System.Drawing.Point(220, 469);
+            this.panel1.Location = new System.Drawing.Point(220, 442);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(840, 110);
             this.panel1.TabIndex = 133;

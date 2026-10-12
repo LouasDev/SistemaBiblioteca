@@ -511,7 +511,7 @@ namespace SUB.Forms.Livros
                                     Genero = reader.GetString(3),
                                     Quantidade = reader.GetInt32(4),
                                     CodigoDeBarras = reader.GetString(5),
-                                    Disponibilidade = reader.GetBoolean(6)
+                                    Disponibilidade = LerDisponibilidade(reader, 6, reader.GetInt32(4))
                                 };
 
                                 _cacheLivros.Add(livro);
@@ -627,7 +627,7 @@ private void lstLivros_KeyDown(object sender, KeyEventArgs e)
                             Genero = reader.GetString(3),
                             Quantidade = reader.GetInt32(4),
                             CodigoDeBarras = reader.GetString(5),
-                            Disponibilidade = reader.GetBoolean(6)
+                            Disponibilidade = LerDisponibilidade(reader, 6, reader.GetInt32(4))
                         };
                         _cacheLivros.Add(livro);
                         lstLivros.Items.Add($"{livro.Nome} - {livro.Autor}");
@@ -674,7 +674,7 @@ private void CarregarLivrosDoBanco()
                         reader.GetString(1), // Nome
                         reader.GetString(2), // Autor
                         reader.GetString(3), // Genero
-                        reader.GetBoolean(6), // Disponibilidade
+                        LerDisponibilidade(reader, 6, reader.GetInt32(4)), // Disponibilidade
                         reader.GetInt32(4),   // Quantidade
                         reader.GetString(5)   // CodigoBarras
                     );
@@ -691,6 +691,23 @@ private void CarregarLivrosDoBanco()
         MessageBox.Show("Erro ao carregar livros: " + ex.Message, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 }
+
+        // A coluna Disponibilidade é persistida como inteiro (0/1) no banco do SUB.
+        // A leitura continua compatível com instalações antigas que a tenham como booleano.
+        private static bool LerDisponibilidade(SqlCeDataReader reader, int indiceColuna, int quantidade)
+        {
+            if (reader.IsDBNull(indiceColuna))
+                return quantidade > 0;
+
+            object valor = reader.GetValue(indiceColuna);
+            if (valor is bool)
+                return (bool)valor;
+
+            int disponibilidade;
+            return int.TryParse(Convert.ToString(valor), out disponibilidade)
+                ? disponibilidade != 0
+                : quantidade > 0;
+        }
 #endregion
 
 #region Métodos de Código de Barras

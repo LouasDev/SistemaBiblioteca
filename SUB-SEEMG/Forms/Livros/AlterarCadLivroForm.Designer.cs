@@ -82,18 +82,18 @@
             // btnGerarEtiqueta
             // 
             this.btnGerarEtiqueta.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnGerarEtiqueta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnGerarEtiqueta.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
             this.btnGerarEtiqueta.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnGerarEtiqueta.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(194)))), ((int)(((byte)(210)))));
             this.btnGerarEtiqueta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGerarEtiqueta.Font = new System.Drawing.Font("Segoe UI Semibold", 11.5F, System.Drawing.FontStyle.Bold);
-            this.btnGerarEtiqueta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.btnGerarEtiqueta.ForeColor = System.Drawing.Color.White;
             this.btnGerarEtiqueta.Image = global::SUB.Properties.Resources.icons8_refresh_barcode_25;
             this.btnGerarEtiqueta.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnGerarEtiqueta.Location = new System.Drawing.Point(886, 142);
+            this.btnGerarEtiqueta.Location = new System.Drawing.Point(886, 137);
             this.btnGerarEtiqueta.Name = "btnGerarEtiqueta";
             this.btnGerarEtiqueta.Padding = new System.Windows.Forms.Padding(10, 10, 0, 10);
-            this.btnGerarEtiqueta.Size = new System.Drawing.Size(174, 40);
+            this.btnGerarEtiqueta.Size = new System.Drawing.Size(174, 55);
             this.btnGerarEtiqueta.TabIndex = 133;
             this.btnGerarEtiqueta.Text = "     Etiqueta";
             this.btnGerarEtiqueta.UseVisualStyleBackColor = false;
@@ -119,7 +119,7 @@
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnCancelar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnCancelar.Location = new System.Drawing.Point(710, 530);
+            this.btnCancelar.Location = new System.Drawing.Point(710, 520);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(160, 48);
@@ -137,7 +137,7 @@
             this.btnExcluir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExcluir.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnExcluir.ForeColor = System.Drawing.Color.White;
-            this.btnExcluir.Location = new System.Drawing.Point(222, 530);
+            this.btnExcluir.Location = new System.Drawing.Point(222, 520);
             this.btnExcluir.Margin = new System.Windows.Forms.Padding(5);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
@@ -155,7 +155,7 @@
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSalvar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnSalvar.ForeColor = System.Drawing.Color.White;
-            this.btnSalvar.Location = new System.Drawing.Point(886, 530);
+            this.btnSalvar.Location = new System.Drawing.Point(886, 520);
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(5);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(174, 48);
@@ -171,7 +171,7 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(648, 402);
+            this.label4.Location = new System.Drawing.Point(648, 380);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
             this.label4.TabIndex = 103;
@@ -190,7 +190,7 @@
             this.mtxCodigoBarras.HoverBackColor = System.Drawing.Color.LightGray;
             this.mtxCodigoBarras.HoverBorderColor = System.Drawing.Color.DarkGray;
             this.mtxCodigoBarras.LeftMargin = 0;
-            this.mtxCodigoBarras.Location = new System.Drawing.Point(652, 430);
+            this.mtxCodigoBarras.Location = new System.Drawing.Point(652, 408);
             this.mtxCodigoBarras.Mask = "0 000000 000000";
             this.mtxCodigoBarras.MaskTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
@@ -212,7 +212,7 @@
             this.txtAutor.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAutor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtAutor.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtAutor.Location = new System.Drawing.Point(222, 430);
+            this.txtAutor.Location = new System.Drawing.Point(222, 408);
             this.txtAutor.Name = "txtAutor";
             this.txtAutor.Padding = new System.Windows.Forms.Padding(7);
             this.txtAutor.PlaceholderColor = System.Drawing.Color.Gray;
@@ -234,7 +234,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label3.Location = new System.Drawing.Point(218, 402);
+            this.label3.Location = new System.Drawing.Point(218, 380);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 25);
             this.label3.TabIndex = 100;
@@ -256,6 +256,7 @@
             this.txtQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
             this.txtQuantidade.Location = new System.Drawing.Point(652, 315);
             this.txtQuantidade.Name = "txtQuantidade";
+            this.txtQuantidade.OnlyNumbers = true;
             this.txtQuantidade.Padding = new System.Windows.Forms.Padding(7);
             this.txtQuantidade.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtQuantidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F);

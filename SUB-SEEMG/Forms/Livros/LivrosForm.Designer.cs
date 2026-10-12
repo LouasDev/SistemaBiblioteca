@@ -168,6 +168,7 @@
             this.mtxCodigoBarras.Location = new System.Drawing.Point(20, 113);
             this.mtxCodigoBarras.Margin = new System.Windows.Forms.Padding(4);
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
+            this.mtxCodigoBarras.OnlyNumbers = true;
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(8, 10, 8, 10);
             this.mtxCodigoBarras.PlaceholderColor = System.Drawing.Color.Gray;
             this.mtxCodigoBarras.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

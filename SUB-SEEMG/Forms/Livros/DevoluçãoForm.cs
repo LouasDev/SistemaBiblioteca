@@ -412,6 +412,18 @@ namespace SUB.Forms.Livros
             ProcessarCliqueBotaoFicha(e);
         }
 
+        private void dgvEmprestimos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0)
+                return;
+
+            dgvEmprestimos.ClearSelection();
+            dgvEmprestimos.Rows[e.RowIndex].Selected = true;
+
+            if (e.ColumnIndex >= 0)
+                dgvEmprestimos.CurrentCell = dgvEmprestimos.Rows[e.RowIndex].Cells[e.ColumnIndex];
+        }
+
         private void dgvEmprestimos_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             DesenharBotaoFicha(e);
@@ -628,6 +640,9 @@ namespace SUB.Forms.Livros
 
         private void AdicionarColuna(DefinicaoColuna def)
         {
+            Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
+            Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
+
             var col = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = def.DataProperty,
@@ -640,8 +655,8 @@ namespace SUB.Forms.Livros
                 {
                     Alignment = def.Alignment,
                     WrapMode = DataGridViewTriState.False,
-                    SelectionBackColor = Color.FromArgb(16, 87, 174),
-                    SelectionForeColor = Color.White
+                    SelectionBackColor = corSelecao,
+                    SelectionForeColor = Color.FromArgb(35, 42, 50)
                 }
             };
             dgvEmprestimos.Columns.Add(col);
@@ -674,21 +689,26 @@ namespace SUB.Forms.Livros
 
         private void ConfigurarEstiloCelulas()
         {
+            Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
+            Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
+
             dgvEmprestimos.DefaultCellStyle.BackColor = Color.White;
             dgvEmprestimos.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgvEmprestimos.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
-            dgvEmprestimos.DefaultCellStyle.SelectionBackColor = Color.FromArgb(16, 87, 174);
-            dgvEmprestimos.DefaultCellStyle.SelectionForeColor = Color.White;
+            dgvEmprestimos.DefaultCellStyle.SelectionBackColor = corSelecao;
+            dgvEmprestimos.DefaultCellStyle.SelectionForeColor = Color.FromArgb(35, 42, 50);
             dgvEmprestimos.RowTemplate.Height = 40;
             dgvEmprestimos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
         }
 
         private void ConfigurarEstiloCabecalho()
         {
+            Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
+
             dgvEmprestimos.EnableHeadersVisualStyles = false;
             dgvEmprestimos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 61, 88);
-            dgvEmprestimos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor = corPrimaria;
+            dgvEmprestimos.ColumnHeadersDefaultCellStyle.ForeColor = ThemeManager.GetContrastColor(corPrimaria);
             dgvEmprestimos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10.5f, FontStyle.Bold);
             dgvEmprestimos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgvEmprestimos.ColumnHeadersHeight = 44;
@@ -803,6 +823,9 @@ namespace SUB.Forms.Livros
 
         private void AdicionarBotaoFicha()
         {
+            Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
+            Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
+
             var btnFicha = new DataGridViewButtonColumn
             {
                 Name = "Ficha",
@@ -815,9 +838,9 @@ namespace SUB.Forms.Livros
                 {
                     Alignment = DataGridViewContentAlignment.MiddleCenter,
                     BackColor = Color.White,
-                    ForeColor = Color.FromArgb(16, 87, 174),
-                    SelectionBackColor = Color.FromArgb(16, 87, 174),
-                    SelectionForeColor = Color.White
+                    ForeColor = corPrimaria,
+                    SelectionBackColor = corSelecao,
+                    SelectionForeColor = Color.FromArgb(35, 42, 50)
                 }
             };
 
@@ -861,8 +884,8 @@ namespace SUB.Forms.Livros
 
             e.PaintBackground(e.CellBounds, true);
 
-            Color corFundo = Color.FromArgb(30, 61, 88);
-            Color corTexto = Color.White;
+            Color corFundo = dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor;
+            Color corTexto = dgvEmprestimos.ColumnHeadersDefaultCellStyle.ForeColor;
             int borderRadius = 8;
 
             Rectangle rect = new Rectangle(

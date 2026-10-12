@@ -249,11 +249,116 @@ namespace SUB.Forms.Login
                 return;
             }
 
+            int idBibliotecaria;
+            if (!ConfirmarEmailRecuperacao(out idBibliotecaria))
+                return;
+
             if (!ConfirmarCodigoRecuperacao(configuracao))
                 return;
 
-            if (DefinirNovaSenha())
+            if (DefinirNovaSenha(idBibliotecaria))
                 MostrarStatusLogin("Senha atualizada. Você já pode entrar com a nova senha.", true);
+        }
+
+        private bool ConfirmarEmailRecuperacao(out int idBibliotecaria)
+        {
+            idBibliotecaria = 0;
+            bool confirmado = false;
+            int idConfirmado = 0;
+
+            using (var dialogo = CriarDialogoRecuperacao("Recuperar acesso", new Size(440, 260)))
+            using (var email = new TextBox
+            {
+                AutoSize = false,
+                Font = new Font("Segoe UI", 10.5F),
+                Location = new Point(30, 100),
+                Size = new Size(380, 34)
+            })
+            using (var erro = CriarLabelErro(new Point(30, 143), new Size(380, 38)))
+            using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 208), new Size(96, 36)))
+            using (var continuar = CriarBotaoPrimario("Continuar", new Point(306, 208), new Size(104, 36)))
+            {
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(23, 36, 52),
+                    Location = new Point(27, 20),
+                    Text = "Recuperar acesso"
+                });
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI", 9.5F),
+                    ForeColor = Color.FromArgb(91, 104, 120),
+                    Location = new Point(30, 60),
+                    Text = "Informe o e-mail usado para entrar no SUB."
+                });
+                dialogo.Controls.Add(new Label
+                {
+                    AutoSize = true,
+                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(43, 55, 69),
+                    Location = new Point(30, 82),
+                    Text = "E-mail de acesso"
+                });
+                dialogo.Controls.Add(email);
+                dialogo.Controls.Add(erro);
+                dialogo.Controls.Add(cancelar);
+                dialogo.Controls.Add(continuar);
+
+                email.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                cancelar.Click += (s, e) => dialogo.Close();
+                continuar.Click += (s, e) =>
+                {
+                    string emailInformado = (email.Text ?? string.Empty).Trim().ToLowerInvariant();
+                    if (!Regex.IsMatch(emailInformado, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        erro.Text = "Informe um e-mail válido.";
+                        erro.Visible = true;
+                        email.Focus();
+                        return;
+                    }
+
+                    try
+                    {
+                        using (var conexao = Conexao.ObterConexao())
+                        using (var comando = new SqlCeCommand(
+                            "SELECT TOP (1) Id FROM usuarios WHERE Email = @Email AND TipoUsuario = 'Bibliotecário(a)'", conexao))
+                        {
+                            comando.Parameters.AddWithValue("@Email", emailInformado);
+                            conexao.Open();
+                            object resultado = comando.ExecuteScalar();
+                            if (resultado == null || resultado == DBNull.Value)
+                            {
+                                erro.Text = "Não há uma conta de bibliotecária com este e-mail.";
+                                erro.Visible = true;
+                                email.Focus();
+                                email.SelectAll();
+                                return;
+                            }
+
+                            idConfirmado = Convert.ToInt32(resultado);
+                            confirmado = true;
+                            dialogo.DialogResult = DialogResult.OK;
+                            dialogo.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        erro.Text = "Não foi possível verificar o e-mail. " + ex.Message;
+                        erro.Visible = true;
+                    }
+                };
+
+                dialogo.AcceptButton = continuar;
+                dialogo.CancelButton = cancelar;
+                dialogo.Shown += (s, e) => email.Focus();
+                dialogo.ShowDialog(this);
+            }
+
+            idBibliotecaria = idConfirmado;
+            return confirmado;
         }
 
         private bool ConfirmarCodigoRecuperacao(InstituicaoConfiguracao configuracao)
@@ -338,7 +443,7 @@ namespace SUB.Forms.Login
             return confirmado;
         }
 
-        private bool DefinirNovaSenha()
+        private bool DefinirNovaSenha(int idBibliotecaria)
         {
             bool atualizada = false;
 
@@ -461,9 +566,10 @@ namespace SUB.Forms.Login
                             {
                                 comando.CommandText = @"UPDATE usuarios
 SET Senha_Hash = @Hash, Senha_Salt = @Salt
-WHERE Id = (SELECT TOP (1) Id FROM usuarios WHERE TipoUsuario = 'Bibliotecário(a)' ORDER BY Id)";
+WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                                 comando.Parameters.AddWithValue("@Hash", hash);
                                 comando.Parameters.AddWithValue("@Salt", salt);
+                                comando.Parameters.AddWithValue("@Id", idBibliotecaria);
                                 if (comando.ExecuteNonQuery() == 0)
                                     throw new InvalidOperationException("Não foi encontrada uma conta de bibliotecária para redefinir.");
                             }

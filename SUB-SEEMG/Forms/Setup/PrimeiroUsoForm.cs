@@ -1,6 +1,7 @@
 using SUB.Models;
 using SUB.Utils;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Drawing;
@@ -23,6 +24,7 @@ namespace SUB.Forms.Setup
         private string _caminhoCodigoMestre;
         private int _etapaAtual = 1;
         private bool _concluindo;
+        private readonly List<string> _turmasIniciais = new List<string>();
 
         public PrimeiroUsoForm()
         {
@@ -93,22 +95,32 @@ namespace SUB.Forms.Setup
             _visualizadorCor.BackColor = primaria;
             lblEtapaAtual.ForeColor = primaria;
             btnAvancar.BaseColor = primaria;
+            btnAvancarEtapa2.BaseColor = primaria;
             btnVoltar.ForeColor = primaria;
+            btnVoltarEtapa3.ForeColor = primaria;
             btnVoltar.FlatAppearance.MouseOverBackColor = tema.AccentColor;
             btnVoltar.FlatAppearance.MouseDownBackColor = ThemeManager.Lighten(primaria, 0.86f);
             exportarCodigo.ForeColor = primaria;
             exportarCodigo.FlatAppearance.BorderColor = primaria;
             exportarCodigo.FlatAppearance.MouseOverBackColor = tema.AccentColor;
             exportarCodigo.FlatAppearance.MouseDownBackColor = ThemeManager.Lighten(primaria, 0.86f);
+            btnAdicionarTurma.BackColor = primaria;
+            btnAdicionarTurma.ForeColor = ThemeManager.GetContrastColor(primaria);
+            btnAdicionarTurma.FlatAppearance.BorderColor = ThemeManager.Darken(primaria, 0.12f);
+            btnRemoverTurma.BackColor = Color.White;
+            btnRemoverTurma.ForeColor = ThemeManager.GetLabelColor(primaria);
+            btnRemoverTurma.FlatAppearance.BorderColor = ThemeManager.Lighten(primaria, 0.55f);
+            lstTurmasIniciais.BackColor = Color.White;
+            lstTurmasIniciais.ForeColor = Color.FromArgb(29, 39, 53);
 
             RoundedTextBox[] campos =
             {
                 _nomeInstituicao,
                 _nomeBibliotecaria,
                 _emailBibliotecaria,
-                _telefoneBibliotecaria,
                 _senhaBibliotecaria,
-                _confirmarSenhaBibliotecaria
+                _confirmarSenhaBibliotecaria,
+                txtNovaTurma
             };
 
             foreach (RoundedTextBox campo in campos)
@@ -118,6 +130,12 @@ namespace SUB.Forms.Setup
                 campo.HoverBackColor = hover;
                 campo.Invalidate();
             }
+
+            _telefoneBibliotecaria.BorderColor = borda;
+            _telefoneBibliotecaria.BorderFocusColor = primaria;
+            _telefoneBibliotecaria.HoverBackColor = hover;
+            _telefoneBibliotecaria.HoverBorderColor = primaria;
+            _telefoneBibliotecaria.Invalidate();
 
             _tema.BorderColor = primaria;
             _tema.Invalidate();
@@ -129,22 +147,26 @@ namespace SUB.Forms.Setup
         private void MostrarEtapa(int etapa)
         {
             _etapaAtual = etapa;
-            bool primeira = etapa == 1;
-            pnlEtapa1.Visible = primeira;
-            pnlEtapa2.Visible = !primeira;
-            pnlEtapa1.BringToFront();
-            if (!primeira)
-                pnlEtapa2.BringToFront();
+            pnlEtapa1.Visible = etapa == 1;
+            pnlEtapa2.Visible = etapa == 2;
+            pnlEtapa3.Visible = etapa == 3;
 
-            lblEtapaAtual.Text = primeira ? "Etapa 1 de 2" : "Etapa 2 de 2";
-            AcceptButton = primeira ? (IButtonControl)btnAvancar : salvar;
+            if (etapa == 1) pnlEtapa1.BringToFront();
+            else if (etapa == 2) pnlEtapa2.BringToFront();
+            else pnlEtapa3.BringToFront();
+
+            lblEtapaAtual.Text = "Etapa " + etapa + " de 3";
+            AcceptButton = etapa == 1 ? (IButtonControl)btnAvancar :
+                etapa == 2 ? (IButtonControl)btnAvancarEtapa2 : salvar;
             AtualizarIndicadorEtapa();
             OcultarErroGeral();
 
-            if (primeira)
+            if (etapa == 1)
                 _nomeInstituicao.Focus();
-            else
+            else if (etapa == 2)
                 _nomeBibliotecaria.Focus();
+            else
+                txtNovaTurma.Focus();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -166,7 +188,7 @@ namespace SUB.Forms.Setup
                     return true;
                 }
             }
-            else
+            else if (_etapaAtual == 2)
             {
                 if (_nomeBibliotecaria.ContainsFocus)
                 {
@@ -194,9 +216,14 @@ namespace SUB.Forms.Setup
 
                 if (_confirmarSenhaBibliotecaria.ContainsFocus)
                 {
-                    exportarCodigo.Focus();
+                    btnAvancarEtapa2.Focus();
                     return true;
                 }
+            }
+            else if (_etapaAtual == 3 && txtNovaTurma.ContainsFocus)
+            {
+                btnAdicionarTurma.PerformClick();
+                return true;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -206,18 +233,26 @@ namespace SUB.Forms.Setup
         {
             Color primaria = TemaSelecionado.PrimaryColor;
             indicadorEtapa1.BackColor = primaria;
-            indicadorEtapa2.BackColor = _etapaAtual == 2 ? primaria : Color.FromArgb(222, 227, 234);
+            indicadorEtapa2.BackColor = _etapaAtual >= 2 ? primaria : Color.FromArgb(222, 227, 234);
+            indicadorEtapa3.BackColor = _etapaAtual >= 3 ? primaria : Color.FromArgb(222, 227, 234);
 
             bool primeiraEtapa = _etapaAtual == 1;
+            bool segundaEtapa = _etapaAtual == 2;
+            bool terceiraEtapa = _etapaAtual == 3;
             lblPasso1Numero.BackColor = primeiraEtapa ? Color.White : ThemeManager.Lighten(primaria, 0.34f);
-            lblPasso2Numero.BackColor = primeiraEtapa ? ThemeManager.Lighten(primaria, 0.34f) : Color.White;
+            lblPasso2Numero.BackColor = segundaEtapa ? Color.White : ThemeManager.Lighten(primaria, 0.34f);
+            lblPasso3Numero.BackColor = terceiraEtapa ? Color.White : ThemeManager.Lighten(primaria, 0.34f);
             lblPasso1Numero.ForeColor = primeiraEtapa ? primaria : Color.White;
-            lblPasso2Numero.ForeColor = primeiraEtapa ? Color.White : primaria;
+            lblPasso2Numero.ForeColor = segundaEtapa ? primaria : Color.White;
+            lblPasso3Numero.ForeColor = terceiraEtapa ? primaria : Color.White;
             lblPasso1Texto.Font = new Font("Segoe UI", 10F,
                 primeiraEtapa ? FontStyle.Bold : FontStyle.Regular);
             lblPasso2Texto.Font = new Font("Segoe UI", 10F,
-                primeiraEtapa ? FontStyle.Regular : FontStyle.Bold);
+                segundaEtapa ? FontStyle.Bold : FontStyle.Regular);
+            lblPasso3Texto.Font = new Font("Segoe UI", 10F,
+                terceiraEtapa ? FontStyle.Bold : FontStyle.Regular);
             linhaRoteiro.BackColor = ThemeManager.Lighten(primaria, 0.42f);
+            linhaRoteiro2.BackColor = ThemeManager.Lighten(primaria, 0.42f);
         }
 
         private void btnAvancar_Click(object sender, EventArgs e)
@@ -228,9 +263,83 @@ namespace SUB.Forms.Setup
             MostrarEtapa(2);
         }
 
+        private void btnAvancarEtapa2_Click(object sender, EventArgs e)
+        {
+            if (!ValidarEtapa2())
+                return;
+
+            MostrarEtapa(3);
+        }
+
         private void btnVoltar_Click(object sender, EventArgs e)
         {
             MostrarEtapa(1);
+        }
+
+        private void btnVoltarEtapa3_Click(object sender, EventArgs e)
+        {
+            MostrarEtapa(2);
+        }
+
+        private void btnAdicionarTurma_Click(object sender, EventArgs e)
+        {
+            string turma = (txtNovaTurma.Text ?? string.Empty).Trim().ToUpperInvariant();
+            if (string.IsNullOrWhiteSpace(turma))
+            {
+                ExibirErro(lblErroTurmas, "Digite o nome da turma antes de adicionar.");
+                txtNovaTurma.Focus();
+                return;
+            }
+
+            if (_turmasIniciais.Contains(turma, StringComparer.OrdinalIgnoreCase))
+            {
+                ExibirErro(lblErroTurmas, "Esta turma já foi adicionada.");
+                txtNovaTurma.SelectAll();
+                txtNovaTurma.Focus();
+                return;
+            }
+
+            _turmasIniciais.Add(turma);
+            txtNovaTurma.Text = string.Empty;
+            AtualizarListaTurmasIniciais();
+            ExibirErro(lblErroTurmas, null);
+            AtualizarEstadoConclusao();
+            txtNovaTurma.Focus();
+        }
+
+        private void btnRemoverTurma_Click(object sender, EventArgs e)
+        {
+            string turma = lstTurmasIniciais.SelectedItem as string;
+            if (string.IsNullOrWhiteSpace(turma))
+                return;
+
+            _turmasIniciais.RemoveAll(item => string.Equals(item, turma, StringComparison.OrdinalIgnoreCase));
+            AtualizarListaTurmasIniciais();
+            AtualizarEstadoConclusao();
+        }
+
+        private void txtNovaTurma_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                btnAdicionarTurma.PerformClick();
+            }
+        }
+
+        private void lstTurmasIniciais_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnRemoverTurma.Enabled = lstTurmasIniciais.SelectedIndex >= 0;
+        }
+
+        private void AtualizarListaTurmasIniciais()
+        {
+            lstTurmasIniciais.BeginUpdate();
+            lstTurmasIniciais.Items.Clear();
+            foreach (string turma in _turmasIniciais.OrderBy(item => item, StringComparer.CurrentCultureIgnoreCase))
+                lstTurmasIniciais.Items.Add(turma);
+            lstTurmasIniciais.EndUpdate();
+            btnRemoverTurma.Enabled = false;
         }
 
         private void chkMostrarSenhas_CheckedChanged(object sender, EventArgs e)
@@ -287,6 +396,21 @@ namespace SUB.Forms.Setup
             else if (erroTelefone != null) _telefoneBibliotecaria.Focus();
             else if (erroSenha != null) _senhaBibliotecaria.Focus();
             else _confirmarSenhaBibliotecaria.Focus();
+            return false;
+        }
+
+        private bool ValidarEtapa3()
+        {
+            string erro = _turmasIniciais.Count == 0
+                ? "Adicione ao menos uma turma para concluir a configuração."
+                : null;
+            ExibirErro(lblErroTurmas, erro);
+
+            if (erro == null)
+                return true;
+
+            ExibirErroGeral("Cadastre pelo menos uma turma da instituição antes de concluir.");
+            txtNovaTurma.Focus();
             return false;
         }
 
@@ -416,7 +540,7 @@ namespace SUB.Forms.Setup
         private void AtualizarEstadoConclusao()
         {
             bool codigoDisponivel = !string.IsNullOrWhiteSpace(_caminhoCodigoMestre) && File.Exists(_caminhoCodigoMestre);
-            salvar.Enabled = codigoDisponivel && !_concluindo;
+            salvar.Enabled = codigoDisponivel && _turmasIniciais.Count > 0 && !_concluindo;
             salvar.BaseColor = salvar.Enabled ? TemaSelecionado.PrimaryColor : Color.FromArgb(130, 139, 150);
             salvar.Cursor = salvar.Enabled ? Cursors.Hand : Cursors.Default;
             salvar.Invalidate();
@@ -445,6 +569,9 @@ namespace SUB.Forms.Setup
             }
 
             if (!ValidarEtapa2())
+                return;
+
+            if (!ValidarEtapa3())
                 return;
 
             ConcluirConfiguracao();
@@ -515,6 +642,17 @@ VALUES
                     inserir.Parameters.AddWithValue("@Telefone", _telefoneBibliotecaria.Text.Trim());
                     inserir.Parameters.AddWithValue("@TipoUsuario", "Bibliotecário(a)");
                     inserir.ExecuteNonQuery();
+                }
+
+                foreach (string turma in _turmasIniciais)
+                {
+                    using (SqlCeCommand inserirTurma = conexao.CreateCommand())
+                    {
+                        inserirTurma.Transaction = transacao;
+                        inserirTurma.CommandText = "INSERT INTO Turmas (Nome) VALUES (@Nome)";
+                        inserirTurma.Parameters.AddWithValue("@Nome", turma);
+                        inserirTurma.ExecuteNonQuery();
+                    }
                 }
 
                 InstituicaoConfiguracaoStore.Salvar(new InstituicaoConfiguracao
@@ -663,6 +801,11 @@ VALUES
             DialogResult confirma = MessageBox.Show(this, mensagem, titulo, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirma == DialogResult.Yes)
                 Application.Exit();
+        }
+
+        private void pnlInstitucional_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

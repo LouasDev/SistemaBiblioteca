@@ -362,7 +362,8 @@ namespace SUB.Utils
         {
             Color surface = Color.FromArgb(250, 251, 253);
             Color alternateSurface = Lighten(primaryColor, 0.91f);
-            Color selected = Darken(primaryColor, 0.08f);
+            Color selected = Lighten(primaryColor, 0.88f);
+            Color selectedText = Color.FromArgb(35, 42, 50);
             Color contrast = GetContrastColor(primaryColor);
 
             grid.EnableHeadersVisualStyles = false;
@@ -371,7 +372,7 @@ namespace SUB.Utils
             grid.DefaultCellStyle.BackColor = surface;
             grid.DefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
             grid.DefaultCellStyle.SelectionBackColor = selected;
-            grid.DefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
+            grid.DefaultCellStyle.SelectionForeColor = selectedText;
             grid.AlternatingRowsDefaultCellStyle.BackColor = alternateSurface;
             grid.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
             grid.ColumnHeadersDefaultCellStyle.BackColor = primaryColor;
@@ -381,7 +382,7 @@ namespace SUB.Utils
             grid.RowHeadersDefaultCellStyle.BackColor = Lighten(primaryColor, 0.82f);
             grid.RowHeadersDefaultCellStyle.ForeColor = Color.FromArgb(35, 42, 50);
             grid.RowHeadersDefaultCellStyle.SelectionBackColor = selected;
-            grid.RowHeadersDefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
+            grid.RowHeadersDefaultCellStyle.SelectionForeColor = selectedText;
 
             foreach (DataGridViewColumn column in grid.Columns)
             {
@@ -397,7 +398,7 @@ namespace SUB.Utils
                 if (!column.DefaultCellStyle.SelectionBackColor.IsEmpty)
                     column.DefaultCellStyle.SelectionBackColor = selected;
                 if (!column.DefaultCellStyle.SelectionForeColor.IsEmpty)
-                    column.DefaultCellStyle.SelectionForeColor = GetContrastColor(selected);
+                    column.DefaultCellStyle.SelectionForeColor = selectedText;
             }
         }
 

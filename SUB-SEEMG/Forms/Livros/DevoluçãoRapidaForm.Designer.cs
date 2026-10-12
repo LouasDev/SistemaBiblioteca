@@ -82,6 +82,7 @@
             this.numQuantidadeDevolvidos.HoverBackColor = System.Drawing.Color.LightGray;
             this.numQuantidadeDevolvidos.Location = new System.Drawing.Point(46, 486);
             this.numQuantidadeDevolvidos.Name = "numQuantidadeDevolvidos";
+            this.numQuantidadeDevolvidos.OnlyNumbers = true;
             this.numQuantidadeDevolvidos.Padding = new System.Windows.Forms.Padding(7);
             this.numQuantidadeDevolvidos.PlaceholderColor = System.Drawing.Color.Gray;
             this.numQuantidadeDevolvidos.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -270,6 +271,7 @@
             this.numQuantidadeEmprestado.HoverBackColor = System.Drawing.Color.LightGray;
             this.numQuantidadeEmprestado.Location = new System.Drawing.Point(364, 250);
             this.numQuantidadeEmprestado.Name = "numQuantidadeEmprestado";
+            this.numQuantidadeEmprestado.OnlyNumbers = true;
             this.numQuantidadeEmprestado.Padding = new System.Windows.Forms.Padding(7);
             this.numQuantidadeEmprestado.PlaceholderColor = System.Drawing.Color.Gray;
             this.numQuantidadeEmprestado.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

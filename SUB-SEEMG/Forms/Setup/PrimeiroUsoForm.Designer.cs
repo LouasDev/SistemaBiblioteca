@@ -18,6 +18,8 @@ namespace SUB.Forms.Setup
         private System.Windows.Forms.Panel linhaRoteiro;
         private System.Windows.Forms.Label lblPasso2Numero;
         private System.Windows.Forms.Label lblPasso2Texto;
+        private System.Windows.Forms.Label lblPasso3Numero;
+        private System.Windows.Forms.Label lblPasso3Texto;
         private System.Windows.Forms.Label lblIniciativa;
         private System.Windows.Forms.Panel linhaInstitucional;
         private System.Windows.Forms.Panel pnlConteudo;
@@ -47,7 +49,7 @@ namespace SUB.Forms.Setup
         private System.Windows.Forms.Label lblAuxiliarEmail;
         private System.Windows.Forms.Label lblErroEmailBibliotecaria;
         private System.Windows.Forms.Label lblTelefoneBibliotecaria;
-        private RoundedTextBox _telefoneBibliotecaria;
+        private RoundedMaskedTextBox _telefoneBibliotecaria;
         private System.Windows.Forms.Label lblErroTelefoneBibliotecaria;
         private System.Windows.Forms.Label lblSenhaBibliotecaria;
         private RoundedTextBox _senhaBibliotecaria;
@@ -63,7 +65,17 @@ namespace SUB.Forms.Setup
         private System.Windows.Forms.Button exportarCodigo;
         private System.Windows.Forms.Label statusCodigo;
         private System.Windows.Forms.Button btnVoltar;
+        private CustomButton btnAvancarEtapa2;
         private CustomButton salvar;
+        private System.Windows.Forms.Panel pnlEtapa3;
+        private System.Windows.Forms.Label lblTituloEtapa3;
+        private System.Windows.Forms.Label lblTurmasIniciais;
+        private RoundedTextBox txtNovaTurma;
+        private System.Windows.Forms.Button btnAdicionarTurma;
+        private System.Windows.Forms.ListBox lstTurmasIniciais;
+        private System.Windows.Forms.Button btnRemoverTurma;
+        private System.Windows.Forms.Label lblErroTurmas;
+        private System.Windows.Forms.Button btnVoltarEtapa3;
 
         protected override void Dispose(bool disposing)
         {
@@ -76,6 +88,7 @@ namespace SUB.Forms.Setup
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PrimeiroUsoForm));
             this.pnlInstitucional = new SUB.ElementosPersonalizados.GradientPanel();
+            this.linhaRoteiro2 = new System.Windows.Forms.Panel();
             this.pnlLogo = new System.Windows.Forms.Panel();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.lblSub = new System.Windows.Forms.Label();
@@ -88,11 +101,15 @@ namespace SUB.Forms.Setup
             this.linhaRoteiro = new System.Windows.Forms.Panel();
             this.lblPasso2Numero = new System.Windows.Forms.Label();
             this.lblPasso2Texto = new System.Windows.Forms.Label();
+            this.lblPasso3Numero = new System.Windows.Forms.Label();
+            this.lblPasso3Texto = new System.Windows.Forms.Label();
             this.linhaInstitucional = new System.Windows.Forms.Panel();
             this.lblIniciativa = new System.Windows.Forms.Label();
             this.gradientPanel1 = new SUB.ElementosPersonalizados.GradientPanel();
+            this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
             this.btnFechar = new System.Windows.Forms.PictureBox();
             this.pnlConteudo = new System.Windows.Forms.Panel();
+            this.indicadorEtapa3 = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.lblEtapaAtual = new System.Windows.Forms.Label();
@@ -119,7 +136,7 @@ namespace SUB.Forms.Setup
             this.lblAuxiliarEmail = new System.Windows.Forms.Label();
             this.lblErroEmailBibliotecaria = new System.Windows.Forms.Label();
             this.lblTelefoneBibliotecaria = new System.Windows.Forms.Label();
-            this._telefoneBibliotecaria = new RoundedTextBox();
+            this._telefoneBibliotecaria = new RoundedMaskedTextBox();
             this.lblErroTelefoneBibliotecaria = new System.Windows.Forms.Label();
             this.lblSenhaBibliotecaria = new System.Windows.Forms.Label();
             this._senhaBibliotecaria = new RoundedTextBox();
@@ -135,8 +152,17 @@ namespace SUB.Forms.Setup
             this.exportarCodigo = new System.Windows.Forms.Button();
             this.statusCodigo = new System.Windows.Forms.Label();
             this.btnVoltar = new System.Windows.Forms.Button();
+            this.btnAvancarEtapa2 = new CustomButton();
+            this.pnlEtapa3 = new System.Windows.Forms.Panel();
+            this.lblTituloEtapa3 = new System.Windows.Forms.Label();
+            this.lblTurmasIniciais = new System.Windows.Forms.Label();
+            this.txtNovaTurma = new RoundedTextBox();
+            this.btnAdicionarTurma = new System.Windows.Forms.Button();
+            this.lstTurmasIniciais = new System.Windows.Forms.ListBox();
+            this.btnRemoverTurma = new System.Windows.Forms.Button();
+            this.lblErroTurmas = new System.Windows.Forms.Label();
+            this.btnVoltarEtapa3 = new System.Windows.Forms.Button();
             this.salvar = new CustomButton();
-            this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
             this.pnlInstitucional.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
@@ -145,11 +171,13 @@ namespace SUB.Forms.Setup
             this.pnlEtapa1.SuspendLayout();
             this.pnlEtapa2.SuspendLayout();
             this.pnlCodigoRecuperacao.SuspendLayout();
+            this.pnlEtapa3.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlInstitucional
             // 
             this.pnlInstitucional.BorderRadius = 0;
+            this.pnlInstitucional.Controls.Add(this.linhaRoteiro2);
             this.pnlInstitucional.Controls.Add(this.pnlLogo);
             this.pnlInstitucional.Controls.Add(this.lblSub);
             this.pnlInstitucional.Controls.Add(this.lblNomeSistema);
@@ -161,6 +189,8 @@ namespace SUB.Forms.Setup
             this.pnlInstitucional.Controls.Add(this.linhaRoteiro);
             this.pnlInstitucional.Controls.Add(this.lblPasso2Numero);
             this.pnlInstitucional.Controls.Add(this.lblPasso2Texto);
+            this.pnlInstitucional.Controls.Add(this.lblPasso3Numero);
+            this.pnlInstitucional.Controls.Add(this.lblPasso3Texto);
             this.pnlInstitucional.Controls.Add(this.linhaInstitucional);
             this.pnlInstitucional.Controls.Add(this.lblIniciativa);
             this.pnlInstitucional.Controls.Add(this.gradientPanel1);
@@ -172,6 +202,15 @@ namespace SUB.Forms.Setup
             this.pnlInstitucional.Name = "pnlInstitucional";
             this.pnlInstitucional.Size = new System.Drawing.Size(365, 750);
             this.pnlInstitucional.TabIndex = 2;
+            this.pnlInstitucional.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlInstitucional_Paint);
+            // 
+            // linhaRoteiro2
+            // 
+            this.linhaRoteiro2.BackColor = System.Drawing.Color.White;
+            this.linhaRoteiro2.Location = new System.Drawing.Point(53, 512);
+            this.linhaRoteiro2.Name = "linhaRoteiro2";
+            this.linhaRoteiro2.Size = new System.Drawing.Size(2, 48);
+            this.linhaRoteiro2.TabIndex = 9;
             // 
             // pnlLogo
             // 
@@ -307,10 +346,33 @@ namespace SUB.Forms.Setup
             this.lblPasso2Texto.Text = "Acesso da primeira bibliotecária";
             this.lblPasso2Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lblPasso3Numero
+            // 
+            this.lblPasso3Numero.BackColor = System.Drawing.Color.White;
+            this.lblPasso3Numero.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblPasso3Numero.Location = new System.Drawing.Point(40, 560);
+            this.lblPasso3Numero.Name = "lblPasso3Numero";
+            this.lblPasso3Numero.Size = new System.Drawing.Size(28, 28);
+            this.lblPasso3Numero.TabIndex = 11;
+            this.lblPasso3Numero.Text = "3";
+            this.lblPasso3Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblPasso3Texto
+            // 
+            this.lblPasso3Texto.BackColor = System.Drawing.Color.Transparent;
+            this.lblPasso3Texto.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblPasso3Texto.ForeColor = System.Drawing.Color.White;
+            this.lblPasso3Texto.Location = new System.Drawing.Point(82, 557);
+            this.lblPasso3Texto.Name = "lblPasso3Texto";
+            this.lblPasso3Texto.Size = new System.Drawing.Size(263, 34);
+            this.lblPasso3Texto.TabIndex = 12;
+            this.lblPasso3Texto.Text = "Turmas da instituição";
+            this.lblPasso3Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // linhaInstitucional
             // 
             this.linhaInstitucional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.linhaInstitucional.Location = new System.Drawing.Point(54, 631);
+            this.linhaInstitucional.Location = new System.Drawing.Point(54, 651);
             this.linhaInstitucional.Name = "linhaInstitucional";
             this.linhaInstitucional.Size = new System.Drawing.Size(256, 1);
             this.linhaInstitucional.TabIndex = 5;
@@ -320,7 +382,7 @@ namespace SUB.Forms.Setup
             this.lblIniciativa.BackColor = System.Drawing.Color.Transparent;
             this.lblIniciativa.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.lblIniciativa.ForeColor = System.Drawing.Color.White;
-            this.lblIniciativa.Location = new System.Drawing.Point(42, 646);
+            this.lblIniciativa.Location = new System.Drawing.Point(42, 666);
             this.lblIniciativa.Name = "lblIniciativa";
             this.lblIniciativa.Size = new System.Drawing.Size(280, 30);
             this.lblIniciativa.TabIndex = 6;
@@ -339,6 +401,18 @@ namespace SUB.Forms.Setup
             this.gradientPanel1.TabIndex = 7;
             this.gradientPanel1.Visible = false;
             // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BackColor = System.Drawing.Color.White;
+            this.gradientPanel2.BorderRadius = 0;
+            this.gradientPanel2.Gradientebottom = System.Drawing.Color.Transparent;
+            this.gradientPanel2.Gradientetop = System.Drawing.Color.Transparent;
+            this.gradientPanel2.Location = new System.Drawing.Point(37, 37);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(90, 90);
+            this.gradientPanel2.TabIndex = 11;
+            this.gradientPanel2.Visible = false;
+            // 
             // btnFechar
             // 
             this.btnFechar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -355,6 +429,7 @@ namespace SUB.Forms.Setup
             // pnlConteudo
             // 
             this.pnlConteudo.BackColor = System.Drawing.Color.White;
+            this.pnlConteudo.Controls.Add(this.indicadorEtapa3);
             this.pnlConteudo.Controls.Add(this.lblTitulo);
             this.pnlConteudo.Controls.Add(this.lblSubtitulo);
             this.pnlConteudo.Controls.Add(this.lblEtapaAtual);
@@ -363,10 +438,19 @@ namespace SUB.Forms.Setup
             this.pnlConteudo.Controls.Add(this.lblErroGeral);
             this.pnlConteudo.Controls.Add(this.pnlEtapa1);
             this.pnlConteudo.Controls.Add(this.pnlEtapa2);
+            this.pnlConteudo.Controls.Add(this.pnlEtapa3);
             this.pnlConteudo.Location = new System.Drawing.Point(397, 27);
             this.pnlConteudo.Name = "pnlConteudo";
             this.pnlConteudo.Size = new System.Drawing.Size(574, 696);
             this.pnlConteudo.TabIndex = 1;
+            // 
+            // indicadorEtapa3
+            // 
+            this.indicadorEtapa3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(227)))), ((int)(((byte)(234)))));
+            this.indicadorEtapa3.Location = new System.Drawing.Point(371, 108);
+            this.indicadorEtapa3.Name = "indicadorEtapa3";
+            this.indicadorEtapa3.Size = new System.Drawing.Size(160, 5);
+            this.indicadorEtapa3.TabIndex = 5;
             // 
             // lblTitulo
             // 
@@ -397,22 +481,22 @@ namespace SUB.Forms.Setup
             this.lblEtapaAtual.Name = "lblEtapaAtual";
             this.lblEtapaAtual.Size = new System.Drawing.Size(112, 22);
             this.lblEtapaAtual.TabIndex = 2;
-            this.lblEtapaAtual.Text = "Etapa 1 de 2";
+            this.lblEtapaAtual.Text = "Etapa 1 de 3";
             this.lblEtapaAtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // indicadorEtapa1
             // 
             this.indicadorEtapa1.Location = new System.Drawing.Point(42, 108);
             this.indicadorEtapa1.Name = "indicadorEtapa1";
-            this.indicadorEtapa1.Size = new System.Drawing.Size(238, 5);
+            this.indicadorEtapa1.Size = new System.Drawing.Size(160, 5);
             this.indicadorEtapa1.TabIndex = 3;
             // 
             // indicadorEtapa2
             // 
             this.indicadorEtapa2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(227)))), ((int)(((byte)(234)))));
-            this.indicadorEtapa2.Location = new System.Drawing.Point(286, 108);
+            this.indicadorEtapa2.Location = new System.Drawing.Point(207, 108);
             this.indicadorEtapa2.Name = "indicadorEtapa2";
-            this.indicadorEtapa2.Size = new System.Drawing.Size(247, 5);
+            this.indicadorEtapa2.Size = new System.Drawing.Size(160, 5);
             this.indicadorEtapa2.TabIndex = 4;
             // 
             // lblErroGeral
@@ -597,7 +681,7 @@ namespace SUB.Forms.Setup
             this.pnlEtapa2.Controls.Add(this.chkMostrarSenhas);
             this.pnlEtapa2.Controls.Add(this.pnlCodigoRecuperacao);
             this.pnlEtapa2.Controls.Add(this.btnVoltar);
-            this.pnlEtapa2.Controls.Add(this.salvar);
+            this.pnlEtapa2.Controls.Add(this.btnAvancarEtapa2);
             this.pnlEtapa2.Location = new System.Drawing.Point(42, 153);
             this.pnlEtapa2.Name = "pnlEtapa2";
             this.pnlEtapa2.Size = new System.Drawing.Size(491, 517);
@@ -621,7 +705,7 @@ namespace SUB.Forms.Setup
             this.lblNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblNomeBibliotecaria.Location = new System.Drawing.Point(0, 35);
             this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
-            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(190, 15);
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(186, 15);
             this.lblNomeBibliotecaria.TabIndex = 1;
             this.lblNomeBibliotecaria.Text = "Nome completo da bibliotecária *";
             // 
@@ -731,28 +815,22 @@ namespace SUB.Forms.Setup
             // 
             // _telefoneBibliotecaria
             // 
-            this._telefoneBibliotecaria.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this._telefoneBibliotecaria.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this._telefoneBibliotecaria.BackColor = System.Drawing.Color.White;
             this._telefoneBibliotecaria.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(174)))), ((int)(((byte)(188)))), ((int)(((byte)(204)))));
             this._telefoneBibliotecaria.BorderFocusColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this._telefoneBibliotecaria.BorderRadius = 8;
-            this._telefoneBibliotecaria.BorderThickness = 1;
+            this._telefoneBibliotecaria.Cursor = System.Windows.Forms.Cursors.IBeam;
             this._telefoneBibliotecaria.Font = new System.Drawing.Font("Segoe UI", 10.5F);
             this._telefoneBibliotecaria.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this._telefoneBibliotecaria.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._telefoneBibliotecaria.LeftMargin = 7;
             this._telefoneBibliotecaria.Location = new System.Drawing.Point(3, 210);
+            this._telefoneBibliotecaria.Mask = "(00) 0000-00009";
+            this._telefoneBibliotecaria.MaskTextColor = System.Drawing.Color.Black;
             this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
-            this._telefoneBibliotecaria.PlaceholderColor = System.Drawing.Color.Gray;
-            this._telefoneBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 10.5F);
-            this._telefoneBibliotecaria.PlaceholderMarginLeft = 12;
-            this._telefoneBibliotecaria.PlaceholderText = "(31) 99999-9999";
-            this._telefoneBibliotecaria.SelectedText = "";
-            this._telefoneBibliotecaria.SelectionLength = 0;
-            this._telefoneBibliotecaria.SelectionStart = 0;
+            this._telefoneBibliotecaria.Padding = new System.Windows.Forms.Padding(9, 5, 5, 5);
             this._telefoneBibliotecaria.Size = new System.Drawing.Size(485, 34);
             this._telefoneBibliotecaria.TabIndex = 2;
-            this._telefoneBibliotecaria.TextColor = System.Drawing.Color.Black;
-            this._telefoneBibliotecaria.UseSystemPasswordChar = false;
             // 
             // lblErroTelefoneBibliotecaria
             // 
@@ -952,6 +1030,154 @@ namespace SUB.Forms.Setup
             this.btnVoltar.Text = "Voltar";
             this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
             // 
+            // btnAvancarEtapa2
+            // 
+            this.btnAvancarEtapa2.BackgroundColor = System.Drawing.Color.Empty;
+            this.btnAvancarEtapa2.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.btnAvancarEtapa2.BorderColor = System.Drawing.Color.Empty;
+            this.btnAvancarEtapa2.BorderThickness = 0;
+            this.btnAvancarEtapa2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAvancarEtapa2.FlatAppearance.BorderSize = 0;
+            this.btnAvancarEtapa2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnAvancarEtapa2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnAvancarEtapa2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAvancarEtapa2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnAvancarEtapa2.ForeColor = System.Drawing.Color.White;
+            this.btnAvancarEtapa2.HoverColor = System.Drawing.Color.Empty;
+            this.btnAvancarEtapa2.Location = new System.Drawing.Point(288, 477);
+            this.btnAvancarEtapa2.Name = "btnAvancarEtapa2";
+            this.btnAvancarEtapa2.PressedColor = System.Drawing.Color.Empty;
+            this.btnAvancarEtapa2.ShowBorder = false;
+            this.btnAvancarEtapa2.Size = new System.Drawing.Size(200, 40);
+            this.btnAvancarEtapa2.TabIndex = 8;
+            this.btnAvancarEtapa2.Text = "Avançar";
+            this.btnAvancarEtapa2.Click += new System.EventHandler(this.btnAvancarEtapa2_Click);
+            // 
+            // pnlEtapa3
+            // 
+            this.pnlEtapa3.Controls.Add(this.lblTituloEtapa3);
+            this.pnlEtapa3.Controls.Add(this.lblTurmasIniciais);
+            this.pnlEtapa3.Controls.Add(this.txtNovaTurma);
+            this.pnlEtapa3.Controls.Add(this.btnAdicionarTurma);
+            this.pnlEtapa3.Controls.Add(this.lstTurmasIniciais);
+            this.pnlEtapa3.Controls.Add(this.btnRemoverTurma);
+            this.pnlEtapa3.Controls.Add(this.lblErroTurmas);
+            this.pnlEtapa3.Controls.Add(this.btnVoltarEtapa3);
+            this.pnlEtapa3.Controls.Add(this.salvar);
+            this.pnlEtapa3.Location = new System.Drawing.Point(42, 153);
+            this.pnlEtapa3.Name = "pnlEtapa3";
+            this.pnlEtapa3.Size = new System.Drawing.Size(491, 517);
+            this.pnlEtapa3.TabIndex = 8;
+            this.pnlEtapa3.Visible = false;
+            // 
+            // lblTituloEtapa3
+            // 
+            this.lblTituloEtapa3.Font = new System.Drawing.Font("Segoe UI Semibold", 15F, System.Drawing.FontStyle.Bold);
+            this.lblTituloEtapa3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this.lblTituloEtapa3.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloEtapa3.Name = "lblTituloEtapa3";
+            this.lblTituloEtapa3.Size = new System.Drawing.Size(485, 30);
+            this.lblTituloEtapa3.TabIndex = 0;
+            this.lblTituloEtapa3.Text = "Turmas da instituição";
+            // 
+            // lblTurmasIniciais
+            // 
+            this.lblTurmasIniciais.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblTurmasIniciais.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(82)))), ((int)(((byte)(94)))));
+            this.lblTurmasIniciais.Location = new System.Drawing.Point(0, 40);
+            this.lblTurmasIniciais.Name = "lblTurmasIniciais";
+            this.lblTurmasIniciais.Size = new System.Drawing.Size(485, 38);
+            this.lblTurmasIniciais.TabIndex = 1;
+            this.lblTurmasIniciais.Text = "Adicione as turmas usadas pela instituição. Elas poderão ser gerenciadas depois e" +
+    "m Pessoas.";
+            // 
+            // txtNovaTurma
+            // 
+            this.txtNovaTurma.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.txtNovaTurma.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.txtNovaTurma.BackColor = System.Drawing.Color.White;
+            this.txtNovaTurma.BorderColor = System.Drawing.Color.Black;
+            this.txtNovaTurma.BorderFocusColor = System.Drawing.Color.Blue;
+            this.txtNovaTurma.BorderRadius = 8;
+            this.txtNovaTurma.BorderThickness = 2;
+            this.txtNovaTurma.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.txtNovaTurma.HoverBackColor = System.Drawing.Color.LightGray;
+            this.txtNovaTurma.Location = new System.Drawing.Point(3, 97);
+            this.txtNovaTurma.Name = "txtNovaTurma";
+            this.txtNovaTurma.PlaceholderColor = System.Drawing.Color.Gray;
+            this.txtNovaTurma.PlaceholderFont = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.txtNovaTurma.PlaceholderMarginLeft = 12;
+            this.txtNovaTurma.PlaceholderText = "Ex.: 6º ANO A";
+            this.txtNovaTurma.SelectedText = "";
+            this.txtNovaTurma.SelectionLength = 0;
+            this.txtNovaTurma.SelectionStart = 0;
+            this.txtNovaTurma.Size = new System.Drawing.Size(300, 34);
+            this.txtNovaTurma.TabIndex = 0;
+            this.txtNovaTurma.TextColor = System.Drawing.Color.Black;
+            this.txtNovaTurma.UseSystemPasswordChar = false;
+            this.txtNovaTurma.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNovaTurma_KeyDown);
+            // 
+            // btnAdicionarTurma
+            // 
+            this.btnAdicionarTurma.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAdicionarTurma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdicionarTurma.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnAdicionarTurma.Location = new System.Drawing.Point(313, 96);
+            this.btnAdicionarTurma.Name = "btnAdicionarTurma";
+            this.btnAdicionarTurma.Size = new System.Drawing.Size(175, 36);
+            this.btnAdicionarTurma.TabIndex = 1;
+            this.btnAdicionarTurma.Text = "Adicionar turma";
+            this.btnAdicionarTurma.UseVisualStyleBackColor = false;
+            this.btnAdicionarTurma.Click += new System.EventHandler(this.btnAdicionarTurma_Click);
+            // 
+            // lstTurmasIniciais
+            // 
+            this.lstTurmasIniciais.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstTurmasIniciais.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this.lstTurmasIniciais.FormattingEnabled = true;
+            this.lstTurmasIniciais.ItemHeight = 19;
+            this.lstTurmasIniciais.Location = new System.Drawing.Point(3, 151);
+            this.lstTurmasIniciais.Name = "lstTurmasIniciais";
+            this.lstTurmasIniciais.Size = new System.Drawing.Size(485, 211);
+            this.lstTurmasIniciais.TabIndex = 2;
+            this.lstTurmasIniciais.SelectedIndexChanged += new System.EventHandler(this.lstTurmasIniciais_SelectedIndexChanged);
+            // 
+            // btnRemoverTurma
+            // 
+            this.btnRemoverTurma.Enabled = false;
+            this.btnRemoverTurma.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoverTurma.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.btnRemoverTurma.Location = new System.Drawing.Point(345, 370);
+            this.btnRemoverTurma.Name = "btnRemoverTurma";
+            this.btnRemoverTurma.Size = new System.Drawing.Size(143, 32);
+            this.btnRemoverTurma.TabIndex = 3;
+            this.btnRemoverTurma.Text = "Remover selecionada";
+            this.btnRemoverTurma.UseVisualStyleBackColor = false;
+            this.btnRemoverTurma.Click += new System.EventHandler(this.btnRemoverTurma_Click);
+            // 
+            // lblErroTurmas
+            // 
+            this.lblErroTurmas.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblErroTurmas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(184)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.lblErroTurmas.Location = new System.Drawing.Point(3, 373);
+            this.lblErroTurmas.Name = "lblErroTurmas";
+            this.lblErroTurmas.Size = new System.Drawing.Size(330, 26);
+            this.lblErroTurmas.TabIndex = 4;
+            this.lblErroTurmas.Visible = false;
+            // 
+            // btnVoltarEtapa3
+            // 
+            this.btnVoltarEtapa3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVoltarEtapa3.FlatAppearance.BorderSize = 0;
+            this.btnVoltarEtapa3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVoltarEtapa3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnVoltarEtapa3.Location = new System.Drawing.Point(3, 480);
+            this.btnVoltarEtapa3.Name = "btnVoltarEtapa3";
+            this.btnVoltarEtapa3.Size = new System.Drawing.Size(92, 34);
+            this.btnVoltarEtapa3.TabIndex = 4;
+            this.btnVoltarEtapa3.Text = "Voltar";
+            this.btnVoltarEtapa3.Click += new System.EventHandler(this.btnVoltarEtapa3_Click);
+            // 
             // salvar
             // 
             this.salvar.BackgroundColor = System.Drawing.Color.Empty;
@@ -975,18 +1201,6 @@ namespace SUB.Forms.Setup
             this.salvar.TabIndex = 8;
             this.salvar.Text = "Concluir configuração";
             this.salvar.Click += new System.EventHandler(this.salvar_Click);
-            // 
-            // gradientPanel2
-            // 
-            this.gradientPanel2.BackColor = System.Drawing.Color.White;
-            this.gradientPanel2.BorderRadius = 0;
-            this.gradientPanel2.Gradientebottom = System.Drawing.Color.Transparent;
-            this.gradientPanel2.Gradientetop = System.Drawing.Color.Transparent;
-            this.gradientPanel2.Location = new System.Drawing.Point(37, 37);
-            this.gradientPanel2.Name = "gradientPanel2";
-            this.gradientPanel2.Size = new System.Drawing.Size(90, 90);
-            this.gradientPanel2.TabIndex = 11;
-            this.gradientPanel2.Visible = false;
             // 
             // PrimeiroUsoForm
             // 
@@ -1018,11 +1232,14 @@ namespace SUB.Forms.Setup
             this.pnlEtapa2.PerformLayout();
             this.pnlCodigoRecuperacao.ResumeLayout(false);
             this.pnlCodigoRecuperacao.PerformLayout();
+            this.pnlEtapa3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         private ElementosPersonalizados.GradientPanel gradientPanel1;
         private ElementosPersonalizados.GradientPanel gradientPanel2;
+        private System.Windows.Forms.Panel linhaRoteiro2;
+        private System.Windows.Forms.Panel indicadorEtapa3;
     }
 }

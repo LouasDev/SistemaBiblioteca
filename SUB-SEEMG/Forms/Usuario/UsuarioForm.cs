@@ -109,6 +109,12 @@ namespace SUB.Forms.Usuario
             CarregarUsuarios(nome, tipo, emprestimo);
         }
 
+        private void btnGerenciarTurmas_Click(object sender, EventArgs e)
+        {
+            using (var gerenciarTurmas = new GerenciarTurmasForm())
+                gerenciarTurmas.ShowDialog(this);
+        }
+
         private void EventosGlobais_EmprestimoRealizado(object sender, EventArgs e)
         {
             // Atualiza a lista de usuários após empréstimo

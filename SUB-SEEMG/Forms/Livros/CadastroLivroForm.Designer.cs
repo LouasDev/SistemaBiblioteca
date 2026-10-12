@@ -306,6 +306,7 @@
             this.txtQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
             this.txtQuantidade.Location = new System.Drawing.Point(652, 368);
             this.txtQuantidade.Name = "txtQuantidade";
+            this.txtQuantidade.OnlyNumbers = true;
             this.txtQuantidade.Padding = new System.Windows.Forms.Padding(7);
             this.txtQuantidade.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtQuantidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F);

@@ -1,276 +1,141 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlServerCe;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SUB.Utils
 {
+    /// <summary>
+    /// Fonte única das turmas da instituição. O SUB não inclui turmas pré-cadastradas:
+    /// cada instalação começa vazia e a própria escola define sua estrutura.
+    /// </summary>
     public static class TurmasUtil
     {
-        // --- Lista padronizada de turmas permitidas (adicione aqui outras que precise) ---
-        public static readonly List<string> TurmasPermitidas = new List<string>
+        public static List<string> TurmasPermitidas
         {
-            "1� ADMINISTRA��O EP PRO 1",
-            "1� DESENV DE SISTEMAS EM INT 1",
-            "1� DESENV DE SISTEMAS EM INT 2",
-            "1� EM INT 1",
-            "1� EM INT 2",
-            "1� EM REG 1",
+            get { return Carregar(); }
+        }
 
-            "2� AGRONEG�CIO EM INT 1",
-            "2� DESENV DE SISTEMAS EM INT 1",
-            "2� DESENV DE SISTEMAS EM INT 2",
-            "2� ELETROMEC�NICA EP PRO 1",
-            "2� ELETROMEC�NICA EP PRO 2",
-            "2� EM INT 1",
-            "2� EM REG 1",
-
-            "3� AGRONEG�CIO EM INT 1",
-            "3� DESENV DE SISTEMAS EM INT 1",
-            "3� EM INT 1",
-            "3� EM REG 1",
-            "3� EM REG 2",
-
-            "6� EF AF REG 1", "6� EF AF REG 2", "6� EF AF REG 3", "6� EF AF REG 4",
-            "7� EF AF REG 1", "7� EF AF REG 2", "7� EF AF REG 3", "7� EF AF REG 4",
-            "8� EF AF REG 1", "8� EF AF REG 2", "8� EF AF REG 3", "8� EF AF REG 4", "8� EF AF REG 5",
-            "9� EF AF REG 1", "9� EF AF REG 2", "9� EF AF REG 3", "9� EF AF REG 4", "9� EF AF REG 5"
-        };
-
-        // Abrevia��es que os usu�rios podem digitar (mapeia pra forma curta usada na normaliza��o)
-        private static readonly Dictionary<string, string> Abreviacoes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        public static List<string> Carregar()
         {
-            { "d", "desenv" }, { "des", "desenv" }, { "desenv", "desenv" },
-            { "ag", "agroneg" }, { "agroneg", "agroneg" }, { "adm", "admin" },
-            { "em", "em" }, { "reg", "reg" }, { "int", "int" }, { "ef", "ef" }, { "af", "af" },
-            { "pro", "pro" }, { "eletro", "eletromec" }, { "sis", "sistemas" }
-        };
+            var turmas = new List<string>();
 
-        /// <summary>
-        /// Busca sugest�es inteligentes a partir do texto digitado pelo usu�rio.
-        /// Suporta varia��es como "2d", "2 d", "2 des", "2�d", abrevia��es e erros leves de digita��o.
-        /// </summary>
+            using (var conexao = Conexao.ObterConexao())
+            using (var comando = new SqlCeCommand("SELECT Nome FROM Turmas ORDER BY Nome", conexao))
+            {
+                conexao.Open();
+                using (var leitor = comando.ExecuteReader())
+                {
+                    while (leitor.Read())
+                        turmas.Add(leitor.GetString(0));
+                }
+            }
+
+            return turmas;
+        }
+
+        public static void Salvar(IEnumerable<string> turmas, IDictionary<string, string> renomeacoes = null)
+        {
+            var lista = NormalizarLista(turmas);
+
+            using (var conexao = Conexao.ObterConexao())
+            {
+                conexao.Open();
+                using (var transacao = conexao.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var renomeacao in renomeacoes ?? new Dictionary<string, string>())
+                        {
+                            if (string.Equals(renomeacao.Key, renomeacao.Value, StringComparison.OrdinalIgnoreCase))
+                                continue;
+
+                            using (var atualizarUsuarios = new SqlCeCommand(
+                                "UPDATE usuarios SET Turma = @novaTurma WHERE Turma = @turmaAnterior", conexao, transacao))
+                            {
+                                atualizarUsuarios.Parameters.AddWithValue("@novaTurma", renomeacao.Value);
+                                atualizarUsuarios.Parameters.AddWithValue("@turmaAnterior", renomeacao.Key);
+                                atualizarUsuarios.ExecuteNonQuery();
+                            }
+                        }
+
+                        using (var limpar = new SqlCeCommand("DELETE FROM Turmas", conexao, transacao))
+                            limpar.ExecuteNonQuery();
+
+                        foreach (string turma in lista)
+                        {
+                            using (var inserir = new SqlCeCommand("INSERT INTO Turmas (Nome) VALUES (@nome)", conexao, transacao))
+                            {
+                                inserir.Parameters.AddWithValue("@nome", turma);
+                                inserir.ExecuteNonQuery();
+                            }
+                        }
+
+                        transacao.Commit();
+                    }
+                    catch
+                    {
+                        try { transacao.Rollback(); } catch { }
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public static bool Existe(string turma)
+        {
+            return !string.IsNullOrWhiteSpace(turma) &&
+                   Carregar().Contains(turma.Trim(), StringComparer.OrdinalIgnoreCase);
+        }
+
+        public static bool EmUso(string turma)
+        {
+            if (string.IsNullOrWhiteSpace(turma))
+                return false;
+
+            using (var conexao = Conexao.ObterConexao())
+            using (var comando = new SqlCeCommand("SELECT COUNT(*) FROM usuarios WHERE Turma = @turma", conexao))
+            {
+                comando.Parameters.AddWithValue("@turma", turma.Trim());
+                conexao.Open();
+                return Convert.ToInt32(comando.ExecuteScalar()) > 0;
+            }
+        }
+
         public static List<string> BuscarSugestoes(string texto)
         {
-            if (string.IsNullOrWhiteSpace(texto)) return new List<string>();
+            var turmas = Carregar();
+            if (string.IsNullOrWhiteSpace(texto))
+                return new List<string>();
 
-            string entradaOriginal = texto.Trim();
-            var variantesEntrada = GerarVariantesEntrada(entradaOriginal);
+            string busca = Normalizar(texto);
+            return turmas
+                .Select(turma => new { Turma = turma, Normalizada = Normalizar(turma) })
+                .Where(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) ||
+                               item.Normalizada.IndexOf(busca, StringComparison.OrdinalIgnoreCase) >= 0)
+                .OrderBy(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) ? 0 : 1)
+                .ThenBy(item => item.Turma, StringComparer.OrdinalIgnoreCase)
+                .Select(item => item.Turma)
+                .ToList();
+        }
 
-            // Preprocessa turmas
-            var tabelaTurmas = TurmasPermitidas
+        private static List<string> NormalizarLista(IEnumerable<string> turmas)
+        {
+            return (turmas ?? Enumerable.Empty<string>())
+                .Where(turma => !string.IsNullOrWhiteSpace(turma))
+                .Select(turma => turma.Trim().ToUpperInvariant())
                 .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Select(t => new
-                {
-                    Original = t,
-                    Normalizada = NormalizarParaComparacao(t),
-                    Restante = RemoverPrefixoNumeroENormalizar(t)
-                })
-                .ToList();
-
-            // --- NOVO FILTRO ---
-            var matchNumero = Regex.Match(entradaOriginal, @"^(\d+)");
-            if (matchNumero.Success)
-            {
-                string numeroDigitado = matchNumero.Groups[1].Value + "�";
-                tabelaTurmas = tabelaTurmas
-                    .Where(t => t.Original.StartsWith(numeroDigitado, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
-
-            var candidatos = new List<(string Turma, int Score)>();
-            var vistos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (var varEnt in variantesEntrada)
-            {
-                string varNorm = NormalizarParaComparacao(varEnt);
-
-                foreach (var t in tabelaTurmas)
-                {
-                    if (vistos.Contains(t.Original)) continue;
-
-                    int score = CalcularScore(varNorm, t.Normalizada, t.Restante);
-                    if (score < 100)
-                    {
-                        candidatos.Add((t.Original, score));
-                        vistos.Add(t.Original);
-                    }
-                }
-            }
-
-            if (!candidatos.Any())
-            {
-                string varNorm = NormalizarParaComparacao(entradaOriginal);
-                foreach (var t in tabelaTurmas)
-                {
-                    int score = CalcularScore(varNorm, t.Normalizada, t.Restante);
-                    if (score < 100)
-                        candidatos.Add((t.Original, score));
-                }
-            }
-
-            return candidatos
-                .OrderBy(c => c.Score)
-                .ThenBy(c => c.Turma, StringComparer.OrdinalIgnoreCase)
-                .Select(c => c.Turma)
+                .OrderBy(turma => turma, StringComparer.CurrentCultureIgnoreCase)
                 .ToList();
         }
 
-
-        // --- Helpers privados ---
-
-        // Gera variantes �teis a partir do que o usu�rio digitou:
-        // ex: "2d" -> ["2d", "2 d", "2� d", "2�d", "2 desenv"]
-        private static IEnumerable<string> GerarVariantesEntrada(string entrada)
+        private static string Normalizar(string valor)
         {
-            var list = new List<string>();
-            if (string.IsNullOrWhiteSpace(entrada)) return list;
-
-            var s = entrada.Trim();
-            list.Add(s);
-
-            // inserir formas com/sem espa�o, com �, etc
-            var m = Regex.Match(s, @"^(\d+)[��]?\s*(.*)$", RegexOptions.IgnoreCase);
-            if (m.Success)
-            {
-                var num = m.Groups[1].Value;
-                var resto = (m.Groups[2].Value ?? "").Trim();
-
-                list.Add($"{num}� {resto}".Trim());
-                list.Add($"{num}�{resto}".Trim());
-                list.Add($"{num} {resto}".Trim());
-                list.Add($"{num}{resto}".Trim());
-
-                // se o "resto" for uma abrevia��o conhecida, expandir
-                if (!string.IsNullOrWhiteSpace(resto))
-                {
-                    var token = Regex.Replace(resto.ToLowerInvariant(), @"[^a-z0-9]", "");
-                    foreach (var kv in Abreviacoes)
-                    {
-                        if (token.StartsWith(kv.Key, StringComparison.OrdinalIgnoreCase))
-                        {
-                            var exp = kv.Value;
-                            list.Add($"{num} {exp}".Trim());
-                            list.Add($"{num}� {exp}".Trim());
-                        }
-                    }
-                }
-                else
-                {
-                    list.Add($"{num}�");
-                    list.Add($"{num}");
-                }
-            }
-            else
-            {
-                // tenta separar letras e n�meros caso escrevam como "2des" sem espa�o
-                var mm = Regex.Match(s, @"^(\d+)([A-Za-z].*)$", RegexOptions.IgnoreCase);
-                if (mm.Success)
-                {
-                    list.Add($"{mm.Groups[1].Value} {mm.Groups[2].Value}".Trim());
-                    list.Add($"{mm.Groups[1].Value}� {mm.Groups[2].Value}".Trim());
-                }
-            }
-
-            // formas sem espa�os ex: transformar "2 d" em "2d"
-            list.Add(s.Replace(" ", ""));
-
-            // garantir unicidade e limpar
-            return list
-                .Where(x => !string.IsNullOrWhiteSpace(x))
-                .Select(x => Regex.Replace(x, @"\s+", " ").Trim())
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .ToList();
-        }
-
-        // Normaliza string para compara��o (lower, sem acentos, sem pontua��o exceto n�meros e letras)
-        private static string NormalizarParaComparacao(string s)
-        {
-            if (string.IsNullOrWhiteSpace(s)) return "";
-            s = s.ToLowerInvariant().Trim();
-            s = s.Normalize(System.Text.NormalizationForm.FormD);
-            s = Regex.Replace(s, @"\p{M}", ""); // remove acentos
-            s = Regex.Replace(s, @"[^a-z0-9\s]", ""); // mant�m letras/n�meros/espa�os
-            s = Regex.Replace(s, @"\s+", " ").Trim();
-            return s;
-        }
-
-        // Remove prefixo num�rico (ex: "2� DESENV ...") e normaliza o restante
-        private static string RemoverPrefixoNumeroENormalizar(string turma)
-        {
-            if (string.IsNullOrWhiteSpace(turma)) return "";
-            var m = Regex.Match(turma.Trim(), @"^\s*(\d+)[��]?\s*(.+)$", RegexOptions.IgnoreCase);
-            if (m.Success) return NormalizarParaComparacao(m.Groups[2].Value);
-            return NormalizarParaComparacao(turma);
-        }
-
-        // Score: menor � melhor. >=100 = rejeitado
-        // Estrat�gia:
-        // 0 = exato (normalizado)
-        // 1 = startswith
-        // 2 = restante (sem n�mero) exatamente igual
-        // 3 = contains
-        // 4+ = distancia Levenshtein aceit�vel (4..7)
-        // 100 = irrelevante
-        private static int CalcularScore(string entradaNorm, string turmaNorm, string restanteNorm)
-        {
-            if (string.IsNullOrWhiteSpace(entradaNorm)) return 100;
-
-            // exato
-            if (turmaNorm.Equals(entradaNorm, StringComparison.OrdinalIgnoreCase)) return 0;
-
-            // startswith
-            if (turmaNorm.StartsWith(entradaNorm, StringComparison.OrdinalIgnoreCase)) return 1;
-
-            // restante exato
-            if (!string.IsNullOrWhiteSpace(restanteNorm) &&
-                restanteNorm.Equals(entradaNorm, StringComparison.OrdinalIgnoreCase)) return 2;
-
-            // contains (compat�vel com .NET Framework)
-            if (turmaNorm.IndexOf(entradaNorm, StringComparison.OrdinalIgnoreCase) >= 0) return 3;
-
-            // sem espa�os
-            if (turmaNorm.Replace(" ", "")
-                         .IndexOf(entradaNorm.Replace(" ", ""), StringComparison.OrdinalIgnoreCase) >= 0)
-                return 3;
-
-            // Levenshtein tolerante
-            int lev = Levenshtein(entradaNorm, turmaNorm);
-            if (lev <= 3) return 4 + lev; // 4..7
-
-            // entrada curta (1�2 chars) e contida no restante
-            if (entradaNorm.Length <= 2 &&
-                !string.IsNullOrWhiteSpace(restanteNorm) &&
-                restanteNorm.IndexOf(entradaNorm, StringComparison.OrdinalIgnoreCase) >= 0)
-                return 6;
-
-            return 100;
-        }
-
-
-        // Levenshtein (implementa��o padr�o)
-        private static int Levenshtein(string s, string t)
-        {
-            if (string.IsNullOrEmpty(s)) return t?.Length ?? 0;
-            if (string.IsNullOrEmpty(t)) return s.Length;
-
-            int[,] d = new int[s.Length + 1, t.Length + 1];
-            for (int i = 0; i <= s.Length; i++) d[i, 0] = i;
-            for (int j = 0; j <= t.Length; j++) d[0, j] = j;
-
-            for (int i = 1; i <= s.Length; i++)
-            {
-                for (int j = 1; j <= t.Length; j++)
-                {
-                    int cost = s[i - 1] == t[j - 1] ? 0 : 1;
-                    d[i, j] = Math.Min(
-                        Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1),
-                        d[i - 1, j - 1] + cost);
-                }
-            }
-
-            return d[s.Length, t.Length];
+            string texto = (valor ?? string.Empty).Trim().ToLowerInvariant()
+                .Normalize(System.Text.NormalizationForm.FormD);
+            texto = Regex.Replace(texto, @"\p{M}", string.Empty);
+            return Regex.Replace(texto, @"\s+", " ");
         }
     }
 }
-

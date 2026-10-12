@@ -78,7 +78,7 @@
             this.btnSair.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSair.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnSair.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnSair.Location = new System.Drawing.Point(850, 492);
+            this.btnSair.Location = new System.Drawing.Point(850, 490);
             this.btnSair.Margin = new System.Windows.Forms.Padding(5);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(150, 48);
@@ -97,7 +97,7 @@
             this.panel2.Controls.Add(this.lblTelefone);
             this.panel2.Controls.Add(this.lblCPF);
             this.panel2.Controls.Add(this.lblDataNasc);
-            this.panel2.Location = new System.Drawing.Point(280, 362);
+            this.panel2.Location = new System.Drawing.Point(280, 346);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(720, 94);
             this.panel2.TabIndex = 137;
@@ -117,7 +117,7 @@
             this.dtpDataNasc.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataNasc.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataNasc.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataNasc.Location = new System.Drawing.Point(500, 30);
+            this.dtpDataNasc.Location = new System.Drawing.Point(508, 30);
             this.dtpDataNasc.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataNasc.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataNasc.Name = "dtpDataNasc";
@@ -144,7 +144,7 @@
             this.mtxCPF.HoverBackColor = System.Drawing.Color.LightGray;
             this.mtxCPF.HoverBorderColor = System.Drawing.Color.DarkGray;
             this.mtxCPF.LeftMargin = 0;
-            this.mtxCPF.Location = new System.Drawing.Point(250, 30);
+            this.mtxCPF.Location = new System.Drawing.Point(254, 30);
             this.mtxCPF.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.mtxCPF.Mask = "000,000,000-00";
             this.mtxCPF.MaskTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -195,7 +195,7 @@
             this.lblCPF.AutoSize = true;
             this.lblCPF.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCPF.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblCPF.Location = new System.Drawing.Point(250, 0);
+            this.lblCPF.Location = new System.Drawing.Point(254, 0);
             this.lblCPF.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(50, 25);
@@ -208,7 +208,7 @@
             this.lblDataNasc.AutoSize = true;
             this.lblDataNasc.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDataNasc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblDataNasc.Location = new System.Drawing.Point(500, 0);
+            this.lblDataNasc.Location = new System.Drawing.Point(508, 0);
             this.lblDataNasc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
@@ -368,7 +368,6 @@
             // 
             // label2
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 25.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));

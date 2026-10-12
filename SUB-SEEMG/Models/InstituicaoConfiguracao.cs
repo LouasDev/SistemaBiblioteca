@@ -7,13 +7,9 @@ namespace SUB.Models
     {
         public string Nome { get; set; }
         public string CorPrimaria { get; set; }
-        [JsonProperty("NomeUsuarioAdministrador")]
-        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
-        public string EmailAdministrador { get; set; }
-        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
-        public string SenhaAdministradorHash { get; set; }
-        [Obsolete("O login agora usa a conta da primeira bibliotecária armazenada no banco.")]
-        public string SenhaAdministradorSalt { get; set; }
+        // Credenciais da primeira bibliotecária pertencem exclusivamente ao banco.
+        // Estas propriedades permanecem apenas para leitura de configurações antigas
+        // e não devem voltar a gerar chaves nulas no instituicao.json.
         public string CodigoMestreHash { get; set; }
         public string CodigoMestreSalt { get; set; }
         public DateTime ConfiguradaEm { get; set; }

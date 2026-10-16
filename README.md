@@ -1,104 +1,111 @@
-# Sistema Único Bibliotecário   (SUB)
+<div align="center">
 
-Repositório de desenvolvimento do **Sistema Único Bibliotecário (SUB)**, uma aplicação desktop para apoiar a gestão de bibliotecas escolares. O projeto centraliza o cadastro de acervo e usuários, empréstimos, devoluções e relatórios.
+<img src="docs/assets/logo-sub.png" alt="Logotipo do SUB" width="120">
 
-> Este repositório é destinado ao desenvolvimento do sistema. Regras operacionais e configurações de cada instalação devem ser validadas com a equipe responsável antes de serem alteradas.
+# SUB · Sistema Único Bibliotecário
 
-## Visão geral
+Sistema de gestão de bibliotecas escolares da rede estadual de ensino de Minas Gerais.
 
-O SUB busca reduzir processos manuais na rotina da biblioteca e oferecer controle do acervo escolar.
+![C#](https://img.shields.io/badge/C%23-.NET%20Framework%204.8-512BD4?style=flat-square)
+![Windows Forms](https://img.shields.io/badge/Interface-Windows%20Forms-0078D4?style=flat-square)
+![SQL Server Compact](https://img.shields.io/badge/Banco-SQL%20Server%20Compact%204.0-CC2927?style=flat-square)
+![Iniciativa oficial](https://img.shields.io/badge/Iniciativa%20oficial-SEE%2FMG-1F6E54?style=flat-square)
 
-Principais áreas do sistema:
+[Documentação](docs/) · [Backlog do produto](docs/backlog.md) · [Equipe](#equipe)
 
-- autenticação e controle de acesso;
-- cadastro e manutenção de usuários;
-- cadastro, consulta e atualização de livros;
-- empréstimos, devoluções e prorrogações;
-- relatórios e exportações;
-- mapeamento de turmas e recursos de apoio à operação.
-
-## Tecnologias
-
-| Tecnologia | Uso no projeto |
-| --- | --- |
-| C# / .NET Framework 4.8 | Aplicação principal |
-| Windows Forms | Interface desktop |
-| SQL Server Compact | Persistência local |
-| NuGet | Gerenciamento de dependências |
-| MaterialSkin | Componentes visuais |
-
-Outras bibliotecas presentes na solução apoiam exportação para Excel e PDF, geração de códigos de barras, criptografia e integrações.
-
-## Estrutura do projeto
-
-```text
-SistemaBiblioteca/
-├── BibliotecaApp/
-│   ├── Elements/       # Componentes visuais reutilizáveis
-│   ├── Forms/          # Telas da aplicação
-│   ├── Models/         # Modelos de domínio
-│   ├── Properties/     # Recursos e configurações do projeto
-│   ├── Resources/      # Imagens e ícones
-│   ├── Utils/          # Serviços e utilitários
-│   ├── App.config      # Configurações da aplicação
-│   └── BibliotecaApp.sln
-├── Product Backlog - Library Management System (1).markdown
-└── README.md
-```
-
-## Como preparar o ambiente
-
-### Pré-requisitos
-
-- Windows 10 ou superior;
-- Visual Studio com suporte ao desenvolvimento .NET Desktop;
-- .NET Framework 4.8 Developer Pack;
-- acesso às dependências NuGet do projeto.
-
-### Execução local
-
-1. Clone o repositório:
-
-   ```bash
-   git clone https://github.com/LouasDev/SistemaBiblioteca.git
-   ```
-
-2. Abra a solução `BibliotecaApp/BibliotecaApp.sln` no Visual Studio.
-3. Restaure os pacotes NuGet, se necessário.
-4. Revise as configurações de banco em `BibliotecaApp/App.config` de acordo com o ambiente local.
-5. Compile a solução e execute o projeto `BibliotecaApp`.
-
-### Configurações locais
-
-O arquivo `App.config` contém a configuração de conexão usada pela aplicação. Dados de acesso, chaves e demais informações sensíveis devem ser tratados como configuração local e nunca compartilhados em issues, commits ou documentação pública.
-
-## Desenvolvimento
-
-- Mantenha as alterações focadas em uma funcionalidade ou correção.
-- Valide a compilação localmente antes de abrir um pull request.
-- Descreva no pull request o comportamento alterado e como ele foi testado.
-- Atualize este README apenas quando uma mudança afetar a preparação do ambiente, a arquitetura ou o fluxo de contribuição.
-
-O backlog do produto está disponível em [Product Backlog - Library Management System (1).markdown](Product%20Backlog%20-%20Library%20Management%20System%20(1).markdown).
-
-## Equipe de desenvolvimento
-
-| Membro | Função | Responsabilidade |
-| --- | --- | --- |
-| **Ithalo Pimentel** | Gerente de Projeto | Coordenação e documentação |
-| **Matheus Felipe** | Backend / Banco de Dados | Banco de dados e Entity Framework |
-| **Luis Gustavo** | Front-end / Back-end | Login, livros e regras de negócio |
-| **Renato Monteiro** | Front-end / Back-end | Cadastro de usuários e empréstimos |
-| **Bryan Emanuel** | Front-end / Testes | Empréstimo rápido e qualidade |
-
-## Suporte e acompanhamento
-
-- [Issues do projeto](https://github.com/LouasDev/SistemaBiblioteca/issues)
-- [Wiki do projeto](https://github.com/LouasDev/SistemaBiblioteca/wiki)
+</div>
 
 ---
 
-<div align="center">
-  <p><strong>Sistema Único Bibliotecário   (SUB)</strong></p>
-  <p>Desenvolvido para apoiar bibliotecas escolares.</p>
-</div>
+## Sobre o projeto
+
+O SUB é uma aplicação desktop que reúne, em um único sistema, a rotina de uma biblioteca escolar: cadastro de acervo e de usuários, empréstimos, devoluções, prorrogações de prazo e emissão de relatórios.
+
+O sistema é fruto da refatoração do projeto Biblioteca Gastão Valle e foi reestruturado para atender a rede estadual de ensino, padronizando os processos de cada unidade. <!-- Informar escolas piloto ou abrangência atual, se houver. -->
+
+## Funcionalidades
+
+- **Acesso:** login de bibliotecários(as) com senha protegida por hash e salt, e recuperação de senha
+- **Usuários:** cadastro de alunos(as), professores(as), bibliotecários(as) e outros perfis, com edição e listagem
+- **Turmas:** gerenciamento de turmas e assistente de mapeamento
+- **Acervo:** cadastro, consulta e alteração de livros, com código de barras
+- **Circulação:** empréstimo, empréstimo rápido, devolução, devolução rápida e prorrogação de prazo, com registro de prorrogações
+- **Relatórios:** consulta e exportação para Excel e PDF
+- **Primeiro uso:** configuração inicial da instituição e criação automática do banco de dados
+
+## Status
+
+Em desenvolvimento. <!-- Ajustar: piloto, produção ou versão atual. -->
+
+## Tecnologias
+
+| Camada | Tecnologia |
+| --- | --- |
+| Linguagem e plataforma | C# e .NET Framework 4.8 |
+| Interface | Windows Forms, MaterialSkin |
+| Banco de dados | SQL Server Compact 4.0 (ADO.NET) |
+| Exportação | ClosedXML (Excel), iTextSharp e PDFsharp (PDF) |
+| Código de barras | ZXing.Net |
+
+## Executando localmente
+
+### Requisitos
+
+- Windows 10 ou superior
+- Visual Studio com a carga de trabalho **Desenvolvimento para desktop com .NET**
+- .NET Framework 4.8 Developer Pack
+- SQL Server Compact 4.0 SP1 (runtime), caso não esteja instalado na máquina
+- Acesso à internet na primeira compilação, para restaurar os pacotes NuGet
+
+### Passos
+
+1. Clone o repositório:
+```bash
+   git clone https://github.com/LouasDev/SistemaBiblioteca.git
+```
+2. Abra `SUB-SEEMG/SUB-SEEMG.sln` no Visual Studio.
+3. Restaure os pacotes NuGet e compile a solução.
+4. Copie `App.config.example` para `App.config` e ajuste as configurações locais.
+5. Execute o projeto `SUB`.
+
+No primeiro uso, o sistema solicita a configuração da instituição e cria o banco de dados automaticamente. Os dados ficam em `%AppData%\SUB\`.
+
+> Configurações de conexão e senhas são locais de cada instalação e não devem ser publicadas em issues, commits ou documentação.
+
+## Estrutura do repositório
+
+```text
+SistemaBiblioteca/
+├── .github/            Configurações do GitHub
+├── docs/               Documentação (backlog e demais documentos)
+├── SUB-SEEMG/
+│   ├── Elements/       Componentes visuais reutilizáveis
+│   ├── Forms/          Telas, organizadas por módulo
+│   ├── Models/         Modelos de domínio
+│   ├── Properties/     Metadados e recursos do projeto
+│   ├── Resources/      Imagens e ícones
+│   └── Utils/          Serviços e utilitários
+└── README.md
+```
+
+## Documentação
+
+- [Backlog do produto](docs/backlog.md)
+
+## Contribuindo
+
+Mantenha cada alteração focada em uma única funcionalidade ou correção, valide a compilação antes de abrir o pull request e descreva o que mudou e como foi testado. As mensagens de commit seguem o formato `tipo: descrição` (`feat`, `fix`, `style`, `docs`, `chore`).
+
+## Equipe
+
+| Nome | Função |
+| --- | --- |
+| Ithalo Pimentel | Gerência de projeto e documentação |
+| Matheus Felipe | Banco de dados e back-end |
+| Luis Gustavo | Front-end e back-end |
+| Renato Monteiro | Front-end e back-end |
+| Bryan Emanuel | Front-end e testes |
+
+## Licença
+
+<!-- Definir com a equipe e a instituição responsável e adicionar o arquivo LICENSE. -->

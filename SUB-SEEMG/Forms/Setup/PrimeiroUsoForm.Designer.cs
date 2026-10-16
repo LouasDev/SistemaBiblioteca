@@ -176,6 +176,7 @@ namespace SUB.Forms.Setup
             // 
             // pnlInstitucional
             // 
+            this.pnlInstitucional.BackColor = System.Drawing.Color.Transparent;
             this.pnlInstitucional.BorderRadius = 0;
             this.pnlInstitucional.Controls.Add(this.linhaRoteiro2);
             this.pnlInstitucional.Controls.Add(this.pnlLogo);
@@ -223,13 +224,13 @@ namespace SUB.Forms.Setup
             // 
             // picLogo
             // 
+            this.picLogo.BackColor = System.Drawing.Color.Transparent;
             this.picLogo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picLogo.Image = global::SUB.Properties.Resources.sub_200x200px;
             this.picLogo.Location = new System.Drawing.Point(0, 0);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Padding = new System.Windows.Forms.Padding(4);
             this.picLogo.Size = new System.Drawing.Size(84, 84);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picLogo.TabIndex = 0;
             this.picLogo.TabStop = false;
             // 
@@ -343,7 +344,7 @@ namespace SUB.Forms.Setup
             this.lblPasso2Texto.Name = "lblPasso2Texto";
             this.lblPasso2Texto.Size = new System.Drawing.Size(263, 34);
             this.lblPasso2Texto.TabIndex = 10;
-            this.lblPasso2Texto.Text = "Acesso da primeira bibliotecária";
+            this.lblPasso2Texto.Text = "Acesso do primeiro bibliotecário";
             this.lblPasso2Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblPasso3Numero
@@ -416,6 +417,7 @@ namespace SUB.Forms.Setup
             // btnFechar
             // 
             this.btnFechar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFechar.BackColor = System.Drawing.Color.Transparent;
             this.btnFechar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnFechar.Image = global::SUB.Properties.Resources.icons8_x_20;
             this.btnFechar.Location = new System.Drawing.Point(975, 0);
@@ -696,7 +698,8 @@ namespace SUB.Forms.Setup
             this.lblTituloEtapa2.Name = "lblTituloEtapa2";
             this.lblTituloEtapa2.Size = new System.Drawing.Size(460, 30);
             this.lblTituloEtapa2.TabIndex = 0;
-            this.lblTituloEtapa2.Text = "Acesso da primeira bibliotecária";
+            this.lblTituloEtapa2.Text = "Acesso do primeiro bibliotecário";
+            this.lblTituloEtapa2.Click += new System.EventHandler(this.lblTituloEtapa2_Click);
             // 
             // lblNomeBibliotecaria
             // 
@@ -705,9 +708,9 @@ namespace SUB.Forms.Setup
             this.lblNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblNomeBibliotecaria.Location = new System.Drawing.Point(0, 35);
             this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
-            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(186, 15);
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(99, 15);
             this.lblNomeBibliotecaria.TabIndex = 1;
-            this.lblNomeBibliotecaria.Text = "Nome completo da bibliotecária *";
+            this.lblNomeBibliotecaria.Text = "Nome completo*";
             // 
             // _nomeBibliotecaria
             // 
@@ -752,9 +755,9 @@ namespace SUB.Forms.Setup
             this.lblEmailBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblEmailBibliotecaria.Location = new System.Drawing.Point(0, 111);
             this.lblEmailBibliotecaria.Name = "lblEmailBibliotecaria";
-            this.lblEmailBibliotecaria.Size = new System.Drawing.Size(133, 15);
+            this.lblEmailBibliotecaria.Size = new System.Drawing.Size(49, 15);
             this.lblEmailBibliotecaria.TabIndex = 3;
-            this.lblEmailBibliotecaria.Text = "E-mail da bibliotecária *";
+            this.lblEmailBibliotecaria.Text = "E-mail *";
             // 
             // _emailBibliotecaria
             // 
@@ -809,9 +812,9 @@ namespace SUB.Forms.Setup
             this.lblTelefoneBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblTelefoneBibliotecaria.Location = new System.Drawing.Point(0, 191);
             this.lblTelefoneBibliotecaria.Name = "lblTelefoneBibliotecaria";
-            this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(144, 15);
+            this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(60, 15);
             this.lblTelefoneBibliotecaria.TabIndex = 6;
-            this.lblTelefoneBibliotecaria.Text = "Telefone da bibliotecária *";
+            this.lblTelefoneBibliotecaria.Text = "Telefone *";
             // 
             // _telefoneBibliotecaria
             // 
@@ -825,7 +828,7 @@ namespace SUB.Forms.Setup
             this._telefoneBibliotecaria.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this._telefoneBibliotecaria.LeftMargin = 7;
             this._telefoneBibliotecaria.Location = new System.Drawing.Point(3, 210);
-            this._telefoneBibliotecaria.Mask = "(00) 0000-00009";
+            this._telefoneBibliotecaria.Mask = "(00) 00000-0009";
             this._telefoneBibliotecaria.MaskTextColor = System.Drawing.Color.Black;
             this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
             this._telefoneBibliotecaria.Padding = new System.Windows.Forms.Padding(9, 5, 5, 5);

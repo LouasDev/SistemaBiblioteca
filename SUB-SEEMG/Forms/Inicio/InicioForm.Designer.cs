@@ -25,6 +25,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InicioForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.topPanelInside = new System.Windows.Forms.Panel();
             this.flowCards = new System.Windows.Forms.FlowLayoutPanel();
@@ -63,7 +64,6 @@
             this.flowCards.AutoScroll = true;
             this.flowCards.BackColor = System.Drawing.Color.White;
             this.flowCards.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowCards.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this.flowCards.Location = new System.Drawing.Point(0, 0);
             this.flowCards.Name = "flowCards";
             this.flowCards.Padding = new System.Windows.Forms.Padding(12);
@@ -119,6 +119,7 @@
             this.Controls.Add(this.panelTop);
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InicioForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

@@ -93,6 +93,7 @@ namespace SUB.Forms.Login
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::SUB.Properties.Resources.icons8_x_20;
             this.pictureBox1.Location = new System.Drawing.Point(564, 0);
@@ -375,11 +376,11 @@ namespace SUB.Forms.Login
             // 
             this.picLogoLogin.BackColor = System.Drawing.Color.Transparent;
             this.picLogoLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picLogoLogin.Image = global::SUB.Properties.Resources.sub_200x200px;
             this.picLogoLogin.Location = new System.Drawing.Point(0, 0);
             this.picLogoLogin.Name = "picLogoLogin";
-            this.picLogoLogin.Padding = new System.Windows.Forms.Padding(4);
             this.picLogoLogin.Size = new System.Drawing.Size(84, 84);
-            this.picLogoLogin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogoLogin.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picLogoLogin.TabIndex = 0;
             this.picLogoLogin.TabStop = false;
             // 

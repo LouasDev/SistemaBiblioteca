@@ -241,10 +241,10 @@ namespace SUB.Forms.Login
             this.label8.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
             this.label8.Location = new System.Drawing.Point(498, 342);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(131, 17);
+            this.label8.Size = new System.Drawing.Size(85, 17);
             this.label8.TabIndex = 1;
             this.label8.TabStop = true;
-            this.label8.Text = "Luis Gustavo Borges";
+            this.label8.Text = "Luis Gustavo";
             this.label8.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
             this.label8.Click += new System.EventHandler(this.GitLuis_Click);
             // 

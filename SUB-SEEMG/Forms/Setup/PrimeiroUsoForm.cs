@@ -1,4 +1,6 @@
+using SeuProjeto;
 using SUB.Models;
+using SUB.Utils;
 using SUB.Utils;
 using System;
 using System.Collections.Generic;
@@ -26,8 +28,18 @@ namespace SUB.Forms.Setup
         private bool _concluindo;
         private readonly List<string> _turmasIniciais = new List<string>();
 
+
+
         public PrimeiroUsoForm()
         {
+
+            //aredondar cantos e desenhar borda cinza
+
+            int meuRaio = 15;
+            this.ArredondarCantos(meuRaio);
+            this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+
+
             InitializeComponent();
 
             if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
@@ -804,6 +816,11 @@ VALUES
         }
 
         private void pnlInstitucional_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void lblTituloEtapa2_Click(object sender, EventArgs e)
         {
 
         }

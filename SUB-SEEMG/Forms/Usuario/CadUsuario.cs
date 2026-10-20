@@ -31,6 +31,10 @@ namespace SUB.Froms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
+
+            this.SizeChanged += CadUsuario_SizeChanged;
+            this.Shown += (s, e) => PosicionarPanel2();
+
         }
         #endregion
 
@@ -45,8 +49,9 @@ namespace SUB.Froms.Usuario
             chkMostrarSenha.ForeColor = Color.LightGray;
             SetAsteriscoVisibility(false);
             CarregarTurmasDoBanco();
+           
 
-            
+
 
             // Eventos para o autocomplete de Turma
             txtTurma.KeyDown += txtTurma_KeyDown;
@@ -64,6 +69,12 @@ namespace SUB.Froms.Usuario
             // CORREÇÃO: não dispare validação ao ir para a lista; esconda inicialmente
             lstSugestoesTurma.CausesValidation = false;
             lstSugestoesTurma.Visible = false;
+        }
+
+        private void CadUsuario_SizeChanged(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated) return;
+            BeginInvoke(new Action(PosicionarPanel2));
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
@@ -354,10 +365,24 @@ namespace SUB.Froms.Usuario
             chkMostrarSenha.ForeColor = Color.LightGray;
         }
 
+
+        private bool modoAluno = true;
+
+        private void PosicionarPanel2()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            panel2.Left = Math.Max(0, (this.ClientSize.Width - panel2.Width) / 2);
+            panel2.Top = modoAluno ? 408 : 325;
+        }
+
         private void ConfigurarParaBibliotecario()
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
+            TelefoneAst.Location = new Point(83, 0);
+            modoAluno = false;
+            PosicionarPanel2();
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -394,6 +419,9 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
+            TelefoneAst.Location = new Point(83, 0);
+            modoAluno = false;
+            PosicionarPanel2();
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -428,6 +456,9 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone:";
+            TelefoneAst.Location = new Point(83, 0);
+            modoAluno = false;
+            PosicionarPanel2();
             txtTurma.Enabled = false;
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
@@ -467,6 +498,9 @@ namespace SUB.Froms.Usuario
         {
             HabilitarCampos(true);
             lblTelefone.Text = "Telefone do Aluno / Responsável:";
+            TelefoneAst.Location = new Point(288, 0);
+            modoAluno = true;
+            PosicionarPanel2();
             txtSenha.Enabled = false;
             txtConfirmSenha.Enabled = false;
             txtTurma.Visible = true;
@@ -1090,6 +1124,8 @@ VALUES
             hoveredIndex = -1;
             (sender as ListBox).Invalidate();
         }
+
+
 
 
 

@@ -56,11 +56,11 @@
             this.EmailAst = new System.Windows.Forms.Label();
             this.lstSugestoesTurma = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.txtNome = new RoundedTextBox();
             this.txtEmail = new RoundedTextBox();
             this.txtTurma = new RoundedTextBox();
             this.cbUsuario = new RoundedComboBox();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.dtpDataNasc = new RoundedDatePicker();
             this.txtConfirmSenha = new RoundedTextBox();
             this.mtxCPF = new RoundedMaskedTextBox();
@@ -89,7 +89,7 @@
             this.DataNascAst.BackColor = System.Drawing.Color.Transparent;
             this.DataNascAst.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DataNascAst.ForeColor = System.Drawing.Color.Red;
-            this.DataNascAst.Location = new System.Drawing.Point(190, 90);
+            this.DataNascAst.Location = new System.Drawing.Point(190, 88);
             this.DataNascAst.Name = "DataNascAst";
             this.DataNascAst.Size = new System.Drawing.Size(13, 17);
             this.DataNascAst.TabIndex = 80;
@@ -157,7 +157,7 @@
             this.lblSenha.AutoSize = true;
             this.lblSenha.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSenha.ForeColor = System.Drawing.Color.LightGray;
-            this.lblSenha.Location = new System.Drawing.Point(0, 180);
+            this.lblSenha.Location = new System.Drawing.Point(-4, 175);
             this.lblSenha.Name = "lblSenha";
             this.lblSenha.Size = new System.Drawing.Size(69, 25);
             this.lblSenha.TabIndex = 75;
@@ -171,7 +171,7 @@
             this.TelefoneAst.BackColor = System.Drawing.Color.Transparent;
             this.TelefoneAst.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TelefoneAst.ForeColor = System.Drawing.Color.Red;
-            this.TelefoneAst.Location = new System.Drawing.Point(292, 0);
+            this.TelefoneAst.Location = new System.Drawing.Point(83, 0);
             this.TelefoneAst.Name = "TelefoneAst";
             this.TelefoneAst.Size = new System.Drawing.Size(13, 17);
             this.TelefoneAst.TabIndex = 82;
@@ -196,7 +196,7 @@
             this.lblConfirmSenha.AutoSize = true;
             this.lblConfirmSenha.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblConfirmSenha.ForeColor = System.Drawing.Color.LightGray;
-            this.lblConfirmSenha.Location = new System.Drawing.Point(440, 180);
+            this.lblConfirmSenha.Location = new System.Drawing.Point(435, 175);
             this.lblConfirmSenha.Name = "lblConfirmSenha";
             this.lblConfirmSenha.Size = new System.Drawing.Size(159, 25);
             this.lblConfirmSenha.TabIndex = 76;
@@ -209,7 +209,7 @@
             this.lblTelefone.AutoSize = true;
             this.lblTelefone.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTelefone.ForeColor = System.Drawing.Color.LightGray;
-            this.lblTelefone.Location = new System.Drawing.Point(0, 0);
+            this.lblTelefone.Location = new System.Drawing.Point(-4, 0);
             this.lblTelefone.Name = "lblTelefone";
             this.lblTelefone.Size = new System.Drawing.Size(89, 25);
             this.lblTelefone.TabIndex = 74;
@@ -260,7 +260,7 @@
             this.lblCPF.AutoSize = true;
             this.lblCPF.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCPF.ForeColor = System.Drawing.Color.LightGray;
-            this.lblCPF.Location = new System.Drawing.Point(440, 0);
+            this.lblCPF.Location = new System.Drawing.Point(435, 0);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(50, 25);
             this.lblCPF.TabIndex = 70;
@@ -284,7 +284,7 @@
             this.chkMostrarSenha.AutoSize = true;
             this.chkMostrarSenha.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkMostrarSenha.ForeColor = System.Drawing.Color.LightGray;
-            this.chkMostrarSenha.Location = new System.Drawing.Point(0, 254);
+            this.chkMostrarSenha.Location = new System.Drawing.Point(0, 249);
             this.chkMostrarSenha.Name = "chkMostrarSenha";
             this.chkMostrarSenha.Size = new System.Drawing.Size(101, 19);
             this.chkMostrarSenha.TabIndex = 87;
@@ -312,7 +312,7 @@
             this.ConfirmSenhaAst.BackColor = System.Drawing.Color.Transparent;
             this.ConfirmSenhaAst.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ConfirmSenhaAst.ForeColor = System.Drawing.Color.Red;
-            this.ConfirmSenhaAst.Location = new System.Drawing.Point(596, 180);
+            this.ConfirmSenhaAst.Location = new System.Drawing.Point(596, 175);
             this.ConfirmSenhaAst.Name = "ConfirmSenhaAst";
             this.ConfirmSenhaAst.Size = new System.Drawing.Size(13, 17);
             this.ConfirmSenhaAst.TabIndex = 79;
@@ -324,7 +324,7 @@
             this.lblDataNasc.AutoSize = true;
             this.lblDataNasc.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDataNasc.ForeColor = System.Drawing.Color.LightGray;
-            this.lblDataNasc.Location = new System.Drawing.Point(0, 90);
+            this.lblDataNasc.Location = new System.Drawing.Point(-4, 88);
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
             this.lblDataNasc.TabIndex = 72;
@@ -337,7 +337,7 @@
             this.SenhaAst.BackColor = System.Drawing.Color.Transparent;
             this.SenhaAst.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SenhaAst.ForeColor = System.Drawing.Color.Red;
-            this.SenhaAst.Location = new System.Drawing.Point(66, 180);
+            this.SenhaAst.Location = new System.Drawing.Point(66, 175);
             this.SenhaAst.Name = "SenhaAst";
             this.SenhaAst.Size = new System.Drawing.Size(13, 17);
             this.SenhaAst.TabIndex = 78;
@@ -365,7 +365,7 @@
             this.btnLimpar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLimpar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnLimpar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnLimpar.Location = new System.Drawing.Point(504, 291);
+            this.btnLimpar.Location = new System.Drawing.Point(504, 288);
             this.btnLimpar.Name = "btnLimpar";
             this.btnLimpar.Size = new System.Drawing.Size(160, 48);
             this.btnLimpar.TabIndex = 89;
@@ -382,7 +382,7 @@
             this.btnCadastrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCadastrar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnCadastrar.ForeColor = System.Drawing.Color.White;
-            this.btnCadastrar.Location = new System.Drawing.Point(680, 291);
+            this.btnCadastrar.Location = new System.Drawing.Point(680, 288);
             this.btnCadastrar.Name = "btnCadastrar";
             this.btnCadastrar.Size = new System.Drawing.Size(160, 48);
             this.btnCadastrar.TabIndex = 10;
@@ -409,7 +409,7 @@
             this.lstSugestoesTurma.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.lstSugestoesTurma.FormattingEnabled = true;
             this.lstSugestoesTurma.ItemHeight = 25;
-            this.lstSugestoesTurma.Location = new System.Drawing.Point(220, 391);
+            this.lstSugestoesTurma.Location = new System.Drawing.Point(0, -13);
             this.lstSugestoesTurma.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.lstSugestoesTurma.Name = "lstSugestoesTurma";
             this.lstSugestoesTurma.ScrollAlwaysVisible = true;
@@ -426,7 +426,6 @@
             this.panel1.AutoScrollMargin = new System.Drawing.Size(1, 1);
             this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.lstSugestoesTurma);
             this.panel1.Controls.Add(this.EmailAst);
             this.panel1.Controls.Add(this.lblUsuario);
             this.panel1.Controls.Add(this.txtNome);
@@ -452,6 +451,32 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 980);
             this.panel1.TabIndex = 0;
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel2.Controls.Add(this.lstSugestoesTurma);
+            this.panel2.Controls.Add(this.dtpDataNasc);
+            this.panel2.Controls.Add(this.txtConfirmSenha);
+            this.panel2.Controls.Add(this.DataNascAst);
+            this.panel2.Controls.Add(this.btnLimpar);
+            this.panel2.Controls.Add(this.btnCadastrar);
+            this.panel2.Controls.Add(this.mtxCPF);
+            this.panel2.Controls.Add(this.lblSenha);
+            this.panel2.Controls.Add(this.mtxTelefone);
+            this.panel2.Controls.Add(this.txtSenha);
+            this.panel2.Controls.Add(this.lblConfirmSenha);
+            this.panel2.Controls.Add(this.SenhaAst);
+            this.panel2.Controls.Add(this.lblTelefone);
+            this.panel2.Controls.Add(this.lblDataNasc);
+            this.panel2.Controls.Add(this.lblCPF);
+            this.panel2.Controls.Add(this.ConfirmSenhaAst);
+            this.panel2.Controls.Add(this.chkMostrarSenha);
+            this.panel2.Controls.Add(this.TelefoneAst);
+            this.panel2.Location = new System.Drawing.Point(220, 405);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(840, 348);
+            this.panel2.TabIndex = 132;
             // 
             // txtNome
             // 
@@ -574,31 +599,6 @@
             this.cbUsuario.TabIndex = 1;
             this.cbUsuario.SelectedIndexChanged += new System.EventHandler(this.cbUsuario_SelectedIndexChanged);
             // 
-            // panel2
-            // 
-            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.panel2.Controls.Add(this.dtpDataNasc);
-            this.panel2.Controls.Add(this.txtConfirmSenha);
-            this.panel2.Controls.Add(this.DataNascAst);
-            this.panel2.Controls.Add(this.btnLimpar);
-            this.panel2.Controls.Add(this.btnCadastrar);
-            this.panel2.Controls.Add(this.mtxCPF);
-            this.panel2.Controls.Add(this.lblSenha);
-            this.panel2.Controls.Add(this.mtxTelefone);
-            this.panel2.Controls.Add(this.txtSenha);
-            this.panel2.Controls.Add(this.lblConfirmSenha);
-            this.panel2.Controls.Add(this.SenhaAst);
-            this.panel2.Controls.Add(this.lblTelefone);
-            this.panel2.Controls.Add(this.lblDataNasc);
-            this.panel2.Controls.Add(this.lblCPF);
-            this.panel2.Controls.Add(this.ConfirmSenhaAst);
-            this.panel2.Controls.Add(this.chkMostrarSenha);
-            this.panel2.Controls.Add(this.TelefoneAst);
-            this.panel2.Location = new System.Drawing.Point(220, 420);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(840, 380);
-            this.panel2.TabIndex = 132;
-            // 
             // dtpDataNasc
             // 
             this.dtpDataNasc.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -614,7 +614,7 @@
             this.dtpDataNasc.IconColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.dtpDataNasc.IconHoverAreaColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.dtpDataNasc.IconHoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.dtpDataNasc.Location = new System.Drawing.Point(0, 118);
+            this.dtpDataNasc.Location = new System.Drawing.Point(0, 116);
             this.dtpDataNasc.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
             this.dtpDataNasc.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             this.dtpDataNasc.Name = "dtpDataNasc";
@@ -641,7 +641,7 @@
             this.txtConfirmSenha.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtConfirmSenha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtConfirmSenha.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtConfirmSenha.Location = new System.Drawing.Point(440, 208);
+            this.txtConfirmSenha.Location = new System.Drawing.Point(440, 203);
             this.txtConfirmSenha.Name = "txtConfirmSenha";
             this.txtConfirmSenha.Padding = new System.Windows.Forms.Padding(7);
             this.txtConfirmSenha.PlaceholderColor = System.Drawing.Color.Gray;
@@ -713,7 +713,7 @@
             this.txtSenha.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSenha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtSenha.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtSenha.Location = new System.Drawing.Point(0, 208);
+            this.txtSenha.Location = new System.Drawing.Point(0, 203);
             this.txtSenha.Name = "txtSenha";
             this.txtSenha.Padding = new System.Windows.Forms.Padding(7);
             this.txtSenha.PlaceholderColor = System.Drawing.Color.Gray;
@@ -746,6 +746,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "InicioForm";
             this.Load += new System.EventHandler(this.CadUsuario_Load);
+            this.SizeChanged += new System.EventHandler(this.CadUsuario_SizeChanged);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

@@ -74,7 +74,7 @@ namespace SUB.Forms.Login
                 link.VisitedLinkColor = primaria;
             }
 
-            foreach (LinkLabel link in new[] { label4, label8, label9, label10 })
+            foreach (LinkLabel link in new[] { label4, label8, label9, })
             {
                 link.LinkColor = Color.FromArgb(43, 55, 69);
                 link.ActiveLinkColor = primaria;
@@ -109,7 +109,7 @@ namespace SUB.Forms.Login
             Bitmap iconeAnterior = _iconeGithubTema;
             _iconeGithubTema = novoIcone;
 
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus})
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo})
                 icone.Image = novoIcone;
 
             if (iconeAnterior != null)
@@ -170,7 +170,7 @@ namespace SUB.Forms.Login
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus})
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, })
                 icone.Image = null;
             if (_iconeGithubTema != null)
             {

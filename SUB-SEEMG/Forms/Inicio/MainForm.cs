@@ -41,7 +41,6 @@ namespace SUB.Forms.Inicio
         {
             InitializeComponent();
             mdiProp();
-            Icon = SystemIcons.Application;
 
             var configuracaoInstituicao = InstituicaoConfiguracaoStore.Carregar();
             if (configuracaoInstituicao != null)

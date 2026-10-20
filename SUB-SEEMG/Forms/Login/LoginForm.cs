@@ -34,7 +34,6 @@ namespace SUB.Forms.Login
         public LoginForm()
         {
             InitializeComponent();
-            Icon = SystemIcons.Application;
 
             //aredondar cantos e desenhar borda cinza
 

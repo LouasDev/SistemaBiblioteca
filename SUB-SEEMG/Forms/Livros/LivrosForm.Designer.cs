@@ -29,8 +29,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
             this.pnlResultados = new System.Windows.Forms.Panel();
             this.dgvLivros = new System.Windows.Forms.DataGridView();
             this.pnlFiltros = new System.Windows.Forms.Panel();
@@ -39,12 +40,12 @@
             this.mtxCodigoBarras = new RoundedTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtNome = new RoundedTextBox();
+            this.cbDisponibilidade = new RoundedComboBox();
             this.btnProcurar = new System.Windows.Forms.Button();
             this.cbFiltro = new RoundedComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.cbDisponibilidade = new RoundedComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.Titulo = new System.Windows.Forms.Label();
@@ -58,6 +59,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.pnlResultados);
             this.panel1.Controls.Add(this.pnlFiltros);
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
@@ -69,6 +71,15 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
             this.panel1.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(532, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(32, 15);
+            this.label4.TabIndex = 138;
+            this.label4.Text = "teste";
             // 
             // pnlResultados
             // 
@@ -88,14 +99,14 @@
             this.dgvLivros.AllowUserToDeleteRows = false;
             this.dgvLivros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLivros.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvLivros.ColumnHeadersHeight = 42;
             this.dgvLivros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLivros.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -206,6 +217,18 @@
             this.label2.TabIndex = 132;
             this.label2.Text = "Pesquisa:";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
+            this.label6.Location = new System.Drawing.Point(521, 87);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(150, 25);
+            this.label6.TabIndex = 126;
+            this.label6.Text = "Disponibilidade:";
+            // 
             // txtNome
             // 
             this.txtNome.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
@@ -233,6 +256,31 @@
             this.txtNome.TabIndex = 1;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
+            // 
+            // cbDisponibilidade
+            // 
+            this.cbDisponibilidade.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.cbDisponibilidade.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cbDisponibilidade.BorderRadius = 8;
+            this.cbDisponibilidade.BorderThickness = 1;
+            this.cbDisponibilidade.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbDisponibilidade.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbDisponibilidade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDisponibilidade.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbDisponibilidade.Font = new System.Drawing.Font("Segoe UI", 14.25F);
+            this.cbDisponibilidade.FormattingEnabled = true;
+            this.cbDisponibilidade.Items.AddRange(new object[] {
+            "Todos",
+            "Disponíveis",
+            "Indisponíveis"});
+            this.cbDisponibilidade.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
+            this.cbDisponibilidade.Location = new System.Drawing.Point(521, 116);
+            this.cbDisponibilidade.Name = "cbDisponibilidade";
+            this.cbDisponibilidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
+            this.cbDisponibilidade.PlaceholderMargin = 10;
+            this.cbDisponibilidade.PlaceholderText = "Filtre por disponibilidade...";
+            this.cbDisponibilidade.Size = new System.Drawing.Size(272, 34);
+            this.cbDisponibilidade.TabIndex = 4;
             // 
             // btnProcurar
             // 
@@ -286,43 +334,6 @@
             this.label1.Size = new System.Drawing.Size(114, 25);
             this.label1.TabIndex = 128;
             this.label1.Text = "Busque por:";
-            // 
-            // cbDisponibilidade
-            // 
-            this.cbDisponibilidade.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.cbDisponibilidade.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cbDisponibilidade.BorderRadius = 8;
-            this.cbDisponibilidade.BorderThickness = 1;
-            this.cbDisponibilidade.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbDisponibilidade.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-            this.cbDisponibilidade.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDisponibilidade.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbDisponibilidade.Font = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbDisponibilidade.FormattingEnabled = true;
-            this.cbDisponibilidade.Items.AddRange(new object[] {
-            "Todos",
-            "Disponíveis",
-            "Indisponíveis"});
-            this.cbDisponibilidade.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbDisponibilidade.Location = new System.Drawing.Point(521, 116);
-            this.cbDisponibilidade.Name = "cbDisponibilidade";
-            this.cbDisponibilidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
-            this.cbDisponibilidade.PlaceholderMargin = 10;
-            this.cbDisponibilidade.PlaceholderText = "Filtre por disponibilidade...";
-            this.cbDisponibilidade.Size = new System.Drawing.Size(272, 34);
-            this.cbDisponibilidade.TabIndex = 4;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label6.Location = new System.Drawing.Point(521, 87);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(150, 25);
-            this.label6.TabIndex = 126;
-            this.label6.Text = "Disponibilidade:";
             // 
             // pnlLinhaCabecalho
             // 
@@ -405,5 +416,6 @@
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
         private System.Windows.Forms.Panel pnlFiltros;
         private System.Windows.Forms.Panel pnlResultados;
+        private System.Windows.Forms.Label label4;
     }
 }

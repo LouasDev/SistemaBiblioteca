@@ -104,18 +104,36 @@ namespace SUB.Utils
                 !ColumnExists(connection, "usuarios", "Turma"))
                 return;
 
+            var conhecidas = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            using (var consulta = new SqlCeCommand("SELECT Nome FROM Turmas", connection))
+            using (var leitor = consulta.ExecuteReader())
+            {
+                while (leitor.Read())
+                {
+                    string nome = leitor.GetString(0).Trim();
+                    if (nome.Length > 0)
+                        conhecidas.Add(nome);
+                }
+            }
+
             var turmas = new System.Collections.Generic.List<string>();
             using (var consulta = new SqlCeCommand("SELECT DISTINCT Turma FROM usuarios WHERE Turma IS NOT NULL AND Turma <> ''", connection))
             using (var leitor = consulta.ExecuteReader())
             {
                 while (leitor.Read())
-                    turmas.Add(leitor.GetString(0).Trim());
+                {
+                    string turma = leitor.GetString(0).Trim();
+                    if (turma.Length > 0)
+                        turmas.Add(turma);
+                }
             }
 
             foreach (string turma in turmas)
             {
-                using (var inserir = new SqlCeCommand(
-                    "INSERT INTO Turmas (Nome) SELECT @nome WHERE NOT EXISTS (SELECT 1 FROM Turmas WHERE Nome = @nome)", connection))
+                if (!conhecidas.Add(turma))
+                    continue;
+
+                using (var inserir = new SqlCeCommand("INSERT INTO Turmas (Nome) VALUES (@nome)", connection))
                 {
                     inserir.Parameters.AddWithValue("@nome", turma);
                     inserir.ExecuteNonQuery();

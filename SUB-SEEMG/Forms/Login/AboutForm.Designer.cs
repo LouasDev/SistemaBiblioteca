@@ -32,15 +32,9 @@ namespace SUB.Forms.Login
             this.label8 = new System.Windows.Forms.LinkLabel();
             this.GitIthalo = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.LinkLabel();
-            this.GitMatheus = new System.Windows.Forms.PictureBox();
-            this.label10 = new System.Windows.Forms.LinkLabel();
             this.lblFuncaoRenato = new System.Windows.Forms.Label();
             this.lblFuncaoLuis = new System.Windows.Forms.Label();
             this.lblFuncaoIthalo = new System.Windows.Forms.Label();
-            this.lblFuncaoMatheus = new System.Windows.Forms.Label();
-            this.GitBryan = new System.Windows.Forms.PictureBox();
-            this.lblBryan = new System.Windows.Forms.Label();
-            this.lblFuncaoBryan = new System.Windows.Forms.Label();
             this.linhaRodape = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.linkRepositorio = new System.Windows.Forms.LinkLabel();
@@ -61,8 +55,6 @@ namespace SUB.Forms.Login
             ((System.ComponentModel.ISupportInitialize)(this.GitRenato)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitLuis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitIthalo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.GitMatheus)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.GitBryan)).BeginInit();
             this.pnlMarcaAbout.SuspendLayout();
             this.pnlLogoAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogoAbout)).BeginInit();
@@ -88,15 +80,9 @@ namespace SUB.Forms.Login
             this.panel5.Controls.Add(this.label8);
             this.panel5.Controls.Add(this.GitIthalo);
             this.panel5.Controls.Add(this.label9);
-            this.panel5.Controls.Add(this.GitMatheus);
-            this.panel5.Controls.Add(this.label10);
             this.panel5.Controls.Add(this.lblFuncaoRenato);
             this.panel5.Controls.Add(this.lblFuncaoLuis);
             this.panel5.Controls.Add(this.lblFuncaoIthalo);
-            this.panel5.Controls.Add(this.lblFuncaoMatheus);
-            this.panel5.Controls.Add(this.GitBryan);
-            this.panel5.Controls.Add(this.lblBryan);
-            this.panel5.Controls.Add(this.lblFuncaoBryan);
             this.panel5.Controls.Add(this.linhaRodape);
             this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.linkRepositorio);
@@ -126,7 +112,7 @@ namespace SUB.Forms.Login
             this.lblProdutoAbout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(86)))), ((int)(((byte)(102)))));
             this.lblProdutoAbout.Location = new System.Drawing.Point(39, 250);
             this.lblProdutoAbout.Name = "lblProdutoAbout";
-            this.lblProdutoAbout.Size = new System.Drawing.Size(366, 164);
+            this.lblProdutoAbout.Size = new System.Drawing.Size(366, 139);
             this.lblProdutoAbout.TabIndex = 3;
             this.lblProdutoAbout.Text = resources.GetString("lblProdutoAbout.Text");
             // 
@@ -147,7 +133,7 @@ namespace SUB.Forms.Login
             this.lblRecursos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(73)))), ((int)(((byte)(86)))), ((int)(((byte)(102)))));
             this.lblRecursos.Location = new System.Drawing.Point(39, 439);
             this.lblRecursos.Name = "lblRecursos";
-            this.lblRecursos.Size = new System.Drawing.Size(366, 75);
+            this.lblRecursos.Size = new System.Drawing.Size(276, 75);
             this.lblRecursos.TabIndex = 5;
             this.lblRecursos.Text = "• acervo, livros e consultas;\r\n• usuários, turmas e cadastros;\r\n• empréstimos, de" +
     "voluções e prorrogações;\r\n• relatórios e recursos de apoio à operação.";
@@ -188,7 +174,7 @@ namespace SUB.Forms.Login
             this.lblEquipeIntro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(104)))), ((int)(((byte)(120)))));
             this.lblEquipeIntro.Location = new System.Drawing.Point(463, 247);
             this.lblEquipeIntro.Name = "lblEquipeIntro";
-            this.lblEquipeIntro.Size = new System.Drawing.Size(342, 39);
+            this.lblEquipeIntro.Size = new System.Drawing.Size(342, 38);
             this.lblEquipeIntro.TabIndex = 7;
             this.lblEquipeIntro.Text = "Alunos responsáveis pelo sistema original e pela construção do SUB.";
             // 
@@ -196,7 +182,7 @@ namespace SUB.Forms.Login
             // 
             this.GitRenato.Cursor = System.Windows.Forms.Cursors.Hand;
             this.GitRenato.Image = global::SUB.Properties.Resources.icons8_github_30;
-            this.GitRenato.Location = new System.Drawing.Point(466, 301);
+            this.GitRenato.Location = new System.Drawing.Point(466, 323);
             this.GitRenato.Name = "GitRenato";
             this.GitRenato.Size = new System.Drawing.Size(22, 22);
             this.GitRenato.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -211,7 +197,7 @@ namespace SUB.Forms.Login
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
             this.label4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.label4.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.label4.Location = new System.Drawing.Point(498, 298);
+            this.label4.Location = new System.Drawing.Point(498, 320);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(111, 17);
             this.label4.TabIndex = 0;
@@ -224,7 +210,7 @@ namespace SUB.Forms.Login
             // 
             this.GitLuis.Cursor = System.Windows.Forms.Cursors.Hand;
             this.GitLuis.Image = global::SUB.Properties.Resources.icons8_github_30;
-            this.GitLuis.Location = new System.Drawing.Point(466, 345);
+            this.GitLuis.Location = new System.Drawing.Point(466, 367);
             this.GitLuis.Name = "GitLuis";
             this.GitLuis.Size = new System.Drawing.Size(22, 22);
             this.GitLuis.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -239,7 +225,7 @@ namespace SUB.Forms.Login
             this.label8.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
             this.label8.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.label8.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.label8.Location = new System.Drawing.Point(498, 342);
+            this.label8.Location = new System.Drawing.Point(498, 364);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(85, 17);
             this.label8.TabIndex = 1;
@@ -252,7 +238,7 @@ namespace SUB.Forms.Login
             // 
             this.GitIthalo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.GitIthalo.Image = global::SUB.Properties.Resources.icons8_github_30;
-            this.GitIthalo.Location = new System.Drawing.Point(466, 389);
+            this.GitIthalo.Location = new System.Drawing.Point(466, 411);
             this.GitIthalo.Name = "GitIthalo";
             this.GitIthalo.Size = new System.Drawing.Size(22, 22);
             this.GitIthalo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -267,7 +253,7 @@ namespace SUB.Forms.Login
             this.label9.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
             this.label9.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.label9.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.label9.Location = new System.Drawing.Point(498, 386);
+            this.label9.Location = new System.Drawing.Point(498, 408);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(100, 17);
             this.label9.TabIndex = 2;
@@ -276,40 +262,12 @@ namespace SUB.Forms.Login
             this.label9.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
             this.label9.Click += new System.EventHandler(this.GitIthalo_Click);
             // 
-            // GitMatheus
-            // 
-            this.GitMatheus.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitMatheus.Image = global::SUB.Properties.Resources.icons8_github_30;
-            this.GitMatheus.Location = new System.Drawing.Point(466, 433);
-            this.GitMatheus.Name = "GitMatheus";
-            this.GitMatheus.Size = new System.Drawing.Size(22, 22);
-            this.GitMatheus.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.GitMatheus.TabIndex = 13;
-            this.GitMatheus.TabStop = false;
-            this.GitMatheus.Click += new System.EventHandler(this.GitMatheus_Click);
-            // 
-            // label10
-            // 
-            this.label10.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(54)))), ((int)(((byte)(96)))));
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.label10.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.label10.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.label10.Location = new System.Drawing.Point(498, 430);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(100, 17);
-            this.label10.TabIndex = 3;
-            this.label10.TabStop = true;
-            this.label10.Text = "Matheus Felipe";
-            this.label10.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.label10.Click += new System.EventHandler(this.GitMatheus_Click);
-            // 
             // lblFuncaoRenato
             // 
             this.lblFuncaoRenato.AutoSize = true;
             this.lblFuncaoRenato.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lblFuncaoRenato.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(116)))), ((int)(((byte)(130)))));
-            this.lblFuncaoRenato.Location = new System.Drawing.Point(498, 316);
+            this.lblFuncaoRenato.Location = new System.Drawing.Point(498, 338);
             this.lblFuncaoRenato.Name = "lblFuncaoRenato";
             this.lblFuncaoRenato.Size = new System.Drawing.Size(215, 15);
             this.lblFuncaoRenato.TabIndex = 10;
@@ -320,7 +278,7 @@ namespace SUB.Forms.Login
             this.lblFuncaoLuis.AutoSize = true;
             this.lblFuncaoLuis.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lblFuncaoLuis.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(116)))), ((int)(((byte)(130)))));
-            this.lblFuncaoLuis.Location = new System.Drawing.Point(498, 360);
+            this.lblFuncaoLuis.Location = new System.Drawing.Point(498, 382);
             this.lblFuncaoLuis.Name = "lblFuncaoLuis";
             this.lblFuncaoLuis.Size = new System.Drawing.Size(215, 15);
             this.lblFuncaoLuis.TabIndex = 13;
@@ -331,55 +289,11 @@ namespace SUB.Forms.Login
             this.lblFuncaoIthalo.AutoSize = true;
             this.lblFuncaoIthalo.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.lblFuncaoIthalo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(116)))), ((int)(((byte)(130)))));
-            this.lblFuncaoIthalo.Location = new System.Drawing.Point(498, 404);
+            this.lblFuncaoIthalo.Location = new System.Drawing.Point(498, 426);
             this.lblFuncaoIthalo.Name = "lblFuncaoIthalo";
-            this.lblFuncaoIthalo.Size = new System.Drawing.Size(193, 15);
+            this.lblFuncaoIthalo.Size = new System.Drawing.Size(146, 15);
             this.lblFuncaoIthalo.TabIndex = 16;
-            this.lblFuncaoIthalo.Text = "Gestão e documentação do projeto";
-            // 
-            // lblFuncaoMatheus
-            // 
-            this.lblFuncaoMatheus.AutoSize = true;
-            this.lblFuncaoMatheus.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblFuncaoMatheus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(116)))), ((int)(((byte)(130)))));
-            this.lblFuncaoMatheus.Location = new System.Drawing.Point(498, 448);
-            this.lblFuncaoMatheus.Name = "lblFuncaoMatheus";
-            this.lblFuncaoMatheus.Size = new System.Drawing.Size(153, 15);
-            this.lblFuncaoMatheus.TabIndex = 19;
-            this.lblFuncaoMatheus.Text = "Back-end e banco de dados";
-            // 
-            // GitBryan
-            // 
-            this.GitBryan.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.GitBryan.Image = global::SUB.Properties.Resources.icons8_github_30;
-            this.GitBryan.Location = new System.Drawing.Point(466, 478);
-            this.GitBryan.Name = "GitBryan";
-            this.GitBryan.Size = new System.Drawing.Size(22, 22);
-            this.GitBryan.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.GitBryan.TabIndex = 22;
-            this.GitBryan.TabStop = false;
-            // 
-            // lblBryan
-            // 
-            this.lblBryan.AutoSize = true;
-            this.lblBryan.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
-            this.lblBryan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(55)))), ((int)(((byte)(69)))));
-            this.lblBryan.Location = new System.Drawing.Point(498, 474);
-            this.lblBryan.Name = "lblBryan";
-            this.lblBryan.Size = new System.Drawing.Size(100, 17);
-            this.lblBryan.TabIndex = 20;
-            this.lblBryan.Text = "Bryan Emanuel";
-            // 
-            // lblFuncaoBryan
-            // 
-            this.lblFuncaoBryan.AutoSize = true;
-            this.lblFuncaoBryan.Font = new System.Drawing.Font("Segoe UI", 8.5F);
-            this.lblFuncaoBryan.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(116)))), ((int)(((byte)(130)))));
-            this.lblFuncaoBryan.Location = new System.Drawing.Point(498, 492);
-            this.lblFuncaoBryan.Name = "lblFuncaoBryan";
-            this.lblFuncaoBryan.Size = new System.Drawing.Size(103, 15);
-            this.lblFuncaoBryan.TabIndex = 21;
-            this.lblFuncaoBryan.Text = "Testes e qualidade";
+            this.lblFuncaoIthalo.Text = "Documentação do projeto";
             // 
             // linhaRodape
             // 
@@ -544,6 +458,7 @@ namespace SUB.Forms.Login
             // 
             // picLogoSee
             // 
+            this.picLogoSee.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLogoSee.Image = global::SUB.Properties.Resources.SEEMG;
             this.picLogoSee.Location = new System.Drawing.Point(16, 7);
             this.picLogoSee.Name = "picLogoSee";
@@ -551,6 +466,7 @@ namespace SUB.Forms.Login
             this.picLogoSee.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogoSee.TabIndex = 0;
             this.picLogoSee.TabStop = false;
+            this.picLogoSee.Click += new System.EventHandler(this.picLogoSee_Click);
             // 
             // lblSee
             // 
@@ -614,8 +530,6 @@ namespace SUB.Forms.Login
             ((System.ComponentModel.ISupportInitialize)(this.GitRenato)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitLuis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.GitIthalo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.GitMatheus)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.GitBryan)).EndInit();
             this.pnlMarcaAbout.ResumeLayout(false);
             this.pnlMarcaAbout.PerformLayout();
             this.pnlLogoAbout.ResumeLayout(false);
@@ -654,15 +568,9 @@ namespace SUB.Forms.Login
         private System.Windows.Forms.LinkLabel label8;
         private System.Windows.Forms.PictureBox GitIthalo;
         private System.Windows.Forms.LinkLabel label9;
-        private System.Windows.Forms.PictureBox GitMatheus;
-        private System.Windows.Forms.LinkLabel label10;
         private System.Windows.Forms.Label lblFuncaoRenato;
         private System.Windows.Forms.Label lblFuncaoLuis;
         private System.Windows.Forms.Label lblFuncaoIthalo;
-        private System.Windows.Forms.Label lblFuncaoMatheus;
-        private System.Windows.Forms.PictureBox GitBryan;
-        private System.Windows.Forms.Label lblBryan;
-        private System.Windows.Forms.Label lblFuncaoBryan;
         private System.Windows.Forms.Panel linhaRodape;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.LinkLabel linkRepositorio;

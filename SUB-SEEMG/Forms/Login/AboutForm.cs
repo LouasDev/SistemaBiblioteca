@@ -109,7 +109,7 @@ namespace SUB.Forms.Login
             Bitmap iconeAnterior = _iconeGithubTema;
             _iconeGithubTema = novoIcone;
 
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus, GitBryan })
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus})
                 icone.Image = novoIcone;
 
             if (iconeAnterior != null)
@@ -170,7 +170,7 @@ namespace SUB.Forms.Login
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus, GitBryan })
+            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, GitMatheus})
                 icone.Image = null;
             if (_iconeGithubTema != null)
             {
@@ -251,6 +251,11 @@ namespace SUB.Forms.Login
                 MessageBox.Show("Não foi possível abrir o link: " + ex.Message,
                                 "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void picLogoSee_Click(object sender, EventArgs e)
+        {
+            OpenUrl("https://www.educacao.mg.gov.br/");
         }
     }
 }

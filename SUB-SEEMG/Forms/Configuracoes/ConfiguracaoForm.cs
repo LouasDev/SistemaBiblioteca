@@ -4,7 +4,10 @@ using SUB.Utils;
 using System;
 using System.Data.SqlServerCe;
 using System.Drawing;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SUB.Forms.Configuracoes
@@ -12,22 +15,21 @@ namespace SUB.Forms.Configuracoes
     public partial class ConfiguracaoForm : Form
     {
         private const int TamanhoMaximoNome = 150;
+        private const int TimeoutVerificacaoSegundos = 20;
+        private const int TimeoutDownloadSegundos = 600;
+        internal const int LimiteNotasCaracteres = 4000;
 
-        private TextBox txtNome;
-        private ComboBox cbTemas;
-        private Panel pnlCorPreview;
-        private Label lblCorHex;
-        private Button btnSalvar;
-        private Button btnCancelar;
         private Color corSelecionada = ThemeManager.DefaultColor;
         private string corOriginalHtml;
         private bool valoresCarregados;
 
+        private AtualizacaoManifesto manifestoDisponivel;
+        private CancellationTokenSource ctsDownload;
+        private bool downloadEmAndamento;
+
         public ConfiguracaoForm()
         {
             InitializeComponent();
-            ConstruirUi();
-            CarregarValoresAtuais();
         }
 
         protected override void OnShown(EventArgs e)
@@ -35,124 +37,24 @@ namespace SUB.Forms.Configuracoes
             base.OnShown(e);
 
             // Recarrega uma única vez já com o form parentado/tematizado pelo MDI.
-            // Protege contra o caso em que a carga do construtor ficou com valores vazios.
+            // Nenhum acesso a arquivo/banco acontece no construtor nem no InitializeComponent.
             if (!valoresCarregados)
                 CarregarValoresAtuais();
+
+            // OnShown dispara apenas na primeira exibição; a versão do executável
+            // não muda durante a vida do processo.
+            lblVersaoAtual.Text = "Versão atual: " + AtualizacaoService.VersaoAtual();
         }
 
-        private void ConstruirUi()
+        protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            Text = "Configurações";
-
-            var lblTitulo = new Label
-            {
-                Text = "Configurações da instituição",
-                Font = new Font("Segoe UI", 12F, FontStyle.Bold),
-                AutoSize = true,
-                Location = new Point(24, 20)
-            };
-
-            var lblNome = new Label
-            {
-                Text = "Nome da instituição:",
-                AutoSize = true,
-                Location = new Point(24, 64)
-            };
-
-            txtNome = new TextBox
-            {
-                Location = new Point(24, 88),
-                Size = new Size(360, 27),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
-                MaxLength = TamanhoMaximoNome
-            };
-
-            var lblCor = new Label
-            {
-                Text = "Cor principal da identidade visual:",
-                AutoSize = true,
-                Location = new Point(24, 128)
-            };
-
-            cbTemas = new ComboBox
-            {
-                Location = new Point(24, 152),
-                Size = new Size(240, 30),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-            cbTemas.SelectedIndexChanged += (s, e) =>
-            {
-                var preset = cbTemas.SelectedItem as ThemePreset;
-                if (preset != null)
-                {
-                    corSelecionada = preset.PrimaryColor;
-                    AtualizarPreviewCor();
-                }
-            };
-
-            pnlCorPreview = new Panel
-            {
-                Location = new Point(24, 196),
-                Size = new Size(180, 36),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left
-            };
-            pnlCorPreview.Paint += (s, e) =>
-            {
-                using (var fonte = new Font("Segoe UI", 10F, FontStyle.Bold))
-                using (var pincel = new SolidBrush(ThemeManager.GetContrastColor(corSelecionada)))
-                {
-                    const string texto = "Pré-visualização";
-                    SizeF medida = e.Graphics.MeasureString(texto, fonte);
-                    e.Graphics.DrawString(texto, fonte, pincel,
-                        (pnlCorPreview.Width - medida.Width) / 2f,
-                        (pnlCorPreview.Height - medida.Height) / 2f);
-                }
-            };
-
-            lblCorHex = new Label
-            {
-                AutoSize = true,
-                Location = new Point(216, 205),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                Text = ""
-            };
-
-            btnSalvar = new Button
-            {
-                Name = "btnSalvar",
-                Text = "Salvar",
-                Location = new Point(520, 380),
-                Size = new Size(100, 36),
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                FlatStyle = FlatStyle.Flat
-            };
-            btnSalvar.Click += btnSalvar_Click;
-
-            btnCancelar = new Button
-            {
-                Name = "btnCancelar",
-                Text = "Cancelar",
-                DialogResult = DialogResult.Cancel,
-                Location = new Point(630, 380),
-                Size = new Size(100, 36),
-                Anchor = AnchorStyles.Bottom | AnchorStyles.Right,
-                FlatStyle = FlatStyle.Flat
-            };
-            btnCancelar.Click += (s, e) => Close();
-
-            CancelButton = btnCancelar;
-
-            Controls.Add(lblTitulo);
-            Controls.Add(lblNome);
-            Controls.Add(txtNome);
-            Controls.Add(lblCor);
-            Controls.Add(cbTemas);
-            Controls.Add(pnlCorPreview);
-            Controls.Add(lblCorHex);
-            Controls.Add(btnSalvar);
-            Controls.Add(btnCancelar);
+            // Cancela o download em andamento de forma segura (o serviço apaga o .part).
+            // Também cobre o fechamento do MainForm no logout, que fecha os filhos MDI.
+            CancelarDownloadSeNecessario();
+            base.OnFormClosing(e);
         }
+
+        #region Instituição (nome e cor)
 
         private void CarregarValoresAtuais()
         {
@@ -215,6 +117,29 @@ namespace SUB.Forms.Configuracoes
             valoresCarregados = true;
         }
 
+        private void cbTemas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var preset = cbTemas.SelectedItem as ThemePreset;
+            if (preset != null)
+            {
+                corSelecionada = preset.PrimaryColor;
+                AtualizarPreviewCor();
+            }
+        }
+
+        private void pnlCorPreview_Paint(object sender, PaintEventArgs e)
+        {
+            using (var fonte = new Font("Segoe UI", 10F, FontStyle.Bold))
+            using (var pincel = new SolidBrush(ThemeManager.GetContrastColor(corSelecionada)))
+            {
+                const string texto = "Pré-visualização";
+                SizeF medida = e.Graphics.MeasureString(texto, fonte);
+                e.Graphics.DrawString(texto, fonte, pincel,
+                    (pnlCorPreview.Width - medida.Width) / 2f,
+                    (pnlCorPreview.Height - medida.Height) / 2f);
+            }
+        }
+
         private void AtualizarPreviewCor()
         {
             pnlCorPreview.BackColor = corSelecionada;
@@ -222,7 +147,7 @@ namespace SUB.Forms.Configuracoes
             pnlCorPreview.Invalidate();
         }
 
-        private bool ConfirmarSenhaUsuarioLogado()
+        private bool ConfirmarSenhaUsuarioLogado(string mensagem = "Digite sua senha para confirmar a alteração:")
         {
             if (!Sessao.UsuarioAutenticado)
             {
@@ -234,7 +159,7 @@ namespace SUB.Forms.Configuracoes
             using (var passwordForm = new PasswordForm())
             {
                 passwordForm.Titulo = "Confirmação de senha";
-                passwordForm.Mensagem = "Digite sua senha para confirmar a alteração:";
+                passwordForm.Mensagem = mensagem;
                 if (passwordForm.ShowDialog(this) != DialogResult.OK)
                     return false;
 
@@ -377,5 +302,312 @@ namespace SUB.Forms.Configuracoes
             Close();
             EventosGlobais.OnConfiguracaoSalva();
         }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        #endregion
+
+        #region Atualização
+
+        private async void btnVerificar_Click(object sender, EventArgs e)
+        {
+            if (downloadEmAndamento)
+                return;
+
+            manifestoDisponivel = null;
+            btnAtualizar.Visible = false;
+            txtNotasVersao.Text = string.Empty;
+
+            DefinirModoOperacao(true);
+            pbVerificando.Visible = true;
+            lblStatusAtualizacao.Text = "Verificando atualizações...";
+
+            try
+            {
+                ResultadoVerificacaoAtualizacao resultado =
+                    await AtualizacaoService.VerificarAsync(null, TimeoutVerificacaoSegundos);
+
+                if (IsDisposed)
+                    return;
+
+                if (resultado.Sucesso && resultado.AtualizacaoDisponivel)
+                {
+                    manifestoDisponivel = resultado.Manifesto;
+                    lblStatusAtualizacao.Text = MontarMensagemVersaoNova(resultado);
+                    txtNotasVersao.Text = TruncarNotas(resultado.Manifesto.Notas);
+                    btnAtualizar.Visible = true;
+                }
+                else
+                {
+                    lblStatusAtualizacao.Text = resultado.Mensagem;
+                    RegistrarLog("verificar: " + resultado.Mensagem);
+                }
+            }
+            catch (Exception ex)
+            {
+                RegistrarLog("verificar: " + ex.Message + " | " + ex.StackTrace);
+                if (!IsDisposed)
+                    lblStatusAtualizacao.Text = "Não foi possível verificar atualizações. Tente novamente.";
+            }
+            finally
+            {
+                if (!IsDisposed)
+                {
+                    pbVerificando.Visible = false;
+                    DefinirModoOperacao(false);
+                }
+            }
+        }
+
+        private async void btnAtualizar_Click(object sender, EventArgs e)
+        {
+            if (downloadEmAndamento)
+                return;
+
+            if (manifestoDisponivel == null)
+            {
+                MessageBox.Show(
+                    "Nenhuma versão nova foi identificada. Clique em Verificar atualizações primeiro.",
+                    "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!ConfirmarSenhaUsuarioLogado("Digite sua senha para confirmar a atualização do SUB:"))
+                return;
+
+            var confirmacao = MessageBox.Show(
+                "O SUB será fechado e abrirá sozinho para aplicar a versão " +
+                manifestoDisponivel.Versao + ".\n\n" +
+                "Os dados (banco e configurações) serão preservados com backup automático.\n\n" +
+                "Deseja continuar?",
+                "Atualização", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirmacao != DialogResult.Yes)
+                return;
+
+            if (!AtualizacaoAplicador.PastaInstalacaoGravavel())
+            {
+                MessageBox.Show(
+                    "A pasta do programa não permite gravação. A atualização não pode ser aplicada aqui.",
+                    "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!File.Exists(AtualizacaoAplicador.CaminhoUpdaterInstalado))
+            {
+                MessageBox.Show(
+                    "O atualizador (SUB-UPDATER.exe) não foi encontrado na pasta do programa.",
+                    "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            downloadEmAndamento = true;
+            DefinirModoOperacao(true);
+            btnAtualizar.Visible = false;
+            btnCancelarDownload.Visible = true;
+            btnCancelarDownload.Enabled = true;
+            pbDownload.Visible = true;
+            pbDownload.Style = ProgressBarStyle.Marquee;
+            pbDownload.Value = 0;
+            lblStatusAtualizacao.Text = "Baixando a atualização...";
+
+            ctsDownload = new CancellationTokenSource();
+            var progresso = new Progress<ProgressoDownload>(p =>
+            {
+                if (IsDisposed)
+                    return;
+
+                int percentual = CalcularPercentual(p.BytesBaixados, p.TotalBytes);
+                if (pbDownload.Style != ProgressBarStyle.Blocks)
+                    pbDownload.Style = ProgressBarStyle.Blocks;
+                pbDownload.Value = percentual;
+                lblStatusAtualizacao.Text = "Baixando a atualização... " + percentual + "%";
+            });
+
+            try
+            {
+                ResultadoDownloadPacote resultado = await AtualizacaoService.BaixarPacoteAsync(
+                    manifestoDisponivel, progresso, ctsDownload.Token, TimeoutDownloadSegundos);
+
+                if (IsDisposed)
+                    return;
+
+                if (resultado.Cancelado)
+                {
+                    lblStatusAtualizacao.Text = "Download cancelado. Nada foi aplicado.";
+                    return;
+                }
+
+                if (!resultado.Sucesso)
+                {
+                    RegistrarLog("download: " + resultado.Mensagem);
+                    lblStatusAtualizacao.Text = resultado.Mensagem;
+                    return;
+                }
+
+                pbDownload.Style = ProgressBarStyle.Blocks;
+                pbDownload.Value = 100;
+                lblStatusAtualizacao.Text = "Validando o pacote baixado...";
+
+                // Revalida tamanho e SHA-256 do arquivo em disco antes de aplicar.
+                string erro = AtualizacaoAplicador.ValidarPacoteParaAplicar(
+                    resultado.CaminhoArquivo, manifestoDisponivel);
+                if (erro != null)
+                {
+                    MessageBox.Show(erro, "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblStatusAtualizacao.Text = "O pacote baixado não pôde ser aplicado.";
+                    return;
+                }
+
+                lblStatusAtualizacao.Text = "Fazendo backup dos dados...";
+                erro = AtualizacaoAplicador.FazerBackupDados();
+                if (erro != null)
+                {
+                    MessageBox.Show(erro + "\n\nA atualização não será aplicada sem backup.",
+                        "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblStatusAtualizacao.Text = "Falha no backup dos dados. Atualização não aplicada.";
+                    return;
+                }
+
+                var aplicar = MessageBox.Show(
+                    "Download e backup concluídos.\n\nO SUB fechará agora e reabrirá sozinho na versão " +
+                    manifestoDisponivel.Versao + ".\n\nDeseja aplicar a atualização agora?",
+                    "Atualização", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (aplicar != DialogResult.Yes)
+                {
+                    lblStatusAtualizacao.Text =
+                        "Atualização não aplicada. O pacote continua disponível para aplicar depois.";
+                    btnAtualizar.Visible = true;
+                    return;
+                }
+
+                erro = AtualizacaoAplicador.IniciarUpdater(manifestoDisponivel, resultado.CaminhoArquivo);
+                if (erro != null)
+                {
+                    MessageBox.Show(erro, "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblStatusAtualizacao.Text = "Falha ao iniciar o atualizador.";
+                    btnAtualizar.Visible = true;
+                    return;
+                }
+
+                lblStatusAtualizacao.Text = "Atualização em andamento. O SUB fechará em instantes...";
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                RegistrarLog("atualizar: " + ex.Message + " | " + ex.StackTrace);
+                if (!IsDisposed)
+                {
+                    MessageBox.Show("Falha inesperada durante a atualização. Tente novamente.",
+                        "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    lblStatusAtualizacao.Text = "Falha inesperada durante a atualização.";
+                    btnAtualizar.Visible = manifestoDisponivel != null;
+                }
+            }
+            finally
+            {
+                if (ctsDownload != null)
+                {
+                    ctsDownload.Dispose();
+                    ctsDownload = null;
+                }
+
+                downloadEmAndamento = false;
+
+                if (!IsDisposed)
+                {
+                    pbDownload.Visible = false;
+                    pbDownload.Style = ProgressBarStyle.Blocks;
+                    pbDownload.Value = 0;
+                    btnCancelarDownload.Visible = false;
+                    btnCancelarDownload.Enabled = true;
+                    DefinirModoOperacao(false);
+                }
+            }
+        }
+
+        private void btnCancelarDownload_Click(object sender, EventArgs e)
+        {
+            if (!downloadEmAndamento || ctsDownload == null)
+                return;
+
+            btnCancelarDownload.Enabled = false;
+            lblStatusAtualizacao.Text = "Cancelando o download...";
+            CancelarDownloadSeNecessario();
+        }
+
+        private void CancelarDownloadSeNecessario()
+        {
+            try
+            {
+                if (ctsDownload != null)
+                    ctsDownload.Cancel();
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+
+        private void DefinirModoOperacao(bool ocupado)
+        {
+            btnVerificar.Enabled = !ocupado;
+            btnAtualizar.Enabled = !ocupado;
+            btnSalvar.Enabled = !ocupado;
+            txtNome.Enabled = !ocupado;
+            cbTemas.Enabled = !ocupado;
+        }
+
+        internal static string MontarMensagemVersaoNova(ResultadoVerificacaoAtualizacao resultado)
+        {
+            var manifesto = resultado != null ? resultado.Manifesto : null;
+            if (manifesto == null)
+                return "Nova versão disponível.";
+
+            var mensagem = "Nova versão disponível: " + (manifesto.Versao ?? "?").Trim() + ".";
+            if (!string.IsNullOrWhiteSpace(manifesto.Data))
+                mensagem += " Publicada em " + manifesto.Data.Trim() + ".";
+            return mensagem;
+        }
+
+        internal static string TruncarNotas(string notas)
+        {
+            if (string.IsNullOrEmpty(notas))
+                return string.Empty;
+
+            if (notas.Length > LimiteNotasCaracteres)
+                return notas.Substring(0, LimiteNotasCaracteres) + Environment.NewLine + "[notas truncadas]";
+
+            return notas;
+        }
+
+        internal static int CalcularPercentual(long baixados, long total)
+        {
+            if (total <= 0 || baixados <= 0)
+                return 0;
+            if (baixados >= total)
+                return 100;
+            return (int)(baixados * 100L / total);
+        }
+
+        private void RegistrarLog(string mensagem)
+        {
+            try
+            {
+                var pasta = Path.Combine(Application.StartupPath, "logs");
+                Directory.CreateDirectory(pasta);
+                File.AppendAllText(
+                    Path.Combine(pasta, "configuracao_atualizacao.log"),
+                    DateTime.Now + " - " + mensagem + Environment.NewLine);
+            }
+            catch
+            {
+                // log é melhor esforço; nunca derruba a interface
+            }
+        }
+
+        #endregion
+
     }
 }

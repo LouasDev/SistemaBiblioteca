@@ -30,6 +30,12 @@ namespace SUB.Utils
         private const string ChavePublicaAssinaturaXml =
             "<RSAKeyValue><Modulus>sRFREn6nY1ybpGJgg6uSw1w1/SDxlX4ffVlte1AyLIo4WQvTbLjqaFOCJM4lut9AHRrfnJ4GL+4jXacX4dObBAXFGdt8aUfvQc2JzlxhRMwr7Y4aupSGWo1bfagVMSkbVP5dgiARoM64lY5Bkeckf47+srP+j28PSha+aZnk8UE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
 
+        // Uso exclusivo de testes automatizados (harness da Etapa D): quando preenchido,
+        // VerificarAsync consulta esta URL em vez do App.config. Nulo em produção.
+#pragma warning disable 0649
+        internal static string UrlManifestoOverrideParaTestes;
+#pragma warning restore 0649
+
         private static readonly HttpClient http;
         private static readonly HttpClient httpDownload;
 
@@ -58,6 +64,9 @@ namespace SUB.Utils
                 Mensagem = string.Empty
             };
 
+            if (string.IsNullOrWhiteSpace(urlManifesto) && !string.IsNullOrWhiteSpace(UrlManifestoOverrideParaTestes))
+                urlManifesto = UrlManifestoOverrideParaTestes.Trim();
+
             urlManifesto = string.IsNullOrWhiteSpace(urlManifesto) ? UrlManifestoConfigurada : urlManifesto.Trim();
 
             if (string.IsNullOrEmpty(urlManifesto))
@@ -76,9 +85,25 @@ namespace SUB.Utils
                     {
                         if (!resposta.IsSuccessStatusCode)
                         {
-                            resultado.Mensagem = string.Format(
-                                "Não foi possível obter o manifesto de atualização (HTTP {0}).",
-                                (int)resposta.StatusCode);
+                            int codigo = (int)resposta.StatusCode;
+                            if (codigo == 404)
+                            {
+                                resultado.Mensagem =
+                                    "O servidor de atualizações não possui uma versão publicada no momento " +
+                                    "(HTTP 404). Tente novamente mais tarde.";
+                            }
+                            else if (codigo == 403)
+                            {
+                                resultado.Mensagem =
+                                    "O servidor de atualizações recusou a consulta (HTTP 403). " +
+                                    "Tente novamente mais tarde.";
+                            }
+                            else
+                            {
+                                resultado.Mensagem = string.Format(
+                                    "Não foi possível obter o manifesto de atualização (HTTP {0}).",
+                                    codigo);
+                            }
                             return resultado;
                         }
 

@@ -1,6 +1,8 @@
-﻿using SUB.Models;
+﻿using SUB.Forms.Usuario;
+using SUB.Models;
 using SUB.Utils;
 using System;
+using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -12,18 +14,30 @@ namespace SUB.Forms.Configuracoes
         private const int TamanhoMaximoNome = 150;
 
         private TextBox txtNome;
+        private ComboBox cbTemas;
         private Panel pnlCorPreview;
         private Label lblCorHex;
-        private Button btnEscolherCor;
         private Button btnSalvar;
         private Button btnCancelar;
         private Color corSelecionada = ThemeManager.DefaultColor;
+        private string corOriginalHtml;
+        private bool valoresCarregados;
 
         public ConfiguracaoForm()
         {
             InitializeComponent();
             ConstruirUi();
             CarregarValoresAtuais();
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+
+            // Recarrega uma única vez já com o form parentado/tematizado pelo MDI.
+            // Protege contra o caso em que a carga do construtor ficou com valores vazios.
+            if (!valoresCarregados)
+                CarregarValoresAtuais();
         }
 
         private void ConstruirUi()
@@ -60,9 +74,26 @@ namespace SUB.Forms.Configuracoes
                 Location = new Point(24, 128)
             };
 
-            pnlCorPreview = new Panel
+            cbTemas = new ComboBox
             {
                 Location = new Point(24, 152),
+                Size = new Size(240, 30),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            cbTemas.SelectedIndexChanged += (s, e) =>
+            {
+                var preset = cbTemas.SelectedItem as ThemePreset;
+                if (preset != null)
+                {
+                    corSelecionada = preset.PrimaryColor;
+                    AtualizarPreviewCor();
+                }
+            };
+
+            pnlCorPreview = new Panel
+            {
+                Location = new Point(24, 196),
                 Size = new Size(180, 36),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left
             };
@@ -79,20 +110,10 @@ namespace SUB.Forms.Configuracoes
                 }
             };
 
-            btnEscolherCor = new Button
-            {
-                Text = "Escolher cor...",
-                Location = new Point(216, 152),
-                Size = new Size(120, 36),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left,
-                FlatStyle = FlatStyle.Flat
-            };
-            btnEscolherCor.Click += btnEscolherCor_Click;
-
             lblCorHex = new Label
             {
                 AutoSize = true,
-                Location = new Point(348, 161),
+                Location = new Point(216, 205),
                 Anchor = AnchorStyles.Top | AnchorStyles.Left,
                 Text = ""
             };
@@ -126,8 +147,8 @@ namespace SUB.Forms.Configuracoes
             Controls.Add(lblNome);
             Controls.Add(txtNome);
             Controls.Add(lblCor);
+            Controls.Add(cbTemas);
             Controls.Add(pnlCorPreview);
-            Controls.Add(btnEscolherCor);
             Controls.Add(lblCorHex);
             Controls.Add(btnSalvar);
             Controls.Add(btnCancelar);
@@ -146,40 +167,52 @@ namespace SUB.Forms.Configuracoes
                 // (não sobrescreve um arquivo possivelmente recuperável).
             }
 
-            if (configuracao != null)
-            {
-                txtNome.Text = configuracao.Nome ?? string.Empty;
+            txtNome.Text = configuracao != null ? (configuracao.Nome ?? string.Empty) : string.Empty;
+            corOriginalHtml = configuracao != null ? configuracao.CorPrimaria : null;
 
-                if (!string.IsNullOrWhiteSpace(configuracao.CorPrimaria))
+            corSelecionada = ThemeManager.DefaultColor;
+            if (!string.IsNullOrWhiteSpace(corOriginalHtml))
+            {
+                try
                 {
-                    try
-                    {
-                        Color cor = ColorTranslator.FromHtml(configuracao.CorPrimaria);
-                        if (!cor.IsEmpty)
-                            corSelecionada = cor;
-                    }
-                    catch
-                    {
-                        // cor inválida no arquivo: mantém a padrão
-                    }
+                    Color cor = ColorTranslator.FromHtml(corOriginalHtml);
+                    if (!cor.IsEmpty)
+                        corSelecionada = cor;
+                }
+                catch
+                {
+                    // cor inválida no arquivo: mantém a padrão
                 }
             }
 
+            // Cores predefinidas — mesma lista usada no PrimeiroUsoForm (fonte única: ThemeManager.Presets).
+            cbTemas.Items.Clear();
+            foreach (ThemePreset preset in ThemeManager.Presets)
+                cbTemas.Items.Add(preset);
+
+            ThemePreset selecionado = null;
+            foreach (ThemePreset preset in ThemeManager.Presets)
+            {
+                if (string.Equals(ColorTranslator.ToHtml(preset.PrimaryColor),
+                        ColorTranslator.ToHtml(corSelecionada), StringComparison.OrdinalIgnoreCase))
+                {
+                    selecionado = preset;
+                    break;
+                }
+            }
+
+            if (selecionado == null)
+            {
+                // Config salva antes desta mudança (cor personalizada):
+                // exibe como "Atual (personalizada)" e não permite criar novas.
+                selecionado = new ThemePreset("Atual (personalizada)",
+                    corSelecionada, corSelecionada, corSelecionada);
+                cbTemas.Items.Add(selecionado);
+            }
+
+            cbTemas.SelectedItem = selecionado;
             AtualizarPreviewCor();
-        }
-
-        private void btnEscolherCor_Click(object sender, EventArgs e)
-        {
-            using (var dialog = new ColorDialog())
-            {
-                dialog.Color = corSelecionada;
-                dialog.FullOpen = true;
-                if (dialog.ShowDialog(this) == DialogResult.OK)
-                {
-                    corSelecionada = dialog.Color;
-                    AtualizarPreviewCor();
-                }
-            }
+            valoresCarregados = true;
         }
 
         private void AtualizarPreviewCor()
@@ -187,6 +220,55 @@ namespace SUB.Forms.Configuracoes
             pnlCorPreview.BackColor = corSelecionada;
             lblCorHex.Text = ColorTranslator.ToHtml(corSelecionada);
             pnlCorPreview.Invalidate();
+        }
+
+        private bool ConfirmarSenhaUsuarioLogado()
+        {
+            if (!Sessao.UsuarioAutenticado)
+            {
+                MessageBox.Show("Nenhum usuário está logado.", "Configurações",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            using (var passwordForm = new PasswordForm())
+            {
+                passwordForm.Titulo = "Confirmação de senha";
+                passwordForm.Mensagem = "Digite sua senha para confirmar a alteração:";
+                if (passwordForm.ShowDialog(this) != DialogResult.OK)
+                    return false;
+
+                try
+                {
+                    using (var conexao = Conexao.ObterConexao())
+                    {
+                        conexao.Open();
+                        using (var comando = new SqlCeCommand(
+                            "SELECT Senha_Hash, Senha_Salt FROM usuarios WHERE Id = @id", conexao))
+                        {
+                            comando.Parameters.AddWithValue("@id", Sessao.UsuarioId.Value);
+                            using (var leitor = comando.ExecuteReader())
+                            {
+                                if (leitor.Read() && CriptografiaSenha.VerificarSenha(
+                                        passwordForm.SenhaDigitada,
+                                        leitor["Senha_Hash"].ToString(),
+                                        leitor["Senha_Salt"].ToString()))
+                                    return true;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao verificar a senha: " + ex.Message, "Configurações",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
+            MessageBox.Show("Senha incorreta. Nada foi salvo.", "Configurações",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return false;
         }
 
         private void btnSalvar_Click(object sender, EventArgs e)
@@ -217,6 +299,43 @@ namespace SUB.Forms.Configuracoes
                 return;
             }
 
+            ThemePreset presetSelecionado = cbTemas.SelectedItem as ThemePreset;
+            if (presetSelecionado == null)
+            {
+                MessageBox.Show("Selecione uma das cores predefinidas.", "Validação",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // A cor salva só pode ser: uma das predefinidas, ou a cor atual já gravada
+            // (entrada "Atual (personalizada)"). Nenhum outro valor é aceito.
+            bool ehPredefinida = ThemeManager.Presets.Contains(presetSelecionado);
+            string corHtml;
+            if (ehPredefinida)
+            {
+                corHtml = ColorTranslator.ToHtml(presetSelecionado.PrimaryColor);
+            }
+            else
+            {
+                bool corIgualAAtual =
+                    string.Equals(ColorTranslator.ToHtml(corSelecionada),
+                        ColorTranslator.ToHtml(ThemeManager.Normalize(
+                            string.IsNullOrWhiteSpace(corOriginalHtml)
+                                ? ThemeManager.DefaultColor
+                                : ColorTranslator.FromHtml(corOriginalHtml))),
+                        StringComparison.OrdinalIgnoreCase);
+                if (!corIgualAAtual)
+                {
+                    MessageBox.Show("Selecione uma das cores predefinidas.", "Validação",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                corHtml = corOriginalHtml;
+            }
+
+            if (!ConfirmarSenhaUsuarioLogado())
+                return;
+
             InstituicaoConfiguracao configuracao;
             try
             {
@@ -237,7 +356,7 @@ namespace SUB.Forms.Configuracoes
             // Carregar devolve o objeto completo (inclui CodigoMestreHash/Salt);
             // alteramos somente os campos editáveis.
             configuracao.Nome = nome;
-            configuracao.CorPrimaria = ColorTranslator.ToHtml(corSelecionada);
+            configuracao.CorPrimaria = corHtml;
 
             try
             {
@@ -250,10 +369,13 @@ namespace SUB.Forms.Configuracoes
                 return;
             }
 
-            EventosGlobais.OnConfiguracaoSalva();
             MessageBox.Show("Configurações salvas com sucesso.", "Configurações",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Fecha antes de avisar o MainForm: o FormClosed zera o campo no MainForm
+            // e o evento então abre o dashboard sem depender deste form.
             Close();
+            EventosGlobais.OnConfiguracaoSalva();
         }
     }
 }

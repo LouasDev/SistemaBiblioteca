@@ -1051,12 +1051,32 @@ namespace SUB.Forms.Inicio
 
         private void btnConfiguracao_Click(object sender, EventArgs e)
         {
+            // Os outros handlers desabilitam o próprio botão e reabilitam os demais;
+            // sem isto, o botão do grupo ativo (ex.: Início) fica morto ao voltar.
+            ReabilitarBotoesDeNavegacao();
+
             if (configuracao == null || configuracao.IsDisposed)
             {
                 configuracao = new ConfiguracaoForm();
                 configuracao.FormClosed += Configuracao_FormClosed;
             }
             OpenChild(configuracao, keepPreviousHidden: true);
+        }
+
+        private void ReabilitarBotoesDeNavegacao()
+        {
+            btnInicio.Enabled = true;
+            btnUsuario.Enabled = true;
+            btnLivro.Enabled = true;
+            btnRel.Enabled = true;
+            btnLivros.Enabled = true;
+            btnEmprestimo.Enabled = true;
+            btnEmprestimoRap.Enabled = true;
+            btnLivroCad.Enabled = true;
+            btnDev.Enabled = true;
+            btnUser.Enabled = true;
+            btnUserCad.Enabled = true;
+            btnUserEdit.Enabled = true;
         }
 
         private void Configuracao_FormClosed(object sender, FormClosedEventArgs e)
@@ -1071,11 +1091,23 @@ namespace SUB.Forms.Inicio
 
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(ReaplicarConfiguracao));
+                BeginInvoke(new Action(ReaplicarConfiguracaoEDashboard));
                 return;
             }
 
+            ReaplicarConfiguracaoEDashboard();
+        }
+
+        private void ReaplicarConfiguracaoEDashboard()
+        {
             ReaplicarConfiguracao();
+
+            // Após salvar, o ConfiguracaoForm já foi fechado (evento disparado
+            // depois do Close): abre o dashboard e marca Início como ativo,
+            // evitando o MDI em branco.
+            ReabilitarBotoesDeNavegacao();
+            btnIn();
+            DefinirNavegacaoAtiva(btnInicio);
         }
 
         private void ReaplicarConfiguracao()

@@ -317,8 +317,15 @@ namespace SUB.Utils
             if (ehLoopback && uri.Scheme == Uri.UriSchemeHttp)
                 return true;
 
-            return uri.Scheme == Uri.UriSchemeHttps &&
-                   Array.Exists(hostsPermitidos, h => string.Equals(uri.Host, h, StringComparison.OrdinalIgnoreCase));
+            if (uri.Scheme != Uri.UriSchemeHttps ||
+                !Array.Exists(hostsPermitidos, h => string.Equals(uri.Host, h, StringComparison.OrdinalIgnoreCase)))
+                return false;
+
+            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase) &&
+                !uri.AbsolutePath.StartsWith("/LouasDev/SUB-Releases/", StringComparison.OrdinalIgnoreCase))
+                return false;
+
+            return true;
         }
 
         internal static bool EspacoSuficiente(string caminhoDiretorio, long tamanhoNecessario)
@@ -346,7 +353,7 @@ namespace SUB.Utils
             }
         }
 
-        private static string CalcularSha256(string caminho)
+        internal static string CalcularSha256(string caminho)
         {
             using (var sha = SHA256.Create())
             using (var fs = new FileStream(caminho, FileMode.Open, FileAccess.Read, FileShare.Read, 81920, true))

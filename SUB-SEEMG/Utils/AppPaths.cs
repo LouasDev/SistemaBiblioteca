@@ -11,6 +11,8 @@ namespace SUB.Utils
 
         public static string MappingFolder => Path.Combine(AppDataFolder, "mapeamentoanual");
         public static string ReportsFolder => Path.Combine(AppDataFolder, "Relatorios");
+        public static string UpdateFolder => Path.Combine(AppDataFolder, "update");
+        public static string BackupsFolder => Path.Combine(AppDataFolder, "backups");
 
         public static void EnsureFolders()
         {

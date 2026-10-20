@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SUB", "SUB.csproj", "{28C4DDEA-32BF-489F-98D9-7FA574C3C5F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SUB-UPDATER", "SUB-UPDATER\SUB-UPDATER.csproj", "{9B4E8F52-6C31-4E7A-9D28-1F3A5C7B0D64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		1.0|Any CPU = 1.0|Any CPU
@@ -15,6 +17,10 @@ Global
 		{28C4DDEA-32BF-489F-98D9-7FA574C3C5F6}.1.0|Any CPU.Build.0 = 1.0|Any CPU
 		{28C4DDEA-32BF-489F-98D9-7FA574C3C5F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28C4DDEA-32BF-489F-98D9-7FA574C3C5F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4E8F52-6C31-4E7A-9D28-1F3A5C7B0D64}.1.0|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4E8F52-6C31-4E7A-9D28-1F3A5C7B0D64}.1.0|Any CPU.Build.0 = Debug|Any CPU
+		{9B4E8F52-6C31-4E7A-9D28-1F3A5C7B0D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4E8F52-6C31-4E7A-9D28-1F3A5C7B0D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -257,6 +257,7 @@
     <Compile Include="Utils\Etiquetas\SegoeUiFontResolver.cs" />
     <Compile Include="Utils\EventosGlobais.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
+    <Compile Include="Utils\AtualizacaoAplicador.cs" />
     <Compile Include="Models\AtualizacaoManifesto.cs" />
     <Compile Include="Utils\InstituicaoConfiguracaoStore.cs" />
     <Compile Include="Utils\ThemeManager.cs" />

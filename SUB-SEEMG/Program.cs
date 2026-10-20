@@ -4,6 +4,7 @@ using SUB.Forms.Setup;
 using SUB.Models;
 using SUB.Utils;
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 
@@ -19,34 +20,59 @@ namespace SUB
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            if (!InstituicaoConfiguracaoStore.Existe())
+            bool instanciaUnica;
+            using (var mutexUnica = new Mutex(true, "Local\\SUB-InstanciaUnica", out instanciaUnica))
             {
-                using (var primeiroUso = new PrimeiroUsoForm())
+                if (!instanciaUnica)
                 {
-                    if (primeiroUso.ShowDialog() != DialogResult.OK)
-                        return;
+                    MessageBox.Show("O SUB já está em execução.", "SUB", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
                 }
 
-            }
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-            DatabaseInitializer.EnsureCreated();
-
-            while (true)
-            {
-                Sessao.Limpar();
-                LoginForm.UsuarioBibliotecaria = false;
-                using (LoginForm login = new LoginForm())
+                if (!InstituicaoConfiguracaoStore.Existe())
                 {
-                    if (login.ShowDialog() == DialogResult.OK)
+                    using (var primeiroUso = new PrimeiroUsoForm())
                     {
-                        Application.Run(new MainForm());
+                        if (primeiroUso.ShowDialog() != DialogResult.OK)
+                            return;
                     }
-                    else
+
+                }
+
+                try
+                {
+                    DatabaseInitializer.EnsureCreated();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Falha ao preparar o banco de dados.\n\n" + ex.Message +
+                        "\n\nSe uma atualização recente for a causa, os arquivos da versão anterior e o backup" +
+                        "\ndo banco ficaram em:\n" + AppPaths.BackupsFolder +
+                        "\n\nConsulte o texto RESTAURACAO.txt na pasta de rollback correspondente.",
+                        "SUB", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                AtualizacaoAplicador.ConcluirAtualizacaoPendente();
+
+                while (true)
+                {
+                    Sessao.Limpar();
+                    LoginForm.UsuarioBibliotecaria = false;
+                    using (LoginForm login = new LoginForm())
                     {
-                        break;
+                        if (login.ShowDialog() == DialogResult.OK)
+                        {
+                            Application.Run(new MainForm());
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
             }

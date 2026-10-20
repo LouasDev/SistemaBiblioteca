@@ -34,6 +34,9 @@ namespace SUB.Utils
             new ConditionalWeakTable<Control, object>();
         private static readonly ConditionalWeakTable<DataGridView, object> GridsWithThemeHandler =
             new ConditionalWeakTable<DataGridView, object>();
+        // Cor do último Apply; lida pelos handlers de ControlAdded/Grid para não
+        // congelar a cor capturada por closure quando o tema muda em tempo de execução.
+        private static Color corTemaAtual;
 
         public static Color DefaultColor { get { return Presets[0].PrimaryColor; } }
 
@@ -93,7 +96,8 @@ namespace SUB.Utils
             if (root == null)
                 return;
 
-            ApplyRecursive(root, Normalize(primaryColor), false);
+            corTemaAtual = Normalize(primaryColor);
+            ApplyRecursive(root, corTemaAtual, false);
         }
 
         public static void ApplyConfiguredTheme(Control root)
@@ -121,7 +125,7 @@ namespace SUB.Utils
             if (!ControlsWithThemeHandler.TryGetValue(control, out _))
             {
                 ControlsWithThemeHandler.Add(control, new object());
-                control.ControlAdded += (sender, args) => ApplyRecursive(args.Control, primaryColor, isNavigation);
+                control.ControlAdded += (sender, args) => ApplyRecursive(args.Control, corTemaAtual, isNavigation);
             }
 
             var gradientPanel = control as GradientPanel;
@@ -408,8 +412,8 @@ namespace SUB.Utils
                 return;
 
             GridsWithThemeHandler.Add(grid, new object());
-            grid.ColumnAdded += (sender, args) => ApplyGridTheme(grid, primaryColor);
-            grid.DataBindingComplete += (sender, args) => ApplyGridTheme(grid, primaryColor);
+            grid.ColumnAdded += (sender, args) => ApplyGridTheme(grid, corTemaAtual);
+            grid.DataBindingComplete += (sender, args) => ApplyGridTheme(grid, corTemaAtual);
         }
 
     }

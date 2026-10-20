@@ -241,6 +241,12 @@
     <Compile Include="Elements\RoundedDatePicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Forms\Configuracoes\ConfiguracaoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Configuracoes\ConfiguracaoForm.Designer.cs">
+      <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Etiquetas\LabelActionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -432,6 +438,9 @@
     <Compile Include="Utils\TurmasUtil.cs" />
     <EmbeddedResource Include="Elements\AnimatedToggle.resx">
       <DependentUpon>AnimatedToggle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Configuracoes\ConfiguracaoForm.resx">
+      <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Livros\AlterarCadLivroForm.resx">
       <DependentUpon>AlterarCadLivroForm.cs</DependentUpon>

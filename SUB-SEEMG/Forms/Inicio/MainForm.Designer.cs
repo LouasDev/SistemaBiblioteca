@@ -61,6 +61,7 @@ namespace SUB.Forms.Inicio
             this.btnEmprestimo = new System.Windows.Forms.Button();
             this.livroTransition = new System.Windows.Forms.Timer(this.components);
             this.userTransition = new System.Windows.Forms.Timer(this.components);
+            this.btnConfiguracao = new System.Windows.Forms.Button();
             this.panelControl.SuspendLayout();
             this.ControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).BeginInit();
@@ -157,7 +158,7 @@ namespace SUB.Forms.Inicio
             this.btnSair.ForeColor = System.Drawing.Color.White;
             this.btnSair.Image = global::SUB.Properties.Resources.icons8_sair_25;
             this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSair.Location = new System.Drawing.Point(3, 365);
+            this.btnSair.Location = new System.Drawing.Point(3, 427);
             this.btnSair.Name = "btnSair";
             this.btnSair.Padding = new System.Windows.Forms.Padding(18, 0, 10, 0);
             this.btnSair.Size = new System.Drawing.Size(258, 54);
@@ -348,6 +349,7 @@ namespace SUB.Forms.Inicio
             this.menu.Controls.Add(this.userContainer);
             this.menu.Controls.Add(this.livroContainer);
             this.menu.Controls.Add(this.relContainer);
+            this.menu.Controls.Add(this.btnConfiguracao);
             this.menu.Controls.Add(this.btnSair);
             this.menu.Dock = System.Windows.Forms.DockStyle.Left;
             this.menu.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -567,6 +569,29 @@ namespace SUB.Forms.Inicio
             this.userTransition.Interval = 5;
             this.userTransition.Tick += new System.EventHandler(this.userTransition_Tick);
             // 
+            // btnConfiguracao
+            // 
+            this.btnConfiguracao.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(87)))), ((int)(((byte)(174)))));
+            this.btnConfiguracao.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnConfiguracao.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(78)))), ((int)(((byte)(157)))));
+            this.btnConfiguracao.FlatAppearance.BorderSize = 0;
+            this.btnConfiguracao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnConfiguracao.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
+            this.btnConfiguracao.ForeColor = System.Drawing.Color.White;
+            this.btnConfiguracao.Image = global::SUB.Properties.Resources.icons8_relatório_25;
+            this.btnConfiguracao.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConfiguracao.Location = new System.Drawing.Point(3, 365);
+            this.btnConfiguracao.Name = "btnConfiguracao";
+            this.btnConfiguracao.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
+            this.btnConfiguracao.Size = new System.Drawing.Size(258, 56);
+            this.btnConfiguracao.TabIndex = 4;
+            this.btnConfiguracao.TabStop = false;
+            this.btnConfiguracao.Text = " Configuracão";
+            this.btnConfiguracao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnConfiguracao.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnConfiguracao.UseVisualStyleBackColor = false;
+            this.btnConfiguracao.Click += new System.EventHandler(this.btnConfiguracao_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -633,6 +658,7 @@ namespace SUB.Forms.Inicio
         public System.Windows.Forms.Panel userContainer;
         public System.Windows.Forms.Button btnUser;
         public System.Windows.Forms.Button btnUserEdit;
+        private System.Windows.Forms.Button btnConfiguracao;
     }
 }
 

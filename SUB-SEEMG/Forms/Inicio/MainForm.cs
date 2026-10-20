@@ -1,4 +1,8 @@
-﻿using SUB.Forms.Livros;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SeuProjeto;
+using SUB.Forms.Configuracoes;
+using SUB.Forms.Livros;
 using SUB.Forms.Login;
 using SUB.Forms.Relatorio;
 using SUB.Forms.Usuario;
@@ -6,9 +10,6 @@ using SUB.Froms.Usuario;
 using SUB.Models;
 using SUB.Properties;
 using SUB.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SeuProjeto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,7 +31,6 @@ namespace SUB.Forms.Inicio
 {
     public partial class MainForm : Form
     {
-
         private bool menuAnimating = false;
         private NotifyIcon notifyIcon;
         private ContextMenuStrip notifyMenu;
@@ -112,6 +112,7 @@ namespace SUB.Forms.Inicio
             btnUsuario.Click += (s, e) => DefinirNavegacaoAtiva(btnUsuario);
             btnLivro.Click += (s, e) => DefinirNavegacaoAtiva(btnLivro);
             btnRel.Click += (s, e) => DefinirNavegacaoAtiva(btnRel);
+            btnConfiguracao.Click += (s, e) => DefinirNavegacaoAtiva(btnConfiguracao);
             VincularItemDeNavegacao(btnUser, btnUsuario);
             VincularItemDeNavegacao(btnUserCad, btnUsuario);
             VincularItemDeNavegacao(btnUserEdit, btnUsuario);
@@ -147,7 +148,7 @@ namespace SUB.Forms.Inicio
             lblMarcaMenu.ForeColor = texto;
             lblContextoMenu.ForeColor = ThemeManager.Lighten(texto, 0.18F);
 
-            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel })
+            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel, btnConfiguracao })
                 EstilizarBotaoMenu(botao, baseMenu, hover, texto);
 
             foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
@@ -182,7 +183,7 @@ namespace SUB.Forms.Inicio
             Color hover = ThemeManager.Lighten(baseMenu, 0.12F);
             Color texto = ThemeManager.GetContrastColor(baseMenu);
 
-            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel })
+            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel, btnConfiguracao })
                 EstilizarBotaoMenu(botao, botao == navAtiva ? ThemeManager.Lighten(baseMenu, 0.10F) : baseMenu, hover, texto);
             foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
                 EstilizarBotaoMenu(botao, itemFilho, hover, texto);
@@ -221,6 +222,7 @@ namespace SUB.Forms.Inicio
         DevoluçãoForm devolução;
         CadUsuario usuarioCad; 
         public EditarUsuarioForm usuarioEdit;
+        ConfiguracaoForm configuracao;
 
         //Proporção dos Forms
         private void mdiProp()
@@ -1031,6 +1033,21 @@ namespace SUB.Forms.Inicio
         private void menu_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnConfiguracao_Click(object sender, EventArgs e)
+        {
+            if (configuracao == null || configuracao.IsDisposed)
+            {
+                configuracao = new ConfiguracaoForm();
+                configuracao.FormClosed += Configuracao_FormClosed;
+            }
+            OpenChild(configuracao, keepPreviousHidden: true);
+        }
+
+        private void Configuracao_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            configuracao = null;
         }
     }
 }

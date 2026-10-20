@@ -62,10 +62,21 @@ namespace SUB.Forms.Inicio
                 SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
             }
 
+            if (InstituicaoConfiguracaoStore.CorrupcaoDetectada)
+            {
+                MessageBox.Show(
+                    "O arquivo de configuração da instituição estava danificado e não pôde ser lido.\n" +
+                    "O tema padrão foi aplicado.\n\n" +
+                    "Uma cópia do arquivo foi guardada em:\n" +
+                    (InstituicaoConfiguracaoStore.BackupCorrompidoPath ?? "(cópia não disponível)"),
+                    "Configurações", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             menu.BackColor = corPrimaria;
             ThemeManager.Apply(this, corPrimaria);
             VincularEventosNavegacao();
             AplicarTemaDaNavegacao();
+            EventosGlobais.ConfiguracaoSalva += MainForm_ConfiguracaoSalva;
 
 
 
@@ -1005,6 +1016,10 @@ namespace SUB.Forms.Inicio
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            // Evento é estático e o MainForm é recriado a cada login;
+            // sem dessinar, o form antigo continuaria recebendo o evento.
+            EventosGlobais.ConfiguracaoSalva -= MainForm_ConfiguracaoSalva;
+
             if (Program.RequestLogout)
             {
                 try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
@@ -1048,6 +1063,80 @@ namespace SUB.Forms.Inicio
         private void Configuracao_FormClosed(object sender, FormClosedEventArgs e)
         {
             configuracao = null;
+        }
+
+        private void MainForm_ConfiguracaoSalva(object sender, EventArgs e)
+        {
+            if (IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new Action(ReaplicarConfiguracao));
+                return;
+            }
+
+            ReaplicarConfiguracao();
+        }
+
+        private void ReaplicarConfiguracao()
+        {
+            InstituicaoConfiguracao configuracaoInstituicao;
+            try
+            {
+                configuracaoInstituicao = InstituicaoConfiguracaoStore.Carregar();
+            }
+            catch
+            {
+                // JSON ilegível: mantém tema/nome atuais.
+                // Tratamento definitivo de corrupção pendente de aprovação.
+                return;
+            }
+
+            if (configuracaoInstituicao != null && !string.IsNullOrWhiteSpace(configuracaoInstituicao.CorPrimaria))
+            {
+                try
+                {
+                    corPrimaria = ColorTranslator.FromHtml(configuracaoInstituicao.CorPrimaria);
+                    if (corPrimaria.IsEmpty)
+                        corPrimaria = ThemeManager.DefaultColor;
+                }
+                catch
+                {
+                    corPrimaria = ThemeManager.DefaultColor;
+                }
+            }
+            else
+            {
+                corPrimaria = ThemeManager.DefaultColor;
+            }
+
+            if (configuracaoInstituicao != null && !string.IsNullOrWhiteSpace(configuracaoInstituicao.Nome))
+                Text = configuracaoInstituicao.Nome;
+
+            if (notifyIcon != null)
+                notifyIcon.Text = configuracaoInstituicao?.Nome ?? "Biblioteca Escolar";
+
+            menu.BackColor = corPrimaria;
+            SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
+            ThemeManager.Apply(this, corPrimaria);
+            AplicarTemaDaNavegacao();
+
+            foreach (Form child in MdiChildren)
+            {
+                if (child.IsDisposed)
+                    continue;
+
+                ThemeManager.Apply(child, corPrimaria);
+
+                var inicioForm = child as InicioForm;
+                if (inicioForm != null)
+                    inicioForm.AplicarTema(corPrimaria);
+            }
+
+            // Borda da janela: DesenharBorda registra um novo handler de Paint a
+            // cada chamada e captura a cor por closure — reaplicar duplicaria o
+            // handler. Permanece com a cor fixa original.
         }
     }
 }

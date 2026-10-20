@@ -46,6 +46,12 @@ namespace SUB.Utils
             EmprestimoProrrogado?.Invoke(null, EventArgs.Empty);
         }
 
+        public static event EventHandler ConfiguracaoSalva;
+        public static void OnConfiguracaoSalva()
+        {
+            ConfiguracaoSalva?.Invoke(null, EventArgs.Empty);
+        }
+
 
     }
 }

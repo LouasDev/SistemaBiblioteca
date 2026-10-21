@@ -69,7 +69,7 @@ namespace SUB.Forms.Configuracoes
                 // (não sobrescreve um arquivo possivelmente recuperável).
             }
 
-            txtNome.Text = configuracao != null ? (configuracao.Nome ?? string.Empty) : string.Empty;
+            c.Text = configuracao != null ? (configuracao.Nome ?? string.Empty) : string.Empty;
             corOriginalHtml = configuracao != null ? configuracao.CorPrimaria : null;
 
             corSelecionada = ThemeManager.DefaultColor;
@@ -127,23 +127,11 @@ namespace SUB.Forms.Configuracoes
             }
         }
 
-        private void pnlCorPreview_Paint(object sender, PaintEventArgs e)
-        {
-            using (var fonte = new Font("Segoe UI", 10F, FontStyle.Bold))
-            using (var pincel = new SolidBrush(ThemeManager.GetContrastColor(corSelecionada)))
-            {
-                const string texto = "Pré-visualização";
-                SizeF medida = e.Graphics.MeasureString(texto, fonte);
-                e.Graphics.DrawString(texto, fonte, pincel,
-                    (pnlCorPreview.Width - medida.Width) / 2f,
-                    (pnlCorPreview.Height - medida.Height) / 2f);
-            }
-        }
+
 
         private void AtualizarPreviewCor()
         {
             pnlCorPreview.BackColor = corSelecionada;
-            lblCorHex.Text = ColorTranslator.ToHtml(corSelecionada);
             pnlCorPreview.Invalidate();
         }
 
@@ -198,13 +186,13 @@ namespace SUB.Forms.Configuracoes
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
-            string nome = (txtNome.Text ?? string.Empty).Trim();
+            string nome = (c.Text ?? string.Empty).Trim();
 
             if (nome.Length == 0)
             {
                 MessageBox.Show("Informe o nome da instituição.", "Validação",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNome.Focus();
+                c.Focus();
                 return;
             }
 
@@ -212,7 +200,7 @@ namespace SUB.Forms.Configuracoes
             {
                 MessageBox.Show(string.Format("O nome da instituição pode ter no máximo {0} caracteres.",
                     TamanhoMaximoNome), "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNome.Focus();
+                c.Focus();
                 return;
             }
 
@@ -220,7 +208,7 @@ namespace SUB.Forms.Configuracoes
             {
                 MessageBox.Show("O nome da instituição contém caracteres inválidos.", "Validação",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNome.Focus();
+                c.Focus();
                 return;
             }
 
@@ -555,7 +543,7 @@ namespace SUB.Forms.Configuracoes
             btnVerificar.Enabled = !ocupado;
             btnAtualizar.Enabled = !ocupado;
             btnSalvar.Enabled = !ocupado;
-            txtNome.Enabled = !ocupado;
+            c.Enabled = !ocupado;
             cbTemas.Enabled = !ocupado;
         }
 

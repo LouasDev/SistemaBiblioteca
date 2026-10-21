@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace SUB.Forms.Configuracoes
 {
@@ -27,9 +28,15 @@ namespace SUB.Forms.Configuracoes
         private CancellationTokenSource ctsDownload;
         private bool downloadEmAndamento;
 
+        // Tamanho do form definido no Designer (usado para saber se ele está "cheio" no MDI)
+        private Size tamanhoProjeto;
+
         public ConfiguracaoForm()
         {
             InitializeComponent();
+            tamanhoProjeto = this.ClientSize;
+
+            this.SizeChanged += ConfiguracaoForm_SizeChanged;
         }
 
         protected override void OnShown(EventArgs e)
@@ -44,6 +51,8 @@ namespace SUB.Forms.Configuracoes
             // OnShown dispara apenas na primeira exibição; a versão do executável
             // não muda durante a vida do processo.
             lblVersaoAtual.Text = "Versão atual: " + AtualizacaoService.VersaoAtual();
+
+            BeginInvoke(new Action(BotaoMinimizado));
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -597,5 +606,23 @@ namespace SUB.Forms.Configuracoes
 
         #endregion
 
+        private void ConfiguracaoForm_SizeChanged(object sender, EventArgs e)
+        {
+            if (!IsHandleCreated) return;
+            BeginInvoke(new Action(BotaoMinimizado));
+        }
+
+        private void BotaoMinimizado()
+        {
+            if (this.WindowState == FormWindowState.Minimized) return;
+
+            bool cheio = this.WindowState == FormWindowState.Maximized
+                      || this.ClientSize.Width > tamanhoProjeto.Width + 20
+                      || this.ClientSize.Height > tamanhoProjeto.Height + 20;
+
+            int top = cheio ? 767 : 62;
+            if (btnSalvar.Top != top)       
+                btnSalvar.Top = top;
+        }
     }
 }

@@ -31,7 +31,6 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
             this.pnlResultados = new System.Windows.Forms.Panel();
             this.dgvLivros = new System.Windows.Forms.DataGridView();
             this.pnlFiltros = new System.Windows.Forms.Panel();
@@ -59,7 +58,6 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.pnlResultados);
             this.panel1.Controls.Add(this.pnlFiltros);
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
@@ -71,15 +69,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
             this.panel1.TabIndex = 16;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(532, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(32, 15);
-            this.label4.TabIndex = 138;
-            this.label4.Text = "teste";
             // 
             // pnlResultados
             // 
@@ -384,6 +373,8 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "LivrosForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Load += new System.EventHandler(this.LivrosForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -416,6 +407,5 @@
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
         private System.Windows.Forms.Panel pnlFiltros;
         private System.Windows.Forms.Panel pnlResultados;
-        private System.Windows.Forms.Label label4;
     }
 }

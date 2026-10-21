@@ -14,7 +14,10 @@ e dependências copiados para a pasta de teste. Servidor local = pasta servida p
 ## Roteiro
 1. **Designer**: abrir `ConfiguracaoForm` no Visual Studio — o form deve abrir sem
    erro, mostrando as seções "Instituição" e "Atualização" com todos os controles
-   visíveis no layout. Mexer em tamanho/posição e desfazer (Ctrl+Z).
+   no layout. O layout é **plano** (sem TableLayoutPanel/FlowLayoutPanel): cada
+   controle tem Location/Size próprios e âncoras, então dá para arrastar,
+   redimensionar e estilizar individualmente. Mexer em tamanho/posição e desfazer
+   (Ctrl+Z).
 2. **Tema**: entrar em Configurações — labels, botões Salvar/Cancelar e os botões
    da seção de atualização devem usar a cor institucional salva.
 3. **Nome/cor/salvar**: alterar nome e cor, Salvar → pede senha → salva → volta ao

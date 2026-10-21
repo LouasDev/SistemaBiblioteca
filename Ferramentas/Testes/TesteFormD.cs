@@ -150,13 +150,13 @@ class TesteFormD
     {
         string[] nomes =
         {
-            "pnlRaiz", "lblTitulo", "grpInstituicao", "tblInstituicao",
-            "lblNome", "txtNome", "lblCor", "pnlLinhaCor", "cbTemas",
-            "pnlCorPreview", "lblCorHex", "grpAtualizacao", "tblAtualizacao",
-            "lblVersaoAtual", "lblStatusAtualizacao", "pnlVerificar",
+            "lblTitulo", "grpInstituicao",
+            "lblNome", "txtNome", "lblCor", "cbTemas",
+            "pnlCorPreview", "lblCorHex", "grpAtualizacao",
+            "lblVersaoAtual", "lblStatusAtualizacao",
             "btnVerificar", "pbVerificando", "lblNotasTitulo", "txtNotasVersao",
-            "pnlDownload", "btnAtualizar", "btnCancelarDownload", "pbDownload",
-            "pnlBotoes", "btnSalvar", "btnCancelar"
+            "btnAtualizar", "btnCancelarDownload", "pbDownload",
+            "btnSalvar", "btnCancelar"
         };
 
         int ausentes = 0;
@@ -179,6 +179,19 @@ class TesteFormD
             "botoes da secao de atualizacao devem ser CustomButton");
         Verificar("notas-em-textbox-padrao", Campo("txtNotasVersao") is TextBox,
             "txtNotasVersao deve ser TextBox padrao (Multiline)");
+
+        // Requisito do usuario: layout plano, sem aninhamento de Flow/TableLayoutPanel
+        // (dificultava mover/redimensionar cada controle no Designer do Visual Studio).
+        int paineisDeFluxo = 0;
+        foreach (var campo in typeof(ConfiguracaoForm).GetFields(
+            BindingFlags.NonPublic | BindingFlags.Instance))
+        {
+            if (campo.FieldType == typeof(FlowLayoutPanel) ||
+                campo.FieldType == typeof(TableLayoutPanel))
+                paineisDeFluxo++;
+        }
+        Verificar("sem-flowlayoutpanel-nem-tablelayoutpanel", paineisDeFluxo == 0,
+            paineisDeFluxo + " painel(is) de fluxo/tabela encontrado(s)");
     }
 
     static void TestarEstadoInicial()
@@ -217,43 +230,47 @@ class TesteFormD
 
     static void TestarHierarquiaDoLayout()
     {
-        var pnlRaiz = Campo<Control>("pnlRaiz");
         var grpInstituicao = Campo<Control>("grpInstituicao");
         var grpAtualizacao = Campo<Control>("grpAtualizacao");
+        var lblTitulo = Campo<Control>("lblTitulo");
         var txtNome = Campo<Control>("txtNome");
         var txtNotas = Campo<Control>("txtNotasVersao");
         var btnAtualizar = Campo<Control>("btnAtualizar");
-        var pnlDownload = Campo<Control>("pnlDownload");
 
-        Verificar("layout-dock-fill",
-            pnlRaiz.Dock == DockStyle.Fill &&
-            form.Controls.Contains(pnlRaiz) &&
-            txtNome.Dock == DockStyle.Fill &&
-            txtNotas.Dock == DockStyle.Fill,
-            "pnlRaiz/txtNome/txtNotasVersao devem usar Dock=Fill e pnlRaiz deve estar no form");
+        Verificar("secoes-filhas-diretas-do-form",
+            form.Controls.Contains(grpInstituicao) &&
+            form.Controls.Contains(grpAtualizacao) &&
+            form.Controls.Contains(lblTitulo) &&
+            grpInstituicao.Controls.Contains(txtNome) &&
+            grpAtualizacao.Controls.Contains(txtNotas),
+            "secoes devem ser filhas diretas do form, com os controles dentro do GroupBox");
 
-        Verificar("secoes-em-groupbox",
-            pnlRaiz.Controls.Contains(grpInstituicao) &&
-            pnlRaiz.Controls.Contains(grpAtualizacao) &&
-            grpAtualizacao.Controls.ContainsKey("tblAtualizacao"),
-            "grpInstituicao/grpAtualizacao devem estar em pnlRaiz e tblAtualizacao dentro de grpAtualizacao");
+        var topLeftRight = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+        var all = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+        Verificar("ancoras-responsivas",
+            txtNome.Anchor == topLeftRight &&
+            txtNotas.Anchor == all &&
+            grpAtualizacao.Anchor == all &&
+            grpInstituicao.Anchor == topLeftRight,
+            "txtNome/grpInstituicao Top|Left|Right; txtNotas/grpAtualizacao todos os lados");
 
-        Verificar("botoes-atualizacao-em-painel",
-            pnlDownload.Controls.Contains(btnAtualizar) &&
-            pnlDownload.Controls.Contains(Campo<Control>("btnCancelarDownload")) &&
-            pnlDownload.Controls.Contains(Campo<Control>("pbDownload")),
-            "btnAtualizar/btnCancelarDownload/pbDownload devem estar em pnlDownload");
+        Verificar("botoes-atualizacao-no-groupbox",
+            grpAtualizacao.Controls.Contains(btnAtualizar) &&
+            grpAtualizacao.Controls.Contains(Campo<Control>("btnCancelarDownload")) &&
+            grpAtualizacao.Controls.Contains(Campo<Control>("pbDownload")) &&
+            grpAtualizacao.Controls.Contains(Campo<Control>("btnVerificar")),
+            "btnVerificar/btnAtualizar/btnCancelarDownload/pbDownload devem estar em grpAtualizacao");
 
-        var tblAtualizacao = Campo<Control>("tblAtualizacao");
-        int ordenado =
-            tblAtualizacao.Controls.Find("lblVersaoAtual", false)[0].TabIndex;
-        int status = tblAtualizacao.Controls.Find("lblStatusAtualizacao", false)[0].TabIndex;
-        int verificar = tblAtualizacao.Controls.Find("pnlVerificar", false)[0].TabIndex;
-        int notas = tblAtualizacao.Controls.Find("txtNotasVersao", false)[0].TabIndex;
-        int download = tblAtualizacao.Controls.Find("pnlDownload", false)[0].TabIndex;
+        int versao = grpAtualizacao.Controls.Find("lblVersaoAtual", false)[0].TabIndex;
+        int status = grpAtualizacao.Controls.Find("lblStatusAtualizacao", false)[0].TabIndex;
+        int verificar = grpAtualizacao.Controls.Find("btnVerificar", false)[0].TabIndex;
+        int notas = grpAtualizacao.Controls.Find("txtNotasVersao", false)[0].TabIndex;
+        int atualizar = grpAtualizacao.Controls.Find("btnAtualizar", false)[0].TabIndex;
+        int cancelar = grpAtualizacao.Controls.Find("btnCancelarDownload", false)[0].TabIndex;
         Verificar("tabindex-logico",
-            ordenado < status && status < verificar && verificar < notas && notas < download,
-            "TabIndex de lblVersaoAtual < lblStatus < pnlVerificar < txtNotas < pnlDownload");
+            versao < status && status < verificar && verificar < notas &&
+            notas < atualizar && atualizar < cancelar,
+            "TabIndex: versao < status < verificar < notas < atualizar < cancelar");
     }
 
     static void TestarOnShownEVersao()

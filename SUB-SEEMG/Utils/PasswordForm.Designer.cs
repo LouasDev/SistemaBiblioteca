@@ -131,7 +131,7 @@
             this.txtSenha.Size = new System.Drawing.Size(392, 34);
             this.txtSenha.TabIndex = 64;
             this.txtSenha.TextColor = System.Drawing.Color.Black;
-            this.txtSenha.UseSystemPasswordChar = false;
+            this.txtSenha.UseSystemPasswordChar = true;
             // 
             // PasswordForm
             // 

@@ -18,8 +18,10 @@ namespace SUB
         /// Ponto de entrada principal para o aplicativo.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            if (!ResetService.AguardarInstanciaAnterior(args))
+                return;
             bool instanciaUnica;
             using (var mutexUnica = new Mutex(true, "Local\\SUB-InstanciaUnica", out instanciaUnica))
             {
@@ -31,6 +33,20 @@ namespace SUB
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
+
+                try
+                {
+                    // A limpeza ocorre numa instância nova, depois de encerrar
+                    // os Forms, tarefas e conexões da instalação anterior.
+                    new ResetLocalStore(AppPaths.AppDataFolder).ConcluirSePendente();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Não foi possível concluir o reset. O assistente de primeiro uso não será aberto.\n\n" +
+                        ex.Message + "\n\nFeche arquivos de dados abertos e reinicie o SUB para retomar a operação autorizada.",
+                        "Reset não concluído", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 if (!InstituicaoConfiguracaoStore.Existe())
                 {

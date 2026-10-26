@@ -10,6 +10,8 @@ namespace SUB.Forms.Usuario
         public string SenhaDigitada { get; private set; }
         public string Titulo { get; set; } = "Confirmação de Senha";
         public string Mensagem { get; set; } = "Digite sua senha para confirmar a operação:";
+        public string Placeholder { get; set; } = "Digite sua senha...";
+        public string MensagemCampoObrigatorio { get; set; } = "Digite uma senha!";
 
         public PasswordForm()
         {
@@ -22,6 +24,7 @@ namespace SUB.Forms.Usuario
         {
             lblTitulo.Text = Titulo;
             lblMensagem.Text = Mensagem;
+            txtSenha.PlaceholderText = Placeholder;
             txtSenha.Focus();
         }
 
@@ -29,7 +32,7 @@ namespace SUB.Forms.Usuario
         {
             if (string.IsNullOrEmpty(txtSenha.Text))
             {
-                lblErro.Text = "Digite uma senha!";
+                lblErro.Text = MensagemCampoObrigatorio;
                 lblErro.Visible = true;
                 txtSenha.Focus();
                 return;

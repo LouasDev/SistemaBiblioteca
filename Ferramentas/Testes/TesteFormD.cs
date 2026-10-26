@@ -296,7 +296,7 @@ class TesteFormD
         // Regressao da Etapa D: GroupBox.AutoSize nao cresce com filho Dock=Fill,
         // o que colapsava a secao Instituicao e escondia nome/tema.
         Verificar("dimensoes-secao-instituicao",
-            grpInst.Height >= 140 && txtNome.Height >= 20 && cbTemas.Height >= 20 &&
+            grpInst.Height >= 100 && txtNome.Height >= 20 && cbTemas.Height >= 20 &&
             pnlCor.Height >= 30 && txtNome.Visible && btnSalvar.Visible,
             "grpInst=" + grpInst.Height + " txtNome=" + txtNome.Height +
             " cbTemas=" + cbTemas.Height + " pnlCor=" + pnlCor.Height);

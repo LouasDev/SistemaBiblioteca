@@ -247,6 +247,12 @@
     <Compile Include="Forms\Configuracoes\ConfiguracaoForm.Designer.cs">
       <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Configuracoes\ResetTermoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Configuracoes\ResetTermoForm.Designer.cs">
+      <DependentUpon>ResetTermoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Etiquetas\LabelActionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -258,6 +264,10 @@
     <Compile Include="Utils\EventosGlobais.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
     <Compile Include="Utils\VersaoAplicativo.cs" />
+    <Compile Include="Utils\ResetLocalStore.cs" />
+    <Compile Include="Utils\ResetService.cs" />
+    <Compile Include="Utils\CodigoMestreArquivo.cs" />
+    <Compile Include="Models\ResumoReset.cs" />
     <Compile Include="Utils\AtualizacaoAplicador.cs" />
     <Compile Include="Models\AtualizacaoManifesto.cs" />
     <Compile Include="Utils\InstituicaoConfiguracaoStore.cs" />
@@ -445,6 +455,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Configuracoes\ConfiguracaoForm.resx">
       <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Configuracoes\ResetTermoForm.resx">
+      <DependentUpon>ResetTermoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Livros\AlterarCadLivroForm.resx">
       <DependentUpon>AlterarCadLivroForm.cs</DependentUpon>

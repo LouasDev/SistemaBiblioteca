@@ -13,6 +13,11 @@ namespace SUB.Forms.Configuracoes
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                fonteRotuloCompacto.Dispose();
+                fonteStatusCompacto.Dispose();
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -45,6 +50,7 @@ namespace SUB.Forms.Configuracoes
             this.txtNotasVersao = new System.Windows.Forms.TextBox();
             this.pbDownload = new System.Windows.Forms.ProgressBar();
             this.btnSalvar = new System.Windows.Forms.Button();
+            this.btnApagarDados = new System.Windows.Forms.Button();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.Titulo = new System.Windows.Forms.Label();
@@ -321,6 +327,16 @@ namespace SUB.Forms.Configuracoes
             this.btnSalvar.TabIndex = 3;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            // btnApagarDados
+            this.btnApagarDados.Name = "btnApagarDados";
+            this.btnApagarDados.Text = "Resetar aplicativo";
+            this.btnApagarDados.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnApagarDados.Location = new System.Drawing.Point(106, 767);
+            this.btnApagarDados.Size = new System.Drawing.Size(172, 40);
+            this.btnApagarDados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApagarDados.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnApagarDados.TabIndex = 4;
+            this.btnApagarDados.Click += new System.EventHandler(this.btnApagarDados_Click);
             // 
             // pnlLinhaCabecalho
             // 
@@ -356,6 +372,7 @@ namespace SUB.Forms.Configuracoes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = false;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1280, 845);
             this.Controls.Add(this.pnlLinhaCabecalho);
@@ -363,6 +380,7 @@ namespace SUB.Forms.Configuracoes
             this.Controls.Add(this.grpAtualizacao);
             this.Controls.Add(this.lblSubtitulo);
             this.Controls.Add(this.btnSalvar);
+            this.Controls.Add(this.btnApagarDados);
             this.Controls.Add(this.Titulo);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -389,6 +407,7 @@ namespace SUB.Forms.Configuracoes
         private System.Windows.Forms.Panel pnlCorPreview;
         private System.Windows.Forms.GroupBox grpAtualizacao;
         private System.Windows.Forms.Button btnSalvar;
+        private System.Windows.Forms.Button btnApagarDados;
         private RoundedTextBox c;
         private RoundedComboBox cbTemas;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;

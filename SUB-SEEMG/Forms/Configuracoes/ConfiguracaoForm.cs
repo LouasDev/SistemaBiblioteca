@@ -27,16 +27,13 @@ namespace SUB.Forms.Configuracoes
         private AtualizacaoManifesto manifestoDisponivel;
         private CancellationTokenSource ctsDownload;
         private bool downloadEmAndamento;
-
-        // Tamanho do form definido no Designer (usado para saber se ele está "cheio" no MDI)
-        private Size tamanhoProjeto;
+        private bool operacaoEmAndamento;
+        private readonly Font fonteRotuloCompacto = new Font("Segoe UI Semibold", 11F, FontStyle.Bold);
+        private readonly Font fonteStatusCompacto = new Font("Segoe UI", 10F);
 
         public ConfiguracaoForm()
         {
             InitializeComponent();
-            tamanhoProjeto = this.ClientSize;
-
-            this.SizeChanged += ConfiguracaoForm_SizeChanged;
         }
 
         protected override void OnShown(EventArgs e)
@@ -52,7 +49,7 @@ namespace SUB.Forms.Configuracoes
             // não muda durante a vida do processo.
             lblVersaoAtual.Text = "Versão atual: " + AtualizacaoService.VersaoAtual();
 
-            BeginInvoke(new Action(BotaoMinimizado));
+            AjustarLayout();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -307,6 +304,72 @@ namespace SUB.Forms.Configuracoes
 
         #endregion
 
+        private void btnApagarDados_Click(object sender, EventArgs e)
+        {
+            if (operacaoEmAndamento)
+                return;
+            if (!Sessao.UsuarioAutenticado || Sessao.Perfil != "Bibliotecário(a)")
+            {
+                MessageBox.Show("Entre com uma conta de bibliotecário para resetar o aplicativo.", "Reset",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            DefinirModoOperacao(true);
+            try
+            {
+                string codigo;
+                using (var dialogo = new ResetTermoForm
+                {
+                    Resumo = ResetService.ObterResumo()
+                })
+                {
+                    dialogo.AplicarTema(corSelecionada);
+                    if (dialogo.ShowDialog(this) != DialogResult.OK)
+                        return;
+                    codigo = dialogo.CodigoMestre;
+                }
+                string senha;
+                using (var dialogo = new PasswordForm
+                {
+                    Titulo = "Reset: etapa 2 de 2",
+                    Mensagem = "TXT validado. Digite a senha da bibliotecária logada."
+                })
+                {
+                    ThemeManager.Apply(dialogo, corSelecionada);
+                    if (dialogo.ShowDialog(this) != DialogResult.OK)
+                        return;
+                    senha = dialogo.SenhaDigitada;
+                }
+                ResetService.Autorizacao autorizacao;
+                string erro;
+                if (!ResetService.TentarAutorizar(codigo, senha, out autorizacao, out erro))
+                {
+                    MessageBox.Show(erro, "Reset não autorizado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (MessageBox.Show(
+                    "As duas verificações foram concluídas.\n\n" +
+                    "Apagar definitivamente todos os dados locais e voltar ao primeiro uso?\n\n" +
+                    "Os backups locais também serão apagados. Esta ação não pode ser desfeita.",
+                    "Confirmar reset definitivo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                    return;
+
+                ResetService.Iniciar(autorizacao);
+                Application.Exit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível iniciar o reset.\n\n" + ex.Message, "Reset",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (!IsDisposed)
+                    DefinirModoOperacao(false);
+            }
+        }
+
         #region Atualização
 
         private async void btnVerificar_Click(object sender, EventArgs e)
@@ -551,6 +614,8 @@ namespace SUB.Forms.Configuracoes
 
         private void DefinirModoOperacao(bool ocupado)
         {
+            operacaoEmAndamento = ocupado;
+            btnApagarDados.Enabled = !ocupado;
             btnVerificar.Enabled = !ocupado;
             btnAtualizar.Enabled = !ocupado;
             btnSalvar.Enabled = !ocupado;
@@ -610,21 +675,52 @@ namespace SUB.Forms.Configuracoes
 
         private void ConfiguracaoForm_SizeChanged(object sender, EventArgs e)
         {
-            if (!IsHandleCreated) return;
-            BeginInvoke(new Action(BotaoMinimizado));
+            if (IsHandleCreated && !IsDisposed)
+                AjustarLayout();
         }
 
-        private void BotaoMinimizado()
+        private void AjustarLayout()
         {
-            if (this.WindowState == FormWindowState.Minimized) return;
-
-            bool cheio = this.WindowState == FormWindowState.Maximized
-                      || this.ClientSize.Width > tamanhoProjeto.Width + 20
-                      || this.ClientSize.Height > tamanhoProjeto.Height + 20;
-
-            int top = cheio ? 767 : 62;
-            if (btnSalvar.Top != top)       
-                btnSalvar.Top = top;
+            if (WindowState == FormWindowState.Minimized)
+                return;
+            SuspendLayout();
+            bool compacto = ClientSize.Height < 600;
+            int margem = 20;
+            int largura = Math.Max(360, ClientSize.Width - margem * 2);
+            lblSubtitulo.Visible = !compacto;
+            pnlLinhaCabecalho.Visible = !compacto;
+            grpAtualizacao.MaximumSize = Size.Empty;
+            grpInstituicao.MaximumSize = Size.Empty;
+            grpInstituicao.SetBounds(margem, compacto ? 68 : 106, largura, 112);
+            lblNome.Font = fonteRotuloCompacto;
+            lblNome.Location = new Point(16, 25);
+            c.SetBounds(16, 54, largura / 2 - 30, 34);
+            int colunaCor = largura / 2 + 6;
+            lblCor.Text = "Cor principal:";
+            lblCor.Font = fonteRotuloCompacto;
+            lblCor.Location = new Point(colunaCor, 25);
+            cbTemas.SetBounds(colunaCor, 54, largura - colunaCor - 66, 34);
+            pnlCorPreview.SetBounds(largura - 50, 54, 34, 34);
+            int topoAtualizacao = grpInstituicao.Bottom + 12;
+            int alturaAtualizacao = Math.Max(230, ClientSize.Height - topoAtualizacao - 72);
+            grpAtualizacao.SetBounds(margem, topoAtualizacao, largura, alturaAtualizacao);
+            lblVersaoAtual.Location = new Point(16, 23);
+            lblVersaoAtual.Font = fonteRotuloCompacto;
+            lblStatusAtualizacao.AutoSize = false;
+            lblStatusAtualizacao.MaximumSize = Size.Empty;
+            lblStatusAtualizacao.Font = fonteStatusCompacto;
+            lblStatusAtualizacao.SetBounds(16, 50, largura - 32, 38);
+            btnVerificar.SetBounds(16, 96, 190, 34);
+            pbVerificando.SetBounds(220, 100, Math.Max(80, largura - 240), 24);
+            lblNotasTitulo.Location = new Point(16, 138);
+            lblNotasTitulo.Font = fonteRotuloCompacto;
+            txtNotasVersao.SetBounds(16, 162, largura - 32, Math.Max(22, alturaAtualizacao - 216));
+            btnAtualizar.SetBounds(16, alturaAtualizacao - 44, 160, 32);
+            btnCancelarDownload.SetBounds(184, alturaAtualizacao - 44, 160, 32);
+            pbDownload.SetBounds(356, alturaAtualizacao - 40, Math.Max(80, largura - 376), 24);
+            btnApagarDados.SetBounds(margem, ClientSize.Height - 52, 172, 36);
+            btnSalvar.SetBounds(ClientSize.Width - margem - 124, ClientSize.Height - 52, 124, 36);
+            ResumeLayout(false);
         }
     }
 }

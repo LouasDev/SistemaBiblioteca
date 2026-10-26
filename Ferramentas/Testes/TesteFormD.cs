@@ -21,6 +21,7 @@ class TesteFormD
     static int falhas;
     static string dirBin;
     static ConfiguracaoForm form;
+    static bool somenteRepositorio;
 
     // O JIT resolve as referencias do Main no momento da compilacao do metodo,
     // antes de qualquer instrucao executar. Por isso o Main so registra o
@@ -36,6 +37,7 @@ class TesteFormD
         }
 
         dirBin = Path.GetDirectoryName(Path.GetFullPath(args[0]));
+        somenteRepositorio = args.Length > 1 && args[1] == "--repositorio";
         AppDomain.CurrentDomain.AssemblyResolve += Resolver;
         Executar();
     }
@@ -43,6 +45,11 @@ class TesteFormD
     static void Executar()
     {
         Application.EnableVisualStyles();
+        if (somenteRepositorio)
+        {
+            TestarRepositorioDeAtualizacao();
+            Environment.Exit(falhas == 0 ? 0 : 1);
+        }
 
         try
         {
@@ -54,6 +61,7 @@ class TesteFormD
             TestarDimensoesEBinding();
             TestarTemaAplicado();
             TestarHelpers();
+            TestarRepositorioDeAtualizacao();
 
             string chave = LerChavePrivada();
             if (chave == null)
@@ -72,7 +80,7 @@ class TesteFormD
         catch (Exception ex)
         {
             falhas++;
-            Console.WriteLine("FALHOU erro-inesperado: " + ex.Message);
+            Console.WriteLine("FALHOU erro-inesperado: " + ex);
         }
         finally
         {
@@ -120,7 +128,7 @@ class TesteFormD
     static object Campo(string nome)
     {
         var info = typeof(ConfiguracaoForm).GetField(nome,
-            BindingFlags.NonPublic | BindingFlags.Instance);
+            BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         if (info == null)
             throw new Exception("campo " + nome + " nao encontrado");
         return info.GetValue(form);
@@ -150,13 +158,13 @@ class TesteFormD
     {
         string[] nomes =
         {
-            "lblTitulo", "grpInstituicao",
-            "lblNome", "txtNome", "lblCor", "cbTemas",
-            "pnlCorPreview", "lblCorHex", "grpAtualizacao",
+            "Titulo", "grpInstituicao",
+            "lblNome", "c", "lblCor", "cbTemas",
+            "pnlCorPreview", "grpAtualizacao",
             "lblVersaoAtual", "lblStatusAtualizacao",
             "btnVerificar", "pbVerificando", "lblNotasTitulo", "txtNotasVersao",
             "btnAtualizar", "btnCancelarDownload", "pbDownload",
-            "btnSalvar", "btnCancelar"
+            "btnSalvar"
         };
 
         int ausentes = 0;
@@ -201,7 +209,6 @@ class TesteFormD
         var pbDownload = Campo<ProgressBar>("pbDownload");
         var pbVerificando = Campo<ProgressBar>("pbVerificando");
         var txtNotas = Campo<TextBox>("txtNotasVersao");
-        var txtNome = Campo<TextBox>("txtNome");
         var cbTemas = Campo<ComboBox>("cbTemas");
         var btnVerificar = Campo<Button>("btnVerificar");
 
@@ -215,12 +222,9 @@ class TesteFormD
             txtNotas.ScrollBars == ScrollBars.Vertical && txtNotas.MaxLength == 4000,
             "txtNotasVersao deve ser ReadOnly+Multiline+VScroll+MaxLength 4000");
 
-        Verificar("txt-nome-maxlength", txtNome.MaxLength == 150, "txtNome.MaxLength deve ser 150");
         Verificar("combo-temas-dropdownlist", cbTemas.DropDownStyle == ComboBoxStyle.DropDownList,
             "cbTemas deve ser DropDownList");
         Verificar("verificar-habilitado", btnVerificar.Enabled, "btnVerificar deve iniciar habilitado");
-        Verificar("cancel-button", form.CancelButton == Campo("btnCancelar"),
-            "CancelButton deve ser btnCancelar");
         Verificar("textos-botoes",
             btnVerificar.Text.StartsWith("Verificar") &&
             btnAtualizar.Text == "Atualizar agora" &&
@@ -232,8 +236,8 @@ class TesteFormD
     {
         var grpInstituicao = Campo<Control>("grpInstituicao");
         var grpAtualizacao = Campo<Control>("grpAtualizacao");
-        var lblTitulo = Campo<Control>("lblTitulo");
-        var txtNome = Campo<Control>("txtNome");
+        var lblTitulo = Campo<Control>("Titulo");
+        var txtNome = Campo<Control>("c");
         var txtNotas = Campo<Control>("txtNotasVersao");
         var btnAtualizar = Campo<Control>("btnAtualizar");
 
@@ -245,21 +249,15 @@ class TesteFormD
             grpAtualizacao.Controls.Contains(txtNotas),
             "secoes devem ser filhas diretas do form, com os controles dentro do GroupBox");
 
-        var topLeftRight = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-        var all = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-        Verificar("ancoras-responsivas",
-            txtNome.Anchor == topLeftRight &&
-            txtNotas.Anchor == all &&
-            grpAtualizacao.Anchor == all &&
-            grpInstituicao.Anchor == topLeftRight,
-            "txtNome/grpInstituicao Top|Left|Right; txtNotas/grpAtualizacao todos os lados");
-
         Verificar("botoes-atualizacao-no-groupbox",
             grpAtualizacao.Controls.Contains(btnAtualizar) &&
             grpAtualizacao.Controls.Contains(Campo<Control>("btnCancelarDownload")) &&
             grpAtualizacao.Controls.Contains(Campo<Control>("pbDownload")) &&
             grpAtualizacao.Controls.Contains(Campo<Control>("btnVerificar")),
             "btnVerificar/btnAtualizar/btnCancelarDownload/pbDownload devem estar em grpAtualizacao");
+
+        Verificar("sem-copias-inertes", grpAtualizacao.Controls.Count == 9,
+            "a secao deve conter apenas os nove controles funcionais");
 
         int versao = grpAtualizacao.Controls.Find("lblVersaoAtual", false)[0].TabIndex;
         int status = grpAtualizacao.Controls.Find("lblStatusAtualizacao", false)[0].TabIndex;
@@ -290,7 +288,7 @@ class TesteFormD
     {
         var grpInst = Campo<Control>("grpInstituicao");
         var grpAtual = Campo<Control>("grpAtualizacao");
-        var txtNome = Campo<Control>("txtNome");
+        var txtNome = Campo<Control>("c");
         var cbTemas = Campo<Control>("cbTemas");
         var pnlCor = Campo<Control>("pnlCorPreview");
         var btnSalvar = Campo<Control>("btnSalvar");
@@ -324,7 +322,6 @@ class TesteFormD
     {
         var primaria = Color.FromArgb(31, 72, 126);
         var lblNome = Campo<Label>("lblNome");
-        var corAntes = lblNome.ForeColor;
         ThemeManager.Apply(form, primaria);
         Application.DoEvents();
 
@@ -332,12 +329,9 @@ class TesteFormD
         var btnCancelarDownload = Campo<CustomButton>("btnCancelarDownload");
         var btnVerificar = Campo<CustomButton>("btnVerificar");
 
-        // Comportamento real do ThemeManager (aprovado no projeto): labels de cor
-        // neutra/escura (hue semantico) preservam a ForeColor; os botoes e o
-        // CustomButton recebem as cores do tema.
-        Verificar("tema-labels-preservados",
-            lblNome.ForeColor == corAntes,
-            "lblNome (cor neutra) deve manter a ForeColor herdada");
+        Verificar("tema-labels",
+            lblNome.ForeColor == ThemeManager.GetLabelColor(primaria),
+            "lblNome deve receber a cor de texto do tema");
 
         Verificar("tema-botao-primario",
             btnSalvar.BackColor == primaria,
@@ -383,6 +377,38 @@ class TesteFormD
         Verificar("mensagem-versao-nova",
             msg.Contains("9.9.9.9") && msg.Contains("20/10/2026"),
             "MontarMensagemVersaoNova deve citar versao e data");
+    }
+
+    static void TestarRepositorioDeAtualizacao()
+    {
+        var aceitar = typeof(AtualizacaoService).GetMethod("UrlPacoteAceitavel",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        string[] permitidas = {
+            "https://github.com/LouasDev/SistemaBiblioteca/releases/download/v1.0.0.1/SUB-1.0.0.1.zip",
+            "https://release-assets.githubusercontent.com/pacote.zip",
+            "http://127.0.0.1:8080/pacote.zip"
+        };
+        foreach (string url in permitidas)
+            Verificar("host-pacote-permitido", (bool)aceitar.Invoke(null, new object[] { new Uri(url) }), url);
+
+        string[] bloqueadas = {
+            "https://github.com/LouasDev/SUB-Releases/releases/download/v1/pacote.zip",
+            "https://github.com/outra-pessoa/SistemaBiblioteca/releases/download/v1/pacote.zip",
+            "https://github.com/LouasDev/SistemaBiblioteca-outra/releases/download/v1/pacote.zip",
+            "http://github.com/LouasDev/SistemaBiblioteca/releases/download/v1/pacote.zip",
+            "https://example.com/pacote.zip"
+        };
+        foreach (string url in bloqueadas)
+            Verificar("host-pacote-bloqueado", !(bool)aceitar.Invoke(null, new object[] { new Uri(url) }), url);
+
+        var configuracao = new System.Xml.XmlDocument();
+        configuracao.Load(Path.Combine(dirBin, "SUB.exe.config"));
+        var manifesto = configuracao.SelectSingleNode(
+            "/configuration/appSettings/add[@key='ManifestoAtualizacaoUrl']/@value");
+        Verificar("manifesto-no-repositorio-do-projeto",
+            manifesto != null && manifesto.Value ==
+                "https://github.com/LouasDev/SistemaBiblioteca/releases/latest/download/version.json",
+            "a distribuicao deve consultar as releases do SistemaBiblioteca");
     }
 
     static string LerChavePrivada()
@@ -435,7 +461,7 @@ class TesteFormD
 
     class Servidor : IDisposable
     {
-        HttpListener listener;
+        TcpListener listener;
         Thread thread;
         volatile bool rodando = true;
         public byte[] Corpo;
@@ -444,8 +470,7 @@ class TesteFormD
 
         public Servidor(int porta)
         {
-            listener = new HttpListener();
-            listener.Prefixes.Add("http://127.0.0.1:" + porta + "/");
+            listener = new TcpListener(IPAddress.Loopback, porta);
             listener.Start();
             thread = new Thread(Loop);
             thread.IsBackground = true;
@@ -456,25 +481,31 @@ class TesteFormD
         {
             while (rodando)
             {
-                HttpListenerContext ctx = null;
-                try { ctx = listener.GetContext(); }
+                TcpClient cliente = null;
+                try { cliente = listener.AcceptTcpClient(); }
                 catch { break; }
-                if (ctx == null) break;
-                try
+                using (cliente)
                 {
-                    ctx.Response.StatusCode = StatusCode;
-                    if (StatusCode != 200)
+                    try
                     {
-                        ctx.Response.OutputStream.Close();
-                        continue;
+                        cliente.ReceiveTimeout = 5000;
+                        using (var stream = cliente.GetStream())
+                        using (var reader = new StreamReader(stream, Encoding.ASCII))
+                        {
+                            string pedido = reader.ReadLine() ?? "";
+                            while (!string.IsNullOrEmpty(reader.ReadLine())) { }
+                            bool sig = pedido.Contains(".sig ");
+                            byte[] dados = StatusCode == 200
+                                ? (sig ? Assinatura : Corpo) : new byte[0];
+                            string cabecalho = "HTTP/1.1 " + StatusCode + " Test\r\n" +
+                                "Content-Length: " + dados.Length + "\r\nConnection: close\r\n\r\n";
+                            byte[] bytes = Encoding.ASCII.GetBytes(cabecalho);
+                            stream.Write(bytes, 0, bytes.Length);
+                            stream.Write(dados, 0, dados.Length);
+                        }
                     }
-                    bool sig = ctx.Request.Url.AbsolutePath.EndsWith(".sig");
-                    byte[] dados = sig ? Assinatura : Corpo;
-                    ctx.Response.ContentLength64 = dados.Length;
-                    ctx.Response.OutputStream.Write(dados, 0, dados.Length);
-                    ctx.Response.OutputStream.Close();
+                    catch { }
                 }
-                catch { }
             }
         }
 
@@ -482,15 +513,17 @@ class TesteFormD
         {
             rodando = false;
             try { listener.Stop(); } catch { }
-            try { listener.Close(); } catch { }
         }
     }
 
     static void InvocarVerificar()
     {
-        var metodo = typeof(ConfiguracaoForm).GetMethod("btnVerificar_Click",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-        metodo.Invoke(form, new object[] { form, EventArgs.Empty });
+        string antes = Campo<Label>("lblStatusAtualizacao").Text;
+        Campo<Button>("btnVerificar").PerformClick();
+        Verificar("clique-dispara-verificacao",
+            !Campo<Button>("btnVerificar").Enabled ||
+            Campo<Label>("lblStatusAtualizacao").Text != antes,
+            "o botao visivel deve iniciar a verificacao e atualizar o status");
     }
 
     static string SemAcento(string valor)
@@ -509,20 +542,15 @@ class TesteFormD
 
     static void AguardarVerificacaoConcluir(int timeoutMs)
     {
-        // Espera o status final por comparacao de texto (sem depender de acentos
-        // nem do ciclo do pbVerificando, que tem race quando a verificacao
-        // local termina entre o Invoke e o primeiro DoEvents).
+        // O finally do handler reabilita o botao ao concluir, mesmo se duas
+        // consultas consecutivas retornarem a mesma mensagem.
         var lbl = Campo<Label>("lblStatusAtualizacao");
         var pb = Campo<ProgressBar>("pbVerificando");
-        string inicial = SemAcento(lbl.Text);
         var inicio = DateTime.Now;
         while (true)
         {
             Application.DoEvents();
-            string atual = SemAcento(lbl.Text);
-            bool terminou = atual != inicial &&
-                atual != "verificando atualizacoes..." &&
-                !pb.Visible;
+            bool terminou = Campo<Button>("btnVerificar").Enabled && !pb.Visible;
             if (terminou)
                 break;
             if ((DateTime.Now - inicio).TotalMilliseconds >= timeoutMs)

@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Configuracoes
+namespace SUB.Forms.Configuracoes
 {
     partial class ConfiguracaoForm
     {
@@ -35,33 +35,25 @@
             this.lblCor = new System.Windows.Forms.Label();
             this.pnlCorPreview = new System.Windows.Forms.Panel();
             this.grpAtualizacao = new System.Windows.Forms.GroupBox();
-            this.customButton1 = new CustomButton();
-            this.customButton2 = new CustomButton();
-            this.customButton3 = new CustomButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.pbDownload = new System.Windows.Forms.ProgressBar();
-            this.btnSalvar = new System.Windows.Forms.Button();
-            this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
-            this.lblSubtitulo = new System.Windows.Forms.Label();
-            this.Titulo = new System.Windows.Forms.Label();
+            this.btnCancelarDownload = new CustomButton();
+            this.btnAtualizar = new CustomButton();
+            this.btnVerificar = new CustomButton();
             this.lblVersaoAtual = new System.Windows.Forms.Label();
             this.lblStatusAtualizacao = new System.Windows.Forms.Label();
             this.pbVerificando = new System.Windows.Forms.ProgressBar();
             this.lblNotasTitulo = new System.Windows.Forms.Label();
             this.txtNotasVersao = new System.Windows.Forms.TextBox();
-            this.btnCancelarDownload = new CustomButton();
-            this.btnAtualizar = new CustomButton();
-            this.btnVerificar = new CustomButton();
+            this.pbDownload = new System.Windows.Forms.ProgressBar();
+            this.btnSalvar = new System.Windows.Forms.Button();
+            this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
+            this.lblSubtitulo = new System.Windows.Forms.Label();
+            this.Titulo = new System.Windows.Forms.Label();
             this.grpInstituicao.SuspendLayout();
             this.grpAtualizacao.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // grpInstituicao
-            // 
+            //
             this.grpInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.grpInstituicao.Controls.Add(this.cbTemas);
             this.grpInstituicao.Controls.Add(this.c);
@@ -77,9 +69,9 @@
             this.grpInstituicao.TabIndex = 1;
             this.grpInstituicao.TabStop = false;
             this.grpInstituicao.Text = "Instituição";
-            // 
+            //
             // cbTemas
-            // 
+            //
             this.cbTemas.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbTemas.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbTemas.BorderRadius = 8;
@@ -100,9 +92,9 @@
             this.cbTemas.Size = new System.Drawing.Size(275, 34);
             this.cbTemas.TabIndex = 6;
             this.cbTemas.SelectedIndexChanged += new System.EventHandler(this.cbTemas_SelectedIndexChanged);
-            // 
+            //
             // c
-            // 
+            //
             this.c.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.c.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.c.BackColor = System.Drawing.Color.White;
@@ -125,9 +117,9 @@
             this.c.TabIndex = 5;
             this.c.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
             this.c.UseSystemPasswordChar = false;
-            // 
+            //
             // lblNome
-            // 
+            //
             this.lblNome.AutoSize = true;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -136,9 +128,9 @@
             this.lblNome.Size = new System.Drawing.Size(190, 25);
             this.lblNome.TabIndex = 0;
             this.lblNome.Text = "Nome da instituição:";
-            // 
+            //
             // lblCor
-            // 
+            //
             this.lblCor.AutoSize = true;
             this.lblCor.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblCor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -147,25 +139,25 @@
             this.lblCor.Size = new System.Drawing.Size(302, 25);
             this.lblCor.TabIndex = 2;
             this.lblCor.Text = "Cor principal da identidade visual:";
-            // 
+            //
             // pnlCorPreview
-            // 
+            //
             this.pnlCorPreview.Location = new System.Drawing.Point(332, 113);
             this.pnlCorPreview.Name = "pnlCorPreview";
             this.pnlCorPreview.Size = new System.Drawing.Size(50, 50);
             this.pnlCorPreview.TabIndex = 4;
-            // 
+            //
             // grpAtualizacao
-            // 
+            //
             this.grpAtualizacao.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.grpAtualizacao.Controls.Add(this.customButton1);
-            this.grpAtualizacao.Controls.Add(this.customButton2);
-            this.grpAtualizacao.Controls.Add(this.customButton3);
-            this.grpAtualizacao.Controls.Add(this.label1);
-            this.grpAtualizacao.Controls.Add(this.label2);
-            this.grpAtualizacao.Controls.Add(this.progressBar1);
-            this.grpAtualizacao.Controls.Add(this.label3);
-            this.grpAtualizacao.Controls.Add(this.textBox1);
+            this.grpAtualizacao.Controls.Add(this.btnCancelarDownload);
+            this.grpAtualizacao.Controls.Add(this.btnAtualizar);
+            this.grpAtualizacao.Controls.Add(this.btnVerificar);
+            this.grpAtualizacao.Controls.Add(this.lblVersaoAtual);
+            this.grpAtualizacao.Controls.Add(this.lblStatusAtualizacao);
+            this.grpAtualizacao.Controls.Add(this.pbVerificando);
+            this.grpAtualizacao.Controls.Add(this.lblNotasTitulo);
+            this.grpAtualizacao.Controls.Add(this.txtNotasVersao);
             this.grpAtualizacao.Controls.Add(this.pbDownload);
             this.grpAtualizacao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.grpAtualizacao.Location = new System.Drawing.Point(106, 327);
@@ -176,244 +168,9 @@
             this.grpAtualizacao.TabIndex = 2;
             this.grpAtualizacao.TabStop = false;
             this.grpAtualizacao.Text = "Atualização";
-            // 
-            // customButton1
-            // 
-            this.customButton1.BackColor = System.Drawing.Color.Transparent;
-            this.customButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton1.BorderThickness = 0;
-            this.customButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.customButton1.FlatAppearance.BorderSize = 0;
-            this.customButton1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.customButton1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.customButton1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
-            this.customButton1.ForeColor = System.Drawing.Color.White;
-            this.customButton1.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.customButton1.Location = new System.Drawing.Point(189, 339);
-            this.customButton1.Name = "customButton1";
-            this.customButton1.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
-            this.customButton1.ShowBorder = false;
-            this.customButton1.Size = new System.Drawing.Size(160, 36);
-            this.customButton1.TabIndex = 19;
-            this.customButton1.Text = "Cancelar Download";
-            this.customButton1.UseVisualStyleBackColor = false;
-            // 
-            // customButton2
-            // 
-            this.customButton2.BackColor = System.Drawing.Color.Transparent;
-            this.customButton2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton2.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton2.BorderThickness = 0;
-            this.customButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.customButton2.FlatAppearance.BorderSize = 0;
-            this.customButton2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.customButton2.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.customButton2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton2.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
-            this.customButton2.ForeColor = System.Drawing.Color.White;
-            this.customButton2.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.customButton2.Location = new System.Drawing.Point(23, 339);
-            this.customButton2.Name = "customButton2";
-            this.customButton2.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
-            this.customButton2.ShowBorder = false;
-            this.customButton2.Size = new System.Drawing.Size(160, 36);
-            this.customButton2.TabIndex = 18;
-            this.customButton2.Text = "Atualizar agora";
-            this.customButton2.UseVisualStyleBackColor = false;
-            // 
-            // customButton3
-            // 
-            this.customButton3.BackColor = System.Drawing.Color.Transparent;
-            this.customButton3.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton3.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton3.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.customButton3.BorderThickness = 0;
-            this.customButton3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.customButton3.FlatAppearance.BorderSize = 0;
-            this.customButton3.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.customButton3.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
-            this.customButton3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customButton3.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
-            this.customButton3.ForeColor = System.Drawing.Color.White;
-            this.customButton3.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.customButton3.Location = new System.Drawing.Point(20, 67);
-            this.customButton3.Name = "customButton3";
-            this.customButton3.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
-            this.customButton3.ShowBorder = false;
-            this.customButton3.Size = new System.Drawing.Size(190, 36);
-            this.customButton3.TabIndex = 15;
-            this.customButton3.Text = "Verificar atualizações";
-            this.customButton3.UseVisualStyleBackColor = false;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label1.Location = new System.Drawing.Point(590, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(146, 25);
-            this.label1.TabIndex = 11;
-            this.label1.Text = "Versão atual: —";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 12.25F, System.Drawing.FontStyle.Bold);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label2.Location = new System.Drawing.Point(15, 32);
-            this.label2.MaximumSize = new System.Drawing.Size(620, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(507, 23);
-            this.label2.TabIndex = 12;
-            this.label2.Text = "Clique em Verificar atualizações para consultar uma nova versão.";
-            // 
-            // progressBar1
-            // 
-            this.progressBar1.Location = new System.Drawing.Point(227, 71);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(300, 30);
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.progressBar1.TabIndex = 13;
-            this.progressBar1.Visible = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label3.Location = new System.Drawing.Point(15, 138);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(155, 25);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Notas da versão:";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox1.Location = new System.Drawing.Point(18, 166);
-            this.textBox1.MaxLength = 4000;
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(1001, 144);
-            this.textBox1.TabIndex = 16;
-            // 
-            // pbDownload
-            // 
-            this.pbDownload.Location = new System.Drawing.Point(362, 343);
-            this.pbDownload.Name = "pbDownload";
-            this.pbDownload.Size = new System.Drawing.Size(300, 30);
-            this.pbDownload.TabIndex = 17;
-            this.pbDownload.Visible = false;
-            // 
-            // btnSalvar
-            // 
-            this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12.25F);
-            this.btnSalvar.Location = new System.Drawing.Point(1061, 767);
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(123, 40);
-            this.btnSalvar.TabIndex = 3;
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
-            // 
-            // pnlLinhaCabecalho
-            // 
-            this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
-            this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
-            this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 126;
-            // 
-            // lblSubtitulo
-            // 
-            this.lblSubtitulo.AutoSize = true;
-            this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
-            this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(105)))), ((int)(((byte)(120)))));
-            this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
-            this.lblSubtitulo.Name = "lblSubtitulo";
-            this.lblSubtitulo.Size = new System.Drawing.Size(316, 17);
-            this.lblSubtitulo.TabIndex = 125;
-            this.lblSubtitulo.Text = "Configure e mantenha os dados do SUB atualizados.";
-            // 
-            // Titulo
-            // 
-            this.Titulo.AutoSize = true;
-            this.Titulo.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
-            this.Titulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.Titulo.Location = new System.Drawing.Point(34, 20);
-            this.Titulo.Name = "Titulo";
-            this.Titulo.Size = new System.Drawing.Size(377, 38);
-            this.Titulo.TabIndex = 124;
-            this.Titulo.Text = "Configurações da instituição";
-            // 
-            // lblVersaoAtual
-            // 
-            this.lblVersaoAtual.AutoSize = true;
-            this.lblVersaoAtual.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblVersaoAtual.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblVersaoAtual.Location = new System.Drawing.Point(15, -22);
-            this.lblVersaoAtual.Name = "lblVersaoAtual";
-            this.lblVersaoAtual.Size = new System.Drawing.Size(146, 25);
-            this.lblVersaoAtual.TabIndex = 11;
-            this.lblVersaoAtual.Text = "Versão atual: —";
-            // 
-            // lblStatusAtualizacao
-            // 
-            this.lblStatusAtualizacao.AutoSize = true;
-            this.lblStatusAtualizacao.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblStatusAtualizacao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblStatusAtualizacao.Location = new System.Drawing.Point(15, 10);
-            this.lblStatusAtualizacao.MaximumSize = new System.Drawing.Size(620, 0);
-            this.lblStatusAtualizacao.Name = "lblStatusAtualizacao";
-            this.lblStatusAtualizacao.Size = new System.Drawing.Size(567, 25);
-            this.lblStatusAtualizacao.TabIndex = 12;
-            this.lblStatusAtualizacao.Text = "Clique em Verificar atualizações para consultar uma nova versão.";
-            // 
-            // pbVerificando
-            // 
-            this.pbVerificando.Location = new System.Drawing.Point(227, 49);
-            this.pbVerificando.Name = "pbVerificando";
-            this.pbVerificando.Size = new System.Drawing.Size(300, 30);
-            this.pbVerificando.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pbVerificando.TabIndex = 13;
-            this.pbVerificando.Visible = false;
-            // 
-            // lblNotasTitulo
-            // 
-            this.lblNotasTitulo.AutoSize = true;
-            this.lblNotasTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
-            this.lblNotasTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblNotasTitulo.Location = new System.Drawing.Point(15, 108);
-            this.lblNotasTitulo.Name = "lblNotasTitulo";
-            this.lblNotasTitulo.Size = new System.Drawing.Size(155, 25);
-            this.lblNotasTitulo.TabIndex = 14;
-            this.lblNotasTitulo.Text = "Notas da versão:";
-            // 
-            // txtNotasVersao
-            // 
-            this.txtNotasVersao.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNotasVersao.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtNotasVersao.Location = new System.Drawing.Point(18, 136);
-            this.txtNotasVersao.MaxLength = 4000;
-            this.txtNotasVersao.Multiline = true;
-            this.txtNotasVersao.Name = "txtNotasVersao";
-            this.txtNotasVersao.ReadOnly = true;
-            this.txtNotasVersao.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtNotasVersao.Size = new System.Drawing.Size(1200, 144);
-            this.txtNotasVersao.TabIndex = 16;
-            // 
+            //
             // btnCancelarDownload
-            // 
+            //
             this.btnCancelarDownload.BackColor = System.Drawing.Color.Transparent;
             this.btnCancelarDownload.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnCancelarDownload.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -427,17 +184,19 @@
             this.btnCancelarDownload.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
             this.btnCancelarDownload.ForeColor = System.Drawing.Color.White;
             this.btnCancelarDownload.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.btnCancelarDownload.Location = new System.Drawing.Point(189, 309);
+            this.btnCancelarDownload.Location = new System.Drawing.Point(189, 339);
             this.btnCancelarDownload.Name = "btnCancelarDownload";
             this.btnCancelarDownload.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnCancelarDownload.ShowBorder = false;
             this.btnCancelarDownload.Size = new System.Drawing.Size(160, 36);
             this.btnCancelarDownload.TabIndex = 19;
-            this.btnCancelarDownload.Text = "Cancelar Download";
+            this.btnCancelarDownload.Text = "Cancelar download";
             this.btnCancelarDownload.UseVisualStyleBackColor = false;
-            // 
+            this.btnCancelarDownload.Visible = false;
+            this.btnCancelarDownload.Click += new System.EventHandler(this.btnCancelarDownload_Click);
+            //
             // btnAtualizar
-            // 
+            //
             this.btnAtualizar.BackColor = System.Drawing.Color.Transparent;
             this.btnAtualizar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnAtualizar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -451,7 +210,7 @@
             this.btnAtualizar.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
             this.btnAtualizar.ForeColor = System.Drawing.Color.White;
             this.btnAtualizar.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.btnAtualizar.Location = new System.Drawing.Point(23, 309);
+            this.btnAtualizar.Location = new System.Drawing.Point(23, 339);
             this.btnAtualizar.Name = "btnAtualizar";
             this.btnAtualizar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnAtualizar.ShowBorder = false;
@@ -459,9 +218,11 @@
             this.btnAtualizar.TabIndex = 18;
             this.btnAtualizar.Text = "Atualizar agora";
             this.btnAtualizar.UseVisualStyleBackColor = false;
-            // 
+            this.btnAtualizar.Visible = false;
+            this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
+            //
             // btnVerificar
-            // 
+            //
             this.btnVerificar.BackColor = System.Drawing.Color.Transparent;
             this.btnVerificar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnVerificar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -475,7 +236,7 @@
             this.btnVerificar.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
             this.btnVerificar.ForeColor = System.Drawing.Color.White;
             this.btnVerificar.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
-            this.btnVerificar.Location = new System.Drawing.Point(20, 45);
+            this.btnVerificar.Location = new System.Drawing.Point(20, 126);
             this.btnVerificar.Name = "btnVerificar";
             this.btnVerificar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnVerificar.ShowBorder = false;
@@ -483,9 +244,115 @@
             this.btnVerificar.TabIndex = 15;
             this.btnVerificar.Text = "Verificar atualizações";
             this.btnVerificar.UseVisualStyleBackColor = false;
-            // 
+            this.btnVerificar.Click += new System.EventHandler(this.btnVerificar_Click);
+            //
+            // lblVersaoAtual
+            //
+            this.lblVersaoAtual.AutoSize = true;
+            this.lblVersaoAtual.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblVersaoAtual.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
+            this.lblVersaoAtual.Location = new System.Drawing.Point(18, 28);
+            this.lblVersaoAtual.Name = "lblVersaoAtual";
+            this.lblVersaoAtual.Size = new System.Drawing.Size(146, 25);
+            this.lblVersaoAtual.TabIndex = 11;
+            this.lblVersaoAtual.Text = "Versão atual: —";
+            //
+            // lblStatusAtualizacao
+            //
+            this.lblStatusAtualizacao.AutoSize = true;
+            this.lblStatusAtualizacao.Font = new System.Drawing.Font("Segoe UI Semibold", 12.25F, System.Drawing.FontStyle.Bold);
+            this.lblStatusAtualizacao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
+            this.lblStatusAtualizacao.Location = new System.Drawing.Point(18, 65);
+            this.lblStatusAtualizacao.MaximumSize = new System.Drawing.Size(1000, 0);
+            this.lblStatusAtualizacao.Name = "lblStatusAtualizacao";
+            this.lblStatusAtualizacao.Size = new System.Drawing.Size(507, 23);
+            this.lblStatusAtualizacao.TabIndex = 12;
+            this.lblStatusAtualizacao.Text = "Clique em Verificar atualizações para consultar uma nova versão.";
+            //
+            // pbVerificando
+            //
+            this.pbVerificando.Location = new System.Drawing.Point(227, 130);
+            this.pbVerificando.Name = "pbVerificando";
+            this.pbVerificando.Size = new System.Drawing.Size(300, 30);
+            this.pbVerificando.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.pbVerificando.TabIndex = 13;
+            this.pbVerificando.Visible = false;
+            //
+            // lblNotasTitulo
+            //
+            this.lblNotasTitulo.AutoSize = true;
+            this.lblNotasTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
+            this.lblNotasTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
+            this.lblNotasTitulo.Location = new System.Drawing.Point(15, 178);
+            this.lblNotasTitulo.Name = "lblNotasTitulo";
+            this.lblNotasTitulo.Size = new System.Drawing.Size(155, 25);
+            this.lblNotasTitulo.TabIndex = 14;
+            this.lblNotasTitulo.Text = "Notas da versão:";
+            //
+            // txtNotasVersao
+            //
+            this.txtNotasVersao.BackColor = System.Drawing.SystemColors.Window;
+            this.txtNotasVersao.Location = new System.Drawing.Point(18, 208);
+            this.txtNotasVersao.MaxLength = 4000;
+            this.txtNotasVersao.Multiline = true;
+            this.txtNotasVersao.Name = "txtNotasVersao";
+            this.txtNotasVersao.ReadOnly = true;
+            this.txtNotasVersao.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtNotasVersao.Size = new System.Drawing.Size(1001, 112);
+            this.txtNotasVersao.TabIndex = 16;
+            //
+            // pbDownload
+            //
+            this.pbDownload.Location = new System.Drawing.Point(362, 343);
+            this.pbDownload.Name = "pbDownload";
+            this.pbDownload.Size = new System.Drawing.Size(300, 30);
+            this.pbDownload.TabIndex = 17;
+            this.pbDownload.Visible = false;
+            //
+            // btnSalvar
+            //
+            this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12.25F);
+            this.btnSalvar.Location = new System.Drawing.Point(1061, 767);
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.Size = new System.Drawing.Size(123, 40);
+            this.btnSalvar.TabIndex = 3;
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            //
+            // pnlLinhaCabecalho
+            //
+            this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
+            this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
+            this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
+            this.pnlLinhaCabecalho.TabIndex = 126;
+            //
+            // lblSubtitulo
+            //
+            this.lblSubtitulo.AutoSize = true;
+            this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(105)))), ((int)(((byte)(120)))));
+            this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
+            this.lblSubtitulo.Name = "lblSubtitulo";
+            this.lblSubtitulo.Size = new System.Drawing.Size(316, 17);
+            this.lblSubtitulo.TabIndex = 125;
+            this.lblSubtitulo.Text = "Configure e mantenha os dados do SUB atualizados.";
+            //
+            // Titulo
+            //
+            this.Titulo.AutoSize = true;
+            this.Titulo.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
+            this.Titulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
+            this.Titulo.Location = new System.Drawing.Point(34, 20);
+            this.Titulo.Name = "Titulo";
+            this.Titulo.Size = new System.Drawing.Size(377, 38);
+            this.Titulo.TabIndex = 124;
+            this.Titulo.Text = "Configurações da instituição";
+            //
             // ConfiguracaoForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -526,15 +393,6 @@
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
         private System.Windows.Forms.Label lblSubtitulo;
         public System.Windows.Forms.Label Titulo;
-        private CustomButton customButton1;
-        private CustomButton customButton2;
-        private CustomButton customButton3;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ProgressBar pbDownload;
         private CustomButton btnCancelarDownload;
         private CustomButton btnAtualizar;
         private CustomButton btnVerificar;
@@ -543,5 +401,6 @@
         private System.Windows.Forms.ProgressBar pbVerificando;
         private System.Windows.Forms.Label lblNotasTitulo;
         private System.Windows.Forms.TextBox txtNotasVersao;
+        private System.Windows.Forms.ProgressBar pbDownload;
     }
 }

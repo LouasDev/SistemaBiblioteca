@@ -347,7 +347,7 @@ namespace SUB.Utils
                 return false;
 
             if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase) &&
-                !uri.AbsolutePath.StartsWith("/LouasDev/SUB-Releases/", StringComparison.OrdinalIgnoreCase))
+                !uri.AbsolutePath.StartsWith("/LouasDev/SistemaBiblioteca/releases/", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             return true;

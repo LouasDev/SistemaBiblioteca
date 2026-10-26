@@ -17,5 +17,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // InformationalVersion aceita sufixos (ex.: 1.0.0-beta.1+abc1234)
-[assembly: AssemblyInformationalVersion("1.0.0-AlphaOffline")]
+[assembly: AssemblyInformationalVersion("1.0.0")]
 

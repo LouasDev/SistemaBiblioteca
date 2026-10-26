@@ -593,7 +593,7 @@ class TesteFormD
     {
         int porta = PortaLivre();
         string versaoAtual = AtualizacaoService.VersaoAtual();
-        string json = MontarJsonManifesto(versaoAtual, "nao deveria aparecer");
+        string json = MontarJsonManifesto(versaoAtual, "Notas da versao instalada");
         byte[] corpo = Encoding.UTF8.GetBytes(json);
 
         using (var servidor = new Servidor(porta))
@@ -612,7 +612,7 @@ class TesteFormD
 
             Verificar("verificar-versao-ja-atual",
                 lbl.Text.Contains("mais recente") && !btnAtualizar.Visible &&
-                txtNotas.Text == "",
+                txtNotas.Text == "Notas da versao instalada",
                 "status='" + lbl.Text + "'");
         }
     }

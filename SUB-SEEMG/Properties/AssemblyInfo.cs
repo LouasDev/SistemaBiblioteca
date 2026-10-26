@@ -14,8 +14,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 
 // FileVersion para cada build distribuída
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 
 // InformationalVersion aceita sufixos (ex.: 1.0.0-beta.1+abc1234)
-[assembly: AssemblyInformationalVersion("1.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.1")]
 

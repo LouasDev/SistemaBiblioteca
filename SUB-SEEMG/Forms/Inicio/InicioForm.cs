@@ -69,6 +69,21 @@ namespace SUB.Forms.Inicio
         public InicioForm()
         {
             InitializeComponent();
+            panelTop.Height = 126;
+            panelTop.Controls.Add(new Label
+            {
+                Name = "lblAtualizacaoTeste",
+                Text = "SUB 1.0.1 — atualização de teste instalada",
+                AutoSize = false,
+                Location = new Point(19, 86),
+                Size = new Size(panelTop.ClientSize.Width - 38, 28),
+                Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.FromArgb(226, 245, 232),
+                ForeColor = Color.FromArgb(30, 100, 60),
+                TextAlign = ContentAlignment.MiddleLeft,
+                Padding = new Padding(8, 0, 8, 0),
+                Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Bold)
+            });
             ThemeManager.ApplyConfiguredTheme(this);
             this.KeyPreview = true;
             this.KeyDown += InicioForm_KeyDown;

@@ -330,18 +330,9 @@ namespace SUB.Forms.Configuracoes
                 if (IsDisposed)
                     return;
 
-                if (resultado.Sucesso && resultado.AtualizacaoDisponivel)
-                {
-                    manifestoDisponivel = resultado.Manifesto;
-                    lblStatusAtualizacao.Text = MontarMensagemVersaoNova(resultado);
-                    txtNotasVersao.Text = TruncarNotas(resultado.Manifesto.Notas);
-                    btnAtualizar.Visible = true;
-                }
-                else
-                {
-                    lblStatusAtualizacao.Text = resultado.Mensagem;
+                ApresentarResultadoVerificacao(resultado);
+                if (!resultado.Sucesso || !resultado.AtualizacaoDisponivel)
                     RegistrarLog("verificar: " + resultado.Mensagem);
-                }
             }
             catch (Exception ex)
             {
@@ -357,6 +348,17 @@ namespace SUB.Forms.Configuracoes
                     DefinirModoOperacao(false);
                 }
             }
+        }
+
+        internal void ApresentarResultadoVerificacao(ResultadoVerificacaoAtualizacao resultado)
+        {
+            manifestoDisponivel = resultado.Sucesso && resultado.AtualizacaoDisponivel
+                ? resultado.Manifesto : null;
+            txtNotasVersao.Text = resultado.Sucesso && resultado.Manifesto != null
+                ? TruncarNotas(resultado.Manifesto.Notas) : string.Empty;
+            btnAtualizar.Visible = manifestoDisponivel != null;
+            lblStatusAtualizacao.Text = manifestoDisponivel != null
+                ? MontarMensagemVersaoNova(resultado) : resultado.Mensagem;
         }
 
         private async void btnAtualizar_Click(object sender, EventArgs e)

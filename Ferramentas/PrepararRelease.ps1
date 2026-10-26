@@ -1,5 +1,6 @@
 param(
     [string]$Versao = '1.0.0',
+    [string]$Notas = 'Primeira release pública do SUB. Operação local, configuração da instituição, acervo, usuários, circulação, relatórios e painel de atualização corrigido.',
     [string]$ChavePrivada = (Join-Path $env:USERPROFILE '.sub-releases\chave-privada.xml')
 )
 
@@ -57,8 +58,8 @@ Os dados ficam em %LOCALAPPDATA%\SUB, separados dos arquivos do aplicativo.
 
 Código-fonte e releases: https://github.com/LouasDev/SistemaBiblioteca
 
-Esta primeira release inclui a correção dos botões do painel de atualização.
-A versão 1.0.0.0 exibida em Configurações corresponde à release 1.0.0.
+$Notas
+A versão $versaoArquivo exibida em Configurações corresponde à release $Versao.
 Uma instalação nessa mesma versão não indicará nova atualização disponível.
 "@
 [IO.File]::WriteAllText((Join-Path $pacote 'LEIA-ME.txt'), $instrucoes, [Text.UTF8Encoding]::new($false))
@@ -78,7 +79,7 @@ $manifesto = [ordered]@{
     url = "https://github.com/LouasDev/SistemaBiblioteca/releases/download/v$Versao/SUB-$Versao.zip"
     sha256 = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
     tamanho = (Get-Item -LiteralPath $zip).Length
-    notas = 'Primeira release pública do SUB. Operação local, configuração da instituição, acervo, usuários, circulação, relatórios e painel de atualização corrigido.'
+    notas = $Notas
 }
 $json = Join-Path $destino 'version.json'
 [IO.File]::WriteAllText($json, ($manifesto | ConvertTo-Json), [Text.UTF8Encoding]::new($false))

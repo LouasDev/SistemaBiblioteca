@@ -19,6 +19,7 @@ namespace SUB.Forms.Login
         public AboutForm()
         {
             InitializeComponent();
+            label5.Text = "Versão " + AtualizacaoService.VersaoAtual();
 
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
@@ -44,10 +45,6 @@ namespace SUB.Forms.Login
 
             AplicarTema(corPrimaria);
 
-            Version versao = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            label5.Text = versao.Build > 0
-                ? string.Format("Versão {0}.{1}.{2}", versao.Major, versao.Minor, versao.Build)
-                : string.Format("Versão {0}.{1}", versao.Major, versao.Minor);
             label7.Text = string.Format("© {0} Sistema Único Bibliotecário · SEE/MG", DateTime.Now.Year);
             BtnOk.Focus();
         }

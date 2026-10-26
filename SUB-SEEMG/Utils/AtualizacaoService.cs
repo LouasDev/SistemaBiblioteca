@@ -53,7 +53,7 @@ namespace SUB.Utils
         public static string VersaoAtual()
         {
             var local = Assembly.GetExecutingAssembly().Location;
-            return FileVersionInfo.GetVersionInfo(local).FileVersion ?? string.Empty;
+            return VersaoAplicativo.Formatar(FileVersionInfo.GetVersionInfo(local).FileVersion) ?? string.Empty;
         }
 
         public static async Task<ResultadoVerificacaoAtualizacao> VerificarAsync(string urlManifesto, int timeoutSegundos)
@@ -427,6 +427,9 @@ namespace SUB.Utils
             if (manifesto == null || string.IsNullOrWhiteSpace(manifesto.Versao))
                 return "Manifesto de atualização sem a versão.";
 
+            if (!VersaoAplicativo.FormatoValido(manifesto.Versao))
+                return "Versão do manifesto inválida. Use o formato 0.0.0 (ex.: 1.0.2).";
+
             var url = (manifesto.Url ?? string.Empty).Trim();
             if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) &&
                 !url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
@@ -457,14 +460,7 @@ namespace SUB.Utils
 
         internal static string NormalizarVersao(string versao)
         {
-            if (string.IsNullOrWhiteSpace(versao))
-                return versao;
-
-            var cortado = versao.Trim();
-            var corte = cortado.IndexOfAny(new[] { '-', '+' });
-            if (corte >= 0)
-                cortado = cortado.Substring(0, corte);
-            return cortado;
+            return VersaoAplicativo.Formatar(versao);
         }
     }
 }

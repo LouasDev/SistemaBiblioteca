@@ -278,10 +278,10 @@ class TesteFormD
         Application.DoEvents();
 
         var lblVersao = Campo<Label>("lblVersaoAtual");
-        string esperado = FileVersionInfo.GetVersionInfo(Path.Combine(dirBin, "SUB.exe")).FileVersion;
+        string esperado = AtualizacaoService.VersaoAtual();
         Verificar("onshoud-preenche-versao",
             lblVersao.Text.Contains(esperado),
-            "lblVersaoAtual deveria conter o FileVersion (" + lblVersao.Text + ")");
+            "lblVersaoAtual deveria conter a versao 0.0.0 (" + lblVersao.Text + ")");
     }
 
     static void TestarDimensoesEBinding()
@@ -371,11 +371,11 @@ class TesteFormD
 
         var resultado = new ResultadoVerificacaoAtualizacao
         {
-            Manifesto = new AtualizacaoManifesto { Versao = "9.9.9.9", Data = "20/10/2026" }
+            Manifesto = new AtualizacaoManifesto { Versao = "9.9.9", Data = "20/10/2026" }
         };
         string msg = (string)mensagem.Invoke(null, new object[] { resultado });
         Verificar("mensagem-versao-nova",
-            msg.Contains("9.9.9.9") && msg.Contains("20/10/2026"),
+            msg.Contains("9.9.9") && msg.Contains("20/10/2026"),
             "MontarMensagemVersaoNova deve citar versao e data");
     }
 
@@ -384,7 +384,7 @@ class TesteFormD
         var aceitar = typeof(AtualizacaoService).GetMethod("UrlPacoteAceitavel",
             BindingFlags.NonPublic | BindingFlags.Static);
         string[] permitidas = {
-            "https://github.com/LouasDev/SistemaBiblioteca/releases/download/v1.0.0.1/SUB-1.0.0.1.zip",
+            "https://github.com/LouasDev/SistemaBiblioteca/releases/download/v1.0.2/SUB-1.0.2.zip",
             "https://release-assets.githubusercontent.com/pacote.zip",
             "http://127.0.0.1:8080/pacote.zip"
         };
@@ -563,7 +563,7 @@ class TesteFormD
     static void TestarVerificarVersaoNova(string chave)
     {
         int porta = PortaLivre();
-        string json = MontarJsonManifesto("99.0.0.0", "correcao de bugs - nota de teste");
+        string json = MontarJsonManifesto("99.0.0", "correcao de bugs - nota de teste");
         byte[] corpo = Encoding.UTF8.GetBytes(json);
 
         using (var servidor = new Servidor(porta))
@@ -582,9 +582,9 @@ class TesteFormD
             var manifesto = Campo<AtualizacaoManifesto>("manifestoDisponivel");
 
             Verificar("verificar-versao-nova",
-                lbl.Text.Contains("99.0.0.0") && btnAtualizar.Visible &&
+                lbl.Text.Contains("99.0.0") && btnAtualizar.Visible &&
                 txtNotas.Text.Contains("correcao de bugs") && manifesto != null &&
-                manifesto.Versao == "99.0.0.0",
+                manifesto.Versao == "99.0.0",
                 "status='" + lbl.Text + "' btnAtualizar.Visible=" + btnAtualizar.Visible);
         }
     }
@@ -620,7 +620,7 @@ class TesteFormD
     static void TestarVerificarAssinaturaInvalida()
     {
         int porta = PortaLivre();
-        string json = MontarJsonManifesto("99.0.0.0", "x");
+        string json = MontarJsonManifesto("99.0.0", "x");
         byte[] corpo = Encoding.UTF8.GetBytes(json);
 
         using (var servidor = new Servidor(porta))

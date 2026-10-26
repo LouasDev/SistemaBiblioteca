@@ -45,9 +45,9 @@ namespace SUB.Updater
         private static int Executar(string[] args)
         {
             var a = LerArgs(args);
-            if (a == null)
+            if (a == null || !SUB.Utils.VersaoAplicativo.FormatoValido(a["versao"]))
             {
-                Avisar("Argumentos inválidos.\nUso: SUB-UPDATER.exe --pid <pid> --pasta <instalação> --pacote <zip> --versao <x.y.z> --dados <dados> [--timeout <s>] [--sem-mensagens]");
+                Avisar("Argumentos inválidos.\nUso: SUB-UPDATER.exe --pid <pid> --pasta <instalação> --pacote <zip> --versao <0.0.0> --dados <dados> [--timeout <s>] [--sem-mensagens]");
                 return 2;
             }
 
@@ -567,41 +567,14 @@ namespace SUB.Updater
         private static bool VersaoConfere(string exe, string esperada)
         {
             var atual = FileVersionInfo.GetVersionInfo(exe).FileVersion;
-            return CompararVersoes(atual, esperada) == 0;
+            return SUB.Utils.VersaoAplicativo.Formatar(atual) != null &&
+                   SUB.Utils.VersaoAplicativo.FormatoValido(esperada) &&
+                   CompararVersoes(atual, esperada) == 0;
         }
 
         private static int CompararVersoes(string a, string b)
         {
-            var va = ParaVersaoNormalizada(a);
-            var vb = ParaVersaoNormalizada(b);
-            for (int i = 0; i < 4; i++)
-            {
-                var cmp = va[i].CompareTo(vb[i]);
-                if (cmp != 0)
-                    return cmp;
-            }
-            return 0;
-        }
-
-        private static int[] ParaVersaoNormalizada(string versao)
-        {
-            var resultado = new int[4];
-            if (string.IsNullOrWhiteSpace(versao))
-                return resultado;
-
-            var cortado = versao.Trim();
-            var corte = cortado.IndexOfAny(new[] { '-', '+' });
-            if (corte >= 0)
-                cortado = cortado.Substring(0, corte);
-
-            var partes = cortado.Split('.');
-            for (int i = 0; i < 4; i++)
-            {
-                int valor;
-                if (i < partes.Length && int.TryParse(partes[i], out valor))
-                    resultado[i] = valor;
-            }
-            return resultado;
+            return SUB.Utils.VersaoAplicativo.Comparar(a, b);
         }
 
         private static void TentarApagarDiretorio(string pasta)

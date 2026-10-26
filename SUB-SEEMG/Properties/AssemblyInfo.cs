@@ -10,12 +10,12 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 [assembly: Guid("00000000-0000-0000-0000-000000000000")]
 
-// Fixe AssemblyVersion em MAJOR.MINOR.0.0
-[assembly: AssemblyVersion("1.0.0.0")]
+// Identidade do assembly; o CLR mantém internamente uma revisão zero.
+[assembly: AssemblyVersion("1.0.0")]
 
-// FileVersion para cada build distribuída
-[assembly: AssemblyFileVersion("1.0.1.0")]
+// Versões públicas e de distribuição seguem sempre MAJOR.MINOR.PATCH.
+[assembly: AssemblyFileVersion("1.0.1")]
 
-// InformationalVersion aceita sufixos (ex.: 1.0.0-beta.1+abc1234)
+// Sem prefixos, sufixos ou quarto componente.
 [assembly: AssemblyInformationalVersion("1.0.1")]
 

@@ -1,5 +1,6 @@
 param(
-    [string]$Versao = '1.0.0',
+    [ValidatePattern('\A[0-9]+\.[0-9]+\.[0-9]+\z')]
+    [string]$Versao = '1.0.1',
     [string]$Notas = 'Primeira release pública do SUB. Operação local, configuração da instituição, acervo, usuários, circulação, relatórios e painel de atualização corrigido.',
     [string]$ChavePrivada = (Join-Path $env:USERPROFILE '.sub-releases\chave-privada.xml')
 )
@@ -8,11 +9,18 @@ $ErrorActionPreference = 'Stop'
 $raiz = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 $executavel = Join-Path $raiz 'SUB-SEEMG\bin\Release\SUB.exe'
 $updater = Join-Path $raiz 'SUB-SEEMG\bin\Release\SUB-UPDATER.exe'
-$versaoArquivo = [Diagnostics.FileVersionInfo]::GetVersionInfo($executavel).FileVersion
-if ([version]$versaoArquivo -ne [version]($Versao + '.0')) {
+$metadados = [Diagnostics.FileVersionInfo]::GetVersionInfo($executavel)
+$versaoBinaria = [version]$metadados.FileVersion
+$versaoArquivo = $versaoBinaria.ToString(3)
+if ($versaoBinaria.Revision -gt 0 -or $versaoArquivo -ne $Versao -or $metadados.ProductVersion -ne $Versao) {
     throw "A versão do executável ($versaoArquivo) não corresponde à release $Versao."
 }
 if (!(Test-Path $updater)) { throw 'Compile também o SUB-UPDATER em Release.' }
+$metadadosAtualizador = [Diagnostics.FileVersionInfo]::GetVersionInfo($updater)
+$versaoAtualizador = [version]$metadadosAtualizador.FileVersion
+if ($versaoAtualizador.Revision -gt 0 -or $versaoAtualizador.ToString(3) -ne $Versao -or $metadadosAtualizador.ProductVersion -ne $Versao) {
+    throw "A versão do atualizador não corresponde à release $Versao."
+}
 
 # Confere a identidade da assinatura antes de gerar qualquer pacote.
 $rsa = [Security.Cryptography.RSA]::Create()

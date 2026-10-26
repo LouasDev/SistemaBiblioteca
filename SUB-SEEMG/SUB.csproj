@@ -23,7 +23,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.1</ApplicationVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -257,6 +257,7 @@
     <Compile Include="Utils\Etiquetas\SegoeUiFontResolver.cs" />
     <Compile Include="Utils\EventosGlobais.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
+    <Compile Include="Utils\VersaoAplicativo.cs" />
     <Compile Include="Utils\AtualizacaoAplicador.cs" />
     <Compile Include="Models\AtualizacaoManifesto.cs" />
     <Compile Include="Utils\InstituicaoConfiguracaoStore.cs" />

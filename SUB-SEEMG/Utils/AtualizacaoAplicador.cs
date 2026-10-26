@@ -143,7 +143,7 @@ namespace SUB.Utils
                 File.WriteAllText(
                     Path.Combine(pastaUpdate, "atualizacao-ok.txt"),
                     DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - versao " +
-                    Assembly.GetExecutingAssembly().GetName().Version);
+                    AtualizacaoService.VersaoAtual());
 
                 if (rollbackFull.StartsWith(baseFull, StringComparison.OrdinalIgnoreCase) &&
                     Directory.Exists(rollbackFull))

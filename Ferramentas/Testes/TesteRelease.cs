@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using SUB.Forms.Configuracoes;
 using SUB.Forms.Inicio;
 using SUB.Models;
+using SUB.Utils;
 
 class TesteRelease
 {
@@ -80,8 +81,8 @@ class TesteRelease
             new object[] { staging, instalacao, nova, antiga, rollback });
         Conferir((bool)resultado.GetType().GetField("Sucesso").GetValue(resultado), "aplicacao isolada do pacote real");
         string exe = Path.Combine(instalacao, "SUB.exe");
-        Conferir(System.Diagnostics.FileVersionInfo.GetVersionInfo(exe).FileVersion == "1.0.1.0", "troca 1.0.0.0 para 1.0.1.0");
+        Conferir(VersaoAplicativo.Formatar(System.Diagnostics.FileVersionInfo.GetVersionInfo(exe).FileVersion) == "1.0.1", "troca 1.0.0 para 1.0.1");
         tipo.GetMethod("RestaurarRollback", Metodos).Invoke(null, new object[] { rollback, resultado, instalacao });
-        Conferir(System.Diagnostics.FileVersionInfo.GetVersionInfo(exe).FileVersion == "1.0.0.0", "rollback restaura 1.0.0.0");
+        Conferir(VersaoAplicativo.Formatar(System.Diagnostics.FileVersionInfo.GetVersionInfo(exe).FileVersion) == "1.0.0", "rollback restaura 1.0.0");
     }
 }

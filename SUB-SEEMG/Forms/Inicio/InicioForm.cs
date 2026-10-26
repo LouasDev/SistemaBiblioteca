@@ -73,7 +73,7 @@ namespace SUB.Forms.Inicio
             panelTop.Controls.Add(new Label
             {
                 Name = "lblAtualizacaoTeste",
-                Text = "SUB 1.0.1 — atualização de teste instalada",
+                Text = "SUB " + AtualizacaoService.VersaoAtual() + " — atualização de teste instalada",
                 AutoSize = false,
                 Location = new Point(19, 86),
                 Size = new Size(panelTop.ClientSize.Width - 38, 28),

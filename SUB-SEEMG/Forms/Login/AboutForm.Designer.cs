@@ -147,7 +147,7 @@ namespace SUB.Forms.Login
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 15);
             this.label5.TabIndex = 23;
-            this.label5.Text = "Versão 1.0";
+            this.label5.Text = "Versão 0.0.0";
             // 
             // panel2
             // 

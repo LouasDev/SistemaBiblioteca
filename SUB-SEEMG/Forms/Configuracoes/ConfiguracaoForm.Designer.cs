@@ -51,9 +51,9 @@ namespace SUB.Forms.Configuracoes
             this.grpInstituicao.SuspendLayout();
             this.grpAtualizacao.SuspendLayout();
             this.SuspendLayout();
-            //
+            // 
             // grpInstituicao
-            //
+            // 
             this.grpInstituicao.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.grpInstituicao.Controls.Add(this.cbTemas);
             this.grpInstituicao.Controls.Add(this.c);
@@ -69,9 +69,9 @@ namespace SUB.Forms.Configuracoes
             this.grpInstituicao.TabIndex = 1;
             this.grpInstituicao.TabStop = false;
             this.grpInstituicao.Text = "Instituição";
-            //
+            // 
             // cbTemas
-            //
+            // 
             this.cbTemas.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbTemas.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbTemas.BorderRadius = 8;
@@ -92,9 +92,9 @@ namespace SUB.Forms.Configuracoes
             this.cbTemas.Size = new System.Drawing.Size(275, 34);
             this.cbTemas.TabIndex = 6;
             this.cbTemas.SelectedIndexChanged += new System.EventHandler(this.cbTemas_SelectedIndexChanged);
-            //
+            // 
             // c
-            //
+            // 
             this.c.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.c.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
             this.c.BackColor = System.Drawing.Color.White;
@@ -117,9 +117,9 @@ namespace SUB.Forms.Configuracoes
             this.c.TabIndex = 5;
             this.c.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
             this.c.UseSystemPasswordChar = false;
-            //
+            // 
             // lblNome
-            //
+            // 
             this.lblNome.AutoSize = true;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -128,9 +128,9 @@ namespace SUB.Forms.Configuracoes
             this.lblNome.Size = new System.Drawing.Size(190, 25);
             this.lblNome.TabIndex = 0;
             this.lblNome.Text = "Nome da instituição:";
-            //
+            // 
             // lblCor
-            //
+            // 
             this.lblCor.AutoSize = true;
             this.lblCor.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblCor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -139,16 +139,16 @@ namespace SUB.Forms.Configuracoes
             this.lblCor.Size = new System.Drawing.Size(302, 25);
             this.lblCor.TabIndex = 2;
             this.lblCor.Text = "Cor principal da identidade visual:";
-            //
+            // 
             // pnlCorPreview
-            //
+            // 
             this.pnlCorPreview.Location = new System.Drawing.Point(332, 113);
             this.pnlCorPreview.Name = "pnlCorPreview";
             this.pnlCorPreview.Size = new System.Drawing.Size(50, 50);
             this.pnlCorPreview.TabIndex = 4;
-            //
+            // 
             // grpAtualizacao
-            //
+            // 
             this.grpAtualizacao.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.grpAtualizacao.Controls.Add(this.btnCancelarDownload);
             this.grpAtualizacao.Controls.Add(this.btnAtualizar);
@@ -168,9 +168,9 @@ namespace SUB.Forms.Configuracoes
             this.grpAtualizacao.TabIndex = 2;
             this.grpAtualizacao.TabStop = false;
             this.grpAtualizacao.Text = "Atualização";
-            //
+            // 
             // btnCancelarDownload
-            //
+            // 
             this.btnCancelarDownload.BackColor = System.Drawing.Color.Transparent;
             this.btnCancelarDownload.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnCancelarDownload.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -194,9 +194,9 @@ namespace SUB.Forms.Configuracoes
             this.btnCancelarDownload.UseVisualStyleBackColor = false;
             this.btnCancelarDownload.Visible = false;
             this.btnCancelarDownload.Click += new System.EventHandler(this.btnCancelarDownload_Click);
-            //
+            // 
             // btnAtualizar
-            //
+            // 
             this.btnAtualizar.BackColor = System.Drawing.Color.Transparent;
             this.btnAtualizar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnAtualizar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -220,9 +220,9 @@ namespace SUB.Forms.Configuracoes
             this.btnAtualizar.UseVisualStyleBackColor = false;
             this.btnAtualizar.Visible = false;
             this.btnAtualizar.Click += new System.EventHandler(this.btnAtualizar_Click);
-            //
+            // 
             // btnVerificar
-            //
+            // 
             this.btnVerificar.BackColor = System.Drawing.Color.Transparent;
             this.btnVerificar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnVerificar.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -245,9 +245,9 @@ namespace SUB.Forms.Configuracoes
             this.btnVerificar.Text = "Verificar atualizações";
             this.btnVerificar.UseVisualStyleBackColor = false;
             this.btnVerificar.Click += new System.EventHandler(this.btnVerificar_Click);
-            //
+            // 
             // lblVersaoAtual
-            //
+            // 
             this.lblVersaoAtual.AutoSize = true;
             this.lblVersaoAtual.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblVersaoAtual.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -256,9 +256,9 @@ namespace SUB.Forms.Configuracoes
             this.lblVersaoAtual.Size = new System.Drawing.Size(146, 25);
             this.lblVersaoAtual.TabIndex = 11;
             this.lblVersaoAtual.Text = "Versão atual: —";
-            //
+            // 
             // lblStatusAtualizacao
-            //
+            // 
             this.lblStatusAtualizacao.AutoSize = true;
             this.lblStatusAtualizacao.Font = new System.Drawing.Font("Segoe UI Semibold", 12.25F, System.Drawing.FontStyle.Bold);
             this.lblStatusAtualizacao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -268,18 +268,18 @@ namespace SUB.Forms.Configuracoes
             this.lblStatusAtualizacao.Size = new System.Drawing.Size(507, 23);
             this.lblStatusAtualizacao.TabIndex = 12;
             this.lblStatusAtualizacao.Text = "Clique em Verificar atualizações para consultar uma nova versão.";
-            //
+            // 
             // pbVerificando
-            //
+            // 
             this.pbVerificando.Location = new System.Drawing.Point(227, 130);
             this.pbVerificando.Name = "pbVerificando";
             this.pbVerificando.Size = new System.Drawing.Size(300, 30);
             this.pbVerificando.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.pbVerificando.TabIndex = 13;
             this.pbVerificando.Visible = false;
-            //
+            // 
             // lblNotasTitulo
-            //
+            // 
             this.lblNotasTitulo.AutoSize = true;
             this.lblNotasTitulo.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNotasTitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
@@ -288,10 +288,11 @@ namespace SUB.Forms.Configuracoes
             this.lblNotasTitulo.Size = new System.Drawing.Size(155, 25);
             this.lblNotasTitulo.TabIndex = 14;
             this.lblNotasTitulo.Text = "Notas da versão:";
-            //
+            // 
             // txtNotasVersao
-            //
+            // 
             this.txtNotasVersao.BackColor = System.Drawing.SystemColors.Window;
+            this.txtNotasVersao.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtNotasVersao.Location = new System.Drawing.Point(18, 208);
             this.txtNotasVersao.MaxLength = 4000;
             this.txtNotasVersao.Multiline = true;
@@ -300,17 +301,17 @@ namespace SUB.Forms.Configuracoes
             this.txtNotasVersao.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtNotasVersao.Size = new System.Drawing.Size(1001, 112);
             this.txtNotasVersao.TabIndex = 16;
-            //
+            // 
             // pbDownload
-            //
+            // 
             this.pbDownload.Location = new System.Drawing.Point(362, 343);
             this.pbDownload.Name = "pbDownload";
             this.pbDownload.Size = new System.Drawing.Size(300, 30);
             this.pbDownload.TabIndex = 17;
             this.pbDownload.Visible = false;
-            //
+            // 
             // btnSalvar
-            //
+            // 
             this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12.25F);
@@ -320,17 +321,17 @@ namespace SUB.Forms.Configuracoes
             this.btnSalvar.TabIndex = 3;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
-            //
+            // 
             // pnlLinhaCabecalho
-            //
+            // 
             this.pnlLinhaCabecalho.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
             this.pnlLinhaCabecalho.TabIndex = 126;
-            //
+            // 
             // lblSubtitulo
-            //
+            // 
             this.lblSubtitulo.AutoSize = true;
             this.lblSubtitulo.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.lblSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(105)))), ((int)(((byte)(120)))));
@@ -339,9 +340,9 @@ namespace SUB.Forms.Configuracoes
             this.lblSubtitulo.Size = new System.Drawing.Size(316, 17);
             this.lblSubtitulo.TabIndex = 125;
             this.lblSubtitulo.Text = "Configure e mantenha os dados do SUB atualizados.";
-            //
+            // 
             // Titulo
-            //
+            // 
             this.Titulo.AutoSize = true;
             this.Titulo.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
             this.Titulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
@@ -350,9 +351,9 @@ namespace SUB.Forms.Configuracoes
             this.Titulo.Size = new System.Drawing.Size(377, 38);
             this.Titulo.TabIndex = 124;
             this.Titulo.Text = "Configurações da instituição";
-            //
+            // 
             // ConfiguracaoForm
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;

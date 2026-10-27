@@ -1,5 +1,27 @@
 # Inventário de generalização do Sistema de Biblioteca
 
+> **Inventário histórico, anterior às adaptações atuais.** As tabelas abaixo
+> registram o levantamento original, não uma lista de remoções ainda a executar.
+> Caminhos como `BibliotecaApp`, `SUB/` e referências a serviços removidos pertencem
+> à estrutura daquela etapa e podem não existir neste repositório.
+>
+> Consulte o [contrato funcional atual](CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md),
+> o [guia de desenvolvimento](DESENVOLVIMENTO.md) e o [backlog vigente](backlog.markdown).
+
+## Situação após as adaptações
+
+- Operação principal local, com SQL Server Compact e identidade institucional configurável.
+- Primeiro uso, TXT de recuperação, login de bibliotecários e reset com dupla verificação.
+- Busca externa opcional pela Open Library e atualizações assinadas pelo próprio repositório.
+- Circulação e prorrogação com serviços transacionais e regras compartilhadas.
+- Backups de atualização preservados como recurso local; não há sincronização em nuvem.
+- Migrações internas do esquema são necessárias para preservar instalações existentes;
+  a antiga orientação de iniciar uma base nova não se aplica a cada atualização.
+
+---
+
+## Levantamento original preservado
+
 ## Diretrizes confirmadas
 
 - Aplicativo desktop local por instituição escolar.

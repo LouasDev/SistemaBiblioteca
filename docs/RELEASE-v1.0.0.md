@@ -1,5 +1,14 @@
 # SUB 1.0.0
 
+> **Notas históricas de uma publicação de teste.** Os pacotes de teste foram
+> retirados das releases durante o desenvolvimento. O conteúdo abaixo descreve
+> aquela versão, incluindo limitações e a representação antiga de quatro números.
+> Não é uma orientação para baixar um pacote atualmente disponível.
+>
+> O padrão público atual é `0.0.0`; correções posteriores não foram incorporadas
+> retroativamente a estas notas. Consulte o [índice da documentação](README.md)
+> e o [guia de publicação](PUBLICACAO-ATUALIZACOES.md).
+
 Primeira release pública do Sistema Único Bibliotecário, aplicativo para Windows
 com operação local por instituição escolar.
 

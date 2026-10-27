@@ -117,9 +117,7 @@ confirmação do operador, sem repor exemplares.
 
 Para testar manualmente com dados isolados, utilize outra conta do Windows ou uma máquina virtual. Copiar o executável para outra pasta mantém o uso da mesma área `%LOCALAPPDATA%\SUB`.
 
-## Guias relacionados
-
-### Regras compartilhadas de circulação
+## Regras compartilhadas de circulação
 
 `SUB-SEEMG/Utils/RegrasCirculacao.cs` concentra as políticas usadas pelos
 formulários e pelos serviços `CirculacaoService` e `ProrrogacaoService`, sem
@@ -145,8 +143,11 @@ uma migração de banco nem novas configurações de prazo.
 Os testes das regras estão incluídos em `test-circulacao.ps1`. A simulação completa
 pela interface será realizada após as demais correções, em ambiente isolado.
 
-### Referências
+## Guias relacionados
 
+- [Índice da documentação](README.md)
+- [Contrato funcional atual](CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md)
+- [Backlog e próximos passos](backlog.markdown)
 - [Reset local e exclusão de dados](RESET-LOCAL.md)
 - [Preparação e publicação de atualizações](PUBLICACAO-ATUALIZACOES.md)
 - [Roteiro de validação da interface](../Ferramentas/Testes/roteiro-teste-etapaD.md)

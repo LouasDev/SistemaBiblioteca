@@ -84,6 +84,8 @@ As versões seguem o padrão **`0.0.0`**, como `1.0.2`. O aplicativo recebe atua
 
 ## Documentação
 
+- [Índice completo e situação dos documentos](docs/README.md)
+- [Funcionamento atual e regras do sistema](docs/CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md)
 - [Desenvolvimento, compilação e testes](docs/DESENVOLVIMENTO.md)
 - [Reset local e exclusão de dados](docs/RESET-LOCAL.md)
 - [Versionamento e publicação de atualizações](docs/PUBLICACAO-ATUALIZACOES.md)

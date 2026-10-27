@@ -1,5 +1,14 @@
 # SUB 1.0.1 — teste do atualizador
 
+> **Notas históricas de uma publicação de teste.** Os pacotes de teste foram
+> retirados das releases durante o desenvolvimento. O conteúdo abaixo descreve
+> aquela versão, incluindo limitações e a representação antiga de quatro números.
+> Não é uma orientação para baixar um pacote atualmente disponível.
+>
+> O padrão público atual é `0.0.0`; correções posteriores não foram incorporadas
+> retroativamente a estas notas. Consulte o [índice da documentação](README.md)
+> e o [guia de publicação](PUBLICACAO-ATUALIZACOES.md).
+
 Versão de teste para validar a atualização a partir da 1.0.0, com mudança visível.
 
 ## O que mudou

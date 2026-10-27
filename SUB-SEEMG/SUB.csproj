@@ -607,6 +607,9 @@
     <None Include="Resources\icons8-sair-25.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\configuracao-25.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\icons8-cardápio-25.png" />
   </ItemGroup>
   <ItemGroup>

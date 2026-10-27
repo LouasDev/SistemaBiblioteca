@@ -578,7 +578,7 @@ namespace SUB.Forms.Inicio
             this.btnConfiguracao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfiguracao.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
             this.btnConfiguracao.ForeColor = System.Drawing.Color.White;
-            this.btnConfiguracao.Image = global::SUB.Properties.Resources.icons8_relatório_25;
+            this.btnConfiguracao.Image = global::SUB.Properties.Resources.configuracao_25;
             this.btnConfiguracao.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnConfiguracao.Location = new System.Drawing.Point(3, 365);
             this.btnConfiguracao.Name = "btnConfiguracao";
@@ -586,7 +586,7 @@ namespace SUB.Forms.Inicio
             this.btnConfiguracao.Size = new System.Drawing.Size(258, 56);
             this.btnConfiguracao.TabIndex = 4;
             this.btnConfiguracao.TabStop = false;
-            this.btnConfiguracao.Text = " Configuracão";
+            this.btnConfiguracao.Text = " Configuração";
             this.btnConfiguracao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnConfiguracao.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnConfiguracao.UseVisualStyleBackColor = false;

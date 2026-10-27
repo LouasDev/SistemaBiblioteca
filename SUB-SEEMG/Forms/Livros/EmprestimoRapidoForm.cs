@@ -51,7 +51,7 @@ namespace SUB.Forms.Livros
 
         private void HoraTimer_Minuto(object sender, EventArgs e)
         {
-            lblHoraEmprestimo.Text = $"Hora do Empréstimo: {DateTime.Now:HH:mm}";
+            lblHoraEmprestimo.Text = $"Hora do empréstimo: {DateTime.Now:HH:mm}";
             // após o primeiro disparo alinhado, seta p/ 60s fixos
             horaTimer.Interval = 60000;
         }
@@ -80,7 +80,7 @@ namespace SUB.Forms.Livros
             txtProfessor.Focus();
 
 
-            lblHoraEmprestimo.Text = $"Hora do Empréstimo: {DateTime.Now:HH:mm}";
+            lblHoraEmprestimo.Text = $"Hora do empréstimo: {DateTime.Now:HH:mm}";
 
             horaTimer = new System.Windows.Forms.Timer();
             horaTimer.Interval = 1000; // curto para alinhamento inicial
@@ -792,7 +792,7 @@ namespace SUB.Forms.Livros
             {
                 DataPropertyName = "Point",
                 Name = "Point",
-                HeaderText = "•",
+                HeaderText = "",
                 ReadOnly = true,
                 Width = 30,  // largura fixa
                 MinimumWidth = 30,
@@ -948,8 +948,9 @@ namespace SUB.Forms.Livros
             {
                 e.PaintBackground(e.CellBounds, true);
 
-                Color corFundo = Color.FromArgb(30, 61, 88);
-                Color corTexto = Color.White;
+                // Reutiliza as cores aplicadas pelo ThemeManager ao cabeçalho da grade.
+                Color corFundo = dgvRapidos.ColumnHeadersDefaultCellStyle.BackColor;
+                Color corTexto = dgvRapidos.ColumnHeadersDefaultCellStyle.ForeColor;
 
                 int borderRadius = 8;
                 Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6,
@@ -965,8 +966,11 @@ namespace SUB.Forms.Livros
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
 
+                    var suavizacaoAnterior = e.Graphics.SmoothingMode;
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
                     e.Graphics.DrawPath(pen, path);
+                    e.Graphics.SmoothingMode = suavizacaoAnterior;
                 }
 
                 TextRenderer.DrawText(e.Graphics, "Finalizar",

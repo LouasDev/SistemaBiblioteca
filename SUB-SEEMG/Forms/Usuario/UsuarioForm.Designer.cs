@@ -67,7 +67,8 @@
             // 
             // pnlResultadosUsuarios
             // 
-            this.pnlResultadosUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnlResultadosUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlResultadosUsuarios.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(229)))), ((int)(((byte)(236)))));
             this.pnlResultadosUsuarios.Controls.Add(this.dgvUsuarios);
@@ -80,7 +81,8 @@
             // dgvUsuarios
             // 
             this.dgvUsuarios.AllowUserToAddRows = false;
-            this.dgvUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvUsuarios.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvUsuarios.Location = new System.Drawing.Point(1, 1);
@@ -145,7 +147,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(122, 25);
             this.label3.TabIndex = 89;
-            this.label3.Text = "Tipo usuário:";
+            this.label3.Text = "Tipo de usuário:";
             // 
             // label1
             // 
@@ -251,7 +253,7 @@
             this.cmbTipoUsuario.Name = "cmbTipoUsuario";
             this.cmbTipoUsuario.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTipoUsuario.PlaceholderMargin = 10;
-            this.cmbTipoUsuario.PlaceholderText = "Filtre por tipo de usuario...";
+            this.cmbTipoUsuario.PlaceholderText = "Filtre por tipo de usuário...";
             this.cmbTipoUsuario.Size = new System.Drawing.Size(270, 34);
             this.cmbTipoUsuario.TabIndex = 3;
             // 

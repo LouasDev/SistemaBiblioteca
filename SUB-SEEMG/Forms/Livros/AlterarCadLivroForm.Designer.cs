@@ -142,7 +142,7 @@
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
             this.btnExcluir.TabIndex = 130;
-            this.btnExcluir.Text = "Excluir ";
+            this.btnExcluir.Text = "Excluir";
             this.btnExcluir.UseVisualStyleBackColor = false;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
             // 
@@ -218,7 +218,7 @@
             this.txtAutor.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtAutor.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.txtAutor.PlaceholderMarginLeft = 12;
-            this.txtAutor.PlaceholderText = "Digite aqui a quantidade...";
+            this.txtAutor.PlaceholderText = "Digite aqui o autor...";
             this.txtAutor.SelectedText = "";
             this.txtAutor.SelectionLength = 0;
             this.txtAutor.SelectionStart = 0;
@@ -238,7 +238,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 25);
             this.label3.TabIndex = 100;
-            this.label3.Text = "Autor";
+            this.label3.Text = "Autor:";
             // 
             // txtQuantidade
             // 
@@ -281,7 +281,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(112, 25);
             this.label2.TabIndex = 98;
-            this.label2.Text = "Quantidade";
+            this.label2.Text = "Quantidade:";
             // 
             // txtGenero
             // 
@@ -323,7 +323,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 25);
             this.label1.TabIndex = 96;
-            this.label1.Text = "Gênero";
+            this.label1.Text = "Gênero:";
             // 
             // txtNome
             // 

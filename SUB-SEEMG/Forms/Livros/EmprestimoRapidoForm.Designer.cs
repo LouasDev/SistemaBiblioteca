@@ -326,7 +326,7 @@ namespace SUB.Forms.Livros
             this.txtBarcode.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtBarcode.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarcode.PlaceholderMarginLeft = 12;
-            this.txtBarcode.PlaceholderText = "Clique e Escaneei para buscar informacoes...";
+            this.txtBarcode.PlaceholderText = "Clique e escaneie para buscar...";
             this.txtBarcode.SelectedText = "";
             this.txtBarcode.SelectionLength = 0;
             this.txtBarcode.SelectionStart = 0;
@@ -383,7 +383,7 @@ namespace SUB.Forms.Livros
             this.cbBibliotecaria.Name = "cbBibliotecaria";
             this.cbBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbBibliotecaria.PlaceholderMargin = 10;
-            this.cbBibliotecaria.PlaceholderText = "Selecione a bibliotecária ...";
+            this.cbBibliotecaria.PlaceholderText = "Selecione a bibliotecária...";
             this.cbBibliotecaria.Size = new System.Drawing.Size(300, 34);
             this.cbBibliotecaria.TabIndex = 8;
             // 

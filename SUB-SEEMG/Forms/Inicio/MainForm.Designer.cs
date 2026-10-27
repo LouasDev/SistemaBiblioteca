@@ -484,7 +484,7 @@ namespace SUB.Forms.Inicio
             this.btnLivroCad.Size = new System.Drawing.Size(258, 48);
             this.btnLivroCad.TabIndex = 6;
             this.btnLivroCad.TabStop = false;
-            this.btnLivroCad.Text = "Cadastrar livro";
+            this.btnLivroCad.Text = "  Cadastrar livro";
             this.btnLivroCad.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnLivroCad.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLivroCad.UseVisualStyleBackColor = false;

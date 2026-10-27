@@ -114,6 +114,3 @@ Use outro usuário do Windows ou uma máquina virtual para isolar também os dad
 Copiar o aplicativo para outra pasta não isola `%LOCALAPPDATA%/SUB`.
 
 Para testes manuais, consulte o [roteiro da interface do atualizador](../Ferramentas/Testes/roteiro-teste-etapaD.md).
-As notas [1.0.0](RELEASE-v1.0.0.md) e [1.0.1](RELEASE-v1.0.1.md) são registros
-históricos de pacotes de teste retirados das releases; não indicam uma distribuição
-atual pronta nem substituem a verificação da página de releases.

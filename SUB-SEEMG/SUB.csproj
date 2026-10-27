@@ -262,6 +262,8 @@
     <Compile Include="Utils\Etiquetas\LabelPdfExporter.cs" />
     <Compile Include="Utils\Etiquetas\SegoeUiFontResolver.cs" />
     <Compile Include="Utils\EventosGlobais.cs" />
+    <Compile Include="Utils\TutorialStateStore.cs" />
+    <Compile Include="Utils\GuidedTourOverlay.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
     <Compile Include="Utils\LivroMetadataService.cs" />
     <Compile Include="Utils\VersaoAplicativo.cs" />

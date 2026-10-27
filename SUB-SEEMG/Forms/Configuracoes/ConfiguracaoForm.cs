@@ -39,6 +39,12 @@ namespace SUB.Forms.Configuracoes
             c.TextChanged += (sender, args) => AtualizarEstadoSalvar();
         }
 
+        private void btnReverTutorial_Click(object sender, EventArgs e)
+        {
+            if (!operacaoEmAndamento)
+                EventosGlobais.OnTutorialSolicitado();
+        }
+
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
@@ -705,6 +711,7 @@ namespace SUB.Forms.Configuracoes
             AtualizarEstadoSalvar();
             c.Enabled = !ocupado;
             cbTemas.Enabled = !ocupado;
+            btnReverTutorial.Enabled = !ocupado;
         }
 
         internal static string MontarMensagemVersaoNova(ResultadoVerificacaoAtualizacao resultado)
@@ -805,6 +812,7 @@ namespace SUB.Forms.Configuracoes
             int larguraManutencao = topoManutencao + 76 > topoSalvar ? largura - 181 : largura;
             grpManutencao.SetBounds(margem, topoManutencao, larguraManutencao, 76);
             btnApagarDados.SetBounds(16, 26, 172, 34);
+            btnReverTutorial.SetBounds(200, 26, 154, 34);
             btnSalvar.SetBounds(ClientSize.Width - margem - 169, topoSalvar, 169, 44);
             ResumeLayout(false);
         }

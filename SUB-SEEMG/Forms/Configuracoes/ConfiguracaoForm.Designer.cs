@@ -50,6 +50,7 @@
             this.pbDownload = new System.Windows.Forms.ProgressBar();
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnApagarDados = new CustomButton();
+            this.btnReverTutorial = new System.Windows.Forms.Button();
             this.grpManutencao = new System.Windows.Forms.GroupBox();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
@@ -354,9 +355,24 @@
             this.btnApagarDados.Text = "Resetar aplicativo";
             this.btnApagarDados.UseVisualStyleBackColor = false;
             this.btnApagarDados.Click += new System.EventHandler(this.btnApagarDados_Click);
+            //
+            // btnReverTutorial
+            //
+            this.btnReverTutorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
+            this.btnReverTutorial.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnReverTutorial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnReverTutorial.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnReverTutorial.Location = new System.Drawing.Point(200, 26);
+            this.btnReverTutorial.Name = "btnReverTutorial";
+            this.btnReverTutorial.Size = new System.Drawing.Size(154, 34);
+            this.btnReverTutorial.TabIndex = 1;
+            this.btnReverTutorial.Text = "Rever tutorial";
+            this.btnReverTutorial.UseVisualStyleBackColor = false;
+            this.btnReverTutorial.Click += new System.EventHandler(this.btnReverTutorial_Click);
             // 
             // grpManutencao
             // 
+            this.grpManutencao.Controls.Add(this.btnReverTutorial);
             this.grpManutencao.Controls.Add(this.btnApagarDados);
             this.grpManutencao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.grpManutencao.Location = new System.Drawing.Point(20, 426);
@@ -436,6 +452,7 @@
         private System.Windows.Forms.GroupBox grpAtualizacao;
         private System.Windows.Forms.Button btnSalvar;
         private CustomButton btnApagarDados;
+        private System.Windows.Forms.Button btnReverTutorial;
         private System.Windows.Forms.GroupBox grpManutencao;
         private RoundedTextBox c;
         private RoundedComboBox cbTemas;

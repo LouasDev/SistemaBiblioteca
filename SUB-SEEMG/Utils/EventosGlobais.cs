@@ -52,6 +52,12 @@ namespace SUB.Utils
             ConfiguracaoSalva?.Invoke(null, EventArgs.Empty);
         }
 
+        public static event EventHandler TutorialSolicitado;
+        public static void OnTutorialSolicitado()
+        {
+            TutorialSolicitado?.Invoke(null, EventArgs.Empty);
+        }
+
 
     }
 }

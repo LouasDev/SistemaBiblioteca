@@ -382,7 +382,8 @@ namespace SUB.Utils
                    name.IndexOf("fechar", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("export", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("prorrogar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0;
+                   name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                   name.IndexOf("tutorial", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static bool IsDestructiveActionButton(Button button)

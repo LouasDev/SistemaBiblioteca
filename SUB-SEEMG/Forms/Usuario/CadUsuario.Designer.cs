@@ -56,11 +56,11 @@
             this.EmailAst = new System.Windows.Forms.Label();
             this.lstSugestoesTurma = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.txtNome = new RoundedTextBox();
             this.txtEmail = new RoundedTextBox();
             this.txtTurma = new RoundedTextBox();
             this.cbUsuario = new RoundedComboBox();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.dtpDataNasc = new RoundedDatePicker();
             this.txtConfirmSenha = new RoundedTextBox();
             this.mtxCPF = new RoundedMaskedTextBox();
@@ -78,7 +78,7 @@
             this.lblAvisoEmail.ForeColor = System.Drawing.Color.Gray;
             this.lblAvisoEmail.Location = new System.Drawing.Point(220, 305);
             this.lblAvisoEmail.Name = "lblAvisoEmail";
-            this.lblAvisoEmail.Size = new System.Drawing.Size(301, 13);
+            this.lblAvisoEmail.Size = new System.Drawing.Size(307, 13);
             this.lblAvisoEmail.TabIndex = 100;
             this.lblAvisoEmail.Text = "*Sem e-mail cadastrado, a pessoa não receberá notificações.";
             // 
@@ -104,7 +104,7 @@
             this.lblNome.ForeColor = System.Drawing.Color.LightGray;
             this.lblNome.Location = new System.Drawing.Point(536, 142);
             this.lblNome.Name = "lblNome";
-            this.lblNome.Size = new System.Drawing.Size(159, 25);
+            this.lblNome.Size = new System.Drawing.Size(156, 25);
             this.lblNome.TabIndex = 62;
             this.lblNome.Text = "Nome completo:";
             // 
@@ -186,7 +186,7 @@
             this.lblEmail.ForeColor = System.Drawing.Color.LightGray;
             this.lblEmail.Location = new System.Drawing.Point(216, 232);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(64, 25);
+            this.lblEmail.Size = new System.Drawing.Size(72, 25);
             this.lblEmail.TabIndex = 65;
             this.lblEmail.Text = "E-mail:";
             // 
@@ -235,7 +235,7 @@
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(512, 47);
+            this.label3.Location = new System.Drawing.Point(508, 47);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(29, 40);
             this.label3.TabIndex = 86;
@@ -250,7 +250,7 @@
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.label2.Location = new System.Drawing.Point(216, 142);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(122, 25);
+            this.label2.Size = new System.Drawing.Size(148, 25);
             this.label2.TabIndex = 83;
             this.label2.Text = "Tipo de usuário:";
             // 
@@ -326,7 +326,7 @@
             this.lblDataNasc.ForeColor = System.Drawing.Color.LightGray;
             this.lblDataNasc.Location = new System.Drawing.Point(-4, 88);
             this.lblDataNasc.Name = "lblDataNasc";
-            this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
+            this.lblDataNasc.Size = new System.Drawing.Size(188, 25);
             this.lblDataNasc.TabIndex = 72;
             this.lblDataNasc.Text = "Data de nascimento:";
             // 
@@ -452,32 +452,6 @@
             this.panel1.Size = new System.Drawing.Size(1280, 980);
             this.panel1.TabIndex = 0;
             // 
-            // panel2
-            // 
-            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.panel2.Controls.Add(this.lstSugestoesTurma);
-            this.panel2.Controls.Add(this.dtpDataNasc);
-            this.panel2.Controls.Add(this.txtConfirmSenha);
-            this.panel2.Controls.Add(this.DataNascAst);
-            this.panel2.Controls.Add(this.btnLimpar);
-            this.panel2.Controls.Add(this.btnCadastrar);
-            this.panel2.Controls.Add(this.mtxCPF);
-            this.panel2.Controls.Add(this.lblSenha);
-            this.panel2.Controls.Add(this.mtxTelefone);
-            this.panel2.Controls.Add(this.txtSenha);
-            this.panel2.Controls.Add(this.lblConfirmSenha);
-            this.panel2.Controls.Add(this.SenhaAst);
-            this.panel2.Controls.Add(this.lblTelefone);
-            this.panel2.Controls.Add(this.lblDataNasc);
-            this.panel2.Controls.Add(this.lblCPF);
-            this.panel2.Controls.Add(this.ConfirmSenhaAst);
-            this.panel2.Controls.Add(this.chkMostrarSenha);
-            this.panel2.Controls.Add(this.TelefoneAst);
-            this.panel2.Location = new System.Drawing.Point(220, 405);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(840, 348);
-            this.panel2.TabIndex = 132;
-            // 
             // txtNome
             // 
             this.txtNome.Anchor = System.Windows.Forms.AnchorStyles.Top;
@@ -598,6 +572,32 @@
             this.cbUsuario.Size = new System.Drawing.Size(300, 34);
             this.cbUsuario.TabIndex = 1;
             this.cbUsuario.SelectedIndexChanged += new System.EventHandler(this.cbUsuario_SelectedIndexChanged);
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel2.Controls.Add(this.lstSugestoesTurma);
+            this.panel2.Controls.Add(this.dtpDataNasc);
+            this.panel2.Controls.Add(this.txtConfirmSenha);
+            this.panel2.Controls.Add(this.DataNascAst);
+            this.panel2.Controls.Add(this.btnLimpar);
+            this.panel2.Controls.Add(this.btnCadastrar);
+            this.panel2.Controls.Add(this.mtxCPF);
+            this.panel2.Controls.Add(this.lblSenha);
+            this.panel2.Controls.Add(this.mtxTelefone);
+            this.panel2.Controls.Add(this.txtSenha);
+            this.panel2.Controls.Add(this.lblConfirmSenha);
+            this.panel2.Controls.Add(this.SenhaAst);
+            this.panel2.Controls.Add(this.lblTelefone);
+            this.panel2.Controls.Add(this.lblDataNasc);
+            this.panel2.Controls.Add(this.lblCPF);
+            this.panel2.Controls.Add(this.ConfirmSenhaAst);
+            this.panel2.Controls.Add(this.chkMostrarSenha);
+            this.panel2.Controls.Add(this.TelefoneAst);
+            this.panel2.Location = new System.Drawing.Point(220, 405);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(840, 348);
+            this.panel2.TabIndex = 132;
             // 
             // dtpDataNasc
             // 

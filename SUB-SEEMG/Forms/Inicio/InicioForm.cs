@@ -1281,6 +1281,14 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
             try { BeginInvoke(new Action(() => lblStatusSmall.Text = texto)); } catch { }
         }
 
+        public void DefinirVisibilidadeDoStatus(bool visivel)
+        {
+            if (lblStatusSmall == null || IsDisposed)
+                return;
+
+            lblStatusSmall.Visible = visivel;
+        }
+
         private Dictionary<string, int> ObterEstatisticas()
         {
             var dict = new Dictionary<string, int>

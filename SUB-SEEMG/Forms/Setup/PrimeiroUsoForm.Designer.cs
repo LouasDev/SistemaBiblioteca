@@ -7,7 +7,6 @@ namespace SUB.Forms.Setup
         private SUB.ElementosPersonalizados.GradientPanel pnlInstitucional;
         private System.Windows.Forms.Panel pnlLogo;
         private System.Windows.Forms.PictureBox picLogo;
-        private System.Windows.Forms.PictureBox btnFechar;
         private System.Windows.Forms.Label lblSub;
         private System.Windows.Forms.Label lblNomeSistema;
         private System.Windows.Forms.Label lblConfiguracaoInicial;
@@ -107,7 +106,6 @@ namespace SUB.Forms.Setup
             this.lblIniciativa = new System.Windows.Forms.Label();
             this.gradientPanel1 = new SUB.ElementosPersonalizados.GradientPanel();
             this.gradientPanel2 = new SUB.ElementosPersonalizados.GradientPanel();
-            this.btnFechar = new System.Windows.Forms.PictureBox();
             this.pnlConteudo = new System.Windows.Forms.Panel();
             this.indicadorEtapa3 = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
@@ -163,15 +161,16 @@ namespace SUB.Forms.Setup
             this.lblErroTurmas = new System.Windows.Forms.Label();
             this.btnVoltarEtapa3 = new System.Windows.Forms.Button();
             this.salvar = new CustomButton();
+            this.btnFechar = new System.Windows.Forms.PictureBox();
             this.pnlInstitucional.SuspendLayout();
             this.pnlLogo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).BeginInit();
             this.pnlConteudo.SuspendLayout();
             this.pnlEtapa1.SuspendLayout();
             this.pnlEtapa2.SuspendLayout();
             this.pnlCodigoRecuperacao.SuspendLayout();
             this.pnlEtapa3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlInstitucional
@@ -413,20 +412,6 @@ namespace SUB.Forms.Setup
             this.gradientPanel2.Size = new System.Drawing.Size(90, 90);
             this.gradientPanel2.TabIndex = 11;
             this.gradientPanel2.Visible = false;
-            // 
-            // btnFechar
-            // 
-            this.btnFechar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFechar.BackColor = System.Drawing.Color.Transparent;
-            this.btnFechar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFechar.Image = global::SUB.Properties.Resources.icons8_x_20;
-            this.btnFechar.Location = new System.Drawing.Point(975, 0);
-            this.btnFechar.Name = "btnFechar";
-            this.btnFechar.Size = new System.Drawing.Size(25, 25);
-            this.btnFechar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btnFechar.TabIndex = 0;
-            this.btnFechar.TabStop = false;
-            this.btnFechar.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // pnlConteudo
             // 
@@ -708,7 +693,7 @@ namespace SUB.Forms.Setup
             this.lblNomeBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(53)))), ((int)(((byte)(65)))));
             this.lblNomeBibliotecaria.Location = new System.Drawing.Point(0, 35);
             this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
-            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(99, 15);
+            this.lblNomeBibliotecaria.Size = new System.Drawing.Size(102, 15);
             this.lblNomeBibliotecaria.TabIndex = 1;
             this.lblNomeBibliotecaria.Text = "Nome completo *";
             // 
@@ -1205,6 +1190,19 @@ namespace SUB.Forms.Setup
             this.salvar.Text = "Concluir configuração";
             this.salvar.Click += new System.EventHandler(this.salvar_Click);
             // 
+            // btnFechar
+            // 
+            this.btnFechar.BackColor = System.Drawing.Color.Transparent;
+            this.btnFechar.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnFechar.Image = global::SUB.Properties.Resources.icons8_x_20;
+            this.btnFechar.Location = new System.Drawing.Point(974, 3);
+            this.btnFechar.Name = "btnFechar";
+            this.btnFechar.Size = new System.Drawing.Size(23, 24);
+            this.btnFechar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.btnFechar.TabIndex = 3;
+            this.btnFechar.TabStop = false;
+            this.btnFechar.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // PrimeiroUsoForm
             // 
             this.AcceptButton = this.btnAvancar;
@@ -1226,7 +1224,6 @@ namespace SUB.Forms.Setup
             this.pnlInstitucional.PerformLayout();
             this.pnlLogo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).EndInit();
             this.pnlConteudo.ResumeLayout(false);
             this.pnlConteudo.PerformLayout();
             this.pnlEtapa1.ResumeLayout(false);
@@ -1236,6 +1233,7 @@ namespace SUB.Forms.Setup
             this.pnlCodigoRecuperacao.ResumeLayout(false);
             this.pnlCodigoRecuperacao.PerformLayout();
             this.pnlEtapa3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1244,5 +1242,6 @@ namespace SUB.Forms.Setup
         private ElementosPersonalizados.GradientPanel gradientPanel2;
         private System.Windows.Forms.Panel linhaRoteiro2;
         private System.Windows.Forms.Panel indicadorEtapa3;
+        private System.Windows.Forms.PictureBox btnFechar;
     }
 }

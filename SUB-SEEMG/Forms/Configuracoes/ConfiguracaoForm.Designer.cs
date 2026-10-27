@@ -249,9 +249,9 @@
             this.btnVerificar.Text = "Verificar atualizações";
             this.btnVerificar.UseVisualStyleBackColor = false;
             this.btnVerificar.Click += new System.EventHandler(this.btnVerificar_Click);
-            //
+            // 
             // btnNovidades
-            //
+            // 
             this.btnNovidades.BackColor = System.Drawing.Color.Transparent;
             this.btnNovidades.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnNovidades.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -275,7 +275,7 @@
             this.btnNovidades.Text = "Ver novidades";
             this.btnNovidades.UseVisualStyleBackColor = false;
             this.btnNovidades.Click += new System.EventHandler(this.btnNovidades_Click);
-            //
+            // 
             // lblVersaoAtual
             // 
             this.lblVersaoAtual.AutoSize = true;
@@ -316,22 +316,22 @@
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
-            this.btnSalvar.BackColor = System.Drawing.Color.FromArgb(31, 72, 126);
+            this.btnSalvar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSalvar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnSalvar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI Semibold", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSalvar.ForeColor = System.Drawing.Color.White;
-            this.btnSalvar.Location = new System.Drawing.Point(1136, 793);
+            this.btnSalvar.Location = new System.Drawing.Point(1091, 785);
             this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(124, 36);
+            this.btnSalvar.Size = new System.Drawing.Size(169, 44);
             this.btnSalvar.TabIndex = 4;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
-            //
+            // 
             // btnApagarDados
-            //
+            // 
             this.btnApagarDados.BackColor = System.Drawing.Color.Transparent;
             this.btnApagarDados.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnApagarDados.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -354,7 +354,9 @@
             this.btnApagarDados.Text = "Resetar aplicativo";
             this.btnApagarDados.UseVisualStyleBackColor = false;
             this.btnApagarDados.Click += new System.EventHandler(this.btnApagarDados_Click);
+            // 
             // grpManutencao
+            // 
             this.grpManutencao.Controls.Add(this.btnApagarDados);
             this.grpManutencao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.grpManutencao.Location = new System.Drawing.Point(20, 426);
@@ -418,9 +420,9 @@
             this.SizeChanged += new System.EventHandler(this.ConfiguracaoForm_SizeChanged);
             this.grpInstituicao.ResumeLayout(false);
             this.grpInstituicao.PerformLayout();
-            this.grpManutencao.ResumeLayout(false);
             this.grpAtualizacao.ResumeLayout(false);
             this.grpAtualizacao.PerformLayout();
+            this.grpManutencao.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

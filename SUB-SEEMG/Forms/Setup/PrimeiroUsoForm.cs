@@ -94,6 +94,7 @@ namespace SUB.Forms.Setup
         {
             ThemePreset tema = TemaSelecionado;
             Color primaria = tema.PrimaryColor;
+            SubLogoManager.ApplyWindowIcon(this, primaria);
             Color secundaria = tema.SecondaryColor;
             Color borda = ThemeManager.Lighten(primaria, 0.42f);
             Color hover = ThemeManager.Lighten(primaria, 0.94f);
@@ -388,6 +389,7 @@ namespace SUB.Forms.Setup
             string erroTelefone = ValidarTelefone();
             string erroSenha = ValidarSenha();
             string erroConfirmacao = ValidarConfirmacaoSenha();
+            bool codigoSalvo = !string.IsNullOrWhiteSpace(_caminhoCodigoMestre) && File.Exists(_caminhoCodigoMestre);
 
             ExibirErro(lblErroNomeBibliotecaria, erroNome);
             ExibirErro(lblErroEmailBibliotecaria, erroEmail);
@@ -395,18 +397,27 @@ namespace SUB.Forms.Setup
             ExibirErro(lblErroSenhaBibliotecaria, erroSenha);
             ExibirErro(lblErroConfirmarSenhaBibliotecaria, erroConfirmacao);
 
-            if (erroNome == null && erroEmail == null && erroTelefone == null && erroSenha == null && erroConfirmacao == null)
+            if (erroNome == null && erroEmail == null && erroTelefone == null && erroSenha == null && erroConfirmacao == null && codigoSalvo)
             {
                 OcultarErroGeral();
                 return true;
             }
 
-            ExibirErroGeral("Revise os campos destacados antes de concluir.");
+            if (!codigoSalvo)
+            {
+                statusCodigo.Text = "Salve o código de recuperação antes de avançar.";
+                statusCodigo.ForeColor = _corErro;
+            }
+
+            ExibirErroGeral(!codigoSalvo
+                ? "Salve o código de recuperação antes de avançar."
+                : "Revise os campos destacados antes de avançar.");
             if (erroNome != null) _nomeBibliotecaria.Focus();
             else if (erroEmail != null) _emailBibliotecaria.Focus();
             else if (erroTelefone != null) _telefoneBibliotecaria.Focus();
             else if (erroSenha != null) _senhaBibliotecaria.Focus();
-            else _confirmarSenhaBibliotecaria.Focus();
+            else if (erroConfirmacao != null) _confirmarSenhaBibliotecaria.Focus();
+            else exportarCodigo.Focus();
             return false;
         }
 

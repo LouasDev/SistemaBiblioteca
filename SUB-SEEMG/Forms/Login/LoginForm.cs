@@ -78,6 +78,7 @@ namespace SUB.Forms.Login
         private void AplicarTema(Color corPrimaria)
         {
             _corPrimariaAtual = ThemeManager.Normalize(corPrimaria);
+            SubLogoManager.ApplyWindowIcon(this, _corPrimariaAtual);
             ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(_corPrimariaAtual));
             Color superficie = tema.AccentColor;
             Color focoSuave = ThemeManager.Lighten(_corPrimariaAtual, 0.94f);

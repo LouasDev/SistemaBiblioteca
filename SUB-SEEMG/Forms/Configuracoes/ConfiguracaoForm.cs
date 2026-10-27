@@ -22,6 +22,7 @@ namespace SUB.Forms.Configuracoes
 
         private Color corSelecionada = ThemeManager.DefaultColor;
         private string corOriginalHtml;
+        private string nomeOriginal;
         private bool valoresCarregados;
 
         private AtualizacaoManifesto manifestoDisponivel;
@@ -35,6 +36,7 @@ namespace SUB.Forms.Configuracoes
         public ConfiguracaoForm()
         {
             InitializeComponent();
+            c.TextChanged += (sender, args) => AtualizarEstadoSalvar();
         }
 
         protected override void OnShown(EventArgs e)
@@ -78,6 +80,7 @@ namespace SUB.Forms.Configuracoes
             }
 
             c.Text = configuracao != null ? (configuracao.Nome ?? string.Empty) : string.Empty;
+            nomeOriginal = (c.Text ?? string.Empty).Trim();
             corOriginalHtml = configuracao != null ? configuracao.CorPrimaria : null;
 
             corSelecionada = ThemeManager.DefaultColor;
@@ -123,6 +126,7 @@ namespace SUB.Forms.Configuracoes
             cbTemas.SelectedItem = selecionado;
             AtualizarPreviewCor();
             valoresCarregados = true;
+            AtualizarEstadoSalvar();
         }
 
         private void cbTemas_SelectedIndexChanged(object sender, EventArgs e)
@@ -132,6 +136,7 @@ namespace SUB.Forms.Configuracoes
             {
                 corSelecionada = preset.PrimaryColor;
                 AtualizarPreviewCor();
+                AtualizarEstadoSalvar();
             }
         }
 
@@ -158,6 +163,27 @@ namespace SUB.Forms.Configuracoes
             }
 
             return ThemeManager.DefaultColor;
+        }
+
+        private bool HaAlteracoesPendentes()
+        {
+            if (!valoresCarregados)
+                return false;
+
+            bool nomeAlterado = !string.Equals(
+                (c.Text ?? string.Empty).Trim(),
+                nomeOriginal ?? string.Empty,
+                StringComparison.Ordinal);
+            bool corAlterada = corSelecionada.ToArgb() != ObterCorTemaSalva().ToArgb();
+
+            return nomeAlterado || corAlterada;
+        }
+
+        private void AtualizarEstadoSalvar()
+        {
+            bool habilitado = !operacaoEmAndamento && HaAlteracoesPendentes();
+            btnSalvar.Enabled = habilitado;
+            btnSalvar.Cursor = habilitado ? Cursors.Hand : Cursors.Default;
         }
 
         private bool ConfirmarSenhaUsuarioLogado(string mensagem = "Digite sua senha para confirmar a alteração:")
@@ -211,6 +237,12 @@ namespace SUB.Forms.Configuracoes
 
         private void btnSalvar_Click(object sender, EventArgs e)
         {
+            if (!HaAlteracoesPendentes())
+            {
+                AtualizarEstadoSalvar();
+                return;
+            }
+
             string nome = (c.Text ?? string.Empty).Trim();
 
             if (nome.Length == 0)
@@ -670,7 +702,7 @@ namespace SUB.Forms.Configuracoes
             btnVerificar.Enabled = !ocupado;
             btnAtualizar.Enabled = !ocupado;
             btnNovidades.Enabled = !ocupado && notasDisponiveis != null;
-            btnSalvar.Enabled = !ocupado;
+            AtualizarEstadoSalvar();
             c.Enabled = !ocupado;
             cbTemas.Enabled = !ocupado;
         }
@@ -769,11 +801,11 @@ namespace SUB.Forms.Configuracoes
             pbVerificando.SetBounds(16, 142, largura - 32, 24);
             pbDownload.SetBounds(16, 142, largura - 32, 24);
             int topoManutencao = grpAtualizacao.Bottom + 12;
-            int topoSalvar = ClientSize.Height - 52;
-            int larguraManutencao = topoManutencao + 76 > topoSalvar ? largura - 136 : largura;
+            int topoSalvar = ClientSize.Height - 60;
+            int larguraManutencao = topoManutencao + 76 > topoSalvar ? largura - 181 : largura;
             grpManutencao.SetBounds(margem, topoManutencao, larguraManutencao, 76);
             btnApagarDados.SetBounds(16, 26, 172, 34);
-            btnSalvar.SetBounds(ClientSize.Width - margem - 124, topoSalvar, 124, 36);
+            btnSalvar.SetBounds(ClientSize.Width - margem - 169, topoSalvar, 169, 44);
             ResumeLayout(false);
         }
     }

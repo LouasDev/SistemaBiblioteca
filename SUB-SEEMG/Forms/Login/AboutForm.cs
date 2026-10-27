@@ -52,6 +52,7 @@ namespace SUB.Forms.Login
         private void AplicarTema(Color corPrimaria)
         {
             Color primaria = ThemeManager.Normalize(corPrimaria);
+            SubLogoManager.ApplyWindowIcon(this, primaria);
             ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(primaria));
             _corPrimariaAtual = primaria;
 

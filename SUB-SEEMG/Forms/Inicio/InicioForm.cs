@@ -930,7 +930,7 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
                 string primeiroNome = nomeCompleto.Split(' ').FirstOrDefault() ?? "";
                 lblOla.Text = $"{saudacao}, {primeiroNome}!";
                 lblOla.Font = new System.Drawing.Font("Segoe UI", 20F, FontStyle.Bold);
-                lblOla.ForeColor = Color.FromArgb(30, 61, 88);
+                lblOla.ForeColor = ThemeManager.GetLabelColor(dashboardThemeColor);
             }
             catch { }
 

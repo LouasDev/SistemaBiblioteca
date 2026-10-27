@@ -25,11 +25,13 @@
             this.lblProgressoWizard = new System.Windows.Forms.Label();
             this.panelEtapa1 = new System.Windows.Forms.Panel();
             this.lblInstrucaoEtapa1 = new System.Windows.Forms.Label();
+            this.pnlResultadosPadroes = new System.Windows.Forms.Panel();
             this.dgvPadroes = new System.Windows.Forms.DataGridView();
             this.panelEtapa2 = new System.Windows.Forms.Panel();
             this.lblInstrucaoEtapa2 = new System.Windows.Forms.Label();
             this.lblFiltroEtapa2 = new System.Windows.Forms.Label();
             this.cmbFiltroTurmaEtapa2 = new System.Windows.Forms.ComboBox();
+            this.pnlResultadosAjustes = new System.Windows.Forms.Panel();
             this.dgvAjustesIndividuais = new System.Windows.Forms.DataGridView();
             this.panelEtapa3 = new System.Windows.Forms.Panel();
             this.lblInstrucaoEtapa3 = new System.Windows.Forms.Label();
@@ -43,8 +45,10 @@
             this.panelPrincipal.SuspendLayout();
             this.pnlTutorial.SuspendLayout();
             this.panelEtapa1.SuspendLayout();
+            this.pnlResultadosPadroes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPadroes)).BeginInit();
             this.panelEtapa2.SuspendLayout();
+            this.pnlResultadosAjustes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAjustesIndividuais)).BeginInit();
             this.panelEtapa3.SuspendLayout();
             this.panelBotoes.SuspendLayout();
@@ -136,7 +140,7 @@
             // 
             this.panelEtapa1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panelEtapa1.Controls.Add(this.lblInstrucaoEtapa1);
-            this.panelEtapa1.Controls.Add(this.dgvPadroes);
+            this.panelEtapa1.Controls.Add(this.pnlResultadosPadroes);
             this.panelEtapa1.Location = new System.Drawing.Point(30, 130);
             this.panelEtapa1.Name = "panelEtapa1";
             this.panelEtapa1.Size = new System.Drawing.Size(1140, 570);
@@ -153,17 +157,28 @@
             this.lblInstrucaoEtapa1.TabIndex = 0;
             this.lblInstrucaoEtapa1.Text = "Defina o padrão de progressão para cada turma. O sistema sugere automaticamente b" +
     "aseado em regras seguras.";
-            // 
+            //
+            // pnlResultadosPadroes
+            //
+            this.pnlResultadosPadroes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pnlResultadosPadroes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(229)))), ((int)(((byte)(236)))));
+            this.pnlResultadosPadroes.Controls.Add(this.dgvPadroes);
+            this.pnlResultadosPadroes.Location = new System.Drawing.Point(10, 45);
+            this.pnlResultadosPadroes.Name = "pnlResultadosPadroes";
+            this.pnlResultadosPadroes.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlResultadosPadroes.Size = new System.Drawing.Size(1120, 515);
+            this.pnlResultadosPadroes.TabIndex = 1;
+            //
             // dgvPadroes
             // 
             this.dgvPadroes.AllowUserToAddRows = false;
             this.dgvPadroes.AllowUserToDeleteRows = false;
             this.dgvPadroes.AllowUserToResizeColumns = false;
             this.dgvPadroes.AllowUserToResizeRows = false;
-            this.dgvPadroes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.dgvPadroes.Location = new System.Drawing.Point(10, 45);
+            this.dgvPadroes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPadroes.Location = new System.Drawing.Point(1, 1);
             this.dgvPadroes.Name = "dgvPadroes";
-            this.dgvPadroes.Size = new System.Drawing.Size(1120, 515);
+            this.dgvPadroes.Size = new System.Drawing.Size(1118, 513);
             this.dgvPadroes.TabIndex = 1;
             // 
             // panelEtapa2
@@ -174,7 +189,7 @@
             this.panelEtapa2.Controls.Add(this.lblInstrucaoEtapa2);
             this.panelEtapa2.Controls.Add(this.lblFiltroEtapa2);
             this.panelEtapa2.Controls.Add(this.cmbFiltroTurmaEtapa2);
-            this.panelEtapa2.Controls.Add(this.dgvAjustesIndividuais);
+            this.panelEtapa2.Controls.Add(this.pnlResultadosAjustes);
             this.panelEtapa2.Location = new System.Drawing.Point(30, 130);
             this.panelEtapa2.Name = "panelEtapa2";
             this.panelEtapa2.Size = new System.Drawing.Size(1140, 570);
@@ -212,13 +227,24 @@
             this.cmbFiltroTurmaEtapa2.Name = "cmbFiltroTurmaEtapa2";
             this.cmbFiltroTurmaEtapa2.Size = new System.Drawing.Size(300, 28);
             this.cmbFiltroTurmaEtapa2.TabIndex = 2;
-            // 
+            //
+            // pnlResultadosAjustes
+            //
+            this.pnlResultadosAjustes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pnlResultadosAjustes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(229)))), ((int)(((byte)(236)))));
+            this.pnlResultadosAjustes.Controls.Add(this.dgvAjustesIndividuais);
+            this.pnlResultadosAjustes.Location = new System.Drawing.Point(10, 80);
+            this.pnlResultadosAjustes.Name = "pnlResultadosAjustes";
+            this.pnlResultadosAjustes.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlResultadosAjustes.Size = new System.Drawing.Size(1120, 480);
+            this.pnlResultadosAjustes.TabIndex = 3;
+            //
             // dgvAjustesIndividuais
             // 
-            this.dgvAjustesIndividuais.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.dgvAjustesIndividuais.Location = new System.Drawing.Point(10, 80);
+            this.dgvAjustesIndividuais.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAjustesIndividuais.Location = new System.Drawing.Point(1, 1);
             this.dgvAjustesIndividuais.Name = "dgvAjustesIndividuais";
-            this.dgvAjustesIndividuais.Size = new System.Drawing.Size(1120, 480);
+            this.dgvAjustesIndividuais.Size = new System.Drawing.Size(1118, 478);
             this.dgvAjustesIndividuais.TabIndex = 3;
             // 
             // panelEtapa3
@@ -377,9 +403,11 @@
             this.panelEtapa1.ResumeLayout(false);
             this.panelEtapa1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPadroes)).EndInit();
+            this.pnlResultadosPadroes.ResumeLayout(false);
             this.panelEtapa2.ResumeLayout(false);
             this.panelEtapa2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAjustesIndividuais)).EndInit();
+            this.pnlResultadosAjustes.ResumeLayout(false);
             this.panelEtapa3.ResumeLayout(false);
             this.panelEtapa3.PerformLayout();
             this.panelBotoes.ResumeLayout(false);
@@ -394,6 +422,7 @@
         // Etapa 1
         private System.Windows.Forms.Panel panelEtapa1;
         private System.Windows.Forms.Label lblInstrucaoEtapa1;
+        private System.Windows.Forms.Panel pnlResultadosPadroes;
         private System.Windows.Forms.DataGridView dgvPadroes;
 
         // Etapa 2
@@ -401,6 +430,7 @@
         private System.Windows.Forms.Label lblInstrucaoEtapa2;
         private System.Windows.Forms.Label lblFiltroEtapa2;
         private System.Windows.Forms.ComboBox cmbFiltroTurmaEtapa2;
+        private System.Windows.Forms.Panel pnlResultadosAjustes;
         private System.Windows.Forms.DataGridView dgvAjustesIndividuais;
 
         // Etapa 3

@@ -65,11 +65,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvHistorico.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHistorico.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvHistorico.Location = new System.Drawing.Point(0, 0);
+            this.dgvHistorico.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvHistorico.Location = new System.Drawing.Point(1, 1);
             this.dgvHistorico.Name = "dgvHistorico";
             this.dgvHistorico.ReadOnly = true;
             this.dgvHistorico.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.dgvHistorico.Size = new System.Drawing.Size(1088, 483);
+            this.dgvHistorico.Size = new System.Drawing.Size(1086, 483);
             this.dgvHistorico.TabIndex = 23;
             // 
             // lblUsuario

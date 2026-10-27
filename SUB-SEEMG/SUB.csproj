@@ -263,6 +263,7 @@
     <Compile Include="Utils\Etiquetas\SegoeUiFontResolver.cs" />
     <Compile Include="Utils\EventosGlobais.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
+    <Compile Include="Utils\LivroMetadataService.cs" />
     <Compile Include="Utils\VersaoAplicativo.cs" />
     <Compile Include="Utils\ResetLocalStore.cs" />
     <Compile Include="Utils\ResetService.cs" />
@@ -606,6 +607,7 @@
     <None Include="Resources\icons8-cardápio-25.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-engrenagem-25.png" />
     <Content Include="Resources\SEEMG.jpg" />
     <Content Include="sub-200x200px_icon.ico" />
     <None Include="Resources\SEEMG1.jpg" />

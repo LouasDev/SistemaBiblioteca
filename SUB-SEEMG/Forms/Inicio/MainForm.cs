@@ -54,10 +54,14 @@ namespace SUB.Forms.Inicio
             Relatorios,
             Configuracao
         }
+        private Color fundoClaroDoForm;
+        private Color fundoClaroDoPainelControle;
 
         public MainForm()
         {
             InitializeComponent();
+            fundoClaroDoForm = BackColor;
+            fundoClaroDoPainelControle = panelControl.BackColor;
             mdiProp();
 
             var configuracaoInstituicao = InstituicaoConfiguracaoStore.Carregar();
@@ -73,11 +77,13 @@ namespace SUB.Forms.Inicio
                 {
                     corPrimaria = Color.FromArgb(31, 72, 126);
                 }
+                ThemeManager.DefinirModo(configuracaoInstituicao.TemaEscuro);
                 menu.BackColor = corPrimaria;
                 Text = configuracaoInstituicao.Nome;
 
                 SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
             }
+            AtualizarFundoMdi();
 
             if (InstituicaoConfiguracaoStore.CorrupcaoDetectada)
             {
@@ -103,6 +109,12 @@ namespace SUB.Forms.Inicio
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+
+            // Os botões da janela são só ícones; a dica diz o que cada um faz.
+            var dicas = new ToolTip(components);
+            dicas.SetToolTip(picMin, "Minimizar");
+            dicas.SetToolTip(picMax, "Maximizar ou restaurar");
+            dicas.SetToolTip(picExit, "Fechar o SUB");
 
 
 
@@ -252,7 +264,19 @@ namespace SUB.Forms.Inicio
         private void mdiProp()
         {
             this.SetBevel(false);
-            Controls.OfType<MdiClient>().FirstOrDefault().BackColor = Color.FromArgb(232, 234, 237);
+            AtualizarFundoMdi();
+        }
+
+        private void AtualizarFundoMdi()
+        {
+            var cliente = Controls.OfType<MdiClient>().FirstOrDefault();
+            if (cliente != null)
+                cliente.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Fundo : Color.FromArgb(232, 234, 237);
+        }
+
+        private Color CorDeRealceDosControles()
+        {
+            return ThemeManager.Escuro ? ThemeManager.Dark.EntradaHover : Color.Gainsboro;
         }
 
         //Variável criada para inicialização do Form de inicio no MDI
@@ -719,7 +743,7 @@ namespace SUB.Forms.Inicio
         //Animação de fundo
         private void picExit_MouseEnter(object sender, EventArgs e)
         {
-            picExit.BackColor = Color.Gainsboro;
+            picExit.BackColor = CorDeRealceDosControles();
         }
 
         private void picExit_MouseLeave(object sender, EventArgs e)
@@ -729,7 +753,7 @@ namespace SUB.Forms.Inicio
 
         private void picMax_MouseEnter(object sender, EventArgs e)
         {
-            picMax.BackColor = Color.Gainsboro;
+            picMax.BackColor = CorDeRealceDosControles();
         }
 
         private void picMax_MouseLeave(object sender, EventArgs e)
@@ -739,7 +763,7 @@ namespace SUB.Forms.Inicio
 
         private void picMin_MouseEnter(object sender, EventArgs e)
         {
-            picMin.BackColor = Color.Gainsboro;
+            picMin.BackColor = CorDeRealceDosControles();
         }
 
         private void picMin_MouseLeave(object sender, EventArgs e)
@@ -1434,6 +1458,20 @@ namespace SUB.Forms.Inicio
                 // JSON ilegível: mantém tema/nome atuais.
                 // Tratamento definitivo de corrupção pendente de aprovação.
                 return;
+            }
+
+            // As cores claras originais das telas não são guardadas; ao trocar de modo as telas
+            // abertas são fechadas e recriadas sob demanda já no modo novo.
+            bool novoModoEscuro = configuracaoInstituicao != null && configuracaoInstituicao.TemaEscuro;
+            if (novoModoEscuro != ThemeManager.Escuro)
+            {
+                ThemeManager.DefinirModo(novoModoEscuro);
+                foreach (Form filho in MdiChildren.ToArray())
+                    filho.Close();
+                activeChild = null;
+                BackColor = fundoClaroDoForm;
+                panelControl.BackColor = fundoClaroDoPainelControle;
+                AtualizarFundoMdi();
             }
 
             if (configuracaoInstituicao != null && !string.IsNullOrWhiteSpace(configuracaoInstituicao.CorPrimaria))

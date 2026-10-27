@@ -369,6 +369,7 @@
     <Compile Include="Models\MapeamentoModel.cs" />
     <Compile Include="Utils\AppPaths.cs" />
     <Compile Include="Utils\FormHelper.cs" />
+    <Compile Include="Utils\LayoutAdaptavel.cs" />
     <Compile Include="Utils\frmProgresso.cs">
       <SubType>Form</SubType>
     </Compile>

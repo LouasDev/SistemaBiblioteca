@@ -73,7 +73,7 @@
             // 
             // pnlTutorial
             // 
-            this.pnlTutorial.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.pnlTutorial.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)));
             this.pnlTutorial.BackColor = System.Drawing.Color.White;
             this.pnlTutorial.Controls.Add(this.lblTutorialTexto);
             this.pnlTutorial.Controls.Add(this.lblTutorialTitulo);

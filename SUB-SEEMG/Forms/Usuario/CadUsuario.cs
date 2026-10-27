@@ -44,9 +44,10 @@ namespace SUB.Froms.Usuario
             // Configuração inicial do formulário
             dtpDataNasc.Value = DateTime.Today;
             HabilitarCampos(false);
+            SetLabelColors(enabled: false);
             this.KeyPreview = true;
             this.KeyDown += Form_KeyDown;
-            chkMostrarSenha.ForeColor = Color.LightGray;
+            chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             SetAsteriscoVisibility(false);
             CarregarTurmasDoBanco();
            
@@ -362,11 +363,13 @@ namespace SUB.Froms.Usuario
             HabilitarCampos(true);
             SetLabelColors(enabled: true);
             SetAsteriscoVisibility(false);
-            chkMostrarSenha.ForeColor = Color.LightGray;
+            chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
         }
 
 
         private bool modoAluno = true;
+        private int topoBotoesDesenho;
+        private int alturaPanel2Desenho;
 
         private void PosicionarPanel2()
         {
@@ -374,6 +377,19 @@ namespace SUB.Froms.Usuario
 
             panel2.Left = Math.Max(0, (this.ClientSize.Width - panel2.Width) / 2);
             panel2.Top = modoAluno ? 408 : 325;
+
+            // Em telas baixas (1366×768) os botões ficavam abaixo da área visível. Sem os campos
+            // de senha, eles sobem para logo abaixo da data de nascimento.
+            if (alturaPanel2Desenho == 0)
+            {
+                topoBotoesDesenho = btnCadastrar.Top;
+                alturaPanel2Desenho = panel2.Height;
+            }
+            bool compacto = !txtSenha.Visible && panel2.Top + alturaPanel2Desenho + 16 > ClientSize.Height;
+            int topoBotoes = compacto ? dtpDataNasc.Bottom + 24 : topoBotoesDesenho;
+            panel2.Height = alturaPanel2Desenho - topoBotoesDesenho + topoBotoes;
+            btnLimpar.Top = topoBotoes;
+            btnCadastrar.Top = topoBotoes;
         }
 
         private void ConfigurarParaBibliotecario()
@@ -448,7 +464,7 @@ namespace SUB.Froms.Usuario
             
 
             txtEmail.PlaceholderText = "Digite aqui o e-mail...";
-            chkMostrarSenha.ForeColor = Color.LightGray;
+            chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
         }
 
@@ -489,7 +505,7 @@ namespace SUB.Froms.Usuario
 
            
 
-            chkMostrarSenha.ForeColor = Color.LightGray;
+            chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
             chkMostrarSenha.Checked = false;
         }
@@ -509,8 +525,8 @@ namespace SUB.Froms.Usuario
             lblTurma.Visible=true;
             TurmaAst.Visible = true;
             SetLabelColors(enabled: true);
-            lblSenha.ForeColor = Color.LightGray;
-            lblConfirmSenha.ForeColor = Color.LightGray;
+            lblSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
+            lblConfirmSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             txtSenha.Text = "";
             txtConfirmSenha.Text = "";
 
@@ -529,14 +545,14 @@ namespace SUB.Froms.Usuario
             txtTurma.PlaceholderText = "Digite aqui a turma...";
             txtEmail.PlaceholderText = "Digite aqui o e-mail...";
 
-            chkMostrarSenha.ForeColor = Color.LightGray;
+            chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
         }
 
        
         private void SetLabelColors(bool enabled)
         {
-            Color color = enabled ? Color.FromArgb(20, 41, 60) : Color.LightGray;
+            Color color = enabled ? Color.FromArgb(20, 41, 60) : ThemeManager.CorRotuloDesabilitado;
             lblNome.ForeColor = color;
             lblSenha.ForeColor = color;
             lblConfirmSenha.ForeColor = color;
@@ -1067,7 +1083,7 @@ VALUES
             listBox.DrawMode = DrawMode.OwnerDrawFixed;
             listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
             listBox.ItemHeight = 40;
-            listBox.BackColor = Color.White;
+            listBox.BackColor = ThemeManager.FundoDaSugestao(false);
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
@@ -1087,10 +1103,8 @@ VALUES
 
             bool hovered = (e.Index == hoveredIndex);
 
-            Color backColor = hovered
-                ? Color.FromArgb(235, 235, 235)
-                : Color.White;
-            Color textColor = Color.FromArgb(60, 60, 60);
+            Color backColor = ThemeManager.FundoDaSugestao(hovered);
+            Color textColor = ThemeManager.TextoDaSugestao;
 
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
@@ -1103,7 +1117,7 @@ VALUES
 
             if (e.Index < listBox.Items.Count - 1)
             {
-                using (Pen p = new Pen(Color.FromArgb(220, 220, 220)))
+                using (Pen p = new Pen(ThemeManager.DivisoriaDaSugestao))
                     e.Graphics.DrawLine(p, e.Bounds.Left + 8, e.Bounds.Bottom - 1, e.Bounds.Right - 8, e.Bounds.Bottom - 1);
             }
         }

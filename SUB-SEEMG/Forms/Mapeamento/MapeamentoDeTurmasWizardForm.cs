@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SUB.Utils;
+using SeuProjeto;
 
 //Para Acessar o form de mapeamento altere o arquivo txt em AppData para um ano anterior ao ano atual
 
@@ -31,6 +32,7 @@ namespace SUB.Forms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
+            Load += (s, e) => this.CaberNaTela();
             AppPaths.EnsureFolders();
             _baseFolder = AppPaths.MappingFolder;
 

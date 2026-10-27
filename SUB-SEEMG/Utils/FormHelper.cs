@@ -31,6 +31,14 @@ namespace SeuProjeto
         // Formulários cujos cantos são arredondados pelo DWM (Windows 11).
         private static readonly ConditionalWeakTable<Form, object> cantosNativos = new ConditionalWeakTable<Form, object>();
 
+        // Cor atual da borda de cada formulário; os handlers de DesenharBorda leem daqui
+        // para que AlterarCorDaBorda possa trocá-la depois (ex.: tema escuro).
+        private sealed class Borda
+        {
+            public Color Cor;
+        }
+        private static readonly ConditionalWeakTable<Form, Borda> bordas = new ConditionalWeakTable<Form, Borda>();
+
         // Método de Extensão para Arredondar
         public static void ArredondarCantos(this Form form, int raio)
         {
@@ -85,7 +93,10 @@ namespace SeuProjeto
         }
         public static void DesenharBorda(this Form form, Color cor, int raio, int espessura)
         {
-            form.HandleCreated += (s, e) => DefinirCorDaBordaNativa(form, cor);
+            var borda = bordas.GetValue(form, f => new Borda());
+            borda.Cor = cor;
+
+            form.HandleCreated += (s, e) => DefinirCorDaBordaNativa(form, borda.Cor);
             if (form.IsHandleCreated)
                 DefinirCorDaBordaNativa(form, cor);
 
@@ -111,13 +122,40 @@ namespace SeuProjeto
                     path.AddArc(0, height - raio, raio, raio, 90, 90); // Baixo Esquerda
                     path.CloseAllFigures();
 
-                    using (Pen pen = new Pen(cor, espessura))
+                    using (Pen pen = new Pen(borda.Cor, espessura))
                     {
                         // Desenha o caminho completo (curvas + retas)
                         e.Graphics.DrawPath(pen, path);
                     }
                 }
             };
+        }
+
+        // Janela maior que a área de trabalho (ex.: 1200×800 numa tela de 1366×768) perde os botões
+        // de baixo. Reduz para caber e centraliza; a ancoragem dos controles acompanha.
+        public static void CaberNaTela(this Form form)
+        {
+            Rectangle area = Screen.FromControl(form.Owner ?? form).WorkingArea;
+            if (form.Width <= area.Width && form.Height <= area.Height)
+                return;
+
+            int largura = Math.Min(form.Width, area.Width);
+            int altura = Math.Min(form.Height, area.Height);
+            form.StartPosition = FormStartPosition.Manual;
+            form.Bounds = new Rectangle(area.Left + (area.Width - largura) / 2, area.Top + (area.Height - altura) / 2, largura, altura);
+        }
+
+        // Troca a cor de uma borda já registrada com DesenharBorda, sem registrar handlers novos.
+        public static void AlterarCorDaBorda(this Form form, Color cor)
+        {
+            Borda borda;
+            if (!bordas.TryGetValue(form, out borda))
+                return;
+
+            borda.Cor = cor;
+            if (form.IsHandleCreated)
+                DefinirCorDaBordaNativa(form, cor);
+            form.Invalidate();
         }
 
         private static void DefinirCorDaBordaNativa(Form form, Color cor)

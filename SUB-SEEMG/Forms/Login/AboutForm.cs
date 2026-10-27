@@ -55,13 +55,15 @@ namespace SUB.Forms.Login
             SubLogoManager.ApplyWindowIcon(this, primaria);
             ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(primaria));
             _corPrimariaAtual = primaria;
+            bool escuro = ThemeManager.Escuro;
+            Color divisoria = escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaria, 0.72f);
 
-            BackColor = tema.AccentColor;
-            panel5.BackColor = Color.FromArgb(250, 252, 255);
+            BackColor = escuro ? ThemeManager.Dark.Fundo : tema.AccentColor;
+            panel5.BackColor = escuro ? ThemeManager.Dark.Fundo : Color.FromArgb(250, 252, 255);
             pnlMarcaAbout.BackColor = primaria;
             pnlLogoAbout.BackColor = primaria;
-            panel2.BackColor = ThemeManager.Lighten(primaria, 0.72f);
-            linhaRodape.BackColor = ThemeManager.Lighten(primaria, 0.72f);
+            panel2.BackColor = divisoria;
+            linhaRodape.BackColor = divisoria;
 
             BtnOk.BaseColor = primaria;
             BtnOk.Invalidate();
@@ -79,11 +81,22 @@ namespace SUB.Forms.Login
                 link.VisitedLinkColor = Color.FromArgb(43, 55, 69);
             }
 
-            AtualizarIconesGithub(primaria);
+            AtualizarIconesGithub(escuro ? ThemeManager.Lighten(primaria, 0.5f) : primaria);
             AtualizarIconeFechar(ThemeManager.GetContrastColor(primaria));
             picExit.BackColor = Color.Transparent;
             AtualizarLogoCompleta(primaria);
             pnlLogoAbout.BringToFront();
+
+            // O cabeçalho na cor da instituição (com o selo da SEE em fundo branco) fica como está.
+            if (escuro)
+            {
+                foreach (Control filho in panel5.Controls)
+                {
+                    if (filho != pnlMarcaAbout && filho != panel2 && filho != linhaRodape)
+                        ThemeManager.AplicarModoEscuro(filho, primaria);
+                }
+                this.AlterarCorDaBorda(ThemeManager.Dark.Borda);
+            }
         }
 
         private void AtualizarIconesGithub(Color cor)

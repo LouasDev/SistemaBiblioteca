@@ -27,6 +27,7 @@ namespace SUB.Forms.Relatorio
             public RelForm()
             {
                 InitializeComponent();
+                LayoutAdaptavel.Aplicar(this);
                 ThemeManager.ApplyConfiguredTheme(this);
 
             // garantir que btnFiltrar acione CarregarLog (caso designer não tenha feito)
@@ -89,6 +90,18 @@ namespace SUB.Forms.Relatorio
         }
            
 
+
+            // Enter nos campos de texto filtra; com a lista de sugestões aberta, o Enter escolhe a sugestão.
+            protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+            {
+                if (keyData == Keys.Enter && !lstSugestoesUsuario.Visible && !lstLivros.Visible &&
+                    (this.ActiveControl == txtUsuario || this.ActiveControl == txtLivro))
+                {
+                    btnFiltrar.PerformClick();
+                    return true;
+                }
+                return base.ProcessCmdKey(ref msg, keyData);
+            }
 
             private void TxtLivro_KeyDown(object sender, KeyEventArgs e)
             {
@@ -812,7 +825,7 @@ namespace SUB.Forms.Relatorio
                 listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
                 listBox.ItemHeight = 40;
 
-                listBox.BackColor = Color.White;
+                listBox.BackColor = ThemeManager.FundoDaSugestao(false);
                 listBox.ForeColor = Color.FromArgb(30, 61, 88);
                 listBox.BorderStyle = BorderStyle.FixedSingle;
                 listBox.IntegralHeight = false;
@@ -834,12 +847,9 @@ namespace SUB.Forms.Relatorio
 
                 bool hovered = (e.Index == hoveredIndex);
 
-                // Tons de cinza
-                Color backColor = hovered
-                    ? Color.FromArgb(235, 235, 235) // cinza claro no hover
-                    : Color.White;                  // fundo branco
+                Color backColor = ThemeManager.FundoDaSugestao(hovered);
 
-                Color textColor = Color.FromArgb(60, 60, 60); // cinza escuro
+                Color textColor = ThemeManager.TextoDaSugestao;
 
                 using (SolidBrush b = new SolidBrush(backColor))
                     e.Graphics.FillRectangle(b, e.Bounds);
@@ -853,7 +863,7 @@ namespace SUB.Forms.Relatorio
                 // Linha divisória entre itens (cinza bem suave)
                 if (e.Index < listBox.Items.Count - 1)
                 {
-                    using (Pen p = new Pen(Color.FromArgb(220, 220, 220)))
+                    using (Pen p = new Pen(ThemeManager.DivisoriaDaSugestao))
                         e.Graphics.DrawLine(p, e.Bounds.Left + 8, e.Bounds.Bottom - 1, e.Bounds.Right - 8, e.Bounds.Bottom - 1);
                 }
 

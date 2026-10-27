@@ -20,6 +20,7 @@ namespace SUB.Forms.Usuario
         public UsuarioForm()
         {
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
             this.Load += UsuarioForm_Load;
         }

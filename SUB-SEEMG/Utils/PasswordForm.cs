@@ -20,6 +20,7 @@ namespace SUB.Forms.Usuario
             ThemeManager.ApplyConfiguredTheme(this);
             this.StartPosition = FormStartPosition.CenterParent;
             Shown += PasswordForm_Shown;
+            CancelButton = btnCancelar;
         }
 
         private void PasswordForm_Load(object sender, EventArgs e)

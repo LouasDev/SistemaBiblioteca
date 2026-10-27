@@ -365,7 +365,7 @@ public class RoundedDatePicker : UserControl
         }
 
         // desenhar linha separadora
-        using (Pen sep = new Pen(Color.FromArgb(200,200,200), 1f))
+        using (Pen sep = new Pen(SeparatorColor, 1f))
         {
             int sepX = this.Width - calendarIcon.Width - 16; // posição da linha
             int sepTop = 4;
@@ -658,6 +658,15 @@ public class RoundedDatePicker : UserControl
     {
         get => _iconHoverAreaColor;
         set { _iconHoverAreaColor = value; Invalidate(); }
+    }
+
+    private Color _separatorColor = Color.FromArgb(200, 200, 200);
+
+    [Category("Aparência")]
+    public Color SeparatorColor
+    {
+        get => _separatorColor;
+        set { _separatorColor = value; Invalidate(); }
     }
 
     // ----------------- FORMATAÇÃO AO DIGITAR -----------------

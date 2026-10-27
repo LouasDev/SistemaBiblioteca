@@ -35,7 +35,7 @@ namespace SUB.Forms.Configuracoes
             lblTitulo.ForeColor = ThemeManager.GetContrastColor(cor);
             lblSubtitulo.ForeColor = ThemeManager.GetContrastColor(cor);
             chkConcordo.ForeColor = ThemeManager.GetLabelColor(cor);
-            pnlRodape.BackColor = ThemeManager.Lighten(cor, 0.94F);
+            pnlRodape.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Superficie : ThemeManager.Lighten(cor, 0.94F);
         }
 
         private void ResetTermoForm_Load(object sender, EventArgs e)

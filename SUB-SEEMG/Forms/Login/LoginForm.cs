@@ -26,8 +26,10 @@ namespace SUB.Forms.Login
         // Evita reentrância no clique (duplo Enter/click)
         private bool _isAuthenticating = false;
         private Color _corPrimariaAtual = ThemeManager.DefaultColor;
-        private readonly Color _corBordaPadrao = Color.FromArgb(174, 188, 204);
-        private readonly Color _corErro = Color.FromArgb(184, 50, 50);
+        // Definidas em AplicarTema conforme o modo claro/escuro da instalação.
+        private Color _corBordaPadrao = Color.FromArgb(174, 188, 204);
+        private Color _corErro = Color.FromArgb(184, 50, 50);
+        private Color _corFocoCampo = ThemeManager.DefaultColor;
         #endregion
 
         #region Construtor
@@ -67,6 +69,7 @@ namespace SUB.Forms.Login
                 }
             }
 
+            ThemeManager.DefinirModo(configuracao != null && configuracao.TemaEscuro);
             AplicarTema(corPrimaria);
         }
 
@@ -80,8 +83,12 @@ namespace SUB.Forms.Login
             _corPrimariaAtual = ThemeManager.Normalize(corPrimaria);
             SubLogoManager.ApplyWindowIcon(this, _corPrimariaAtual);
             ThemePreset tema = ThemeManager.FindPreset(ColorTranslator.ToHtml(_corPrimariaAtual));
-            Color superficie = tema.AccentColor;
+            bool escuro = ThemeManager.Escuro;
+            Color superficie = escuro ? ThemeManager.Dark.Fundo : tema.AccentColor;
             Color focoSuave = ThemeManager.Lighten(_corPrimariaAtual, 0.94f);
+            _corBordaPadrao = escuro ? ThemeManager.Dark.Borda : Color.FromArgb(174, 188, 204);
+            _corErro = escuro ? ThemeManager.CorTextoParaEscuro(Color.FromArgb(184, 50, 50)) : Color.FromArgb(184, 50, 50);
+            _corFocoCampo = escuro ? ThemeManager.Lighten(_corPrimariaAtual, 0.35f) : _corPrimariaAtual;
 
             BackColor = superficie;
             pnInicial.BackColor = superficie;
@@ -100,7 +107,7 @@ namespace SUB.Forms.Login
             foreach (RoundedTextBox campo in new[] { txtEmail, txtSenha })
             {
                 campo.BorderColor = _corBordaPadrao;
-                campo.BorderFocusColor = _corPrimariaAtual;
+                campo.BorderFocusColor = _corFocoCampo;
                 campo.HoverBackColor = focoSuave;
                 campo.Invalidate();
             }
@@ -110,6 +117,13 @@ namespace SUB.Forms.Login
             BtnEntrar.BorderColor = _corPrimariaAtual;
             BtnEntrar.Invalidate();
             SubLogoManager.SetImage(picLogoLogin, SubLogoVariant.Square, _corPrimariaAtual, pnlLogo.BackColor);
+
+            // O painel da marca já é escuro (cor da instituição); muda só o lado do formulário.
+            if (escuro)
+            {
+                ThemeManager.AplicarModoEscuro(gradientPanel2, _corPrimariaAtual);
+                this.AlterarCorDaBorda(ThemeManager.Dark.Borda);
+            }
         }
         #endregion
 
@@ -599,7 +613,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
 
         private Form CriarDialogoRecuperacao(string titulo, Size tamanho)
         {
-            return new Form
+            var dialogo = new Form
             {
                 BackColor = Color.FromArgb(250, 252, 255),
                 ClientSize = tamanho,
@@ -611,6 +625,13 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                 StartPosition = FormStartPosition.CenterParent,
                 Text = titulo
             };
+            // No Load todos os campos já foram adicionados pelo chamador.
+            dialogo.Load += (s, e) =>
+            {
+                ThemeManager.AplicarModoEscuro(dialogo, _corPrimariaAtual);
+                ThemeManager.AplicarBarraDeTitulo(dialogo);
+            };
+            return dialogo;
         }
 
         private CustomButton CriarBotaoPrimario(string texto, Point local, Size tamanho)
@@ -643,6 +664,13 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
             };
             botao.FlatAppearance.BorderColor = ThemeManager.Lighten(_corPrimariaAtual, 0.42f);
             botao.FlatAppearance.MouseOverBackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.92f);
+            if (ThemeManager.Escuro)
+            {
+                botao.BackColor = ThemeManager.Dark.SuperficieAlt;
+                botao.ForeColor = ThemeManager.Dark.Texto;
+                botao.FlatAppearance.BorderColor = ThemeManager.Dark.Borda;
+                botao.FlatAppearance.MouseOverBackColor = ThemeManager.Dark.EntradaHover;
+            }
             return botao;
         }
 
@@ -752,7 +780,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
         private void LimparErroCampo(RoundedTextBox campo, Label label)
         {
             campo.BorderColor = _corBordaPadrao;
-            campo.BorderFocusColor = _corPrimariaAtual;
+            campo.BorderFocusColor = _corFocoCampo;
             campo.Invalidate();
             label.Text = string.Empty;
             label.Visible = false;
@@ -762,8 +790,16 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
         private void MostrarStatusLogin(string mensagem, bool sucesso = false)
         {
             lblStatusLogin.Text = mensagem;
-            lblStatusLogin.BackColor = sucesso ? Color.FromArgb(237, 247, 241) : Color.FromArgb(253, 240, 240);
-            lblStatusLogin.ForeColor = sucesso ? Color.FromArgb(31, 122, 73) : Color.FromArgb(143, 38, 38);
+            if (ThemeManager.Escuro)
+            {
+                lblStatusLogin.BackColor = sucesso ? Color.FromArgb(27, 62, 43) : Color.FromArgb(74, 36, 38);
+                lblStatusLogin.ForeColor = sucesso ? Color.FromArgb(134, 214, 156) : Color.FromArgb(240, 142, 142);
+            }
+            else
+            {
+                lblStatusLogin.BackColor = sucesso ? Color.FromArgb(237, 247, 241) : Color.FromArgb(253, 240, 240);
+                lblStatusLogin.ForeColor = sucesso ? Color.FromArgb(31, 122, 73) : Color.FromArgb(143, 38, 38);
+            }
             lblStatusLogin.Visible = true;
         }
 

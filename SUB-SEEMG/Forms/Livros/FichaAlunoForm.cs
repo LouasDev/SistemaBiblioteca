@@ -17,6 +17,7 @@ namespace SUB.Forms.Livros
         public FichaAlunoForm()
         {
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
         }
         public void PreencherAluno(Aluno aluno)

@@ -25,6 +25,7 @@ namespace SUB.Forms.Livros
         public DevoluçãoForm()
         {
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
 
        
@@ -48,6 +49,11 @@ namespace SUB.Forms.Livros
 
             mtxCodigoBarras.KeyPress += mtxCodigoBarras_KeyPressLimiter;
             mtxCodigoBarras.TextChanged += mtxCodigoBarras_TextChangedLimiter;
+
+            // O botão Procurar nunca foi ligado no designer: clicar nele (ou ler um código e dar
+            // Enter, que aciona o botão) não fazia a busca.
+            btnBuscarEmprestimo.Click -= btnBuscarEmprestimo_Click;
+            btnBuscarEmprestimo.Click += btnBuscarEmprestimo_Click;
         }
 
         private void EstilizarListBoxSugestao(ListBox listBox)
@@ -56,7 +62,7 @@ namespace SUB.Forms.Livros
             listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
             listBox.ItemHeight = 40;
 
-            listBox.BackColor = Color.White;
+            listBox.BackColor = ThemeManager.FundoDaSugestao(false);
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
@@ -78,8 +84,8 @@ namespace SUB.Forms.Livros
 
             bool hovered = (e.Index == hoveredIndex);
 
-            Color backColor = hovered ? Color.FromArgb(235, 235, 235) : Color.White;
-            Color textColor = Color.FromArgb(60, 60, 60);
+            Color backColor = ThemeManager.FundoDaSugestao(hovered);
+            Color textColor = ThemeManager.TextoDaSugestao;
 
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
@@ -93,7 +99,7 @@ namespace SUB.Forms.Livros
             // linha divisória suave entre itens
             if (e.Index < listBox.Items.Count - 1)
             {
-                using (Pen p = new Pen(Color.FromArgb(220, 220, 220)))
+                using (Pen p = new Pen(ThemeManager.DivisoriaDaSugestao))
                     e.Graphics.DrawLine(p, e.Bounds.Left + 8, e.Bounds.Bottom - 1, e.Bounds.Right - 8, e.Bounds.Bottom - 1);
             }
         }
@@ -1144,6 +1150,14 @@ namespace SUB.Forms.Livros
 
                 // 4. Retorna 'true' para indicar que a tecla já foi processada.
                 // Isso impede que o som de "bip" do Windows toque.
+                return true;
+            }
+
+            // Enter nos campos de nome procura; com a lista de sugestões aberta, o Enter escolhe a sugestão.
+            if (keyData == Keys.Enter && !lstSugestoesUsuario.Visible &&
+                (this.ActiveControl == txtUsuario || this.ActiveControl == txtLivro))
+            {
+                btnBuscarEmprestimo.PerformClick();
                 return true;
             }
 

@@ -115,11 +115,14 @@ namespace SUB.Utils
         public void ApplyTheme(Color themeColor)
         {
             primaryColor = ThemeManager.Normalize(themeColor);
-            card.BackColor = Color.White;
-            lblSection.ForeColor = primaryColor;
-            lblProgress.ForeColor = Color.FromArgb(92, 102, 114);
+            // No modo escuro o cartão usa as superfícies do tema: os textos pensados para o
+            // cartão branco ficariam sem contraste (o título já vem claro de GetLabelColor).
+            bool escuro = ThemeManager.Escuro;
+            card.BackColor = escuro ? ThemeManager.Dark.Superficie : Color.White;
+            lblSection.ForeColor = escuro ? ThemeManager.Lighten(primaryColor, 0.45F) : primaryColor;
+            lblProgress.ForeColor = escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(92, 102, 114);
             lblTitle.ForeColor = ThemeManager.GetLabelColor(primaryColor);
-            lblMessage.ForeColor = Color.FromArgb(48, 58, 70);
+            lblMessage.ForeColor = escuro ? ThemeManager.Dark.Texto : Color.FromArgb(48, 58, 70);
             StyleSecondaryButton(btnBack, primaryColor);
             StyleSecondaryButton(btnSkip, primaryColor);
             btnNext.BackColor = primaryColor;
@@ -288,14 +291,15 @@ namespace SUB.Utils
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             Rectangle bounds = new Rectangle(0, 0, card.Width - 1, card.Height - 1);
             using (GraphicsPath path = RoundedRectangle(bounds, 15))
-            using (Pen pen = new Pen(ThemeManager.Lighten(primaryColor, 0.58F), 1F)) e.Graphics.DrawPath(pen, path);
+            using (Pen pen = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaryColor, 0.58F), 1F)) e.Graphics.DrawPath(pen, path);
             using (SolidBrush accent = new SolidBrush(primaryColor)) e.Graphics.FillRectangle(accent, new Rectangle(0, 0, 6, card.Height));
             if (screen == TourScreen.Step && steps != null)
             {
                 int startX = card.Width - 200;
                 for (int i = 0; i < steps.Count; i++)
                 {
-                    using (SolidBrush dot = new SolidBrush(i <= stepIndex ? primaryColor : ThemeManager.Lighten(primaryColor, 0.78F)))
+                    Color pendente = ThemeManager.Escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaryColor, 0.78F);
+                    using (SolidBrush dot = new SolidBrush(i <= stepIndex ? primaryColor : pendente))
                         e.Graphics.FillEllipse(dot, startX + (i * 13), 154, 7, 7);
                 }
             }
@@ -344,6 +348,16 @@ namespace SUB.Utils
 
         private static void StyleSecondaryButton(Button button, Color primaryColor)
         {
+            if (ThemeManager.Escuro)
+            {
+                button.BackColor = ThemeManager.Dark.SuperficieAlt;
+                button.ForeColor = ThemeManager.Dark.Texto;
+                button.FlatAppearance.BorderColor = ThemeManager.Dark.Borda;
+                button.FlatAppearance.MouseOverBackColor = ThemeManager.Dark.EntradaHover;
+                button.FlatAppearance.MouseDownBackColor = ThemeManager.Dark.Selecao;
+                return;
+            }
+
             button.BackColor = ThemeManager.Lighten(primaryColor, 0.92F);
             button.ForeColor = ThemeManager.GetLabelColor(primaryColor);
             button.FlatAppearance.BorderColor = ThemeManager.Lighten(primaryColor, 0.58F);

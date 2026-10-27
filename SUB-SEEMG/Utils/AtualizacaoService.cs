@@ -34,6 +34,7 @@ namespace SUB.Utils
         // VerificarAsync consulta esta URL em vez do App.config. Nulo em produção.
 #pragma warning disable 0649
         internal static string UrlManifestoOverrideParaTestes;
+        internal static bool PermitirLoopbackParaTestes;
 #pragma warning restore 0649
 
         private static readonly HttpClient http;
@@ -339,7 +340,7 @@ namespace SUB.Utils
 
             var ehLoopback = uri.Host.Equals("127.0.0.1", StringComparison.Ordinal) ||
                              uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase);
-            if (ehLoopback && uri.Scheme == Uri.UriSchemeHttp)
+            if (PermitirLoopbackParaTestes && ehLoopback && uri.Scheme == Uri.UriSchemeHttp)
                 return true;
 
             if (uri.Scheme != Uri.UriSchemeHttps ||

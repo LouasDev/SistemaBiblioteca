@@ -385,11 +385,24 @@ class TesteFormD
             BindingFlags.NonPublic | BindingFlags.Static);
         string[] permitidas = {
             "https://github.com/LouasDev/SistemaBiblioteca/releases/download/v1.0.2/SUB-1.0.2.zip",
-            "https://release-assets.githubusercontent.com/pacote.zip",
-            "http://127.0.0.1:8080/pacote.zip"
+            "https://release-assets.githubusercontent.com/pacote.zip"
         };
         foreach (string url in permitidas)
             Verificar("host-pacote-permitido", (bool)aceitar.Invoke(null, new object[] { new Uri(url) }), url);
+
+        var loopback = new Uri("http://127.0.0.1:8080/pacote.zip");
+        Verificar("loopback-bloqueado-por-padrao", !(bool)aceitar.Invoke(null, new object[] { loopback }), loopback.ToString());
+        var flagLoopback = typeof(AtualizacaoService).GetField("PermitirLoopbackParaTestes",
+            BindingFlags.NonPublic | BindingFlags.Static);
+        flagLoopback.SetValue(null, true);
+        try
+        {
+            Verificar("loopback-permitido-em-teste", (bool)aceitar.Invoke(null, new object[] { loopback }), loopback.ToString());
+        }
+        finally
+        {
+            flagLoopback.SetValue(null, false);
+        }
 
         string[] bloqueadas = {
             "https://github.com/LouasDev/SUB-Releases/releases/download/v1/pacote.zip",

@@ -1,5 +1,7 @@
 # Publicação de atualizações
 
+[Voltar ao README](../README.md) · [Guia de desenvolvimento](DESENVOLVIMENTO.md)
+
 O código-fonte e os pacotes do SUB compartilham o repositório público
 `LouasDev/SistemaBiblioteca`. Não é necessário criar um repositório separado.
 

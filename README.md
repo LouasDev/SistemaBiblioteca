@@ -1,87 +1,123 @@
 <div align="center">
 
-<img src="docs/assets/logo-sub.png" alt="Logotipo do SUB" width="140">
+<img src="SUB-SEEMG/Resources/sub-200x200px.png" alt="Logotipo do SUB" width="120">
 
-# SUB · Sistema Único Bibliotecário
+# SUB — Sistema Único Bibliotecário
 
-**Plataforma unificada de gestão para bibliotecas escolares da rede estadual de ensino de Minas Gerais.**[cite: 1]
+**Gestão de bibliotecas escolares, do acervo à circulação.**
 
-[![Versão](https://img.shields.io/badge/Versão-1.0.0--beta-blue.svg?style=for-the-badge)](https://github.com/LouasDev/SistemaBiblioteca/releases)
-[![C#](https://img.shields.io/badge/C%23-NET_Framework_4.8-512BD4?style=for-the-badge&logo=csharp)](https://dotnet.microsoft.com/)
-[![Windows Forms](https://img.shields.io/badge/UI-Windows_Forms-0078D4?style=for-the-badge&logo=windows)](https://docs.microsoft.com/en-us/dotnet/desktop/winforms/)
-[![Banco de Dados](https://img.shields.io/badge/Database-SQL_Compact_4.0-CC2927?style=for-the-badge&logo=microsoftsqlserver)](#)
-[![Licença](https://img.shields.io/badge/Licença-MIT-brightgreen.svg?style=for-the-badge)](LICENSE)
-
----
-
-O **SUB** centraliza, padroniza e automatiza a operação diária das bibliotecas, desde a catalogação do acervo literário até a gestão de circulação e métricas de leitura dos alunos.[cite: 1]
-
-[Funcionalidades](#-funcionalidades-principais) •
-[Arquitetura](#-arquitetura-e-tecnologias) •
-[Instalação](#-guia-de-instalação) •
-[Contribuição](#-guia-de-contribuição) •
-[Equipe](#-equipe)
+![Plataforma: Windows](https://img.shields.io/badge/Plataforma-Windows-1F487E?style=flat-square)
+![Tecnologia: .NET Framework 4.8](https://img.shields.io/badge/.NET_Framework-4.8-512BD4?style=flat-square)
+![Status: em desenvolvimento](https://img.shields.io/badge/Status-Em_desenvolvimento-B7791F?style=flat-square)
 
 </div>
 
----
-
-## 🏛 Contexto Institucional
-
-O projeto nasceu de uma iniciativa acadêmica na **Escola Estadual Professor Gastão Valle**, no município de Bocaiuva, região Norte de Minas Gerais[cite: 1]. Identificando a ausência de uma ferramenta padronizada para a gestão do acervo local, a equipe desenvolveu a primeira iteração do sistema[cite: 1]. 
-
-Com a validação do modelo, o software foi reestruturado sob diretrizes do Governo de Minas Gerais para escalabilidade, visando atender a totalidade das bibliotecas da rede estadual de ensino, integrando fluxos essenciais de operação em uma interface única e local[cite: 1].
-
-## ✨ Funcionalidades Principais
-
-O sistema é dividido em quatro módulos de negócio principais:
-
-### 1. Catalogação e Acervo[cite: 1]
-* **Gestão de Títulos:** Cadastro completo de obras literárias, didáticas e periódicos.
-* **Classificação Dinâmica:** Sistema de autocompletar para gêneros literários (Ficção Científica, Romance, Poesia) e áreas do conhecimento (Exatas, Informática, História).
-* **Automação por Código de Barras:** Suporte nativo a leitores de código de barras (ISBN/SKU) para entrada e saída rápida de exemplares.
-
-### 2. Gestão de Usuários e Acessos[cite: 1]
-* **Perfis Híbridos:** Controle de cadastros para Alunos, Professores e Equipe Escolar.
-* **Mapeamento Escolar:** Assistente inteligente para progressão e gerenciamento de Turmas e Turnos.
-* **Segurança de Acesso:** Autenticação de bibliotecários com senhas criptografadas localmente (algoritmos de *Hash* e *Salt*).
-
-### 3. Circulação e Empréstimos[cite: 1]
-* **PDV Bibliotecário:** Interface otimizada (Checkout/Check-in) para empréstimos e devoluções em massa.
-* **Regras de Negócio:** Aplicação automática de prazos, bloqueios por atraso e limites de renovação (prorrogações).
-* **Histórico de Rastreabilidade:** Auditoria completa de quem retirou qual exemplar e quando.
-
-### 4. Inteligência e Relatórios[cite: 1]
-* **Geração de Documentos:** Exportação de declarações e recibos em PDF (*iTextSharp / PDFsharp*).
-* **Análise de Dados:** Extração de relatórios operacionais (livros mais lidos, turmas mais ativas, inadimplência) nativamente para planilhas Excel (*ClosedXML*).
+[O projeto](#sobre-o-projeto) · [Funcionalidades](#funcionalidades) · [Primeiros passos](#primeiros-passos) · [Tecnologias](#tecnologias) · [Documentação](#documentacao) · [Contribuição](#contribuicao) · [Equipe](#equipe-do-projeto) · [Agradecimentos](#agradecimentos)
 
 ---
 
-## 🏗 Arquitetura e Tecnologias
+<a id="sobre-o-projeto"></a>
 
-A aplicação foi projetada no padrão **Monolito Desktop (Rich Client)**, garantindo resiliência em escolas com conectividade intermitente à internet. Os dados são persistidos localmente no host.
+## Sobre o projeto
 
-| Camada | Stack Tecnológico | Propósito |
-| :--- | :--- | :--- |
-| **Plataforma** | C# 10 / .NET Framework 4.8 | Base sólida com amplo suporte no parque de máquinas do estado. |
-| **Apresentação** | Windows Forms + MaterialSkin | UI responsiva baseada nos padrões do Material Design do Google. |
-| **Acesso a Dados** | ADO.NET | Comunicação de baixo nível e alta performance com o banco. |
-| **Banco de Dados** | SQL Server Compact 4.0 | SGDB relacional embarcado (não exige instalação de servidor local). |
-| **Utilitários** | ZXing.Net | Processamento e decodificação de códigos de barras bidimensionais. |
+O **SUB** reúne acervo, usuários, empréstimos e relatórios em uma aplicação para Windows. Desenvolvido para apoiar a rotina das bibliotecas escolares, busca facilitar o atendimento, a organização do acervo e o acompanhamento da circulação de livros na comunidade escolar.
 
----
+Cada instalação possui sua própria base de dados e identidade institucional. As atividades principais funcionam **sem conexão com a internet**, com armazenamento local. A busca opcional de informações por ISBN e a consulta de atualizações utilizam conexão.
 
-## 🚀 Guia de Instalação e Execução
+> **Em desenvolvimento:** o código da branch `main` pode conter mudanças ainda em validação. Os pacotes para distribuição são disponibilizados em [Releases](https://github.com/LouasDev/SistemaBiblioteca/releases), quando publicados.
 
-### Pré-requisitos
-Certifique-se de que o ambiente de desenvolvimento possua:
-* OS: Windows 10 (Build 19041) ou superior.
-* IDE: [Visual Studio 2022](https://visualstudio.microsoft.com/) com a workload `Desenvolvimento para desktop com .NET`.
-* Runtime: `Microsoft SQL Server Compact 4.0 SP1`.
+<a id="funcionalidades"></a>
 
-### Passos para Build Local
+## Funcionalidades
 
-1. **Clone o repositório**
-   ```bash
-   git clone [https://github.com/LouasDev/SistemaBiblioteca.git](https://github.com/LouasDev/SistemaBiblioteca.git)
-   cd SistemaBiblioteca
+| Área | O que o sistema oferece |
+| --- | --- |
+| **Acervo** | Cadastro, edição e consulta de livros, controle de quantidades, códigos de barras e busca opcional por ISBN. |
+| **Usuários e turmas** | Gestão dos participantes da biblioteca, ativação e desativação de cadastros e mapeamento anual de turmas. |
+| **Circulação** | Empréstimos, devoluções, atendimento rápido, prorrogações e acompanhamento de pendências. |
+| **Relatórios** | Consultas operacionais, exportação para Excel e geração de documentos e etiquetas em PDF. |
+| **Personalização** | Nome, logotipo e tema da instituição, definidos no primeiro uso e nas configurações. |
+| **Administração** | Acesso de bibliotecários, recuperação por código mestre, atualizações pelo GitHub e reset com dupla verificação. |
+
+O painel é acessado pelo perfil **Bibliotecário(a)**. Alunos, professores e demais usuários são cadastrados como participantes da circulação.
+
+<a id="primeiros-passos"></a>
+
+## Primeiros passos
+
+**Requisitos para uso:** Windows e .NET Framework 4.8.
+
+1. Quando disponível, baixe o pacote `SUB-X.Y.Z.zip` em [Releases](https://github.com/LouasDev/SistemaBiblioteca/releases).
+2. Extraia todo o conteúdo para uma pasta com permissão de gravação e execute `SUB.exe`.
+3. Siga o assistente para configurar a instituição e criar a primeira conta de bibliotecário.
+4. Guarde o **TXT de recuperação** em local seguro: ele é necessário para recuperação de senha e autorização do reset.
+
+Os arquivos **Source code** do GitHub precisam ser compilados. Para executar a partir do código-fonte, consulte o [guia de desenvolvimento](docs/DESENVOLVIMENTO.md).
+
+### Dados e atualizações
+
+Os dados ficam em `%LOCALAPPDATA%\SUB`, associados à conta do Windows. O reset apaga definitivamente essa área, incluindo configurações e backups locais, após as verificações e a confirmação final.
+
+As versões seguem o padrão **`0.0.0`**, como `1.0.2`. O aplicativo recebe atualizações por releases com pacotes assinados; alterações no código-fonte só chegam aos usuários quando uma nova versão é publicada.
+
+<a id="tecnologias"></a>
+
+## Tecnologias
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=cs,dotnet" alt="C# e .NET Framework" />
+  </a>
+</p>
+
+| Aplicação | Tecnologias utilizadas |
+| --- | --- |
+| **Linguagem e plataforma** | C# · .NET Framework 4.8 |
+| **Interface** | Windows Forms · controles personalizados · MaterialSkin |
+| **Banco de dados local** | SQL Server Compact 4.0 · ADO.NET |
+| **Planilhas** | ClosedXML |
+| **Documentos PDF** | iTextSharp · PDFsharp |
+| **Códigos de barras** | ZXing.Net |
+| **Configurações e manifestos JSON** | Newtonsoft.Json |
+
+<a id="documentacao"></a>
+
+## Documentação
+
+- [Desenvolvimento, compilação e testes](docs/DESENVOLVIMENTO.md)
+- [Reset local e exclusão de dados](docs/RESET-LOCAL.md)
+- [Versionamento e publicação de atualizações](docs/PUBLICACAO-ATUALIZACOES.md)
+
+<a id="contribuicao"></a>
+
+## Contribuição
+
+Sugestões e relatos de problemas são bem-vindos nas [issues](https://github.com/LouasDev/SistemaBiblioteca/issues). Para contribuir com código, abra um pull request com a descrição da mudança e das verificações realizadas. Não inclua dados pessoais, bancos reais ou credenciais.
+
+<a id="equipe-do-projeto"></a>
+
+## Equipe do projeto
+
+Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**:
+
+| Integrante | Participação |
+| --- | --- |
+| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end. |
+| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end. |
+| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Documentação do projeto. |
+
+Veja também o [histórico de contribuidores](https://github.com/LouasDev/SistemaBiblioteca/graphs/contributors) do repositório.
+
+<a id="agradecimentos"></a>
+
+## Agradecimentos
+
+Agradecemos à **Escola Estadual Professor Gastão Valle** pelo apoio ao projeto e pelo incentivo à construção de uma solução voltada à comunidade escolar.
+
+Aos professores e tutores **Fernando Junior** e **Antônio Carlos Ramos Filho**, nosso agradecimento pela orientação e pelo apoio ao longo do desenvolvimento.
+
+Agradecemos também à **Secretaria de Estado de Educação de Minas Gerais (SEEMG)** por todo o apoio ao projeto e à iniciativa de seus participantes.
+
+## Licença
+
+O projeto tem como objetivo a distribuição open source. A aplicação menciona MIT, mas o arquivo `LICENSE` ainda precisa ser formalizado pelos responsáveis. As dependências mantêm suas próprias licenças.

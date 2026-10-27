@@ -1,5 +1,7 @@
 # Reset local do SUB
 
+[Voltar ao README](../README.md) · [Guia de desenvolvimento](DESENVOLVIMENTO.md)
+
 O botão **Resetar aplicativo**, em Configurações, abre o popup `ResetTermoForm`.
 Ele apresenta o termo de confirmação e a quantidade atual de usuários, títulos,
 empréstimos, empréstimos rápidos e turmas que serão apagados. Também informa

@@ -1,4 +1,4 @@
-// Auxiliar de teste da Etapa D - interface de atualizacao no ConfiguracaoForm.
+﻿// Auxiliar de teste da Etapa D - interface de atualizacao no ConfiguracaoForm.
 // Compilado pelo harness test-etapaD.ps1 (csc do framework, C# 5, sem NuGet).
 // Uso: TesteFormD.exe <caminho completo de SUB.exe>
 using System;
@@ -61,6 +61,8 @@ class TesteFormD
             TestarDimensoesEBinding();
             TestarTemaAplicado();
             TestarHelpers();
+            TestarPopupNovidades();
+            TestarPersistenciaNovidades();
             TestarRepositorioDeAtualizacao();
 
             string chave = LerChavePrivada();
@@ -90,6 +92,73 @@ class TesteFormD
 
         Console.WriteLine(falhas == 0 ? "TODOS OS TESTES PASSARAM" : falhas + " TESTE(S) FALHARAM");
         Environment.Exit(falhas);
+    }
+
+    static void TestarPopupNovidades()
+    {
+        using (var popup = new NovidadesAtualizacaoForm())
+        {
+            var manifesto = new AtualizacaoManifesto { Versao = "1.2.3", Data = "2026-10-27",
+                Notas = "Melhorias nesta atualização:\n• Empréstimos mais rápidos.\n• Correções e melhorias na biblioteca." };
+            popup.CarregarNovidades(manifesto, true);
+            var notas = (RichTextBox)popup.Controls.Find("rtbNovidades", true)[0];
+            var continuar = (Button)popup.Controls.Find("btnContinuar", true)[0];
+            var fechar = (Button)popup.Controls.Find("btnFechar", true)[0];
+            Verificar("popup-notas-texto-seguro", notas.ReadOnly && !notas.DetectUrls && notas.Text == manifesto.Notas,
+                "as notas devem ser texto simples e somente leitura");
+            Verificar("popup-confirmacao-opcional", continuar.DialogResult == DialogResult.OK &&
+                fechar.DialogResult == DialogResult.Cancel && popup.AcceptButton == continuar,
+                "a atualizacao deve permitir cancelar antes da senha");
+            Rectangle posicao = notas.Bounds;
+            foreach (var tema in ThemeManager.Presets)
+            {
+                popup.AplicarTema(tema.PrimaryColor);
+                Verificar("popup-tema-" + tema.Name,
+                    popup.Controls.Find("pnlHeader", true)[0].BackColor == tema.PrimaryColor && notas.Bounds == posicao,
+                    "tema deve preservar o layout editavel no Designer");
+            }
+            popup.AplicarTema(ThemeManager.DefaultColor);
+            popup.CarregarNovidades(new AtualizacaoManifesto { Versao = "1.2.3" }, false, true);
+            Verificar("popup-instalado-sem-notas", !continuar.Visible && popup.AcceptButton == fechar &&
+                notas.Text.Contains("Não foram informadas"), "a versao instalada deve permitir apenas consultar");
+            manifesto.Notas = new string('A', 5000);
+            popup.CarregarNovidades(manifesto);
+            Verificar("popup-notas-limitadas", notas.Text.Length < 4100 && notas.Text.Contains("[notas truncadas]"),
+                "notas extensas devem ter limite");
+        }
+    }
+
+    static object ChamarStore(object store, string metodo, params object[] args)
+    {
+        return store.GetType().GetMethod(metodo, BindingFlags.Instance | BindingFlags.NonPublic)
+            .Invoke(store, args);
+    }
+
+    static void TestarPersistenciaNovidades()
+    {
+        string pasta = Path.GetFullPath(Path.Combine(dirBin, "..", "..", "..", "artifacts",
+            "novidades-store-" + Guid.NewGuid().ToString("N")));
+        var tipo = typeof(ConfiguracaoForm).Assembly.GetType("SUB.Utils.NovidadesAtualizacaoStore");
+        object store = Activator.CreateInstance(tipo, BindingFlags.Instance | BindingFlags.NonPublic,
+            null, new object[] { pasta }, null);
+        Verificar("novidades-sem-pendencia", ChamarStore(store, "ObterDaVersao", "1.2.3") == null,
+            "primeiro uso nao deve abrir aviso de atualizacao");
+        ChamarStore(store, "Preparar", new AtualizacaoManifesto { Versao = "1.2.3", Notas = "Correções" });
+        Verificar("novidades-aguardam-versao-instalada", ChamarStore(store, "ObterDaVersao", "1.2.2") == null,
+            "atualizacao cancelada ou rollback nao pode abrir novidades da versao nova");
+        object registro = ChamarStore(store, "ObterDaVersao", "1.2.3");
+        Verificar("novidades-pendentes-apos-reinicio", registro != null &&
+            !(bool)registro.GetType().GetProperty("Exibida").GetValue(registro, null), "notas devem sobreviver ao reinicio");
+        ChamarStore(store, "MarcarExibida", "1.2.3");
+        registro = ChamarStore(store, "ObterDaVersao", "1.2.3");
+        Verificar("novidades-exibidas-uma-vez", registro != null &&
+            (bool)registro.GetType().GetProperty("Exibida").GetValue(registro, null), "notas lidas nao devem abrir novamente");
+        Verificar("novidades-disponiveis-para-reconsulta", registro != null &&
+            ((AtualizacaoManifesto)registro.GetType().GetProperty("Manifesto").GetValue(registro, null)).Notas == "Correções",
+            "o botao deve poder reabrir as notas instaladas sem internet");
+        File.WriteAllText(Path.Combine(pasta, "novidades-atualizacao.json"), "{ arquivo incompleto");
+        Verificar("novidades-corrompidas-nao-travam-inicio", ChamarStore(store, "ObterDaVersao", "1.2.3") == null,
+            "dados de notas invalidos nao podem impedir abrir o aplicativo");
     }
 
     static Assembly Resolver(object sender, ResolveEventArgs e)
@@ -162,7 +231,7 @@ class TesteFormD
             "lblNome", "c", "lblCor", "cbTemas",
             "pnlCorPreview", "grpAtualizacao",
             "lblVersaoAtual", "lblStatusAtualizacao",
-            "btnVerificar", "pbVerificando", "lblNotasTitulo", "txtNotasVersao",
+            "btnVerificar", "pbVerificando", "btnNovidades",
             "btnAtualizar", "btnCancelarDownload", "pbDownload",
             "btnSalvar"
         };
@@ -185,8 +254,8 @@ class TesteFormD
             Campo("btnAtualizar") is CustomButton &&
             Campo("btnCancelarDownload") is CustomButton,
             "botoes da secao de atualizacao devem ser CustomButton");
-        Verificar("notas-em-textbox-padrao", Campo("txtNotasVersao") is TextBox,
-            "txtNotasVersao deve ser TextBox padrao (Multiline)");
+        Verificar("notas-fora-das-configuracoes", form.Controls.Find("txtNotasVersao", true).Length == 0,
+            "as notas devem estar somente no popup");
 
         // Requisito do usuario: layout plano, sem aninhamento de Flow/TableLayoutPanel
         // (dificultava mover/redimensionar cada controle no Designer do Visual Studio).
@@ -208,7 +277,7 @@ class TesteFormD
         var btnCancelarDownload = Campo<Button>("btnCancelarDownload");
         var pbDownload = Campo<ProgressBar>("pbDownload");
         var pbVerificando = Campo<ProgressBar>("pbVerificando");
-        var txtNotas = Campo<TextBox>("txtNotasVersao");
+        var btnNovidades = Campo<Button>("btnNovidades");
         var cbTemas = Campo<ComboBox>("cbTemas");
         var btnVerificar = Campo<Button>("btnVerificar");
 
@@ -217,10 +286,8 @@ class TesteFormD
             !pbDownload.Visible && !pbVerificando.Visible,
             "btnAtualizar/btnCancelarDownload/pbDownload/pbVerificando devem iniciar ocultos");
 
-        Verificar("notas-readonly-multiline",
-            txtNotas.ReadOnly && txtNotas.Multiline &&
-            txtNotas.ScrollBars == ScrollBars.Vertical && txtNotas.MaxLength == 4000,
-            "txtNotasVersao deve ser ReadOnly+Multiline+VScroll+MaxLength 4000");
+        Verificar("novidades-desabilitadas-sem-notas", !btnNovidades.Enabled,
+            "nao deve abrir novidades sem manifesto verificado ou notas instaladas");
 
         Verificar("combo-temas-dropdownlist", cbTemas.DropDownStyle == ComboBoxStyle.DropDownList,
             "cbTemas deve ser DropDownList");
@@ -238,7 +305,7 @@ class TesteFormD
         var grpAtualizacao = Campo<Control>("grpAtualizacao");
         var lblTitulo = Campo<Control>("Titulo");
         var txtNome = Campo<Control>("c");
-        var txtNotas = Campo<Control>("txtNotasVersao");
+        var btnNovidades = Campo<Control>("btnNovidades");
         var btnAtualizar = Campo<Control>("btnAtualizar");
 
         Verificar("secoes-filhas-diretas-do-form",
@@ -246,7 +313,7 @@ class TesteFormD
             form.Controls.Contains(grpAtualizacao) &&
             form.Controls.Contains(lblTitulo) &&
             grpInstituicao.Controls.Contains(txtNome) &&
-            grpAtualizacao.Controls.Contains(txtNotas),
+            grpAtualizacao.Controls.Contains(btnNovidades),
             "secoes devem ser filhas diretas do form, com os controles dentro do GroupBox");
 
         Verificar("botoes-atualizacao-no-groupbox",
@@ -256,13 +323,13 @@ class TesteFormD
             grpAtualizacao.Controls.Contains(Campo<Control>("btnVerificar")),
             "btnVerificar/btnAtualizar/btnCancelarDownload/pbDownload devem estar em grpAtualizacao");
 
-        Verificar("sem-copias-inertes", grpAtualizacao.Controls.Count == 9,
-            "a secao deve conter apenas os nove controles funcionais");
+        Verificar("sem-copias-inertes", grpAtualizacao.Controls.Count == 8,
+            "a secao deve conter apenas os oito controles funcionais");
 
         int versao = grpAtualizacao.Controls.Find("lblVersaoAtual", false)[0].TabIndex;
         int status = grpAtualizacao.Controls.Find("lblStatusAtualizacao", false)[0].TabIndex;
         int verificar = grpAtualizacao.Controls.Find("btnVerificar", false)[0].TabIndex;
-        int notas = grpAtualizacao.Controls.Find("txtNotasVersao", false)[0].TabIndex;
+        int notas = grpAtualizacao.Controls.Find("btnNovidades", false)[0].TabIndex;
         int atualizar = grpAtualizacao.Controls.Find("btnAtualizar", false)[0].TabIndex;
         int cancelar = grpAtualizacao.Controls.Find("btnCancelarDownload", false)[0].TabIndex;
         Verificar("tabindex-logico",
@@ -591,12 +658,12 @@ class TesteFormD
 
             var lbl = Campo<Label>("lblStatusAtualizacao");
             var btnAtualizar = Campo<Button>("btnAtualizar");
-            var txtNotas = Campo<TextBox>("txtNotasVersao");
+            var btnNovidades = Campo<Button>("btnNovidades");
             var manifesto = Campo<AtualizacaoManifesto>("manifestoDisponivel");
 
             Verificar("verificar-versao-nova",
                 lbl.Text.Contains("99.0.0") && btnAtualizar.Visible &&
-                txtNotas.Text.Contains("correcao de bugs") && manifesto != null &&
+                btnNovidades.Enabled && Campo<AtualizacaoManifesto>("notasDisponiveis").Notas.Contains("correcao de bugs") && manifesto != null &&
                 manifesto.Versao == "99.0.0",
                 "status='" + lbl.Text + "' btnAtualizar.Visible=" + btnAtualizar.Visible);
         }
@@ -621,11 +688,11 @@ class TesteFormD
 
             var lbl = Campo<Label>("lblStatusAtualizacao");
             var btnAtualizar = Campo<Button>("btnAtualizar");
-            var txtNotas = Campo<TextBox>("txtNotasVersao");
+            var btnNovidades = Campo<Button>("btnNovidades");
 
             Verificar("verificar-versao-ja-atual",
                 lbl.Text.Contains("mais recente") && !btnAtualizar.Visible &&
-                txtNotas.Text == "Notas da versao instalada",
+                btnNovidades.Enabled && Campo<AtualizacaoManifesto>("notasDisponiveis").Notas == "Notas da versao instalada",
                 "status='" + lbl.Text + "'");
         }
     }

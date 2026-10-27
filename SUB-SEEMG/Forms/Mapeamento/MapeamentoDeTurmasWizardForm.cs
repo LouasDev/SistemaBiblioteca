@@ -472,9 +472,6 @@ namespace SUB.Forms.Usuario
             };
             dgvPadroes.Columns.Add(colNovoPadrao);
 
-            dgvPadroes.CellValueChanged += DgvPadroes_CellValueChanged;
-            dgvPadroes.CurrentCellDirtyStateChanged += DgvPadroes_CurrentCellDirtyStateChanged;
-            dgvPadroes.CellEndEdit += DgvPadroes_CellEndEdit;
             dgvPadroes.DataError += DgvPadroes_DataError;
 
             // NOVO: ordem alfabética por TurmaAtual para UX consistente
@@ -486,6 +483,12 @@ namespace SUB.Forms.Usuario
                 ConfigurarOpcoesValidasPorTurma(rowIndex, kvp.Key);
                 dgvPadroes.Rows[rowIndex].Cells["NovoPadrao"].Value = kvp.Value;
             }
+
+            // A validação reage só às escolhas do usuário; inscrita antes do preenchimento,
+            // ela disparava avisos e trocava a sugestão já ao abrir o assistente.
+            dgvPadroes.CellValueChanged += DgvPadroes_CellValueChanged;
+            dgvPadroes.CurrentCellDirtyStateChanged += DgvPadroes_CurrentCellDirtyStateChanged;
+            dgvPadroes.CellEndEdit += DgvPadroes_CellEndEdit;
 
             EstilizarDataGrid(dgvPadroes);
             GarantirApenasComboEditavel(dgvPadroes, new[] { "NovoPadrao" }, alturaLinhaFixa: 35);
@@ -921,6 +924,13 @@ namespace SUB.Forms.Usuario
             dgvAjustesIndividuais.Columns.Add(colNovaEscolha);
             dgvAjustesIndividuais.Columns.Add("Observacao", "Observação");
 
+            // Voltar e avançar entre etapas chama este método de novo; sem remover,
+            // cada aviso de validação passava a aparecer repetido.
+            dgvAjustesIndividuais.CellValueChanged -= DgvAjustesIndividuais_CellValueChanged;
+            dgvAjustesIndividuais.CurrentCellDirtyStateChanged -= DgvAjustesIndividuais_CurrentCellDirtyStateChanged;
+            dgvAjustesIndividuais.CellEndEdit -= DgvAjustesIndividuais_CellEndEdit;
+            dgvAjustesIndividuais.DataError -= DgvAjustesIndividuais_DataError;
+
             dgvAjustesIndividuais.CellValueChanged += DgvAjustesIndividuais_CellValueChanged;
             dgvAjustesIndividuais.CurrentCellDirtyStateChanged += DgvAjustesIndividuais_CurrentCellDirtyStateChanged;
             dgvAjustesIndividuais.CellEndEdit += DgvAjustesIndividuais_CellEndEdit;
@@ -1196,7 +1206,7 @@ namespace SUB.Forms.Usuario
 
                 using (var pf = new PasswordForm())
                 {
-                    pf.Titulo = "Confirmação de Aplicação";
+                    pf.Titulo = "Confirmação de aplicação";
                     pf.Mensagem = $"Digite sua senha (tentativa {tentativas + 1}/3):";
                     if (pf.ShowDialog(this) != DialogResult.OK)
                         return false;
@@ -1206,7 +1216,7 @@ namespace SUB.Forms.Usuario
 
                 using (var pf = new PasswordForm())
                 {
-                    pf.Titulo = "Confirmação de Aplicação";
+                    pf.Titulo = "Confirmação de aplicação";
                     pf.Mensagem = $"Confirme sua senha (tentativa {tentativas + 1}/3):";
                     if (pf.ShowDialog(this) != DialogResult.OK)
                         return false;

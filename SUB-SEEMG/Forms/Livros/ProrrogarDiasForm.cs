@@ -9,7 +9,7 @@ namespace SUB.Forms.Livros
 
         public event EventHandler LivroAtualizado;
 
-        private const int MAX_DIAS = 14; // Limite máximo de dias para prorrogação
+        private const int MAX_DIAS = RegrasCirculacao.MaximoDiasProrrogacao;
 
         public ProrrogarDiasForm()
         {
@@ -30,7 +30,7 @@ namespace SUB.Forms.Livros
 
         private void ProrrogarForm_Load(object sender, EventArgs e)
         {
-            numQuantidade.Text = "7";
+            numQuantidade.Text = RegrasCirculacao.PrazoPadraoDias.ToString();
             lblErro.Visible = false;
             AtualizarPreviewData();
         }
@@ -53,14 +53,15 @@ namespace SUB.Forms.Livros
             {
                 numQuantidade.Text = MAX_DIAS.ToString();
                 numQuantidade.SelectionStart = numQuantidade.Text.Length;
-                lblErro.Text = $"O máximo permitido é {MAX_DIAS} dias.";
-                lblErro.Visible = true;
-                btnConfirmar.Enabled = false;
+                // A alteração do texto já valida o valor ajustado no TextChanged.
+                return;
             }
             else
             {
-                lblErro.Visible = false;
-                btnConfirmar.Enabled = true;
+                string erro = RegrasCirculacao.ErroProrrogacao(DataDevolucaoAtual, valor);
+                lblErro.Text = erro ?? "";
+                lblErro.Visible = erro != null;
+                btnConfirmar.Enabled = erro == null;
             }
 
             AtualizarPreviewData();
@@ -88,9 +89,15 @@ namespace SUB.Forms.Livros
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(numQuantidade.Text, out int valor) || valor < 1 || valor > MAX_DIAS)
+            int valor;
+            string erro;
+            if (!int.TryParse(numQuantidade.Text, out valor))
+                erro = "Informe um número válido de dias.";
+            else
+                erro = RegrasCirculacao.ErroProrrogacao(DataDevolucaoAtual, valor);
+            if (erro != null)
             {
-                lblErro.Text = $"Informe um número válido de dias (1 a {MAX_DIAS}).";
+                lblErro.Text = erro;
                 lblErro.Visible = true;
                 return;
             }
@@ -109,9 +116,9 @@ namespace SUB.Forms.Livros
 
         private void AtualizarPreviewData()
         {
-            if (int.TryParse(numQuantidade.Text, out int dias) && dias > 0)
+            if (int.TryParse(numQuantidade.Text, out int dias) && RegrasCirculacao.ErroProrrogacao(DataDevolucaoAtual, dias) == null)
             {
-                var novaData = DataDevolucaoAtual.AddDays(dias);
+                var novaData = RegrasCirculacao.CalcularProrrogacao(DataDevolucaoAtual, dias);
                 lblPreviewData.Text = $"Devolução: {DataDevolucaoAtual:dd/MM/yyyy} → {novaData:dd/MM/yyyy}";
             }
             else

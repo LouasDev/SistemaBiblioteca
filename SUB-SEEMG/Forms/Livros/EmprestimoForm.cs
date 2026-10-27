@@ -1,4 +1,4 @@
-﻿using SUB.Models;
+using SUB.Models;
 using SUB.Utils;
 using System;
 using System.Collections.Generic;
@@ -72,7 +72,7 @@ namespace SUB.Forms.Livros
         private void EmprestimoForm_Load(object sender, EventArgs e)
         {
             dtpDataEmprestimo.Value = DateTime.Today;
-            dtpDataDevolucao.Value = DateTime.Today.AddDays(7);
+            dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
 
             this.KeyPreview = true;
             this.KeyDown += Form_KeyDown;
@@ -156,104 +156,32 @@ namespace SUB.Forms.Livros
                 return;
             }
 
-            // Verifica se o aluno já tem empréstimo ativo
-            if (usuario.TipoUsuario == "Aluno(a)")
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-
-                    string sqlVerificaEmprestimo = @"
-                SELECT COUNT(*) 
-                FROM Emprestimo 
-                WHERE Alocador = @usuarioId AND Status = 'Ativo'";
-
-                    using (var cmdVerifica = new SqlCeCommand(sqlVerificaEmprestimo, conexao))
-                    {
-                        cmdVerifica.Parameters.AddWithValue("@usuarioId", usuario.Id);
-                        int emprestimosAtivos = (int)cmdVerifica.ExecuteScalar();
-
-                        // Se o aluno já tiver empréstimo ativo, bloqueia o novo
-                        if (emprestimosAtivos > 0)
-                        {
-                            MessageBox.Show("Este aluno já possui um empréstimo ativo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                    }
-                }
-            }
-
-            if (!livro.Disponibilidade || livro.Quantidade <= 0)
-            {
-                MessageBox.Show(
-                    $"O livro \"{livro.Nome}\" está indisponível para empréstimo.\n\n" +
-                    "A disponibilidade pode ser consultada novamente no sistema.",
-                    "Livro Indisponível",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
-
-                return; // interrompe o fluxo de empréstimo
-            }
-
-
-
             try
             {
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-
-                    // Inserção do novo empréstimo
-                    string sqlInserir = @"
-    INSERT INTO Emprestimo
-        (UsuarioId, LivroId, Alocador, Responsavel, DataEmprestimo, DataDevolucao, DataProrrogacao, DataRealDevolucao, Status)
-    VALUES
-        (@usuarioId, @livroId, @alocador, @responsavel, @dataEmprestimo, @dataDevolucao, NULL, NULL, 'Ativo')";
-
-                    using (var cmdInsert = new SqlCeCommand(sqlInserir, conexao))
-                    {
-                        cmdInsert.Parameters.AddWithValue("@usuarioId", usuario.Id);
-                        cmdInsert.Parameters.AddWithValue("@livroId", livro.Id);
-                        cmdInsert.Parameters.AddWithValue("@alocador", usuario.Id);
-                        cmdInsert.Parameters.AddWithValue("@responsavel", responsavel.Id);
-                        cmdInsert.Parameters.AddWithValue("@dataEmprestimo", DateTime.Now);
-
-                        var dataDevolucaoParaInserir = dtpDataDevolucao.Value; // respeita o DTP (professor pode ter prazo maior)
-                        cmdInsert.Parameters.AddWithValue("@dataDevolucao", dataDevolucaoParaInserir);
-
-                        cmdInsert.ExecuteNonQuery();
-                    }
-
-
-
-                    // Atualiza a quantidade e disponibilidade do livro
-                    livro.Quantidade--;
-                    livro.Disponibilidade = livro.Quantidade > 0;
-
-                    string sqlAtualizaLivro = "UPDATE Livros SET Quantidade = @quantidade, Disponibilidade = @disponivel WHERE Id = @id";
-
-                    using (var cmdLivro = new SqlCeCommand(sqlAtualizaLivro, conexao))
-                    {
-                        cmdLivro.Parameters.AddWithValue("@quantidade", livro.Quantidade);
-                        cmdLivro.Parameters.AddWithValue("@disponivel", livro.Disponibilidade);
-                        cmdLivro.Parameters.AddWithValue("@id", livro.Id);
-                        cmdLivro.ExecuteNonQuery();
-                    }
+                    CirculacaoService.EmprestarNormal(conexao, usuario.Id, livro.Id,
+                        responsavel.Id, dtpDataDevolucao.Value, DateTime.Now, dtpDataEmprestimo.Value);
                 }
-               
-
-                // dispara atualização global
-                SUB.Utils.EventosGlobais.OnEmprestimoRealizado();
-                MessageBox.Show("Empréstimo registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LimparCampos();
-                LivroAtualizado?.Invoke(this, EventArgs.Empty);
-
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao registrar empréstimo:\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Trace.TraceError("Falha no empréstimo: {0}", ex);
+                MessageBox.Show("Não foi possível salvar o empréstimo. O estoque não foi alterado. Atualize a consulta e tente novamente.",
+                    "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+            CarregarLivrosDoBanco();
+            SUB.Utils.EventosGlobais.OnEmprestimoRealizado();
+            MessageBox.Show("Empréstimo registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LimparCampos();
+            LivroAtualizado?.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -384,7 +312,7 @@ namespace SUB.Forms.Livros
             txtNomeUsuario.Text = usuario.Nome;
             lstSugestoesUsuario.Visible = false;
 
-            if (usuario.TipoUsuario == "Professor(a)")
+            if (RegrasCirculacao.ProfessorTemPrazoPersonalizado(usuario.TipoUsuario))
             {
                 chkDevolucaoPersonalizada.Checked = true;
                 chkDevolucaoPersonalizada.Enabled = false;
@@ -395,7 +323,7 @@ namespace SUB.Forms.Livros
                 chkDevolucaoPersonalizada.Checked = false;
                 chkDevolucaoPersonalizada.Enabled = true;
                 dtpDataDevolucao.Enabled = false;
-                dtpDataDevolucao.Value = DateTime.Today.AddDays(7); // 7 dias por padrão
+                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today); // 7 dias por padrão
             }
         }
 
@@ -858,7 +786,7 @@ private void txtBarcode_Leave(object sender, EventArgs e)
             dtpDataDevolucao.Enabled = chkDevolucaoPersonalizada.Checked;
 
             if (!chkDevolucaoPersonalizada.Checked)
-                dtpDataDevolucao.Value = DateTime.Today.AddDays(7);
+                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
         }
 
         public void LimparCampos()
@@ -867,7 +795,7 @@ private void txtBarcode_Leave(object sender, EventArgs e)
             txtLivro.Text = "";
             txtBarcode.Text = "";
             cbBibliotecaria.Text = "";
-            dtpDataDevolucao.Value = DateTime.Today.AddDays(7);
+            dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
             chkDevolucaoPersonalizada.Checked = false;
 
         }
@@ -953,9 +881,9 @@ private void txtBarcode_Leave(object sender, EventArgs e)
 
         private bool ValidarDatas()
         {
-            if (dtpDataDevolucao.Value < dtpDataEmprestimo.Value)
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
             {
-                MessageBox.Show("A data de devolução não pode ser anterior à data de empréstimo.",
+                MessageBox.Show(RegrasCirculacao.ErroPrazo,
                               "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpDataDevolucao.Focus();
                 return false;
@@ -965,20 +893,20 @@ private void txtBarcode_Leave(object sender, EventArgs e)
 
         private void dtpDataDevolucao_ValueChanged(object sender, EventArgs e)
         {
-            if (dtpDataDevolucao.Value < dtpDataEmprestimo.Value)
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
             {
-                MessageBox.Show("A data de devolução não pode ser anterior à data de empréstimo.",
+                MessageBox.Show(RegrasCirculacao.ErroPrazo,
                               "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpDataDevolucao.Value = dtpDataEmprestimo.Value.AddDays(7);
+                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(dtpDataEmprestimo.Value);
             }
         }
 
         private void dtpDataEmprestimo_ValueChanged(object sender, EventArgs e)
         {
-            if (dtpDataDevolucao.Value < dtpDataEmprestimo.Value)
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
             {
                 // Ajusta automaticamente a data de devolução
-                dtpDataDevolucao.Value = dtpDataEmprestimo.Value.AddDays(7);
+                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(dtpDataEmprestimo.Value);
             }
         }
 

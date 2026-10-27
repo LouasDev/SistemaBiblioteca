@@ -1,133 +1,147 @@
 # Contrato funcional da instalação local
 
-## 1. Escopo da instalação
+[Documentação](README.md) · [README do projeto](../README.md)
 
-Cada instituição escolar terá uma instalação independente do aplicativo e uma base de dados local própria. A aplicação deve funcionar sem internet para autenticação, cadastros, circulação, relatórios locais, exportações e configuração.
+Este documento descreve o comportamento implementado, incluindo as correções de
+prorrogação, circulação e regras compartilhadas. Propostas ainda não implementadas
+ficam no [backlog](backlog.markdown). A existência de código ou de testes específicos
+não significa que a simulação completa pela interface já tenha sido concluída.
 
-A internet não pode ser requisito para:
+## 1. Instalação e funcionamento local
 
-- iniciar o sistema;
-- fazer login;
-- cadastrar ou editar livros;
-- cadastrar ou editar usuários;
-- registrar empréstimos e devoluções;
-- consultar atrasos e relatórios locais;
-- exportar PDF, Excel e etiquetas.
+O SUB é uma aplicação Windows Forms em C# para .NET Framework 4.8. Usa SQL Server
+Compact 4.0 por ADO.NET, sem exigir servidor de banco de dados separado.
 
-A busca automática de livros será apenas um facilitador opcional. Se estiver indisponível ou exigir autenticação, o usuário continuará podendo cadastrar o livro manualmente.
+Autenticação, cadastros, circulação, relatórios e exportações locais não dependem
+de internet. A busca opcional de metadados por ISBN utiliza a Open Library;
+atualizações e abertura de links externos utilizam conexão. O cadastro manual de
+livros permanece disponível se a busca externa falhar.
 
-## 2. Primeiro uso
+O banco fica em `%LOCALAPPDATA%\SUB\SUB\sub.sdf`, junto de uma área de configuração,
+relatórios internos, mapeamentos, atualizações e backups em `%LOCALAPPDATA%\SUB`.
+Essa área pertence à conta do Windows. Copiar os executáveis para outra pasta não
+cria uma instituição ou base independente para a mesma conta.
 
-Na primeira execução, antes do login, o aplicativo deve abrir um assistente obrigatório com estas etapas:
+## 2. Primeiro uso e identidade institucional
 
-1. Nome da instituição.
-2. Logo opcional da instituição.
-3. Cor primária do aplicativo.
-4. Código mestre para recuperação local de senhas.
-5. Criação do primeiro usuário administrador.
-6. Confirmação e finalização da configuração.
+Sem a configuração institucional, o aplicativo abre o assistente antes do login.
+Ele reúne nome da instituição, logotipo opcional, tema, primeira conta de
+bibliotecário, turmas iniciais e geração/exportação do código mestre de recuperação.
+A finalização depende das validações do assistente e do TXT de recuperação salvo.
 
-A configuração só será concluída quando os campos obrigatórios forem válidos. Depois da conclusão, o assistente não deve reaparecer, salvo por ação explícita de um administrador.
+A identidade configurada é utilizada nas áreas previstas da interface e nos
+documentos que a incorporam. Os temas acompanham a cor principal escolhida.
+Configurações não possui rolagem geral; as notas de atualização têm rolagem própria.
+Os formulários de Configurações e do termo de reset são editáveis no Designer.
 
-O nome e a cor primária devem substituir textos e cores fixos onde houver identidade institucional. O logo deve ser armazenado de modo local e usado em telas e relatórios quando disponível.
+## 3. Acesso e recuperação de senha
 
-## 3. Recuperação local de senha
+O painel é acessado por contas do perfil `Bibliotecário(a)`, com e-mail e senha
+verificados localmente. O e-mail identifica a conta; o login não exige envio de
+mensagem, confirmação online nem acesso à caixa de e-mail.
 
-Não haverá recuperação por e-mail, API, SMS ou qualquer serviço externo.
+Alunos, professores e demais participantes são cadastros da circulação. Não há um
+portal de aluno, acesso remoto da secretaria ou matriz de permissões administrativa
+por múltiplos perfis de login implementados no fluxo atual.
 
-O administrador poderá iniciar a redefinição de senha de um usuário. Como procedimento de contingência, a tela de login permitirá o uso do código mestre configurado no primeiro uso para autorizar a redefinição local.
+A recuperação no login solicita o e-mail da bibliotecária, o código mestre salvo
+no primeiro uso e uma nova senha. Não envia códigos por e-mail, API ou SMS.
+Senhas e código mestre são armazenados como hash e salt usando PBKDF2, conforme
+`CriptografiaSenha.cs`, e não BCrypt.
 
-Requisitos do código mestre:
+O código mestre não é gerado novamente a cada abertura. O TXT contém o código em
+texto legível e deve ficar em local seguro. A configuração institucional armazena
+seu hash e salt. Não há uma função geral de rotação desse código nas configurações.
+O reset concluído inicia uma nova configuração, com outro código.
 
-- nunca exibir ou armazenar em texto puro;
-- armazenar somente hash seguro;
-- exigir confirmação antes da redefinição;
-- limitar tentativas consecutivas;
-- registrar localmente a operação e o administrador, quando houver sessão administrativa;
-- permitir alteração do código mestre por um administrador autenticado;
-- não permitir que o código mestre seja usado como senha normal de usuário.
+## 4. Circulação normal
 
-A redefinição deve criar uma nova senha com hash BCrypt e invalidar qualquer senha anterior. O código mestre não deve ser enviado, exportado ou incluído em relatórios.
+- O formulário sugere sete dias para devolução. A opção de data personalizada
+  permite ajustar o prazo; para `Professor(a)`, ela fica habilitada obrigatoriamente.
+- A devolução prevista não pode ser anterior à data de empréstimo informada,
+  incluindo horário. A tela e o serviço usam a mesma validação.
+- A data de registro salva continua sendo o momento da operação; a data exibida
+  para validação não foi convertida em um recurso de lançamento retroativo.
+- O limite existente para `Aluno(a)` considera um empréstimo com status `Ativo`.
+  A contagem não inclui automaticamente todos os registros `Atrasado`.
+- A retirada exige estoque suficiente no banco no momento da gravação.
+- A devolução só conclui empréstimos em aberto e não pode repor estoque duas vezes.
 
-## 4. Perfis iniciais
+Não há prazo automático de 30 dias por perfil nem editor de regras de circulação
+nas configurações. Os valores atuais são definidos no código compartilhado.
 
-Os perfis existentes serão mantidos como ponto de partida, com permissões centralizadas:
+## 5. Prorrogação
 
-| Perfil | Responsabilidades |
-|---|---|
-| Administrador | Configuração da instituição, usuários, parâmetros, auditoria e todas as operações |
-| Bibliotecário | Livros, exemplares, usuários conforme permissão, empréstimos, devoluções e relatórios |
-| Professor | Operações de circulação permitidas pela instituição, sem administração do sistema |
-| Funcionário | Operações de circulação permitidas pela instituição |
-| Aluno | Consulta e operações permitidas pelo fluxo adotado; sem administração |
+A prorrogação acrescenta de 1 a 14 dias ao vencimento atual, após seleção e
+confirmação. Não é calculada automaticamente a partir da data de hoje.
+Empréstimos devolvidos ou encerrados não podem ser prorrogados. Se o prazo mudou
+desde a consulta, o operador precisa atualizar a lista e confirmar novamente.
 
-O perfil não deve ser usado como texto livre para autorizar operações. As telas e serviços devem consultar permissões definidas em um ponto central.
+O novo prazo e o histórico são gravados na mesma transação. O histórico registra
+a data da ação, o novo vencimento e a bibliotecária. O esquema versão 5 preserva
+os formatos antigos de `LogProrrogacoes`, incluindo `DataHora` e `DataDaAcao`.
+Informações antigas desconhecidas não são inventadas durante a migração.
 
-## 5. Regras padrão de circulação
+## 6. Circulação rápida de livros didáticos
 
-Os valores atuais serão tratados como padrão inicial, não como regra universal imutável:
+O fluxo rápido é separado do empréstimo normal e atende professores retirando
+vários exemplares de livros do gênero `Didático`, com turma e bibliotecária.
 
-- Aluno: limite de 1 empréstimo simultâneo e prazo padrão de 7 dias.
-- Professor: sem limite padrão e prazo padrão de 30 dias.
-- Funcionário: sem limite padrão e prazo padrão de 30 dias.
-- Administrador: sem limite padrão e prazo padrão de 30 dias.
+A devolução pode ser total ou parcial. `Quantidade` passa a representar o saldo
+pendente: somente os exemplares recebidos voltam ao estoque. Zero recebidos pode
+ser confirmado como falta de toda a quantidade, sem reposição de estoque.
 
-O administrador poderá ajustar limites, prazos, prorrogação e bloqueio por atraso na configuração local. O sistema deve validar esses valores em uma camada de negócio, sem depender de mensagens ou condições específicas nos Forms.
+Duas pendências `Faltando` impedem novas retiradas rápidas. A regularização de um
+registro que já estava faltando continua permitida. Um empréstimo totalmente
+devolvido não pode ser contabilizado novamente.
 
-## 6. Funcionalidades mantidas
+O painel considera a semana de segunda a domingo. Devolvidos integralmente antes
+da segunda-feira atual ficam ocultos; ativos, faltantes e registros incompletos
+permanecem visíveis para conferência. Não há exclusão semanal nem reinício de IDs.
+O histórico permanece disponível aos relatórios. Registros apagados pelas versões
+anteriores não são recuperados por essa alteração.
 
-- Login local.
-- Cadastro, edição, ativação e desativação de usuários.
-- Cadastro e edição de livros.
-- Busca manual por título, autor, gênero e código de barras.
-- Busca externa de metadados apenas como recurso opcional sem autenticação.
-- Empréstimo padrão e rápido.
-- Devolução padrão e rápida.
-- Prorrogação conforme parâmetros locais.
-- Mapeamento anual de turmas, se habilitado pela instituição.
-- Relatórios de circulação e atrasos.
-- Exportação local em PDF e Excel.
-- Geração e impressão local de etiquetas/códigos de barras.
+## 7. Consistência das operações
 
-## 7. Funcionalidades removidas
+Retirada, devolução e movimentação de estoque são gravadas juntas em transações.
+Falhas intermediárias desfazem as alterações daquela operação. As condições de
+quantidade e situação são conferidas no banco, sem depender apenas da informação
+carregada na tela. Confirmações e eventos de sucesso ocorrem após a gravação.
 
-- Backup automático.
-- Sincronização com Google Drive.
-- Restauração via nuvem.
-- Token e credencial Google.
-- Envio de e-mail e relatório semanal por e-mail.
-- Notificação externa de disponibilidade ou atraso.
-- Recuperação de senha por código enviado.
-- Dependência de internet para operação principal.
+`RegrasCirculacao` compartilha políticas entre telas e serviços;
+`CirculacaoService` e `ProrrogacaoService` executam as operações protegidas.
+Isso não equivale a uma refatoração completa de todos os módulos do aplicativo.
 
-## 8. Notificações internas
+## 8. Reset da instalação
 
-Quando uma ação anteriormente dependia de e-mail, o aplicativo poderá manter apenas:
+O reset exige aceite do termo, importação do TXT correspondente à instalação,
+senha da bibliotecária autenticada e confirmação final. A limpeza ocorre após
+encerrar a instância anterior. Remove o conteúdo de `%LOCALAPPDATA%\SUB`, inclusive
+backups locais, e retorna ao primeiro uso. Exportações em outras pastas permanecem.
 
-- indicador visual de livro disponível;
-- lista interna de pendências e atrasos;
-- relatório local para consulta e impressão/exportação;
-- confirmação visual da operação.
+O fluxo de reset bloqueia novas tentativas por cinco minutos após cinco falhas
+consecutivas na execução atual. Essa regra não deve ser atribuída automaticamente
+a todos os fluxos de recuperação de senha.
 
-Nenhum registro deve ser marcado como “enviado” se não houver envio externo. Campos e tabelas que só existirem para controlar e-mail devem ser removidos ou convertidos em pendências internas.
+Detalhes, proteção do pedido e retomada de falhas: [reset local](RESET-LOCAL.md).
 
-## 9. Identidade visual
+## 9. Atualizações, relatórios e limites do escopo
 
-A configuração mínima da instituição será:
+As versões públicas usam três componentes, como `1.0.2`. O aplicativo consulta
+releases do próprio repositório, verifica a assinatura do manifesto e o SHA-256
+do pacote. Commit e tag isolados não distribuem uma atualização.
 
-- nome da instituição;
-- logo opcional;
-- cor primária.
+Há relatórios locais, exportações Excel, documentos e etiquetas PDF e mapeamento
+de turmas. Não há sincronização com Google Drive, backup automático em nuvem,
+envio de notificações por e-mail ou acesso remoto da secretaria. Os backups
+feitos pelo fluxo de atualização não constituem uma rotina geral de backup.
 
-O aplicativo deve usar uma identidade neutra quando o logo não for informado. Referências a instituições, escolas, secretarias, destinatários e nomes de bibliotecas específicas não podem permanecer em regras, relatórios ou mensagens.
+Suporte e formalização da licença permanecem no backlog.
 
-## 10. Critérios de aceite do contrato
+## 10. Verificação
 
-- Uma instalação limpa inicia o assistente sem internet.
-- O assistente cria a identidade institucional e o primeiro administrador.
-- O login funciona sem e-mail ou serviço externo.
-- O código mestre permite redefinir uma senha local sem transmitir dados.
-- Cadastros, circulação e relatórios funcionam offline.
-- Uma falha na busca externa de livros não impede o cadastro manual.
-- Nenhuma rotina tenta enviar e-mail, acessar Google Drive ou criar tokens externos.
-- O nome, logo e cor configurados aparecem nas áreas previstas do aplicativo.
+As verificações específicas de circulação e prorrogação passaram com bancos
+fictícios, incluindo migração, falhas intermediárias e disputa de estoque. Os
+scripts e os procedimentos estão no [guia de desenvolvimento](DESENVOLVIMENTO.md).
+A simulação completa como usuário fica para depois das demais correções e deve
+ser realizada em outra conta do Windows ou máquina virtual, com dados fictícios.

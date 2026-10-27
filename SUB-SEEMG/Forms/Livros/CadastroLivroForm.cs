@@ -1,7 +1,6 @@
 ﻿using SUB.Models;
 using SUB.Utils;
 using SUB.Utils.Etiquetas;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlServerCe;
@@ -9,8 +8,6 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SUB.Forms.Livros
@@ -753,6 +750,12 @@ namespace SUB.Forms.Livros
 
         private void mtxCodigoBarras_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Space)
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+
             // Garante que o evento será disparado mesmo se o controle for customizado
             if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
             {
@@ -765,9 +768,9 @@ namespace SUB.Forms.Livros
         private async void btnBuscar_Click(object sender, EventArgs e)
         {
             string isbn = new string(mtxCodigoBarras.Text.Where(char.IsDigit).ToArray());
-            if (isbn.Length != 13)
+            if (!LivroMetadataService.EhIsbn13Valido(isbn))
             {
-                MessageBox.Show("Digite um ISBN válido de 13 dígitos.", "ISBN inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Digite um ISBN-13 válido.", "ISBN inválido", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 mtxCodigoBarras.Focus();
                 return;
             }
@@ -775,11 +778,18 @@ namespace SUB.Forms.Livros
             btnBuscar.Enabled = false;
             try
             {
-                var resultado = await BuscarLivroPorIsbnAsync(isbn);
+                var resultado = await LivroMetadataService.BuscarPorIsbn13Async(isbn);
 
-                if (resultado == null)
+                if (resultado.Status == LivroBuscaStatus.NaoEncontrado)
                 {
-                    MessageBox.Show("Não foi possível localizar os dados do livro. Você pode preencher os campos manualmente.", "Busca indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Este ISBN é válido, mas não foi localizado nas fontes consultadas. Você pode preencher os dados manualmente.", "Livro não encontrado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    txtNome.Focus();
+                    return;
+                }
+
+                if (resultado.Status == LivroBuscaStatus.Indisponivel)
+                {
+                    MessageBox.Show("A busca externa não está disponível no momento. Você pode preencher os dados do livro manualmente.", "Busca indisponível", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     txtNome.Focus();
                     return;
                 }
@@ -832,42 +842,6 @@ namespace SUB.Forms.Livros
             finally
             {
                 btnBuscar.Enabled = true;
-            }
-        }
-
-        // Classe auxiliar para resultado
-        private class LivroBuscaResultado
-        {
-            public string Nome { get; set; }
-            public string Autor { get; set; }
-            public string Genero { get; set; }
-        }
-
-        // Busca opcional de metadados sem exigir autenticação externa.
-        private async Task<LivroBuscaResultado> BuscarLivroPorIsbnAsync(string isbn)
-        {
-            return await BuscarOpenLibraryAsync(isbn);
-        }
-
-        private async Task<LivroBuscaResultado> BuscarOpenLibraryAsync(string isbn)
-        {
-            using (var client = new HttpClient())
-            {
-                string url = $"https://openlibrary.org/api/books?bibkeys=ISBN:{isbn}&format=json&jscmd=data";
-                var resp = await client.GetAsync(url);
-                if (!resp.IsSuccessStatusCode) return null;
-
-                var json = await resp.Content.ReadAsStringAsync();
-                var obj = JObject.Parse(json);
-                var livro = obj[$"ISBN:{isbn}"];
-                if (livro == null) return null;
-
-                return new LivroBuscaResultado
-                {
-                    Nome = livro["title"]?.ToString(),
-                    Autor = livro["authors"]?.First?["name"]?.ToString(),
-                    Genero = livro["subjects"]?.First?["name"]?.ToString()
-                };
             }
         }
 

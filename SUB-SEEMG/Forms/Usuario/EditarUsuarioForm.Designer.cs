@@ -191,7 +191,7 @@
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
             this.btnExcluir.TabIndex = 127;
-            this.btnExcluir.Text = "Excluir ";
+            this.btnExcluir.Text = "Excluir";
             this.btnExcluir.UseVisualStyleBackColor = false;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
             // 
@@ -234,7 +234,7 @@
             this.txtNomeUsuario.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtNomeUsuario.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNomeUsuario.PlaceholderMarginLeft = 12;
-            this.txtNomeUsuario.PlaceholderText = "Busque aqui o Nome do Usuário ...";
+            this.txtNomeUsuario.PlaceholderText = "Busque pelo nome da pessoa...";
             this.txtNomeUsuario.SelectedText = "";
             this.txtNomeUsuario.SelectionLength = 0;
             this.txtNomeUsuario.SelectionStart = 0;
@@ -312,7 +312,7 @@
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(64, 25);
             this.lblEmail.TabIndex = 93;
-            this.lblEmail.Text = "Email:";
+            this.lblEmail.Text = "E-mail:";
             // 
             // txtEmail
             // 
@@ -389,7 +389,7 @@
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(159, 25);
             this.lblNome.TabIndex = 90;
-            this.lblNome.Text = "Nome Completo:";
+            this.lblNome.Text = "Nome completo:";
             // 
             // panel1
             // 
@@ -485,7 +485,7 @@
             this.lblTelefone.AutoSize = true;
             this.lblTelefone.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTelefone.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblTelefone.Location = new System.Drawing.Point(0, 10);
+            this.lblTelefone.Location = new System.Drawing.Point(-4, 10);
             this.lblTelefone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTelefone.Name = "lblTelefone";
             this.lblTelefone.Size = new System.Drawing.Size(89, 25);
@@ -498,7 +498,7 @@
             this.lblCPF.AutoSize = true;
             this.lblCPF.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCPF.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblCPF.Location = new System.Drawing.Point(290, 10);
+            this.lblCPF.Location = new System.Drawing.Point(286, 10);
             this.lblCPF.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(50, 25);
@@ -511,12 +511,12 @@
             this.lblDataNasc.AutoSize = true;
             this.lblDataNasc.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDataNasc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblDataNasc.Location = new System.Drawing.Point(580, 10);
+            this.lblDataNasc.Location = new System.Drawing.Point(576, 10);
             this.lblDataNasc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
             this.lblDataNasc.TabIndex = 98;
-            this.lblDataNasc.Text = "Data de Nascimento:";
+            this.lblDataNasc.Text = "Data de nascimento:";
             // 
             // EditarUsuarioForm
             // 

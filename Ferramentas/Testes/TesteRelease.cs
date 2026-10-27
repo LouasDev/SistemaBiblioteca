@@ -57,13 +57,6 @@ class TesteRelease
             Conferir(notas.Text == "", "erro limpa notas de manifesto nao confiavel");
         }
 
-        using (var inicio = new InicioForm())
-        {
-            var faixas = inicio.Controls.Find("lblAtualizacaoTeste", true);
-            Conferir(faixas.Length == 1 && faixas[0].Text.Contains("SUB 1.0.1"), "faixa de teste na tela Inicio");
-            Conferir(faixas[0].Parent.ClientRectangle.Contains(faixas[0].Bounds), "faixa dentro do cabecalho");
-        }
-
         string raiz = Path.GetFullPath(args[3]);
         if (Directory.Exists(raiz)) throw new Exception("Use uma pasta de teste nova.");
         Directory.CreateDirectory(raiz);

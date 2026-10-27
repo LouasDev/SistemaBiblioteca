@@ -39,7 +39,7 @@ using System.Windows.Forms;
         public int BorderRadius
         {
             get => borderRadius;
-            set { borderRadius = value; Invalidate(); }
+            set { borderRadius = value; PerformLayout(); Invalidate(); }
         }
 
         [Category("Aparência")]
@@ -146,6 +146,28 @@ using System.Windows.Forms;
         }
 
         // ==== DESENHO PERSONALIZADO ====
+
+        // O campo interno é ancorado com Dock=Fill; com Padding.Right = 0 ele cobria
+        // a borda direita arredondada. Garante um recuo mínimo para a curva.
+        public override Rectangle DisplayRectangle
+        {
+            get
+            {
+                Rectangle area = base.DisplayRectangle;
+                int recuoMinimo = Math.Max(4, borderRadius / 2 + 2);
+                int extra = Math.Max(0, recuoMinimo - Padding.Right);
+                area.Width = Math.Max(0, area.Width - extra);
+                return area;
+            }
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            if (Parent != null)
+                ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
+            else
+                base.OnPaintBackground(e);
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {

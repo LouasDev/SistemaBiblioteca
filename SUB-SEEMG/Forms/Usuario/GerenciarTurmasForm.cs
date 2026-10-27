@@ -152,7 +152,7 @@ namespace SUB.Forms.Usuario
             if (!string.IsNullOrWhiteSpace(selecionada))
                 lstTurmas.SelectedItem = selecionada;
 
-            lblContagem.Text = _turmas.Count == 1 ? "1 Turma cadastrada" : _turmas.Count + " Turmas cadastradas";
+            lblContagem.Text = _turmas.Count == 1 ? "1 turma cadastrada" : _turmas.Count + " turmas cadastradas";
             btnRemover.Enabled = lstTurmas.SelectedIndex >= 0;
             btnEditar.Enabled = lstTurmas.SelectedIndex >= 0;
         }

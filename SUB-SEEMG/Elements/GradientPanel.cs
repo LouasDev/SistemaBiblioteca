@@ -55,43 +55,48 @@ namespace SUB.ElementosPersonalizados
             return path;
         }
 
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Com cantos arredondados, o que fica fora da curva mostra o container,
+            // não o BackColor do painel.
+            if (borderRadius > 2 && Parent != null)
+                ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
+            else
+                base.OnPaintBackground(e);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            // Melhora a qualidade do desenho (suaviza as bordas)
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            if (ClientRectangle.Width <= 0 || ClientRectangle.Height <= 0)
+                return;
 
-            LinearGradientBrush linear = new LinearGradientBrush(
+            using (LinearGradientBrush linear = new LinearGradientBrush(
                 this.ClientRectangle,
                 this.Gradientetop,
                 this.Gradientebottom,
-                90F
-            );
-
-            // Se o raio for maior que 2, aplicamos o arredondamento
-            if (borderRadius > 2)
+                90F))
             {
-                Rectangle rectSurface = this.ClientRectangle;
-
-                using (GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius))
+                if (borderRadius > 2)
                 {
-                    // Altera a região do controle para o formato arredondado
-                    this.Region = new Region(pathSurface);
-
-                    // Preenche o controle com o gradiente seguindo o GraphicsPath
-                    e.Graphics.FillPath(linear, pathSurface);
+                    e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                    e.Graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                    using (GraphicsPath pathSurface = GetFigurePath(this.ClientRectangle, borderRadius))
+                    {
+                        if (BackColor.A > 0)
+                        {
+                            using (var fundo = new SolidBrush(BackColor))
+                                e.Graphics.FillPath(fundo, pathSurface);
+                        }
+                        e.Graphics.FillPath(linear, pathSurface);
+                    }
+                }
+                else
+                {
+                    e.Graphics.FillRectangle(linear, this.ClientRectangle);
                 }
             }
-            else
-            {
-                // Comportamento padrão (quadrado) se o raio for muito pequeno
-                this.Region = new Region(this.ClientRectangle);
-                e.Graphics.FillRectangle(linear, this.ClientRectangle);
-            }
-
-            // Liberar o pincel da memória
-            linear.Dispose();
         }
     }
 }

@@ -34,6 +34,15 @@ namespace SUB.Utils
             new ConditionalWeakTable<Control, object>();
         private static readonly ConditionalWeakTable<DataGridView, object> GridsWithThemeHandler =
             new ConditionalWeakTable<DataGridView, object>();
+        private static readonly ConditionalWeakTable<Button, CoresDoBotao> CoresAntesDeDesabilitar =
+            new ConditionalWeakTable<Button, CoresDoBotao>();
+
+        private sealed class CoresDoBotao
+        {
+            public Color Fundo;
+            public Color Borda;
+            public bool Guardadas;
+        }
         // Cor do último Apply; lida pelos handlers de ControlAdded/Grid para não
         // congelar a cor capturada por closure quando o tema muda em tempo de execução.
         private static Color corTemaAtual;
@@ -173,6 +182,7 @@ namespace SUB.Utils
                 maskedTextBox.BorderColor = Lighten(primaryColor, 0.25f);
                 maskedTextBox.BorderFocusColor = primaryColor;
                 maskedTextBox.HoverBorderColor = primaryColor;
+                maskedTextBox.HoverBackColor = Color.FromArgb(245, 247, 250);
             }
 
             var datePicker = control as RoundedDatePicker;
@@ -210,9 +220,14 @@ namespace SUB.Utils
             if (button != null && !(control is CustomButton))
             {
                 if (isNavigation)
+                {
                     ApplyNavigationButton(button, primaryColor);
+                }
                 else
+                {
                     ApplyActionButton(button, primaryColor);
+                    ConfigurarEstadoDesabilitado(button);
+                }
             }
 
             foreach (Control child in control.Controls)
@@ -290,6 +305,52 @@ namespace SUB.Utils
             button.FlatAppearance.MouseDownBackColor = isSecondary ? Lighten(primaryColor, 0.68f) : Darken(baseColor, 0.2f);
         }
 
+        // Botão plano desabilitado recebe texto escurecido pelo Windows; sobre a cor do tema
+        // ficava ilegível. Usa uma superfície neutra e devolve as cores ao reabilitar,
+        // preservando estilos que o formulário aplicou por conta própria.
+        private static void ConfigurarEstadoDesabilitado(Button button)
+        {
+            CoresDoBotao cores;
+            if (!CoresAntesDeDesabilitar.TryGetValue(button, out cores))
+            {
+                cores = new CoresDoBotao();
+                CoresAntesDeDesabilitar.Add(button, cores);
+                button.EnabledChanged += (sender, args) => AtualizarEstadoDesabilitado(button, cores);
+            }
+
+            cores.Guardadas = false;
+            AtualizarEstadoDesabilitado(button, cores);
+        }
+
+        private static void AtualizarEstadoDesabilitado(Button button, CoresDoBotao cores)
+        {
+            if (button.FlatStyle != FlatStyle.Flat && button.FlatStyle != FlatStyle.Popup)
+                return;
+
+            Color fundoDesabilitado = Color.FromArgb(226, 229, 234);
+            if (!button.Enabled)
+            {
+                if (!cores.Guardadas)
+                {
+                    cores.Fundo = button.BackColor;
+                    cores.Borda = button.FlatAppearance.BorderColor;
+                    cores.Guardadas = true;
+                }
+                button.BackColor = fundoDesabilitado;
+                button.FlatAppearance.BorderColor = Color.FromArgb(210, 214, 220);
+            }
+            else if (cores.Guardadas)
+            {
+                // Se o formulário trocou a cor enquanto estava desabilitado, a dele prevalece.
+                if (button.BackColor.ToArgb() == fundoDesabilitado.ToArgb())
+                {
+                    button.BackColor = cores.Fundo;
+                    button.FlatAppearance.BorderColor = cores.Borda;
+                }
+                cores.Guardadas = false;
+            }
+        }
+
         private static void ApplyCompactUtilityButton(Button button, Color primaryColor)
         {
             button.UseVisualStyleBackColor = false;
@@ -317,7 +378,6 @@ namespace SUB.Utils
                    name.IndexOf("sair", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("fechar", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("export", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("etiqueta", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("prorrogar", StringComparison.OrdinalIgnoreCase) >= 0 ||
                    name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0;
         }

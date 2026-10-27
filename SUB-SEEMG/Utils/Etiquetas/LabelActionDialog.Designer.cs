@@ -191,7 +191,7 @@ namespace SUB.Utils.Etiquetas
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Gerador";
+            this.Text = "Gerar etiquetas";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LabelActionDialog_KeyDown);
             this.panelHeader.ResumeLayout(false);
             this.ResumeLayout(false);

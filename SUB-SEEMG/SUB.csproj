@@ -269,6 +269,13 @@
     <Compile Include="Utils\CodigoMestreArquivo.cs" />
     <Compile Include="Models\ResumoReset.cs" />
     <Compile Include="Utils\AtualizacaoAplicador.cs" />
+    <Compile Include="Utils\NovidadesAtualizacaoStore.cs" />
+    <Compile Include="Forms\Configuracoes\NovidadesAtualizacaoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Configuracoes\NovidadesAtualizacaoForm.Designer.cs">
+      <DependentUpon>NovidadesAtualizacaoForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\AtualizacaoManifesto.cs" />
     <Compile Include="Utils\InstituicaoConfiguracaoStore.cs" />
     <Compile Include="Utils\ThemeManager.cs" />
@@ -458,6 +465,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Configuracoes\ConfiguracaoForm.resx">
       <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Configuracoes\NovidadesAtualizacaoForm.resx">
+      <DependentUpon>NovidadesAtualizacaoForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Configuracoes\ResetTermoForm.resx">
       <DependentUpon>ResetTermoForm.cs</DependentUpon>

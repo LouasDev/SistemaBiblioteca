@@ -855,6 +855,26 @@ namespace SUB.Forms.Inicio
         }
         #endregion
 
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            if (!LoginForm.cancelar)
+                return;
+            var novidades = new NovidadesAtualizacaoStore(AppPaths.UpdateFolder);
+            var registro = novidades.ObterDaVersao(AtualizacaoService.VersaoAtual());
+            if (registro == null || registro.Exibida)
+                return;
+            using (var dialogo = new NovidadesAtualizacaoForm())
+            {
+                dialogo.CarregarNovidades(registro.Manifesto, instalada: true);
+                dialogo.AplicarTema(corPrimaria);
+                dialogo.ShowDialog(this);
+            }
+            try { novidades.MarcarExibida(AtualizacaoService.VersaoAtual()); }
+            catch (IOException) { }
+            catch (UnauthorizedAccessException) { }
+        }
+
         //Load para fechar o Login
         private void MainForm_Load(object sender, EventArgs e)
         {

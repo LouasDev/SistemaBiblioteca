@@ -25,6 +25,7 @@ namespace SUB.Forms.Configuracoes
         private bool valoresCarregados;
 
         private AtualizacaoManifesto manifestoDisponivel;
+        private AtualizacaoManifesto notasDisponiveis;
         private CancellationTokenSource ctsDownload;
         private bool downloadEmAndamento;
         private bool operacaoEmAndamento;
@@ -48,6 +49,7 @@ namespace SUB.Forms.Configuracoes
             // OnShown dispara apenas na primeira exibição; a versão do executável
             // não muda durante a vida do processo.
             lblVersaoAtual.Text = "Versão atual: " + AtualizacaoService.VersaoAtual();
+            CarregarNovidadesInstaladas();
 
             AjustarLayout();
         }
@@ -372,6 +374,25 @@ namespace SUB.Forms.Configuracoes
 
         #region Atualização
 
+        private void CarregarNovidadesInstaladas()
+        {
+            notasDisponiveis = new NovidadesAtualizacaoStore(AppPaths.UpdateFolder)
+                .ObterDaVersao(AtualizacaoService.VersaoAtual())?.Manifesto;
+            btnNovidades.Enabled = notasDisponiveis != null;
+        }
+
+        private void btnNovidades_Click(object sender, EventArgs e)
+        {
+            if (operacaoEmAndamento || notasDisponiveis == null)
+                return;
+            using (var novidades = new NovidadesAtualizacaoForm())
+            {
+                novidades.CarregarNovidades(notasDisponiveis);
+                novidades.AplicarTema(corSelecionada);
+                novidades.ShowDialog(this);
+            }
+        }
+
         private async void btnVerificar_Click(object sender, EventArgs e)
         {
             if (downloadEmAndamento)
@@ -379,7 +400,7 @@ namespace SUB.Forms.Configuracoes
 
             manifestoDisponivel = null;
             btnAtualizar.Visible = false;
-            txtNotasVersao.Text = string.Empty;
+            CarregarNovidadesInstaladas();
 
             DefinirModoOperacao(true);
             pbVerificando.Visible = true;
@@ -417,8 +438,9 @@ namespace SUB.Forms.Configuracoes
         {
             manifestoDisponivel = resultado.Sucesso && resultado.AtualizacaoDisponivel
                 ? resultado.Manifesto : null;
-            txtNotasVersao.Text = resultado.Sucesso && resultado.Manifesto != null
-                ? TruncarNotas(resultado.Manifesto.Notas) : string.Empty;
+            if (resultado.Sucesso && resultado.Manifesto != null)
+                notasDisponiveis = resultado.Manifesto;
+            btnNovidades.Enabled = notasDisponiveis != null;
             btnAtualizar.Visible = manifestoDisponivel != null;
             lblStatusAtualizacao.Text = manifestoDisponivel != null
                 ? MontarMensagemVersaoNova(resultado) : resultado.Mensagem;
@@ -435,6 +457,14 @@ namespace SUB.Forms.Configuracoes
                     "Nenhuma versão nova foi identificada. Clique em Verificar atualizações primeiro.",
                     "Atualização", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
+            }
+
+            using (var novidades = new NovidadesAtualizacaoForm())
+            {
+                novidades.CarregarNovidades(manifestoDisponivel, permitirAtualizacao: true);
+                novidades.AplicarTema(corSelecionada);
+                if (novidades.ShowDialog(this) != DialogResult.OK)
+                    return;
             }
 
             if (!ConfirmarSenhaUsuarioLogado("Digite sua senha para confirmar a atualização do SUB:"))
@@ -545,6 +575,8 @@ namespace SUB.Forms.Configuracoes
                     return;
                 }
 
+                // As notas ficam locais para abrir uma vez após entrar na versão instalada.
+                new NovidadesAtualizacaoStore(AppPaths.UpdateFolder).Preparar(manifestoDisponivel);
                 erro = AtualizacaoAplicador.IniciarUpdater(manifestoDisponivel, resultado.CaminhoArquivo);
                 if (erro != null)
                 {
@@ -585,6 +617,7 @@ namespace SUB.Forms.Configuracoes
                     pbDownload.Value = 0;
                     btnCancelarDownload.Visible = false;
                     btnCancelarDownload.Enabled = true;
+                    btnAtualizar.Visible = manifestoDisponivel != null;
                     DefinirModoOperacao(false);
                 }
             }
@@ -618,6 +651,7 @@ namespace SUB.Forms.Configuracoes
             btnApagarDados.Enabled = !ocupado;
             btnVerificar.Enabled = !ocupado;
             btnAtualizar.Enabled = !ocupado;
+            btnNovidades.Enabled = !ocupado && notasDisponiveis != null;
             btnSalvar.Enabled = !ocupado;
             c.Enabled = !ocupado;
             cbTemas.Enabled = !ocupado;
@@ -702,7 +736,7 @@ namespace SUB.Forms.Configuracoes
             cbTemas.SetBounds(colunaCor, 54, largura - colunaCor - 66, 34);
             pnlCorPreview.SetBounds(largura - 50, 54, 34, 34);
             int topoAtualizacao = grpInstituicao.Bottom + 12;
-            int alturaAtualizacao = Math.Max(230, ClientSize.Height - topoAtualizacao - 72);
+            int alturaAtualizacao = 184;
             grpAtualizacao.SetBounds(margem, topoAtualizacao, largura, alturaAtualizacao);
             lblVersaoAtual.Location = new Point(16, 23);
             lblVersaoAtual.Font = fonteRotuloCompacto;
@@ -711,13 +745,11 @@ namespace SUB.Forms.Configuracoes
             lblStatusAtualizacao.Font = fonteStatusCompacto;
             lblStatusAtualizacao.SetBounds(16, 50, largura - 32, 38);
             btnVerificar.SetBounds(16, 96, 190, 34);
-            pbVerificando.SetBounds(220, 100, Math.Max(80, largura - 240), 24);
-            lblNotasTitulo.Location = new Point(16, 138);
-            lblNotasTitulo.Font = fonteRotuloCompacto;
-            txtNotasVersao.SetBounds(16, 162, largura - 32, Math.Max(22, alturaAtualizacao - 216));
-            btnAtualizar.SetBounds(16, alturaAtualizacao - 44, 160, 32);
-            btnCancelarDownload.SetBounds(184, alturaAtualizacao - 44, 160, 32);
-            pbDownload.SetBounds(356, alturaAtualizacao - 40, Math.Max(80, largura - 376), 24);
+            btnNovidades.SetBounds(214, 96, 144, 34);
+            btnAtualizar.SetBounds(366, 96, 160, 34);
+            btnCancelarDownload.SetBounds(366, 96, 160, 34);
+            pbVerificando.SetBounds(16, 142, largura - 32, 24);
+            pbDownload.SetBounds(16, 142, largura - 32, 24);
             btnApagarDados.SetBounds(margem, ClientSize.Height - 52, 172, 36);
             btnSalvar.SetBounds(ClientSize.Width - margem - 124, ClientSize.Height - 52, 124, 36);
             ResumeLayout(false);

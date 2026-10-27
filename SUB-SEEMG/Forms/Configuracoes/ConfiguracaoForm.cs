@@ -141,6 +141,23 @@ namespace SUB.Forms.Configuracoes
             pnlCorPreview.Invalidate();
         }
 
+        private Color ObterCorTemaSalva()
+        {
+            if (!string.IsNullOrWhiteSpace(corOriginalHtml))
+            {
+                try
+                {
+                    return ThemeManager.Normalize(ColorTranslator.FromHtml(corOriginalHtml));
+                }
+                catch
+                {
+                    // Usa a cor padrão quando a configuração persistida for inválida.
+                }
+            }
+
+            return ThemeManager.DefaultColor;
+        }
+
         private bool ConfirmarSenhaUsuarioLogado(string mensagem = "Digite sua senha para confirmar a alteração:")
         {
             if (!Sessao.UsuarioAutenticado)
@@ -317,13 +334,14 @@ namespace SUB.Forms.Configuracoes
             DefinirModoOperacao(true);
             try
             {
+                Color corTemaSalva = ObterCorTemaSalva();
                 string codigo;
                 using (var dialogo = new ResetTermoForm
                 {
                     Resumo = ResetService.ObterResumo()
                 })
                 {
-                    dialogo.AplicarTema(corSelecionada);
+                    dialogo.AplicarTema(corTemaSalva);
                     if (dialogo.ShowDialog(this) != DialogResult.OK)
                         return;
                     codigo = dialogo.CodigoMestre;
@@ -335,7 +353,7 @@ namespace SUB.Forms.Configuracoes
                     Mensagem = "TXT validado. Digite a senha da bibliotecária logada."
                 })
                 {
-                    ThemeManager.Apply(dialogo, corSelecionada);
+                    ThemeManager.Apply(dialogo, corTemaSalva);
                     if (dialogo.ShowDialog(this) != DialogResult.OK)
                         return;
                     senha = dialogo.SenhaDigitada;

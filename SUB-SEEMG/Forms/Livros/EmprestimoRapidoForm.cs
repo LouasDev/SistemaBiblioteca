@@ -926,7 +926,7 @@ VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')
             dgvRapidos.AutoGenerateColumns = false;
             dgvRapidos.Columns.Clear();
 
-            DataGridViewTextBoxColumn AddTextCol(string prop, string hdr, int minw, DataGridViewContentAlignment align)
+            DataGridViewTextBoxColumn AddTextCol(string prop, string hdr, int minw, DataGridViewContentAlignment align, float fillWeight = 100F)
             {
                 var c = new DataGridViewTextBoxColumn
                 {
@@ -935,8 +935,11 @@ VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')
                     HeaderText = hdr,
                     ReadOnly = true,
                     MinimumWidth = minw,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = fillWeight,
                     DefaultCellStyle = new DataGridViewCellStyle { Alignment = align }
                 };
+                c.HeaderCell.Style.Alignment = align;
                 dgvRapidos.Columns.Add(c);
                 return c;
             }
@@ -963,30 +966,31 @@ VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')
             };
             dgvRapidos.Columns.Add(ColPoint);
 
-            AddTextCol("Professor", "Professor", 180, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Livro", "Livro", 200, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Turma", "Turma", 120, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Quantidade", "Qtd", 60, DataGridViewContentAlignment.MiddleCenter);
+            AddTextCol("Professor", "Professor", 145, DataGridViewContentAlignment.MiddleLeft, 150F);
+            AddTextCol("Livro", "Livro", 165, DataGridViewContentAlignment.MiddleLeft, 180F);
+            AddTextCol("Turma", "Turma", 85, DataGridViewContentAlignment.MiddleLeft, 90F);
+            AddTextCol("Quantidade", "Qtd", 42, DataGridViewContentAlignment.MiddleCenter, 55F);
 
-            var colEmp = AddTextCol("DataHoraEmprestimo", "Emprestado em", 130, DataGridViewContentAlignment.MiddleLeft);
+            var colEmp = AddTextCol("DataHoraEmprestimo", "Empréstimo", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colEmp.DefaultCellStyle.Format = "dd/MM HH:mm";
-            var colDev = AddTextCol("DataHoraDevolucaoReal", "Devolução", 130, DataGridViewContentAlignment.MiddleLeft);
+            var colDev = AddTextCol("DataHoraDevolucaoReal", "Devolução", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colDev.DefaultCellStyle.Format = "dd/MM HH:mm";
 
-            AddTextCol("Bibliotecaria", "Bibliotecaria", 120, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Status", "Status", 80, DataGridViewContentAlignment.MiddleLeft);
+            AddTextCol("Bibliotecaria", "Bibliotecária", 100, DataGridViewContentAlignment.MiddleLeft, 110F);
+            AddTextCol("Status", "Status", 60, DataGridViewContentAlignment.MiddleCenter, 65F);
 
             var btnFinalizar = new DataGridViewButtonColumn
             {
                 Name = "Finalizar",
-                HeaderText = "",
+                HeaderText = "Ação",
                 Text = "",
                 UseColumnTextForButtonValue = true,
-                Width = 90,                   // largura fixa
-                MinimumWidth = 70,            // impede encolher
+                Width = 80,                   // largura fixa
+                MinimumWidth = 80,            // impede encolher
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // impede crescer
                 FlatStyle = FlatStyle.Flat
             };
+            btnFinalizar.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRapidos.Columns.Add(btnFinalizar);
 
             // styling (copiado do UsuarioForm)
@@ -1017,11 +1021,12 @@ VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')
             dgvRapidos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvRapidos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10.5f, FontStyle.Bold);
             dgvRapidos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvRapidos.ColumnHeadersHeight = 44;
+            dgvRapidos.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            dgvRapidos.ColumnHeadersHeight = 40;
             dgvRapidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvRapidos.AllowUserToResizeColumns = false;
-            dgvRapidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvRapidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // double buffer
             typeof(DataGridView).InvokeMember(
@@ -1578,9 +1583,6 @@ ORDER BY r.Id DESC";
             _alterandoTxtLivroProgramaticamente = false;
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

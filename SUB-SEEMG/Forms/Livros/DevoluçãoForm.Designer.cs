@@ -34,6 +34,7 @@
             this.Titulo = new System.Windows.Forms.Label();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
+            this.pnlResultadosEmprestimos = new System.Windows.Forms.Panel();
             this.dgvEmprestimos = new System.Windows.Forms.DataGridView();
             this.lblDadosLivro = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -49,6 +50,7 @@
             this.lstSugestoesUsuario = new System.Windows.Forms.ListBox();
             this.pnlAcoesDev = new SUB.ElementosPersonalizados.GradientPanel();
             this.label2 = new System.Windows.Forms.Label();
+            this.pnlResultadosEmprestimos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).BeginInit();
             this.panel1.SuspendLayout();
             this.pnlAcoesDev.SuspendLayout();
@@ -118,11 +120,21 @@
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
             this.pnlLinhaCabecalho.TabIndex = 158;
             // 
-            // dgvEmprestimos
+            // pnlResultadosEmprestimos
             // 
-            this.dgvEmprestimos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlResultadosEmprestimos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlResultadosEmprestimos.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(223)))), ((int)(((byte)(229)))), ((int)(((byte)(236)))));
+            this.pnlResultadosEmprestimos.Controls.Add(this.dgvEmprestimos);
+            this.pnlResultadosEmprestimos.Location = new System.Drawing.Point(96, 323);
+            this.pnlResultadosEmprestimos.Name = "pnlResultadosEmprestimos";
+            this.pnlResultadosEmprestimos.Padding = new System.Windows.Forms.Padding(1);
+            this.pnlResultadosEmprestimos.Size = new System.Drawing.Size(1088, 425);
+            this.pnlResultadosEmprestimos.TabIndex = 122;
+            // 
+            // dgvEmprestimos
+            // 
             this.dgvEmprestimos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvEmprestimos.BackgroundColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
@@ -135,13 +147,14 @@
             this.dgvEmprestimos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvEmprestimos.ColumnHeadersHeight = 42;
             this.dgvEmprestimos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvEmprestimos.Location = new System.Drawing.Point(96, 323);
+            this.dgvEmprestimos.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvEmprestimos.Location = new System.Drawing.Point(1, 1);
             this.dgvEmprestimos.Name = "dgvEmprestimos";
             this.dgvEmprestimos.ReadOnly = true;
             this.dgvEmprestimos.RowHeadersWidth = 51;
             this.dgvEmprestimos.RowTemplate.Height = 40;
             this.dgvEmprestimos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvEmprestimos.Size = new System.Drawing.Size(1088, 425);
+            this.dgvEmprestimos.Size = new System.Drawing.Size(1086, 423);
             this.dgvEmprestimos.TabIndex = 119;
             this.dgvEmprestimos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellClick);
             this.dgvEmprestimos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellContentClick);
@@ -161,6 +174,7 @@
             // 
             this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.lstSugestoesUsuario);
             this.panel1.Controls.Add(this.mtxCodigoBarras);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.txtUsuario);
@@ -173,8 +187,7 @@
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
             this.panel1.Controls.Add(this.lblSubtitulo);
             this.panel1.Controls.Add(this.Titulo);
-            this.panel1.Controls.Add(this.dgvEmprestimos);
-            this.panel1.Controls.Add(this.lstSugestoesUsuario);
+            this.panel1.Controls.Add(this.pnlResultadosEmprestimos);
             this.panel1.Controls.Add(this.pnlAcoesDev);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
@@ -417,6 +430,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Activated += new System.EventHandler(this.DevoluçãoForm_Activated);
             this.Load += new System.EventHandler(this.DevoluçãoForm_Load);
+            this.pnlResultadosEmprestimos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -434,6 +448,7 @@
         public System.Windows.Forms.Label Titulo;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
+        private System.Windows.Forms.Panel pnlResultadosEmprestimos;
         private System.Windows.Forms.DataGridView dgvEmprestimos;
         private System.Windows.Forms.Label lblDadosLivro;
         private System.Windows.Forms.Panel panel1;

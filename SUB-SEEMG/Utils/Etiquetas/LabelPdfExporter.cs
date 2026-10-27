@@ -31,7 +31,7 @@ namespace SUB.Utils.Etiquetas
         private const double PageWidthMm = 215.9;
         private const double PageHeightMm = 279.4;
 
-        // REMOVIDO: campos est�ticos de fontes que causavam o TypeInitializerException
+        // REMOVIDO: campos estáticos de fontes que causavam o TypeInitializerException
         // private static readonly XFont TitleFont = ...
         // private static readonly XFont InfoFont  = ...
         // private static readonly XFont CodeFont  = ...
@@ -122,7 +122,7 @@ namespace SUB.Utils.Etiquetas
                             }
                         }
 
-                        startPosition = 1; // pr�ximas p�ginas do lote come�am no 1
+                        startPosition = 1; // próximas páginas do lote começam no 1
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace SUB.Utils.Etiquetas
             var order = new List<string>();
             foreach (var it in items)
             {
-                var g = string.IsNullOrWhiteSpace(it.Genero) ? "Sem g�nero" : it.Genero.Trim();
+                var g = string.IsNullOrWhiteSpace(it.Genero) ? "Sem gênero" : it.Genero.Trim();
                 if (!map.TryGetValue(g, out var list))
                 {
                     list = new List<EtiquetaLabelItem>();
@@ -152,19 +152,19 @@ namespace SUB.Utils.Etiquetas
 
         private static string BuildPageHeaderGenresText(IList<EtiquetaLabelItem> items, int startIndex, int pageCapacity)
         {
-            if (pageCapacity <= 0 || startIndex >= items.Count) return "V�rios g�neros";
+            if (pageCapacity <= 0 || startIndex >= items.Count) return "Vários gêneros";
             int endExclusive = Math.Min(items.Count, startIndex + pageCapacity);
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var list = new List<string>();
             for (int i = startIndex; i < endExclusive; i++)
             {
-                var g = string.IsNullOrWhiteSpace(items[i].Genero) ? "Sem g�nero" : items[i].Genero.Trim();
+                var g = string.IsNullOrWhiteSpace(items[i].Genero) ? "Sem gênero" : items[i].Genero.Trim();
                 if (set.Add(g)) list.Add(g);
             }
-            return list.Count == 1 ? $"G�nero: {list[0]}" : "G�neros: " + string.Join(", ", list);
+            return list.Count == 1 ? $"Gênero: {list[0]}" : "Gêneros: " + string.Join(", ", list);
         }
 
-        // Ajustado: recebe as fontes como par�metros
+        // Ajustado: recebe as fontes como parâmetros
         private static void DrawLabelPdf(
             XGraphics gfx, XRect bounds, EtiquetaLabelItem item,
             MemoryStream sharedStream, int barcodeDpi,

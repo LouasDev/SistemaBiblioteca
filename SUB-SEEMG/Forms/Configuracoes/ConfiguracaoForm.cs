@@ -768,8 +768,12 @@ namespace SUB.Forms.Configuracoes
             btnCancelarDownload.SetBounds(366, 96, 160, 34);
             pbVerificando.SetBounds(16, 142, largura - 32, 24);
             pbDownload.SetBounds(16, 142, largura - 32, 24);
-            btnApagarDados.SetBounds(margem, ClientSize.Height - 52, 172, 36);
-            btnSalvar.SetBounds(ClientSize.Width - margem - 124, ClientSize.Height - 52, 124, 36);
+            int topoManutencao = grpAtualizacao.Bottom + 12;
+            int topoSalvar = ClientSize.Height - 52;
+            int larguraManutencao = topoManutencao + 76 > topoSalvar ? largura - 136 : largura;
+            grpManutencao.SetBounds(margem, topoManutencao, larguraManutencao, 76);
+            btnApagarDados.SetBounds(16, 26, 172, 34);
+            btnSalvar.SetBounds(ClientSize.Width - margem - 124, topoSalvar, 124, 36);
             ResumeLayout(false);
         }
     }

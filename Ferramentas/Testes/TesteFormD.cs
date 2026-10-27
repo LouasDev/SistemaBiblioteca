@@ -401,8 +401,8 @@ class TesteFormD
             "lblNome deve receber a cor de texto do tema");
 
         Verificar("tema-botao-primario",
-            btnSalvar.BackColor == primaria,
-            "btnSalvar deve receber a cor primaria");
+            btnSalvar.BackColor == primaria && Campo<CustomButton>("btnApagarDados").BaseColor == primaria,
+            "Salvar e Resetar devem acompanhar a cor primaria");
 
         // O ThemeManager trata CustomButton sempre com a cor primaria (sem a
         // regra "secundario por nome" que vale para Button padrao).

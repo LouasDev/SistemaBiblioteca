@@ -196,14 +196,17 @@ class TesteReset
             {
                 form.ClientSize = tamanho;
                 layout.Invoke(form, null);
-                Verificar(!form.AutoScroll && new[] { "Titulo", "grpInstituicao", "grpAtualizacao", "btnSalvar", "btnApagarDados" }
+                Verificar(!form.AutoScroll && new[] { "Titulo", "grpInstituicao", "grpAtualizacao", "grpManutencao", "btnSalvar" }
                     .All(nome => form.ClientRectangle.Contains(form.Controls.Find(nome, true).Single().Bounds)),
                     "configuracoes sem scroll e controles dentro da tela " + tamanho);
                 var reset = form.Controls.Find("btnApagarDados", true).Single();
                 var salvar = form.Controls.Find("btnSalvar", true).Single();
                 var grupo = form.Controls.Find("grpAtualizacao", true).Single();
-                Verificar(reset.Bottom <= tamanho.Height && !reset.Bounds.IntersectsWith(salvar.Bounds) &&
-                    !reset.Bounds.IntersectsWith(grupo.Bounds), "rodape acessivel sem sobreposicao " + tamanho);
+                var manutencao = form.Controls.Find("grpManutencao", true).Single();
+                var areaReset = form.RectangleToClient(reset.RectangleToScreen(reset.ClientRectangle));
+                Verificar(manutencao.ClientRectangle.Contains(reset.Bounds) &&
+                    !areaReset.IntersectsWith(salvar.Bounds) && !manutencao.Bounds.IntersectsWith(salvar.Bounds) &&
+                    !manutencao.Bounds.IntersectsWith(grupo.Bounds), "rodape acessivel sem sobreposicao " + tamanho);
                 using (var bitmap = new Bitmap(tamanho.Width, tamanho.Height)) {
                     form.DrawToBitmap(bitmap, new Rectangle(Point.Empty, tamanho));
                     bitmap.Save(Path.Combine(raiz, "configuracoes-" + tamanho.Width + "x" + tamanho.Height + ".png"));

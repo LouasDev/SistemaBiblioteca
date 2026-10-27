@@ -49,12 +49,14 @@
             this.pbVerificando = new System.Windows.Forms.ProgressBar();
             this.pbDownload = new System.Windows.Forms.ProgressBar();
             this.btnSalvar = new System.Windows.Forms.Button();
-            this.btnApagarDados = new System.Windows.Forms.Button();
+            this.btnApagarDados = new CustomButton();
+            this.grpManutencao = new System.Windows.Forms.GroupBox();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.Titulo = new System.Windows.Forms.Label();
             this.grpInstituicao.SuspendLayout();
             this.grpAtualizacao.SuspendLayout();
+            this.grpManutencao.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpInstituicao
@@ -67,7 +69,6 @@
             this.grpInstituicao.Controls.Add(this.pnlCorPreview);
             this.grpInstituicao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpInstituicao.Location = new System.Drawing.Point(20, 106);
-            this.grpInstituicao.MaximumSize = new System.Drawing.Size(0, 0);
             this.grpInstituicao.Name = "grpInstituicao";
             this.grpInstituicao.Padding = new System.Windows.Forms.Padding(12, 8, 12, 12);
             this.grpInstituicao.Size = new System.Drawing.Size(1240, 112);
@@ -130,7 +131,7 @@
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.lblNome.Location = new System.Drawing.Point(16, 25);
             this.lblNome.Name = "lblNome";
-            this.lblNome.Size = new System.Drawing.Size(190, 25);
+            this.lblNome.Size = new System.Drawing.Size(150, 20);
             this.lblNome.TabIndex = 0;
             this.lblNome.Text = "Nome da instituição:";
             // 
@@ -141,7 +142,7 @@
             this.lblCor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.lblCor.Location = new System.Drawing.Point(626, 25);
             this.lblCor.Name = "lblCor";
-            this.lblCor.Size = new System.Drawing.Size(190, 25);
+            this.lblCor.Size = new System.Drawing.Size(101, 20);
             this.lblCor.TabIndex = 2;
             this.lblCor.Text = "Cor principal:";
             // 
@@ -165,7 +166,6 @@
             this.grpAtualizacao.Controls.Add(this.pbDownload);
             this.grpAtualizacao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.grpAtualizacao.Location = new System.Drawing.Point(20, 230);
-            this.grpAtualizacao.MaximumSize = new System.Drawing.Size(0, 0);
             this.grpAtualizacao.Name = "grpAtualizacao";
             this.grpAtualizacao.Padding = new System.Windows.Forms.Padding(12, 8, 12, 12);
             this.grpAtualizacao.Size = new System.Drawing.Size(1240, 184);
@@ -258,6 +258,7 @@
             this.btnNovidades.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnNovidades.BorderThickness = 0;
             this.btnNovidades.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNovidades.Enabled = false;
             this.btnNovidades.FlatAppearance.BorderSize = 0;
             this.btnNovidades.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btnNovidades.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
@@ -272,7 +273,6 @@
             this.btnNovidades.Size = new System.Drawing.Size(144, 34);
             this.btnNovidades.TabIndex = 16;
             this.btnNovidades.Text = "Ver novidades";
-            this.btnNovidades.Enabled = false;
             this.btnNovidades.UseVisualStyleBackColor = false;
             this.btnNovidades.Click += new System.EventHandler(this.btnNovidades_Click);
             //
@@ -283,17 +283,15 @@
             this.lblVersaoAtual.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.lblVersaoAtual.Location = new System.Drawing.Point(16, 23);
             this.lblVersaoAtual.Name = "lblVersaoAtual";
-            this.lblVersaoAtual.Size = new System.Drawing.Size(190, 25);
+            this.lblVersaoAtual.Size = new System.Drawing.Size(116, 20);
             this.lblVersaoAtual.TabIndex = 11;
             this.lblVersaoAtual.Text = "Versão atual: —";
             // 
             // lblStatusAtualizacao
             // 
-            this.lblStatusAtualizacao.AutoSize = false;
             this.lblStatusAtualizacao.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblStatusAtualizacao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.lblStatusAtualizacao.Location = new System.Drawing.Point(16, 50);
-            this.lblStatusAtualizacao.MaximumSize = new System.Drawing.Size(0, 0);
             this.lblStatusAtualizacao.Name = "lblStatusAtualizacao";
             this.lblStatusAtualizacao.Size = new System.Drawing.Size(1208, 38);
             this.lblStatusAtualizacao.TabIndex = 12;
@@ -318,25 +316,53 @@
             // 
             // btnSalvar
             // 
-            this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            this.btnSalvar.BackColor = System.Drawing.Color.FromArgb(31, 72, 126);
+            this.btnSalvar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnSalvar.ForeColor = System.Drawing.Color.White;
             this.btnSalvar.Location = new System.Drawing.Point(1136, 793);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(124, 36);
-            this.btnSalvar.TabIndex = 3;
+            this.btnSalvar.TabIndex = 4;
             this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
+            //
             // btnApagarDados
-            this.btnApagarDados.Name = "btnApagarDados";
-            this.btnApagarDados.Text = "Resetar aplicativo";
-            this.btnApagarDados.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnApagarDados.Location = new System.Drawing.Point(20, 793);
-            this.btnApagarDados.Size = new System.Drawing.Size(172, 36);
-            this.btnApagarDados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            //
+            this.btnApagarDados.BackColor = System.Drawing.Color.Transparent;
+            this.btnApagarDados.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.btnApagarDados.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.btnApagarDados.BorderColor = System.Drawing.Color.Empty;
+            this.btnApagarDados.BorderThickness = 0;
             this.btnApagarDados.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnApagarDados.TabIndex = 4;
+            this.btnApagarDados.FlatAppearance.BorderSize = 0;
+            this.btnApagarDados.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnApagarDados.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnApagarDados.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnApagarDados.Font = new System.Drawing.Font("Segoe UI Semibold", 10.5F, System.Drawing.FontStyle.Bold);
+            this.btnApagarDados.ForeColor = System.Drawing.Color.White;
+            this.btnApagarDados.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(61)))), ((int)(((byte)(106)))));
+            this.btnApagarDados.Location = new System.Drawing.Point(16, 26);
+            this.btnApagarDados.Name = "btnApagarDados";
+            this.btnApagarDados.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
+            this.btnApagarDados.ShowBorder = false;
+            this.btnApagarDados.Size = new System.Drawing.Size(172, 34);
+            this.btnApagarDados.TabIndex = 0;
+            this.btnApagarDados.Text = "Resetar aplicativo";
+            this.btnApagarDados.UseVisualStyleBackColor = false;
             this.btnApagarDados.Click += new System.EventHandler(this.btnApagarDados_Click);
+            // grpManutencao
+            this.grpManutencao.Controls.Add(this.btnApagarDados);
+            this.grpManutencao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
+            this.grpManutencao.Location = new System.Drawing.Point(20, 426);
+            this.grpManutencao.Name = "grpManutencao";
+            this.grpManutencao.Size = new System.Drawing.Size(1240, 76);
+            this.grpManutencao.TabIndex = 3;
+            this.grpManutencao.TabStop = false;
+            this.grpManutencao.Text = "Manutenção";
             // 
             // pnlLinhaCabecalho
             // 
@@ -372,7 +398,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = false;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1280, 845);
             this.Controls.Add(this.pnlLinhaCabecalho);
@@ -380,7 +405,7 @@
             this.Controls.Add(this.grpAtualizacao);
             this.Controls.Add(this.lblSubtitulo);
             this.Controls.Add(this.btnSalvar);
-            this.Controls.Add(this.btnApagarDados);
+            this.Controls.Add(this.grpManutencao);
             this.Controls.Add(this.Titulo);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -393,6 +418,7 @@
             this.SizeChanged += new System.EventHandler(this.ConfiguracaoForm_SizeChanged);
             this.grpInstituicao.ResumeLayout(false);
             this.grpInstituicao.PerformLayout();
+            this.grpManutencao.ResumeLayout(false);
             this.grpAtualizacao.ResumeLayout(false);
             this.grpAtualizacao.PerformLayout();
             this.ResumeLayout(false);
@@ -407,7 +433,8 @@
         private System.Windows.Forms.Panel pnlCorPreview;
         private System.Windows.Forms.GroupBox grpAtualizacao;
         private System.Windows.Forms.Button btnSalvar;
-        private System.Windows.Forms.Button btnApagarDados;
+        private CustomButton btnApagarDados;
+        private System.Windows.Forms.GroupBox grpManutencao;
         private RoundedTextBox c;
         private RoundedComboBox cbTemas;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;

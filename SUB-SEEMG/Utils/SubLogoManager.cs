@@ -72,6 +72,8 @@ namespace SUB.Utils
             return new Bitmap(source);
         }
 
+        private static readonly Color AzulOriginal = Color.FromArgb(31, 72, 126);
+
         private static Bitmap CreateVariant(Bitmap source, Color primaryColor, Color backgroundColor)
         {
             Color logoColor = GetLogoColor(primaryColor, backgroundColor);
@@ -81,15 +83,28 @@ namespace SUB.Utils
                 for (int x = 0; x < source.Width; x++)
                 {
                     Color pixel = source.GetPixel(x, y);
-                    if (IsWhite(pixel))
-                        result.SetPixel(x, y, Color.FromArgb(pixel.A, backgroundColor));
-                    else if (IsBlue(pixel))
-                        result.SetPixel(x, y, Color.FromArgb(pixel.A, logoColor));
-                    else
-                        result.SetPixel(x, y, pixel);
+                    // As bordas suavizadas são mesclas de azul e branco: mantém a proporção na nova paleta.
+                    double branco = ProporcaoBranco(pixel);
+                    result.SetPixel(x, y, Color.FromArgb(pixel.A,
+                        Misturar(logoColor.R, backgroundColor.R, branco),
+                        Misturar(logoColor.G, backgroundColor.G, branco),
+                        Misturar(logoColor.B, backgroundColor.B, branco)));
                 }
             }
             return result;
+        }
+
+        private static double ProporcaoBranco(Color pixel)
+        {
+            double r = (pixel.R - AzulOriginal.R) / (255.0 - AzulOriginal.R);
+            double g = (pixel.G - AzulOriginal.G) / (255.0 - AzulOriginal.G);
+            double b = (pixel.B - AzulOriginal.B) / (255.0 - AzulOriginal.B);
+            return Math.Max(0, Math.Min(1, (r + g + b) / 3));
+        }
+
+        private static int Misturar(int de, int para, double proporcao)
+        {
+            return (int)Math.Round(de + (para - de) * proporcao);
         }
 
         private static Bitmap Redimensionar(Bitmap source, Size tamanho)
@@ -118,22 +133,16 @@ namespace SUB.Utils
                 : ThemeManager.GetContrastColor(backgroundColor);
         }
 
-        private static bool IsWhite(Color color)
-        {
-            return color.A > 0 && color.R > 235 && color.G > 235 && color.B > 235;
-        }
-
-        private static bool IsBlue(Color color)
-        {
-            return color.A > 0 && color.B > color.R + 18 && color.B > color.G + 8;
-        }
-
         public static void SetImage(PictureBox pictureBox, SubLogoVariant variant, Color primaryColor, Color backgroundColor)
         {
             if (pictureBox == null)
                 return;
 
-            Bitmap next = Get(variant, primaryColor, backgroundColor);
+            // Entrega no tamanho exato: a redução da PictureBox (Zoom) serrilha o logo.
+            int lado = Math.Min(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height);
+            Bitmap next = lado > 0
+                ? Get(variant, primaryColor, backgroundColor, new Size(lado, lado))
+                : Get(variant, primaryColor, backgroundColor);
             Image previous = pictureBox.Image;
             pictureBox.Image = new Bitmap(next);
             if (previous != null)

@@ -586,7 +586,7 @@ namespace SUB.Forms.Inicio
             this.btnConfiguracao.Size = new System.Drawing.Size(258, 56);
             this.btnConfiguracao.TabIndex = 4;
             this.btnConfiguracao.TabStop = false;
-            this.btnConfiguracao.Text = " Configuração";
+            this.btnConfiguracao.Text = "  Configuração";
             this.btnConfiguracao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnConfiguracao.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnConfiguracao.UseVisualStyleBackColor = false;

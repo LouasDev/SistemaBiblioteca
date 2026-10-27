@@ -218,10 +218,10 @@
             this.btnBuscar.ForeColor = System.Drawing.Color.White;
             this.btnBuscar.Image = global::SUB.Properties.Resources.icons8_search_25;
             this.btnBuscar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnBuscar.Location = new System.Drawing.Point(844, 188);
+            this.btnBuscar.Location = new System.Drawing.Point(870, 188);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Padding = new System.Windows.Forms.Padding(8, 6, 0, 10);
-            this.btnBuscar.Size = new System.Drawing.Size(216, 40);
+            this.btnBuscar.Size = new System.Drawing.Size(164, 40);
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "     Busca online";
             this.btnBuscar.UseVisualStyleBackColor = false;

@@ -51,7 +51,7 @@ namespace SUB.Forms.Livros
 
         private void HoraTimer_Minuto(object sender, EventArgs e)
         {
-            lblHoraEmprestimo.Text = $"Hora do Empréstimo: {DateTime.Now:HH:mm}";
+            lblHoraEmprestimo.Text = $"Hora do empréstimo: {DateTime.Now:HH:mm}";
             // após o primeiro disparo alinhado, seta p/ 60s fixos
             horaTimer.Interval = 60000;
         }
@@ -80,7 +80,7 @@ namespace SUB.Forms.Livros
             txtProfessor.Focus();
 
 
-            lblHoraEmprestimo.Text = $"Hora do Empréstimo: {DateTime.Now:HH:mm}";
+            lblHoraEmprestimo.Text = $"Hora do empréstimo: {DateTime.Now:HH:mm}";
 
             horaTimer = new System.Windows.Forms.Timer();
             horaTimer.Interval = 1000; // curto para alinhamento inicial
@@ -761,7 +761,7 @@ namespace SUB.Forms.Livros
             dgvRapidos.AutoGenerateColumns = false;
             dgvRapidos.Columns.Clear();
 
-            DataGridViewTextBoxColumn AddTextCol(string prop, string hdr, int minw, DataGridViewContentAlignment align)
+            DataGridViewTextBoxColumn AddTextCol(string prop, string hdr, int minw, DataGridViewContentAlignment align, float fillWeight = 100F)
             {
                 var c = new DataGridViewTextBoxColumn
                 {
@@ -770,8 +770,11 @@ namespace SUB.Forms.Livros
                     HeaderText = hdr,
                     ReadOnly = true,
                     MinimumWidth = minw,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = fillWeight,
                     DefaultCellStyle = new DataGridViewCellStyle { Alignment = align }
                 };
+                c.HeaderCell.Style.Alignment = align;
                 dgvRapidos.Columns.Add(c);
                 return c;
             }
@@ -789,7 +792,7 @@ namespace SUB.Forms.Livros
             {
                 DataPropertyName = "Point",
                 Name = "Point",
-                HeaderText = "•",
+                HeaderText = "",
                 ReadOnly = true,
                 Width = 30,  // largura fixa
                 MinimumWidth = 30,
@@ -798,30 +801,31 @@ namespace SUB.Forms.Livros
             };
             dgvRapidos.Columns.Add(ColPoint);
 
-            AddTextCol("Professor", "Professor", 180, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Livro", "Livro", 200, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Turma", "Turma", 120, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Quantidade", "Qtd", 60, DataGridViewContentAlignment.MiddleCenter);
+            AddTextCol("Professor", "Professor", 145, DataGridViewContentAlignment.MiddleLeft, 150F);
+            AddTextCol("Livro", "Livro", 165, DataGridViewContentAlignment.MiddleLeft, 180F);
+            AddTextCol("Turma", "Turma", 85, DataGridViewContentAlignment.MiddleLeft, 90F);
+            AddTextCol("Quantidade", "Qtd", 42, DataGridViewContentAlignment.MiddleCenter, 55F);
 
-            var colEmp = AddTextCol("DataHoraEmprestimo", "Emprestado em", 130, DataGridViewContentAlignment.MiddleLeft);
+            var colEmp = AddTextCol("DataHoraEmprestimo", "Empréstimo", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colEmp.DefaultCellStyle.Format = "dd/MM HH:mm";
-            var colDev = AddTextCol("DataHoraDevolucaoReal", "Devolução", 130, DataGridViewContentAlignment.MiddleLeft);
+            var colDev = AddTextCol("DataHoraDevolucaoReal", "Devolução", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colDev.DefaultCellStyle.Format = "dd/MM HH:mm";
 
-            AddTextCol("Bibliotecaria", "Bibliotecaria", 120, DataGridViewContentAlignment.MiddleLeft);
-            AddTextCol("Status", "Status", 80, DataGridViewContentAlignment.MiddleLeft);
+            AddTextCol("Bibliotecaria", "Bibliotecária", 100, DataGridViewContentAlignment.MiddleLeft, 110F);
+            AddTextCol("Status", "Status", 60, DataGridViewContentAlignment.MiddleCenter, 65F);
 
             var btnFinalizar = new DataGridViewButtonColumn
             {
                 Name = "Finalizar",
-                HeaderText = "",
+                HeaderText = "Ação",
                 Text = "",
                 UseColumnTextForButtonValue = true,
-                Width = 90,                   // largura fixa
-                MinimumWidth = 70,            // impede encolher
+                Width = 80,                   // largura fixa
+                MinimumWidth = 80,            // impede encolher
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // impede crescer
                 FlatStyle = FlatStyle.Flat
             };
+            btnFinalizar.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRapidos.Columns.Add(btnFinalizar);
 
             // styling (copiado do UsuarioForm)
@@ -852,11 +856,12 @@ namespace SUB.Forms.Livros
             dgvRapidos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvRapidos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10.5f, FontStyle.Bold);
             dgvRapidos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvRapidos.ColumnHeadersHeight = 44;
+            dgvRapidos.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+            dgvRapidos.ColumnHeadersHeight = 40;
             dgvRapidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
 
             dgvRapidos.AllowUserToResizeColumns = false;
-            dgvRapidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvRapidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // double buffer
             typeof(DataGridView).InvokeMember(
@@ -943,8 +948,9 @@ namespace SUB.Forms.Livros
             {
                 e.PaintBackground(e.CellBounds, true);
 
-                Color corFundo = Color.FromArgb(30, 61, 88);
-                Color corTexto = Color.White;
+                // Reutiliza as cores aplicadas pelo ThemeManager ao cabeçalho da grade.
+                Color corFundo = dgvRapidos.ColumnHeadersDefaultCellStyle.BackColor;
+                Color corTexto = dgvRapidos.ColumnHeadersDefaultCellStyle.ForeColor;
 
                 int borderRadius = 8;
                 Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6,
@@ -960,8 +966,11 @@ namespace SUB.Forms.Livros
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
 
+                    var suavizacaoAnterior = e.Graphics.SmoothingMode;
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
                     e.Graphics.DrawPath(pen, path);
+                    e.Graphics.SmoothingMode = suavizacaoAnterior;
                 }
 
                 TextRenderer.DrawText(e.Graphics, "Finalizar",
@@ -1381,9 +1390,6 @@ namespace SUB.Forms.Livros
             _alterandoTxtLivroProgramaticamente = false;
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
+       
     }
 }

@@ -406,7 +406,7 @@ namespace SUB.Froms.Usuario
 
             txtSenha.PlaceholderText = "Digite aqui uma senha...";
             txtConfirmSenha.PlaceholderText = "Confirme a senha...";
-            txtEmail.PlaceholderText = "Digite aqui o email...";
+            txtEmail.PlaceholderText = "Digite aqui o e-mail...";
 
             chkMostrarSenha.Enabled = true;
             chkMostrarSenha.ForeColor = Color.FromArgb(20, 41, 60);
@@ -447,7 +447,7 @@ namespace SUB.Froms.Usuario
 
             
 
-            txtEmail.PlaceholderText = "Digite aqui o email...";
+            txtEmail.PlaceholderText = "Digite aqui o e-mail...";
             chkMostrarSenha.ForeColor = Color.LightGray;
             chkMostrarSenha.Enabled = false;
         }
@@ -497,8 +497,8 @@ namespace SUB.Froms.Usuario
         private void ConfigurarParaAluno()
         {
             HabilitarCampos(true);
-            lblTelefone.Text = "Telefone do Aluno / Responsável:";
-            TelefoneAst.Location = new Point(288, 0);
+            lblTelefone.Text = "Telefone do aluno ou responsável:";
+            TelefoneAst.Location = new Point(295, 0);
             modoAluno = true;
             PosicionarPanel2();
             txtSenha.Enabled = false;
@@ -527,7 +527,7 @@ namespace SUB.Froms.Usuario
            
 
             txtTurma.PlaceholderText = "Digite aqui a turma...";
-            txtEmail.PlaceholderText = "Digite aqui o email...";
+            txtEmail.PlaceholderText = "Digite aqui o e-mail...";
 
             chkMostrarSenha.ForeColor = Color.LightGray;
             chkMostrarSenha.Enabled = false;

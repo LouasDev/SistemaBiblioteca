@@ -381,7 +381,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(162, 23);
             this.label5.TabIndex = 128;
-            this.label5.Text = "Hora da Devolução:";
+            this.label5.Text = "Hora da devolução:";
             // 
             // roundedTextBox3
             // 
@@ -488,7 +488,7 @@
             this.MinimizeBox = false;
             this.Name = "DevoluçãoRapidaForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "SUB";
+            this.Text = "Devolver livro didático";
             this.panelHeader.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

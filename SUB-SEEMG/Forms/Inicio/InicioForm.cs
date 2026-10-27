@@ -36,6 +36,77 @@ namespace SUB.Forms.Inicio
             AplicarTemaNoDashboard();
         }
 
+        // TabControl pintado por inteiro: com OwnerDrawFixed o Windows ainda desenhava
+        // a moldura 3D clássica, com bordas escuras em volta das abas.
+        private sealed class AbasPlanas : TabControl
+        {
+            private readonly Func<Color> corDoTema;
+            private readonly System.Drawing.Font fonteSelecionada = new System.Drawing.Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
+
+            public AbasPlanas(Func<Color> corDoTema)
+            {
+                this.corDoTema = corDoTema;
+                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint |
+                         ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            }
+
+            protected override void OnSelectedIndexChanged(EventArgs e)
+            {
+                base.OnSelectedIndexChanged(e);
+                Invalidate();
+            }
+
+            protected override void OnPaint(PaintEventArgs e)
+            {
+                Color tema = ThemeManager.Normalize(corDoTema());
+                Color linha = ThemeManager.Lighten(tema, 0.72F);
+                e.Graphics.Clear(Parent != null ? Parent.BackColor : Color.White);
+
+                if (TabCount == 0)
+                    return;
+
+                int topoPagina = GetTabRect(0).Bottom;
+                using (var caneta = new Pen(linha))
+                    e.Graphics.DrawRectangle(caneta, 0, topoPagina, Width - 1, Height - topoPagina - 1);
+
+                for (int i = 0; i < TabCount; i++)
+                {
+                    System.Drawing.Rectangle aba = GetTabRect(i);
+                    aba = new System.Drawing.Rectangle(aba.X + 1, aba.Y + 2, aba.Width - 2, topoPagina - aba.Y - 2);
+                    bool selecionada = i == SelectedIndex;
+
+                    using (var pincel = new SolidBrush(selecionada ? Color.White : ThemeManager.Lighten(tema, 0.93F)))
+                        e.Graphics.FillRectangle(pincel, aba);
+
+                    if (selecionada)
+                    {
+                        using (var destaque = new SolidBrush(tema))
+                            e.Graphics.FillRectangle(destaque, aba.X, aba.Y, aba.Width, 3);
+                        using (var caneta = new Pen(linha))
+                        {
+                            e.Graphics.DrawLine(caneta, aba.Left, aba.Top, aba.Left, aba.Bottom);
+                            e.Graphics.DrawLine(caneta, aba.Right - 1, aba.Top, aba.Right - 1, aba.Bottom);
+                        }
+                        using (var apagaLinha = new Pen(Color.White))
+                            e.Graphics.DrawLine(apagaLinha, aba.Left + 1, topoPagina, aba.Right - 2, topoPagina);
+                    }
+
+                    TextRenderer.DrawText(e.Graphics, TabPages[i].Text,
+                        selecionada ? fonteSelecionada : Font,
+                        new System.Drawing.Rectangle(aba.X, aba.Y + 2, aba.Width, aba.Height - 2),
+                        selecionada ? ThemeManager.GetLabelColor(tema) : Color.FromArgb(92, 100, 112),
+                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+                }
+            }
+
+            protected override void Dispose(bool disposing)
+            {
+                if (disposing)
+                    fonteSelecionada.Dispose();
+                base.Dispose(disposing);
+            }
+        }
+
         private class EmprestimoAtrasadoInfo
         {
             public int Id { get; set; }
@@ -239,33 +310,13 @@ namespace SUB.Forms.Inicio
             panel1.Controls.Add(lblStatusSmall);
 
             // === TabControl moderno ===
-            TabControl tabEstatisticas = new TabControl
+            var tabEstatisticas = new AbasPlanas(() => dashboardThemeColor)
             {
                 Name = "tabEstatisticas",
                 Dock = DockStyle.Fill,
-                Appearance = TabAppearance.Normal,
-                ItemSize = new Size(120, 32),
+                ItemSize = new Size(150, 36),
                 SizeMode = TabSizeMode.Fixed,
-                DrawMode = TabDrawMode.OwnerDrawFixed,
-                Font = new System.Drawing.Font("Segoe UI", 9F)
-            };
-            tabEstatisticas.DrawItem += (sender, e) =>
-            {
-                var tabControl = (TabControl)sender;
-                var tabPage = tabControl.TabPages[e.Index];
-                var rect = e.Bounds;
-                var isSelected = tabControl.SelectedIndex == e.Index;
-
-                var backColor = isSelected ? Color.White : ThemeManager.Lighten(dashboardThemeColor, 0.94F);
-                var textColor = isSelected ? ThemeManager.GetLabelColor(dashboardThemeColor) : Color.FromArgb(110, 110, 110);
-                var borderColor = ThemeManager.Lighten(dashboardThemeColor, 0.72F);
-
-                using (var brush = new SolidBrush(backColor)) e.Graphics.FillRectangle(brush, rect);
-                using (var pen = new Pen(borderColor)) e.Graphics.DrawRectangle(pen, rect);
-
-                TextRenderer.DrawText(e.Graphics, tabPage.Text,
-                    new System.Drawing.Font("Segoe UI", 9, isSelected ? FontStyle.Bold : FontStyle.Regular),
-                    rect, textColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                Font = new System.Drawing.Font("Segoe UI", 9.75F)
             };
 
             var tabDevedores = new TabPage("Devedores") { BackColor = Color.White, Padding = new Padding(12) };
@@ -642,6 +693,15 @@ namespace SUB.Forms.Inicio
 
             dgv.CellMouseEnter += DataGrid_CellMouseEnter;
             dgv.CellMouseLeave += DataGrid_CellMouseLeave;
+
+            // Grade de aba oculta seleciona a primeira linha ao aparecer pela primeira vez,
+            // escondendo a cor de status dela; no painel não há seleção a manter.
+            dgv.HandleCreated += (s, e) => dgv.BeginInvoke(new Action(dgv.ClearSelection));
+            dgv.VisibleChanged += (s, e) =>
+            {
+                if (dgv.Visible && dgv.IsHandleCreated)
+                    dgv.BeginInvoke(new Action(dgv.ClearSelection));
+            };
 
             return dgv;
         }

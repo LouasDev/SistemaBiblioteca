@@ -28,6 +28,7 @@ namespace SUB.Forms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
+            dtpDataNasc.Value = DateTime.Today;
 
             this.KeyPreview = true;
             this.KeyDown += EditarUsuarioForm_KeyDown;
@@ -470,7 +471,7 @@ namespace SUB.Forms.Usuario
                         var resultado = MessageBox.Show(
                             $"⚠️ ATENÇÃO: Este usuário possui registros ativos no sistema:\n\n" +
                             $"- {emprestimosAtivos} empréstimo(s) ativo(s)\n" +
-                            $"A exclusão removerá TODOS os dados do usuario, mantendo somente registros do sistema..\n\n" +
+                            $"A exclusão removerá TODOS os dados do usuário, mantendo somente os registros do sistema.\n\n" +
                             $"Tem CERTEZA ABSOLUTA que deseja excluir este usuário?",
                             "ALERTA - Exclusão com Registros Ativos",
                             MessageBoxButtons.YesNo,
@@ -505,7 +506,7 @@ namespace SUB.Forms.Usuario
                         // Confirmação normal para usuários sem registros ativos
                         var confirm = MessageBox.Show(
                             "Tem certeza que deseja excluir este usuário?\n\n" +
-                            "Todas os dados do usuario seram removidos, mantendo alguns registros do sistema.",
+                            "Todos os dados do usuário serão removidos, mantendo apenas os registros do sistema.",
                             "Confirmação de Exclusão",
                             MessageBoxButtons.YesNo,
                             MessageBoxIcon.Question);

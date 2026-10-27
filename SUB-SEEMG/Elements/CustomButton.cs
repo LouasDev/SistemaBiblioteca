@@ -22,7 +22,7 @@ public class CustomButton : Button
     public int BorderRadius
     {
         get => _borderRadius;
-        set { _borderRadius = Math.Max(0, value); ApplyRegion(); Invalidate(); }
+        set { _borderRadius = Math.Max(0, value); Invalidate(); }
     }
 
     [Category("Aparência Custom")]
@@ -75,22 +75,6 @@ public class CustomButton : Button
     }
 
     // ──────────────────────────────────────────
-    // REGION
-    // ──────────────────────────────────────────
-
-    private void ApplyRegion()
-    {
-        this.Region?.Dispose();
-        this.Region = null;
-
-        RectangleF rf = new RectangleF(0.5f, 0.5f, Width - 1f, Height - 1f);
-        using (GraphicsPath path = CreateRoundedPath(rf, _borderRadius))
-            this.Region = new Region(path);
-    }
-
-    protected override void OnResize(EventArgs e) { base.OnResize(e); ApplyRegion(); }
-
-    // ──────────────────────────────────────────
     // ESTADOS
     // ──────────────────────────────────────────
 
@@ -106,16 +90,22 @@ public class CustomButton : Button
     protected override void OnPaint(PaintEventArgs e)
     {
         Graphics g = e.Graphics;
-        g.SmoothingMode = SmoothingMode.HighQuality;
-        g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+        // Recorte por Region não tem antialiasing; os cantos ficam suaves
+        // pintando o fundo do container antes do preenchimento arredondado.
+        if (Parent != null)
+            ButtonRenderer.DrawParentBackground(g, ClientRectangle, this);
+
+        g.SmoothingMode = SmoothingMode.AntiAlias;
         g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-        g.CompositingQuality = CompositingQuality.HighQuality;
 
-        RectangleF rect = new RectangleF(0.5f, 0.5f, Width - 1f, Height - 1f);
+        RectangleF rect = new RectangleF(0f, 0f, Width, Height);
 
-        Color bgColor = _isPressed ? Darken(_baseColor, 0.20f)
+        Color bgColor = !Enabled ? Color.FromArgb(218, 222, 228)
+                      : _isPressed ? Darken(_baseColor, 0.20f)
                       : _isHovered ? Darken(_baseColor, 0.10f)
                       : _baseColor;
+        Color textColor = Enabled ? base.ForeColor : Color.FromArgb(110, 118, 128);
 
         using (GraphicsPath path = CreateRoundedPath(rect, _borderRadius))
         using (SolidBrush brush = new SolidBrush(bgColor))
@@ -124,9 +114,15 @@ public class CustomButton : Button
         TextRenderer.DrawText(
             g, Text, Font,
             new Rectangle(0, 0, Width, Height),
-            base.ForeColor,
+            textColor,
             TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter
         );
+    }
+
+    protected override void OnEnabledChanged(EventArgs e)
+    {
+        base.OnEnabledChanged(e);
+        Invalidate();
     }
 
     // ──────────────────────────────────────────
@@ -167,9 +163,4 @@ public class CustomButton : Button
         return path;
     }
 
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing) { this.Region?.Dispose(); this.Region = null; }
-        base.Dispose(disposing);
-    }
 }

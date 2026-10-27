@@ -319,7 +319,7 @@ namespace SUB.Forms.Livros
 
                 string msg = $"Confirma a prorrogação deste empréstimo?\n\n" +
                              $"Livro: {livro}\n" +
-                             $"Alocador: {alocador}\n" +
+                             $"Leitor: {alocador}\n" +
                              $"Data de Devolução Atual: {dataDevolucaoAtual:dd/MM/yyyy}\n" +
                              $"Nova Data de Devolução: {novaData:dd/MM/yyyy}\n" +
                              $"Dias de prorrogação: {dias}";
@@ -605,7 +605,7 @@ namespace SUB.Forms.Livros
             return new[]
             {
                 new DefinicaoColuna("ID do Empréstimo", "ID", 50, DataGridViewContentAlignment.MiddleCenter, 40),
-                new DefinicaoColuna("Alocador", "Alocador", 160, DataGridViewContentAlignment.MiddleLeft, 100),
+                new DefinicaoColuna("Alocador", "Leitor", 160, DataGridViewContentAlignment.MiddleLeft, 100),
                 new DefinicaoColuna("Responsável", "Responsável", 160, DataGridViewContentAlignment.MiddleLeft, 100),
                 new DefinicaoColuna("Livro", "Nome do Livro", 180, DataGridViewContentAlignment.MiddleLeft, 120),
                 new DefinicaoColuna("Código De Barras", "Código de Barras", 140, DataGridViewContentAlignment.MiddleLeft, 120),
@@ -933,7 +933,7 @@ namespace SUB.Forms.Livros
 
             string msg = $"Confirma a devolução deste empréstimo?\n\n" +
                          $"Livro: {livro}\n" +
-                         $"Alocador: {alocador}\n" +
+                         $"Leitor: {alocador}\n" +
                          $"Data do Empréstimo: {dataEmprestimo}\n";
                         
 

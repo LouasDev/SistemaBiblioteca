@@ -93,7 +93,7 @@
             this.cbTemas.Name = "cbTemas";
             this.cbTemas.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbTemas.PlaceholderMargin = 10;
-            this.cbTemas.PlaceholderText = "Escolha a Cor";
+            this.cbTemas.PlaceholderText = "Escolha a cor";
             this.cbTemas.Size = new System.Drawing.Size(548, 34);
             this.cbTemas.TabIndex = 6;
             this.cbTemas.SelectedIndexChanged += new System.EventHandler(this.cbTemas_SelectedIndexChanged);
@@ -320,7 +320,7 @@
             // 
             this.btnSalvar.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnSalvar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 12.25F);
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.btnSalvar.Location = new System.Drawing.Point(1136, 793);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(124, 36);

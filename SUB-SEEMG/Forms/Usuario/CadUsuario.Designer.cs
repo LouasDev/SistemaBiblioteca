@@ -80,7 +80,7 @@
             this.lblAvisoEmail.Name = "lblAvisoEmail";
             this.lblAvisoEmail.Size = new System.Drawing.Size(301, 13);
             this.lblAvisoEmail.TabIndex = 100;
-            this.lblAvisoEmail.Text = "*Caso não cadastrar um e-mail, não receberá notificações...";
+            this.lblAvisoEmail.Text = "*Sem e-mail cadastrado, a pessoa não receberá notificações.";
             // 
             // DataNascAst
             // 
@@ -106,7 +106,7 @@
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(159, 25);
             this.lblNome.TabIndex = 62;
-            this.lblNome.Text = "Nome Completo:";
+            this.lblNome.Text = "Nome completo:";
             // 
             // Titulo
             // 
@@ -188,7 +188,7 @@
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(64, 25);
             this.lblEmail.TabIndex = 65;
-            this.lblEmail.Text = "Email:";
+            this.lblEmail.Text = "E-mail:";
             // 
             // lblConfirmSenha
             // 
@@ -252,7 +252,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 25);
             this.label2.TabIndex = 83;
-            this.label2.Text = "Tipo usuário:";
+            this.label2.Text = "Tipo de usuário:";
             // 
             // lblCPF
             // 
@@ -328,7 +328,7 @@
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
             this.lblDataNasc.TabIndex = 72;
-            this.lblDataNasc.Text = "Data de Nascimento:";
+            this.lblDataNasc.Text = "Data de nascimento:";
             // 
             // SenhaAst
             // 
@@ -350,7 +350,7 @@
             this.lblUsuario.BackColor = System.Drawing.Color.Transparent;
             this.lblUsuario.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsuario.ForeColor = System.Drawing.Color.Red;
-            this.lblUsuario.Location = new System.Drawing.Point(338, 142);
+            this.lblUsuario.Location = new System.Drawing.Point(364, 142);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(13, 17);
             this.lblUsuario.TabIndex = 84;
@@ -397,7 +397,7 @@
             this.EmailAst.BackColor = System.Drawing.Color.Transparent;
             this.EmailAst.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EmailAst.ForeColor = System.Drawing.Color.Red;
-            this.EmailAst.Location = new System.Drawing.Point(278, 232);
+            this.EmailAst.Location = new System.Drawing.Point(286, 232);
             this.EmailAst.Name = "EmailAst";
             this.EmailAst.Size = new System.Drawing.Size(13, 17);
             this.EmailAst.TabIndex = 91;
@@ -527,7 +527,7 @@
             this.txtEmail.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtEmail.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmail.PlaceholderMarginLeft = 12;
-            this.txtEmail.PlaceholderText = "Digite aqui o email...";
+            this.txtEmail.PlaceholderText = "Digite aqui o e-mail...";
             this.txtEmail.SelectedText = "";
             this.txtEmail.SelectionLength = 0;
             this.txtEmail.SelectionStart = 0;
@@ -594,7 +594,7 @@
             this.cbUsuario.Name = "cbUsuario";
             this.cbUsuario.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbUsuario.PlaceholderMargin = 10;
-            this.cbUsuario.PlaceholderText = "Selecione o tipo de usuario...";
+            this.cbUsuario.PlaceholderText = "Selecione o tipo de usuário...";
             this.cbUsuario.Size = new System.Drawing.Size(300, 34);
             this.cbUsuario.TabIndex = 1;
             this.cbUsuario.SelectedIndexChanged += new System.EventHandler(this.cbUsuario_SelectedIndexChanged);

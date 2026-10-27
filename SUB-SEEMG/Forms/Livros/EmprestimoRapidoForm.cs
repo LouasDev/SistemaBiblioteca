@@ -749,8 +749,8 @@ namespace SUB.Forms.Livros
             txtLivro.Text = "";
             txtTurma.Text = "";
             numQuantidade.Text = "1";
-            // === NOVO: limpar o campo de código de barras (igual EmprestimoForm) ===
             txtBarcode.Text = "";
+            txtBarcode.Enabled = true;
         }
         #endregion
 

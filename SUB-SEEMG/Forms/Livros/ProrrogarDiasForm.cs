@@ -53,9 +53,8 @@ namespace SUB.Forms.Livros
             {
                 numQuantidade.Text = MAX_DIAS.ToString();
                 numQuantidade.SelectionStart = numQuantidade.Text.Length;
-                lblErro.Text = $"O máximo permitido é {MAX_DIAS} dias.";
-                lblErro.Visible = true;
-                btnConfirmar.Enabled = false;
+                // A alteração do texto já valida o valor ajustado no TextChanged.
+                return;
             }
             else
             {

@@ -274,6 +274,9 @@
     <Compile Include="Utils\ThemeManager.cs" />
     <Compile Include="Utils\SubLogoManager.cs" />
     <Compile Include="Utils\DatabaseInitializer.cs" />
+    <Compile Include="Utils\ProrrogacaoService.cs" />
+    <Compile Include="Utils\CirculacaoService.cs" />
+    <Compile Include="Utils\RegrasCirculacao.cs" />
     <Compile Include="Elements\AnimatedToggle.cs">
       <SubType>UserControl</SubType>
     </Compile>

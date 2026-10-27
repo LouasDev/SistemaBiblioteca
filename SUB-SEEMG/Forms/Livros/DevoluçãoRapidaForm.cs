@@ -14,13 +14,10 @@ namespace SUB.Forms.Livros
 {
     public partial class DevoluçãoRapidaForm : Form
     {
-        public int QuantidadeDevolvida => int.Parse(numQuantidadeDevolvidos.Text);
-        public event EventHandler LivroAtualizado;
+        public int QuantidadeDevolvida { get; private set; }
 
-        public DevoluçãoRapidaForm(int emprestimoId, string professor, string livro, string turma, int quantidadeEmprestada, DateTime dataEmprestimo, string codigoBarras)
+        public DevoluçãoRapidaForm(int emprestimoId, string professor, string livro, string turma, int quantidadeEmprestada, DateTime dataEmprestimo, string codigoBarras) : this()
         {
-            InitializeComponent();
-            ThemeManager.ApplyConfiguredTheme(this);
 
             // Nome do Professor
             txtProfessor.Text = professor;
@@ -53,10 +50,6 @@ namespace SUB.Forms.Livros
             mtxCodigoBarras.Text = codigoBarras;
             mtxCodigoBarras.Enabled = false;
 
-            // Botão de confirmar
-            btnConfirmarDevolucao.Click += btnConfirmar_Click;
-
-            // Demais inicializações...
         }
 
         public DevoluçãoRapidaForm()
@@ -67,6 +60,7 @@ namespace SUB.Forms.Livros
             numQuantidadeDevolvidos.Text = "1"; // valor inicial
             numQuantidadeDevolvidos.KeyPress += numQuantidade_KeyPress;
             numQuantidadeDevolvidos.TextChanged += numQuantidade_TextChanged;
+            btnConfirmarDevolucao.Click += btnConfirmar_Click;
         }
 
 
@@ -87,7 +81,10 @@ namespace SUB.Forms.Livros
 
         private void btnMais_Click(object sender, EventArgs e)
         {
-            int valor = int.Parse(numQuantidadeDevolvidos.Text);
+            int valor;
+            int limite;
+            if (!int.TryParse(numQuantidadeDevolvidos.Text, out valor)) valor = 0;
+            if (!int.TryParse(numQuantidadeEmprestado.Text, out limite) || valor >= limite) return;
             valor++;
             numQuantidadeDevolvidos.Text = valor.ToString();
 
@@ -95,16 +92,25 @@ namespace SUB.Forms.Livros
 
         private void btnMenos_Click(object sender, EventArgs e)
         {
-            int valor = int.Parse(numQuantidadeDevolvidos.Text);
-            if (valor > 1)
+            int valor;
+            if (!int.TryParse(numQuantidadeDevolvidos.Text, out valor)) valor = 0;
+            if (valor > 0)
                 valor--;
             numQuantidadeDevolvidos.Text = valor.ToString();
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
-            int qtdDevolvida = int.Parse(numQuantidadeDevolvidos.Text);
-            int qtdEmprestada = int.Parse(numQuantidadeEmprestado.Text);
+            int qtdDevolvida;
+            int qtdEmprestada;
+            if (!int.TryParse(numQuantidadeDevolvidos.Text, out qtdDevolvida) ||
+                !int.TryParse(numQuantidadeEmprestado.Text, out qtdEmprestada) ||
+                !RegrasCirculacao.QuantidadeDevolvidaValida(qtdEmprestada, qtdDevolvida))
+            {
+                MessageBox.Show(RegrasCirculacao.ErroQuantidadeDevolvida, "Quantidade inválida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             if (qtdDevolvida < qtdEmprestada)
             {
@@ -118,7 +124,7 @@ namespace SUB.Forms.Livros
                     return;
             }
 
-            LivroAtualizado?.Invoke(this, EventArgs.Empty);
+            QuantidadeDevolvida = qtdDevolvida;
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

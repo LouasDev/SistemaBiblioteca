@@ -57,8 +57,22 @@ namespace SUB.Utils
                 Id int IDENTITY(1,1) PRIMARY KEY, Nome nvarchar(100) NOT NULL UNIQUE)", "Turmas");
             MigrarEmprestimo(connection);
             MigrarEmprestimoRapido(connection);
+            MigrarLogProrrogacoes(connection);
             MigrarTurmasDosUsuariosExistentes(connection);
-            GarantirVersaoSchema(connection, 4);
+            GarantirVersaoSchema(connection, 5);
+        }
+
+        private static void MigrarLogProrrogacoes(SqlCeConnection connection)
+        {
+            // Preserva os dois formatos históricos, inclusive DataHora NOT NULL.
+            AddColumnIfMissing(connection, "LogProrrogacoes", "UsuarioId", "int NULL");
+            AddColumnIfMissing(connection, "LogProrrogacoes", "DataHora", "datetime NULL");
+            AddColumnIfMissing(connection, "LogProrrogacoes", "DataDaAcao", "datetime NULL");
+            AddColumnIfMissing(connection, "LogProrrogacoes", "NovaDataDevolucao", "datetime NULL");
+            AddColumnIfMissing(connection, "LogProrrogacoes", "BibliotecariaNome", "nvarchar(200) NULL");
+
+            Execute(connection, "UPDATE LogProrrogacoes SET DataDaAcao = DataHora WHERE DataDaAcao IS NULL AND DataHora IS NOT NULL", null);
+            Execute(connection, "UPDATE LogProrrogacoes SET DataHora = DataDaAcao WHERE DataHora IS NULL AND DataDaAcao IS NOT NULL", null);
         }
 
         private static void MigrarEmprestimo(SqlCeConnection connection)

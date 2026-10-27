@@ -1,4 +1,4 @@
-﻿using SUB.Models;
+using SUB.Models;
 using SUB.Forms.Utils;
 using System;
 using System.Collections.Generic;
@@ -72,8 +72,8 @@ namespace SUB.Forms.Livros
         {
             AppPaths.EnsureFolders();
 
-            //Limpeza Automatica Semanal
-            LimparEmprestimosSemana();
+            // O painel filtra devolvidos antigos sem excluir histórico.
+
             // Carrega dados para sugestões (turmas, livros, professors) e bibliotecárias
             CarregarSugestoesECombo();
 
@@ -188,76 +188,6 @@ namespace SUB.Forms.Livros
             return true;
         }
 
-        private void LimparEmprestimosSemana()
-        {
-            try
-            {
-                AppPaths.EnsureFolders();
-                string arquivoControle = Path.Combine(AppPaths.AppDataFolder, "limpeza.txt");
-
-                DateTime ultimaLimpeza = DateTime.MinValue;
-                if (File.Exists(arquivoControle))
-                {
-                    string conteudo = File.ReadAllText(arquivoControle);
-                    if (DateTime.TryParseExact(conteudo, "yyyy-MM-dd",
-                        System.Globalization.CultureInfo.InvariantCulture,
-                        System.Globalization.DateTimeStyles.None,
-                        out ultimaLimpeza))
-                    {
-                        // Data lida com sucesso
-                    }
-                    else
-                    {
-                        ultimaLimpeza = DateTime.MinValue;
-                    }
-                }
-
-                // Calcular o número da semana do ano para a data atual e última limpeza
-                int semanaAtual = ObterNumeroSemana(DateTime.Now);
-                int semanaUltimaLimpeza = ObterNumeroSemana(ultimaLimpeza);
-
-                // Se for um ano diferente ou semana diferente, faz a limpeza
-                if (DateTime.Now.Year != ultimaLimpeza.Year || semanaAtual != semanaUltimaLimpeza)
-                {
-                    using (var conexao = Conexao.ObterConexao())
-                    {
-                        conexao.Open();
-
-                        using (var cmd = new SqlCeCommand("DELETE FROM EmprestimoRapido", conexao))
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        // Reseta o ID
-                        using (var cmdReset = new SqlCeCommand(
-                            "ALTER TABLE EmprestimoRapido ALTER COLUMN Id IDENTITY (1,1)", conexao))
-                        {
-                            cmdReset.ExecuteNonQuery();
-                        }
-                    }
-
-                    // Atualiza data da última limpeza
-                    File.WriteAllText(arquivoControle, DateTime.Now.ToString("yyyy-MM-dd"));
-
-                    MessageBox.Show("Histórico de Empréstimos foi limpo. Novo ciclo semanal iniciado.",
-                                    "Limpeza Semanal", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Erro ao limpar empréstimos rápidos: " + ex.Message);
-            }
-        }
-
-        // Método auxiliar para obter o número da semana no ano
-        private int ObterNumeroSemana(DateTime data)
-        {
-            System.Globalization.CultureInfo cultura = System.Globalization.CultureInfo.CurrentCulture;
-            return cultura.Calendar.GetWeekOfYear(data,
-                System.Globalization.CalendarWeekRule.FirstFourDayWeek,
-                DayOfWeek.Monday);
-        }
-
         private void CarregarSugestoesECombo()
         {
             turmasCadastradas.Clear();
@@ -282,12 +212,13 @@ namespace SUB.Forms.Livros
                     }
 
                     // Livros disponíveis SOMENTE do gênero Didático
-                    using (var cmd = new SqlCeCommand("SELECT Nome FROM Livros WHERE Nome IS NOT NULL AND Genero = 'Didático'", conexao))
-                    using (var reader = cmd.ExecuteReader())
+                    using (var cmd = new SqlCeCommand("SELECT Nome FROM Livros WHERE Nome IS NOT NULL AND Genero = @Genero", conexao))
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@Genero", RegrasCirculacao.GeneroRapido);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            livrosCadastrados.Add(reader.GetString(0));
+                            while (reader.Read())
+                                livrosCadastrados.Add(reader.GetString(0));
                         }
                     }
 
@@ -775,139 +706,43 @@ namespace SUB.Forms.Livros
         #region Registrar Empréstimo Rápido
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            // validações
             if (string.IsNullOrWhiteSpace(txtProfessor.Text) ||
                 string.IsNullOrWhiteSpace(txtLivro.Text) ||
                 string.IsNullOrWhiteSpace(txtTurma.Text) ||
-                !int.TryParse(numQuantidade.Text, out int qtd) || qtd <= 0 ||
+                !int.TryParse(numQuantidade.Text, out int qtd) || !RegrasCirculacao.QuantidadeRetiradaValida(qtd) ||
                 cbBibliotecaria.SelectedItem == null)
             {
                 MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // BLOQUEIO: verifica se o professor já atingiu o limite de 2 "Faltando"
             try
             {
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    using (var cmd = new SqlCeCommand(
-                        "SELECT COUNT(*) FROM EmprestimoRapido r " +
-                        "INNER JOIN Usuarios u ON r.ProfessorId = u.Id " +
-                        "WHERE u.Nome = @professor AND r.Status = 'Faltando'", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@professor", txtProfessor.Text.Trim());
-                        int faltandoCount = (int)cmd.ExecuteScalar();
-                        if (faltandoCount >= 2)
-                        {
-                            MessageBox.Show("Este professor já atingiu o limite de 2 devoluções faltando. Ele não pode fazer novos empréstimos rápidos até regularizar pelo menos um livro.", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                            return;
-                        }
-                    }
+                    CirculacaoService.EmprestarRapido(conexao, txtProfessor.Text.Trim(), txtLivro.Text.Trim(),
+                        txtTurma.Text.Trim(), qtd, cbBibliotecaria.SelectedItem.ToString(), DateTime.Now);
                 }
             }
-            catch (Exception ex)
+            catch (InvalidOperationException ex)
             {
-                MessageBox.Show("Erro ao verificar limite de faltando: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-
-                    // checar livro, quantidade disponível e gênero
-                    int livroId;
-                    int quantidadeDisponivel;
-                    string generoLivro = null;
-                    using (var cmd = new SqlCeCommand("SELECT Id, Quantidade, Genero FROM Livros WHERE Nome = @nome", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@nome", txtLivro.Text.Trim());
-                        using (var r = cmd.ExecuteReader())
-                        {
-                            if (!r.Read())
-                            {
-                                MessageBox.Show("Livro não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
-                            livroId = Convert.ToInt32(r["Id"]);
-                            quantidadeDisponivel = Convert.ToInt32(r["Quantidade"]);
-                            generoLivro = r["Genero"].ToString();
-                        }
-                    }
-
-                    // Permitir empréstimo SOMENTE de livros com gênero "Didático"
-                    if (!string.Equals(generoLivro, "Didático", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MessageBox.Show("Somente livros do gênero 'Didático' podem ser emprestados por este formulário.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (qtd > quantidadeDisponivel)
-                    {
-                        MessageBox.Show($"Quantidade indisponível. Estoque atual: {quantidadeDisponivel}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    // obter professor id
-                    int professorId;
-                    using (var cmd = new SqlCeCommand("SELECT Id FROM Usuarios WHERE Nome = @nome AND TipoUsuario LIKE @tipo", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@nome", txtProfessor.Text.Trim());
-                        cmd.Parameters.AddWithValue("@tipo", "%Professor%");
-                        var obj = cmd.ExecuteScalar();
-                        if (obj == null)
-                        {
-                            MessageBox.Show("Professor não encontrado.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-                        professorId = Convert.ToInt32(obj);
-                    }
-
-                    // Inserir EmprestimoRapido (Bibliotecaria é string; admin não chegará aqui pois já bloqueamos)
-                    string insertSql = @"INSERT INTO EmprestimoRapido
-(ProfessorId, LivroId, LivroNome, Turma, Quantidade, DataHoraEmprestimo, DataHoraDevolucaoReal, Bibliotecaria, Status)
-VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')";
-
-                    using (var cmd = new SqlCeCommand(insertSql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@prof", professorId);
-                        cmd.Parameters.AddWithValue("@livro", livroId);
-                        cmd.Parameters.AddWithValue("@livroNome", txtLivro.Text.Trim());
-                        cmd.Parameters.AddWithValue("@turma", txtTurma.Text.Trim());
-                        cmd.Parameters.AddWithValue("@qt", qtd);
-                        cmd.Parameters.AddWithValue("@dataEmp", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@bibli", cbBibliotecaria.SelectedItem.ToString());
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    // Atualizar quantidade do livro
-                    int novaQuantidade = quantidadeDisponivel - qtd;
-                    bool disponivel = novaQuantidade > 0;
-                    using (var cmd = new SqlCeCommand("UPDATE Livros SET Quantidade = @qt, Disponibilidade = @disp WHERE Id = @id", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@qt", novaQuantidade);
-                        cmd.Parameters.AddWithValue("@disp", disponivel);
-                        cmd.Parameters.AddWithValue("@id", livroId);
-                        cmd.ExecuteNonQuery();
-                    }
-                } // using conexao
-
-                MessageBox.Show("Empréstimo rápido registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LimparCampos();
-                CarregarSugestoesECombo(); // recarrega quantidades / listas
-                CarregarGridRapidos();
-                LivroAtualizado?.Invoke(this, EventArgs.Empty);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao registrar empréstimo rápido: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Trace.TraceError("Falha no empréstimo rápido: {0}", ex);
+                MessageBox.Show("Não foi possível salvar o empréstimo rápido. O estoque não foi alterado. Atualize a consulta e tente novamente.",
+                    "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+            MessageBox.Show("Empréstimo rápido registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            LimparCampos();
+            CarregarSugestoesECombo();
+            CarregarGridRapidos();
+            LivroAtualizado?.Invoke(this, EventArgs.Empty);
+            SUB.Utils.EventosGlobais.OnEmprestimoRealizado();
         }
-
         private void LimparCampos()
         {
             txtProfessor.Text = "";
@@ -1052,18 +887,7 @@ VALUES (@prof, @livro, @livroNome, @turma, @qt, @dataEmp, NULL, @bibli, 'Ativo')
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    string sql = @"
-    SELECT r.Id, u.Nome as Professor, 
-       COALESCE(l.Nome, r.LivroNome) as Livro,
-       r.Turma, r.Quantidade,
-       r.DataHoraEmprestimo, r.DataHoraDevolucaoReal, 
-       r.Bibliotecaria, r.Status, r.LivroId
-FROM EmprestimoRapido r
-INNER JOIN Usuarios u ON r.ProfessorId = u.Id
-LEFT JOIN Livros l ON r.LivroId = l.Id
-ORDER BY r.Id DESC";
-
-                    using (var cmd = new SqlCeCommand(sql, conexao))
+                    using (var cmd = CirculacaoService.CriarConsultaPainelRapido(conexao, DateTime.Now))
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -1071,18 +895,18 @@ ORDER BY r.Id DESC";
                             var row = tabela.NewRow();
                             row["Id"] = reader.GetInt32(0);
                             row["Professor"] = reader.GetString(1);
-                            row["Livro"] = reader.GetString(2);
-                            row["Turma"] = reader.GetString(3);
-                            row["Quantidade"] = reader.GetInt32(4);
-                            row["DataHoraEmprestimo"] = reader.GetDateTime(5);
+                            row["Livro"] = reader.IsDBNull(2) ? "Livro não localizado" : reader.GetString(2);
+                            row["Turma"] = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                            row["Quantidade"] = reader.GetValue(4);
+                            row["DataHoraEmprestimo"] = reader.GetValue(5);
 
                             if (!reader.IsDBNull(6))
                                 row["DataHoraDevolucaoReal"] = reader.GetDateTime(6); // coluna do DataTable (ver nota abaixo)
                             else
                                 row["DataHoraDevolucaoReal"] = DBNull.Value;
 
-                            row["Bibliotecaria"] = reader.GetString(7);
-                            row["Status"] = reader.GetString(8);
+                            row["Bibliotecaria"] = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                            row["Status"] = reader.IsDBNull(8) ? "Não informado" : reader.GetString(8);
                             tabela.Rows.Add(row);
                         }
                     }
@@ -1332,6 +1156,19 @@ ORDER BY r.Id DESC";
 
         private void AbrirDevolucaoRapidaForm(DataGridViewRow row)
         {
+            string status = Convert.ToString(row.Cells["Status"].Value);
+            if (!RegrasCirculacao.SituacaoRapidaAberta(status))
+            {
+                MessageBox.Show("Somente empréstimos em aberto podem ser devolvidos.", "Devolução", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (!(row.Cells["Quantidade"].Value is int) || (int)row.Cells["Quantidade"].Value <= 0 ||
+                !(row.Cells["DataHoraEmprestimo"].Value is DateTime))
+            {
+                MessageBox.Show("O empréstimo possui saldo ou data incompletos. Confira o cadastro antes de registrar a devolução.",
+                    "Devolução", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             int emprestimoId = Convert.ToInt32(row.Cells["Id"].Value);
             string professor = row.Cells["Professor"].Value?.ToString();
             string livro = row.Cells["Livro"].Value?.ToString();
@@ -1369,62 +1206,27 @@ ORDER BY r.Id DESC";
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-
-                    // Verifica limite de devoluções faltando
-                    if (quantidadeDevolvida < quantidadeEmprestada)
-                    {
-                        using (var cmd = new SqlCeCommand(
-                            "SELECT COUNT(*) FROM EmprestimoRapido r " +
-                            "INNER JOIN Usuarios u ON r.ProfessorId = u.Id " +
-                            "WHERE u.Nome = @professor AND r.Status = 'Faltando'", conexao))
-                        {
-                            cmd.Parameters.AddWithValue("@professor", professor);
-                            int faltandoCount = (int)cmd.ExecuteScalar();
-                            if (faltandoCount >= 2)
-                            {
-                                MessageBox.Show("Limite de 2 empréstimos devolvidos faltando por professor atingido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
-                        }
-                    }
-
-                    // Atualiza status do empréstimo
-                    string novoStatus = quantidadeDevolvida == quantidadeEmprestada ? "Devolvido" : "Faltando";
-                    using (var cmd = new SqlCeCommand(
-                        "UPDATE EmprestimoRapido SET Status = @status, DataHoraDevolucaoReal = @data, Quantidade = @qtd WHERE Id = @id", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@status", novoStatus);
-                        cmd.Parameters.AddWithValue("@data", DateTime.Now);
-                        cmd.Parameters.AddWithValue("@qtd", quantidadeEmprestada - quantidadeDevolvida == 0 ? 0 : quantidadeEmprestada - quantidadeDevolvida);
-                        cmd.Parameters.AddWithValue("@id", emprestimoId);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    // Atualiza quantidade do livro
-                    int livroId;
-                    using (var cmd = new SqlCeCommand("SELECT LivroId FROM EmprestimoRapido WHERE Id = @id", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@id", emprestimoId);
-                        livroId = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-                    using (var cmd = new SqlCeCommand("UPDATE Livros SET Quantidade = Quantidade + @qtd WHERE Id = @id", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@qtd", quantidadeDevolvida);
-                        cmd.Parameters.AddWithValue("@id", livroId);
-                        cmd.ExecuteNonQuery();
-                    }
+                    CirculacaoService.DevolverRapido(conexao, emprestimoId, quantidadeEmprestada, quantidadeDevolvida, DateTime.Now);
                 }
-
-                MessageBox.Show("Devolução registrada com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CarregarSugestoesECombo();
-                CarregarGridRapidos();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao processar devolução: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                System.Diagnostics.Trace.TraceError("Falha na devolução rápida: {0}", ex);
+                MessageBox.Show("Não foi possível salvar a devolução. O saldo e o estoque não foram alterados. Atualize a consulta e tente novamente.",
+                    "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
+            MessageBox.Show("Devolução registrada com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            CarregarSugestoesECombo();
+            CarregarGridRapidos();
+            LivroAtualizado?.Invoke(this, EventArgs.Empty);
+            SUB.Utils.EventosGlobais.OnLivroDevolvido();
         }
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
@@ -1458,10 +1260,11 @@ ORDER BY r.Id DESC";
                 {
                     conexao.Open();
                     // Busca apenas livros do gênero Didático
-                    string sql = "SELECT TOP 1 Nome FROM Livros WHERE CodigoBarras = @codigo AND Genero = 'Didático'";
+                    string sql = "SELECT TOP 1 Nome FROM Livros WHERE CodigoBarras = @codigo AND Genero = @Genero";
                     using (var cmd = new SqlCeCommand(sql, conexao))
                     {
                         cmd.Parameters.AddWithValue("@codigo", codigo);
+                        cmd.Parameters.AddWithValue("@Genero", RegrasCirculacao.GeneroRapido);
 
                         using (var reader = cmd.ExecuteReader())
                         {

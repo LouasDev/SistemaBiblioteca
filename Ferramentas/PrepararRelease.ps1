@@ -1,7 +1,7 @@
 param(
     [ValidatePattern('\A[0-9]+\.[0-9]+\.[0-9]+\z')]
-    [string]$Versao = '1.0.1',
-    [string]$Notas = 'Primeira release pública do SUB. Operação local, configuração da instituição, acervo, usuários, circulação, relatórios e painel de atualização corrigido.',
+    [string]$Versao = '1.0.2',
+    [string]$Notas = 'Bibliotecários desativados não conseguem mais entrar no sistema. O download de atualizações aceita somente HTTPS em hosts do GitHub.',
     [string]$ChavePrivada = (Join-Path $env:USERPROFILE '.sub-releases\chave-privada.xml')
 )
 

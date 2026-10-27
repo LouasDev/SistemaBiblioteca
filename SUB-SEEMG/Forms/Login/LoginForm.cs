@@ -270,10 +270,10 @@ namespace SUB.Forms.Login
             {
                 AutoSize = false,
                 Font = new Font("Segoe UI", 10.5F),
-                Location = new Point(30, 100),
+                Location = new Point(30, 116),
                 Size = new Size(380, 34)
             })
-            using (var erro = CriarLabelErro(new Point(30, 143), new Size(380, 38)))
+            using (var erro = CriarLabelErro(new Point(30, 158), new Size(380, 38)))
             using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 208), new Size(96, 36)))
             using (var continuar = CriarBotaoPrimario("Continuar", new Point(306, 208), new Size(104, 36)))
             {
@@ -298,7 +298,7 @@ namespace SUB.Forms.Login
                     AutoSize = true,
                     Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
                     ForeColor = Color.FromArgb(43, 55, 69),
-                    Location = new Point(30, 82),
+                    Location = new Point(30, 94),
                     Text = "E-mail de acesso"
                 });
                 dialogo.Controls.Add(email);

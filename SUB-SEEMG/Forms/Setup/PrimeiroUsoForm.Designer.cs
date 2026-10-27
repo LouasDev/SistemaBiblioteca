@@ -241,7 +241,7 @@ namespace SUB.Forms.Setup
             this.lblSub.ForeColor = System.Drawing.Color.White;
             this.lblSub.Location = new System.Drawing.Point(142, 40);
             this.lblSub.Name = "lblSub";
-            this.lblSub.Size = new System.Drawing.Size(180, 44);
+            this.lblSub.Size = new System.Drawing.Size(180, 40);
             this.lblSub.TabIndex = 1;
             this.lblSub.Text = "SUB";
             this.lblSub.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -710,7 +710,7 @@ namespace SUB.Forms.Setup
             this.lblNomeBibliotecaria.Name = "lblNomeBibliotecaria";
             this.lblNomeBibliotecaria.Size = new System.Drawing.Size(99, 15);
             this.lblNomeBibliotecaria.TabIndex = 1;
-            this.lblNomeBibliotecaria.Text = "Nome completo*";
+            this.lblNomeBibliotecaria.Text = "Nome completo *";
             // 
             // _nomeBibliotecaria
             // 
@@ -994,7 +994,7 @@ namespace SUB.Forms.Setup
             this._codigoMestre.Location = new System.Drawing.Point(14, 50);
             this._codigoMestre.Name = "_codigoMestre";
             this._codigoMestre.ReadOnly = true;
-            this._codigoMestre.Size = new System.Drawing.Size(269, 21);
+            this._codigoMestre.Size = new System.Drawing.Size(322, 21);
             this._codigoMestre.TabIndex = 2;
             // 
             // exportarCodigo
@@ -1002,9 +1002,9 @@ namespace SUB.Forms.Setup
             this.exportarCodigo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.exportarCodigo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.exportarCodigo.Font = new System.Drawing.Font("Segoe UI Semibold", 8.5F, System.Drawing.FontStyle.Bold);
-            this.exportarCodigo.Location = new System.Drawing.Point(291, 48);
+            this.exportarCodigo.Location = new System.Drawing.Point(344, 48);
             this.exportarCodigo.Name = "exportarCodigo";
-            this.exportarCodigo.Size = new System.Drawing.Size(180, 28);
+            this.exportarCodigo.Size = new System.Drawing.Size(127, 28);
             this.exportarCodigo.TabIndex = 6;
             this.exportarCodigo.Text = "Salvar código...";
             this.exportarCodigo.Click += new System.EventHandler(this.exportarCodigo_Click);

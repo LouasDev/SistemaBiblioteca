@@ -65,9 +65,9 @@
             this.btnConfirmarDevolucao.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnConfirmarDevolucao.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnConfirmarDevolucao.ForeColor = System.Drawing.Color.White;
-            this.btnConfirmarDevolucao.Location = new System.Drawing.Point(100, 42);
+            this.btnConfirmarDevolucao.Location = new System.Drawing.Point(16, 46);
             this.btnConfirmarDevolucao.Name = "btnConfirmarDevolucao";
-            this.btnConfirmarDevolucao.Size = new System.Drawing.Size(136, 44);
+            this.btnConfirmarDevolucao.Size = new System.Drawing.Size(220, 44);
             this.btnConfirmarDevolucao.TabIndex = 118;
             this.btnConfirmarDevolucao.Text = "Devolver";
             this.btnConfirmarDevolucao.UseVisualStyleBackColor = false;
@@ -82,9 +82,9 @@
             this.btnProrrogar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProrrogar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnProrrogar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
-            this.btnProrrogar.Location = new System.Drawing.Point(59, 101);
+            this.btnProrrogar.Location = new System.Drawing.Point(16, 100);
             this.btnProrrogar.Name = "btnProrrogar";
-            this.btnProrrogar.Size = new System.Drawing.Size(177, 44);
+            this.btnProrrogar.Size = new System.Drawing.Size(220, 44);
             this.btnProrrogar.TabIndex = 117;
             this.btnProrrogar.Text = "Prorrogar prazo";
             this.btnProrrogar.UseVisualStyleBackColor = false;
@@ -217,7 +217,7 @@
             this.mtxCodigoBarras.PlaceholderColor = System.Drawing.Color.Gray;
             this.mtxCodigoBarras.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtxCodigoBarras.PlaceholderMarginLeft = 12;
-            this.mtxCodigoBarras.PlaceholderText = "Escaneei para buscar...";
+            this.mtxCodigoBarras.PlaceholderText = "Escaneie para buscar...";
             this.mtxCodigoBarras.SelectedText = "";
             this.mtxCodigoBarras.SelectionLength = 0;
             this.mtxCodigoBarras.SelectionStart = 0;

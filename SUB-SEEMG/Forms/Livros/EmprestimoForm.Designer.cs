@@ -192,7 +192,7 @@
             this.cbBibliotecaria.Name = "cbBibliotecaria";
             this.cbBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbBibliotecaria.PlaceholderMargin = 10;
-            this.cbBibliotecaria.PlaceholderText = "Selecione a Bibliotecária...";
+            this.cbBibliotecaria.PlaceholderText = "Selecione a bibliotecária...";
             this.cbBibliotecaria.Size = new System.Drawing.Size(840, 34);
             this.cbBibliotecaria.TabIndex = 103;
             this.cbBibliotecaria.SelectedIndexChanged += new System.EventHandler(this.cbBibliotecaria_SelectedIndexChanged);
@@ -219,7 +219,7 @@
             this.txtBarcode.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtBarcode.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarcode.PlaceholderMarginLeft = 12;
-            this.txtBarcode.PlaceholderText = "Clique e Escaneei para buscar informacoes...";
+            this.txtBarcode.PlaceholderText = "Clique e escaneie para buscar...";
             this.txtBarcode.SelectedText = "";
             this.txtBarcode.SelectionLength = 0;
             this.txtBarcode.SelectionStart = 0;
@@ -241,7 +241,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(162, 25);
             this.label7.TabIndex = 100;
-            this.label7.Text = "Codigo de barras:";
+            this.label7.Text = "Código de barras:";
             // 
             // chkDevolucaoPersonalizada
             // 
@@ -312,7 +312,7 @@
             this.txtNomeUsuario.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtNomeUsuario.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNomeUsuario.PlaceholderMarginLeft = 12;
-            this.txtNomeUsuario.PlaceholderText = "Busque aqui o Nome do Usuario ...";
+            this.txtNomeUsuario.PlaceholderText = "Busque aqui o nome da pessoa...";
             this.txtNomeUsuario.SelectedText = "";
             this.txtNomeUsuario.SelectionLength = 0;
             this.txtNomeUsuario.SelectionStart = 0;
@@ -364,7 +364,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(181, 25);
             this.label5.TabIndex = 20;
-            this.label5.Text = "Devolução Prevista:";
+            this.label5.Text = "Devolução prevista:";
             // 
             // label4
             // 

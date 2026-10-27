@@ -217,7 +217,7 @@
             this.lblFiltroEtapa2.Name = "lblFiltroEtapa2";
             this.lblFiltroEtapa2.Size = new System.Drawing.Size(101, 20);
             this.lblFiltroEtapa2.TabIndex = 1;
-            this.lblFiltroEtapa2.Text = "Filtrar Turma:";
+            this.lblFiltroEtapa2.Text = "Filtrar turma:";
             // 
             // cmbFiltroTurmaEtapa2
             // 
@@ -351,7 +351,7 @@
             this.lblFiltroNomeEtapa2.Name = "lblFiltroNomeEtapa2";
             this.lblFiltroNomeEtapa2.Size = new System.Drawing.Size(100, 20);
             this.lblFiltroNomeEtapa2.TabIndex = 4;
-            this.lblFiltroNomeEtapa2.Text = "Filtrar Nome:";
+            this.lblFiltroNomeEtapa2.Text = "Filtrar nome:";
             // 
             // txtBuscaAlunoEtapa2
             // 

@@ -499,8 +499,11 @@ END AS Status
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
 
+                    var suavizacaoAnterior = e.Graphics.SmoothingMode;
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
                     e.Graphics.DrawPath(pen, path);
+                    e.Graphics.SmoothingMode = suavizacaoAnterior;
                 }
 
                 // Texto centralizado

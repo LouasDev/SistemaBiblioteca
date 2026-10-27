@@ -213,7 +213,7 @@
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
             this.lblDataNasc.TabIndex = 98;
-            this.lblDataNasc.Text = "Data de Nascimento:";
+            this.lblDataNasc.Text = "Data de nascimento:";
             // 
             // pnlLinhaCabecalho
             // 
@@ -249,18 +249,18 @@
             this.txtTurma.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTurma.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtTurma.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtTurma.Location = new System.Drawing.Point(650, 282);
+            this.txtTurma.Location = new System.Drawing.Point(770, 282);
             this.txtTurma.Margin = new System.Windows.Forms.Padding(5);
             this.txtTurma.Name = "txtTurma";
             this.txtTurma.Padding = new System.Windows.Forms.Padding(9, 12, 9, 12);
             this.txtTurma.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtTurma.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTurma.PlaceholderMarginLeft = 12;
-            this.txtTurma.PlaceholderText = "Indisponivel...";
+            this.txtTurma.PlaceholderText = "Indisponível...";
             this.txtTurma.SelectedText = "";
             this.txtTurma.SelectionLength = 0;
             this.txtTurma.SelectionStart = 0;
-            this.txtTurma.Size = new System.Drawing.Size(350, 40);
+            this.txtTurma.Size = new System.Drawing.Size(230, 40);
             this.txtTurma.TabIndex = 135;
             this.txtTurma.TextColor = System.Drawing.Color.Black;
             this.txtTurma.UseSystemPasswordChar = false;
@@ -271,7 +271,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(650, 252);
+            this.label4.Location = new System.Drawing.Point(770, 252);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(71, 25);
@@ -300,11 +300,11 @@
             this.txtEmail.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtEmail.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtEmail.PlaceholderMarginLeft = 12;
-            this.txtEmail.PlaceholderText = "Indisponivel...";
+            this.txtEmail.PlaceholderText = "Indisponível...";
             this.txtEmail.SelectedText = "";
             this.txtEmail.SelectionLength = 0;
             this.txtEmail.SelectionStart = 0;
-            this.txtEmail.Size = new System.Drawing.Size(350, 40);
+            this.txtEmail.Size = new System.Drawing.Size(470, 40);
             this.txtEmail.TabIndex = 133;
             this.txtEmail.TextColor = System.Drawing.Color.Black;
             this.txtEmail.UseSystemPasswordChar = false;
@@ -320,7 +320,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 25);
             this.label3.TabIndex = 134;
-            this.label3.Text = "Email:";
+            this.label3.Text = "E-mail:";
             // 
             // txtNomeAluno
             // 
@@ -344,7 +344,7 @@
             this.txtNomeAluno.PlaceholderColor = System.Drawing.Color.Gray;
             this.txtNomeAluno.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtNomeAluno.PlaceholderMarginLeft = 12;
-            this.txtNomeAluno.PlaceholderText = "Indisponivel...";
+            this.txtNomeAluno.PlaceholderText = "Indisponível...";
             this.txtNomeAluno.SelectedText = "";
             this.txtNomeAluno.SelectionLength = 0;
             this.txtNomeAluno.SelectionStart = 0;
@@ -364,17 +364,17 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(153, 25);
             this.label1.TabIndex = 132;
-            this.label1.Text = "Nome do Aluno:";
+            this.label1.Text = "Nome do aluno:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 25.25F, System.Drawing.FontStyle.Bold);
+            this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 21F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(61)))), ((int)(((byte)(88)))));
             this.label2.Location = new System.Drawing.Point(34, 20);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(253, 46);
+            this.label2.Size = new System.Drawing.Size(204, 38);
             this.label2.TabIndex = 130;
             this.label2.Text = "Ficha do aluno";
             // 

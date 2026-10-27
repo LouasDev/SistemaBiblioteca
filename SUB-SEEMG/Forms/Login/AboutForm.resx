@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="lblProdutoAbout.Text" xml:space="preserve">
-    <value>O SUB é um sistema unificado de gestão bibliotecária criado a partir da experiência de um sistema desenvolvido pelos alunos da Escola Estadual Professor Gastão Valle para a biblioteca da própria escola, em Bocaiuva, no Norte de Minas Gerais.
+    <value>O SUB é um sistema unificado de gestão bibliotecária criado a partir da experiência de um sistema desenvolvido pelos alunos da Escola Estadual Professor Gastão Valle para a biblioteca da própria escola, em Bocaiúva, no Norte de Minas Gerais.
 
 Após a apresentação do projeto original ao Governo de Minas Gerais, a equipe foi convidada a estruturar uma solução voltada às bibliotecas da rede estadual de ensino. O SUB reúne, em um único sistema, os fluxos essenciais da rotina bibliotecária.</value>
   </data>

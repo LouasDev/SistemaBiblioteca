@@ -22,8 +22,6 @@ recebe mudanças somente quando um pacote correspondente é distribuído.
 
 - [Planejamento original de 2025](historico/BACKLOG-2025.md): propostas, estimativas e atribuições da época.
 - [Inventário inicial de generalização](GENERALIZACAO-INVENTARIO.md): levantamento anterior às adaptações locais.
-- [Notas da versão de teste 1.0.0](RELEASE-v1.0.0.md).
-- [Notas da versão de teste 1.0.1](RELEASE-v1.0.1.md).
 
 Esses registros não são instruções de instalação vigentes nem comprovação de
 funcionalidades atuais. Referências antigas a tecnologias, caminhos e versões

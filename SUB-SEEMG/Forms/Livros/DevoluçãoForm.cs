@@ -1,4 +1,4 @@
-﻿using SUB.Models;
+using SUB.Models;
 using SUB.Utils;
 using System;
 using System.Collections.Generic;
@@ -280,7 +280,11 @@ namespace SUB.Forms.Livros
 
         private void btnProrrogar_Click(object sender, EventArgs e)
         {
-
+            if (!Sessao.UsuarioAutenticado || Sessao.Perfil != RegrasCirculacao.PerfilBibliotecario)
+            {
+                MessageBox.Show("Entre com uma conta de bibliotecário para prorrogar empréstimos.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (dgvEmprestimos.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Selecione um empréstimo para prorrogar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -288,12 +292,21 @@ namespace SUB.Forms.Livros
             }
 
             var row = dgvEmprestimos.SelectedRows[0];
+            string statusSelecionado = row.Cells["Status"].Value?.ToString()?.Trim();
+            if (!RegrasCirculacao.EmprestimoNormalAberto(statusSelecionado))
+            {
+                MessageBox.Show("Somente empréstimos em aberto podem ser prorrogados.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             int idEmprestimo = Convert.ToInt32(row.Cells["ID do Empréstimo"].Value);
             string livro = row.Cells["Livro"].Value?.ToString();
             string alocador = row.Cells["Alocador"].Value?.ToString();
-            DateTime dataDevolucaoAtual = row.Cells["Data de Devolução"].Value != null
-                ? Convert.ToDateTime(row.Cells["Data de Devolução"].Value)
-                : DateTime.Now;
+            if (!(row.Cells["Data de Devolução"].Value is DateTime))
+            {
+                MessageBox.Show("O empréstimo não possui uma data de devolução válida.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            DateTime dataDevolucaoAtual = (DateTime)row.Cells["Data de Devolução"].Value;
 
             using (var frm = new ProrrogarDiasForm())
             {
@@ -301,17 +314,8 @@ namespace SUB.Forms.Livros
                 if (frm.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                // Validação do valor digitado no RoundedTextBox
-                if (!int.TryParse(frm.numQuantidade.Text, out int dias) || dias < 1)
-                {
-                    MessageBox.Show("Informe um número válido de dias.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                DateTime novaData = dataDevolucaoAtual.AddDays(dias);
-
-                // Verifica se a nova data é futura para definir o status
-                string novoStatus = novaData.Date >= DateTime.Now.Date ? "Ativo" : "Atrasado";
+                int dias = frm.DiasSelecionados;
+                DateTime novaData = RegrasCirculacao.CalcularProrrogacao(dataDevolucaoAtual, dias);
 
                 string msg = $"Confirma a prorrogação deste empréstimo?\n\n" +
                              $"Livro: {livro}\n" +
@@ -324,52 +328,26 @@ namespace SUB.Forms.Livros
                 if (confirm != DialogResult.Yes)
                     return;
 
-                // Atualiza no banco
-                // -- início do bloco de atualização + insert de log --
-                using (SqlCeConnection conexao = Conexao.ObterConexao())
+                try
                 {
-                    conexao.Open();
-                    using (var trans = conexao.BeginTransaction())
+                    using (SqlCeConnection conexao = Conexao.ObterConexao())
                     {
-                        try
-                        {
-                            // 1) atualiza o empréstimo (DataDevolucao / DataProrrogacao / Status)
-                            string updateSql = @"
-                UPDATE Emprestimo
-                SET DataDevolucao = @NovaData,
-                    DataProrrogacao = @NovaData,
-                    Status = @Status
-                WHERE Id = @Id";
-                            using (var cmdUpd = new SqlCeCommand(updateSql, conexao, trans))
-                            {
-                                cmdUpd.Parameters.AddWithValue("@NovaData", novaData);
-                                cmdUpd.Parameters.AddWithValue("@Status", novoStatus);
-                                cmdUpd.Parameters.AddWithValue("@Id", idEmprestimo);
-                                cmdUpd.ExecuteNonQuery();
-                            }
-
-                            // 2) insere no log de prorrogações (LogProrrogacoes)
-                            string insertLog = @"
-                INSERT INTO LogProrrogacoes (EmprestimoId, DataDaAcao, NovaDataDevolucao, BibliotecariaNome)
-                VALUES (@EmprestimoId, @DataDaAcao, @NovaDataDevolucao, @BibliotecariaNome)";
-                            using (var cmdLog = new SqlCeCommand(insertLog, conexao, trans))
-                            {
-                                cmdLog.Parameters.AddWithValue("@EmprestimoId", idEmprestimo);
-                                cmdLog.Parameters.AddWithValue("@DataDaAcao", DateTime.Now);
-                                cmdLog.Parameters.AddWithValue("@NovaDataDevolucao", novaData);
-                                // ajuste aqui para o nome da bibliotecária logada no seu sistema (ex.: Sessao.NomeBibliotecariaLogada)
-                                cmdLog.Parameters.AddWithValue("@BibliotecariaNome", Sessao.NomeBibliotecariaLogada ?? "");
-                                cmdLog.ExecuteNonQuery();
-                            }
-
-                            trans.Commit();
-                        }
-                        catch
-                        {
-                            trans.Rollback();
-                            throw;
-                        }
+                        conexao.Open();
+                        ProrrogacaoService.Prorrogar(conexao, idEmprestimo, dias, dataDevolucaoAtual,
+                            Sessao.NomeBibliotecariaLogada, DateTime.Now);
                     }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(ex.Message, "Prorrogação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Trace.TraceError("Falha na prorrogação: {0}", ex);
+                    MessageBox.Show("Não foi possível concluir a prorrogação. A alteração do prazo e o histórico não foram salvos. Atualize a lista e tente novamente.",
+                        "Prorrogação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
 
                 // notificação UX
@@ -937,9 +915,9 @@ namespace SUB.Forms.Livros
 
             var emprestimoInfo = ObterInformacoesEmprestimoSelecionado();
 
-            if (emprestimoInfo.Status == "Devolvido")
+            if (!RegrasCirculacao.EmprestimoNormalAberto(emprestimoInfo.Status))
             {
-                MessageBox.Show("Este empréstimo já foi devolvido.");
+                MessageBox.Show("Este empréstimo já foi devolvido ou não está em aberto.");
                 return;
             }
 
@@ -963,7 +941,22 @@ namespace SUB.Forms.Livros
             if (confirm != DialogResult.Yes)
                 return;
 
-            ProcessarDevolucaoNoBanco(emprestimoInfo.Id);
+            try
+            {
+                ProcessarDevolucaoNoBanco(emprestimoInfo.Id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("Falha na devolução: {0}", ex);
+                MessageBox.Show("Não foi possível salvar a devolução. O empréstimo e o estoque não foram alterados. Atualize a consulta e tente novamente.",
+                    "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             MessageBox.Show("Livro devolvido com sucesso.");
             LivroAtualizado?.Invoke(this, EventArgs.Empty);
 
@@ -995,69 +988,12 @@ namespace SUB.Forms.Livros
 
         private void ProcessarDevolucaoNoBanco(int idEmprestimo)
         {
-            using (SqlCeConnection conexao = Conexao.ObterConexao())
+            using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
-                using (var transacao = conexao.BeginTransaction())
-                {
-                    try
-                    {
-                        int idLivro = ObterIdLivroDoEmprestimo(conexao, idEmprestimo, transacao);
-                        AtualizarStatusEmprestimo(conexao, idEmprestimo, transacao);
-                        AtualizarDisponibilidadeLivro(conexao, idLivro, transacao);
-
-                        transacao.Commit();
-                    }
-                    catch
-                    {
-                        transacao.Rollback();
-                        throw;
-                    }
-                }
+                CirculacaoService.DevolverNormal(conexao, idEmprestimo, DateTime.Now);
             }
         }
-
-        private int ObterIdLivroDoEmprestimo(SqlCeConnection conexao, int idEmprestimo, SqlCeTransaction transacao)
-        {
-            string query = "SELECT LivroId FROM Emprestimo WHERE Id = @Id";
-            using (SqlCeCommand cmd = new SqlCeCommand(query, conexao, transacao))
-            {
-                cmd.Parameters.AddWithValue("@Id", idEmprestimo);
-                object result = cmd.ExecuteScalar();
-                return result != null ? Convert.ToInt32(result) : 0;
-            }
-        }
-
-        private void AtualizarStatusEmprestimo(SqlCeConnection conexao, int idEmprestimo, SqlCeTransaction transacao)
-        {
-            string query = @"
-                UPDATE Emprestimo 
-                SET Status = @Status, DataRealDevolucao = @DataDevolucao 
-                WHERE Id = @Id";
-
-            using (SqlCeCommand cmd = new SqlCeCommand(query, conexao, transacao))
-            {
-                cmd.Parameters.AddWithValue("@Status", "Devolvido");
-                cmd.Parameters.AddWithValue("@DataDevolucao", DateTime.Now);
-                cmd.Parameters.AddWithValue("@Id", idEmprestimo);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        private void AtualizarDisponibilidadeLivro(SqlCeConnection conexao, int idLivro, SqlCeTransaction transacao)
-        {
-            string query = @"
-                UPDATE Livros 
-                SET Quantidade = Quantidade + 1, Disponibilidade = 1
-                WHERE Id = @IdLivro";
-
-            using (SqlCeCommand cmd = new SqlCeCommand(query, conexao, transacao))
-            {
-                cmd.Parameters.AddWithValue("@IdLivro", idLivro);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
         #endregion
 
         #region Verificação de Atrasos
@@ -1260,4 +1196,3 @@ namespace SUB.Forms.Livros
 
     #endregion
 }
-

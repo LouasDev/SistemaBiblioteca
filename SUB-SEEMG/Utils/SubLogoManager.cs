@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SUB.Utils
@@ -17,6 +19,16 @@ namespace SUB.Utils
     {
         private static readonly object SyncRoot = new object();
         private static readonly Dictionary<string, Bitmap> Cache = new Dictionary<string, Bitmap>(StringComparer.OrdinalIgnoreCase);
+        private static readonly ConditionalWeakTable<Form, FormIconState> FormIcons =
+            new ConditionalWeakTable<Form, FormIconState>();
+
+        private sealed class FormIconState
+        {
+            public int ThemeArgb;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern bool DestroyIcon(IntPtr hIcon);
 
         public static Bitmap Get(SubLogoVariant variant, Color primaryColor, Color backgroundColor)
         {
@@ -147,6 +159,86 @@ namespace SUB.Utils
             pictureBox.Image = new Bitmap(next);
             if (previous != null)
                 previous.Dispose();
+        }
+
+        // O Windows usa o Icon da janela para a entrada em execução na barra de tarefas.
+        // A conversão clona o handle nativo antes de liberá-lo, evitando vazamento de GDI.
+        public static void ApplyWindowIcon(Form form, Color primaryColor)
+        {
+            if (form == null || form.IsDisposed)
+                return;
+
+            primaryColor = ThemeManager.Normalize(primaryColor);
+            FormIconState state;
+            if (FormIcons.TryGetValue(form, out state) && state.ThemeArgb == primaryColor.ToArgb())
+                return;
+
+            Icon next = CreateWindowIcon(primaryColor);
+            Icon previous = form.Icon;
+
+            try
+            {
+                form.Icon = next;
+            }
+            catch
+            {
+                next.Dispose();
+                return;
+            }
+
+            if (previous != null)
+                previous.Dispose();
+
+            if (state == null)
+            {
+                state = new FormIconState();
+                FormIcons.Add(form, state);
+            }
+            state.ThemeArgb = primaryColor.ToArgb();
+        }
+
+        private static Icon CreateWindowIcon(Color primaryColor)
+        {
+            IntPtr handle = IntPtr.Zero;
+            using (Bitmap original = GetOriginal(SubLogoVariant.Square))
+            using (Bitmap reduzido = Redimensionar(original, new Size(64, 64)))
+            using (Bitmap logo = CreateWindowVariant(reduzido, primaryColor))
+            {
+                try
+                {
+                    handle = logo.GetHicon();
+                    using (Icon temporary = Icon.FromHandle(handle))
+                        return (Icon)temporary.Clone();
+                }
+                finally
+                {
+                    if (handle != IntPtr.Zero)
+                        DestroyIcon(handle);
+                }
+            }
+        }
+
+        private static Bitmap CreateWindowVariant(Bitmap source, Color primaryColor)
+        {
+            Color foreground = ThemeManager.GetContrastColor(primaryColor);
+            Bitmap result = new Bitmap(source.Width, source.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            for (int y = 0; y < source.Height; y++)
+            {
+                for (int x = 0; x < source.Width; x++)
+                {
+                    Color pixel = source.GetPixel(x, y);
+                    // A arte original é azul de fundo com o símbolo branco.
+                    // Mantém essa relação, substituindo apenas o azul pelo tema.
+                    double branco = ProporcaoBranco(pixel);
+                    result.SetPixel(x, y, Color.FromArgb(pixel.A,
+                        Misturar(primaryColor.R, foreground.R, branco),
+                        Misturar(primaryColor.G, foreground.G, branco),
+                        Misturar(primaryColor.B, foreground.B, branco)));
+                }
+            }
+
+            return result;
         }
     }
 }

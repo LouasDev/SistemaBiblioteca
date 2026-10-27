@@ -106,6 +106,9 @@ namespace SUB.Utils
                 return;
 
             corTemaAtual = Normalize(primaryColor);
+            Form form = root as Form;
+            if (form != null)
+                SubLogoManager.ApplyWindowIcon(form, corTemaAtual);
             ApplyRecursive(root, corTemaAtual, false);
         }
 

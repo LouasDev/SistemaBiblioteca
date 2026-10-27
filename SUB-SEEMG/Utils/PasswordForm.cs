@@ -16,8 +16,10 @@ namespace SUB.Forms.Usuario
         public PasswordForm()
         {
             InitializeComponent();
+            AcceptButton = btnConfirmar;
             ThemeManager.ApplyConfiguredTheme(this);
             this.StartPosition = FormStartPosition.CenterParent;
+            Shown += PasswordForm_Shown;
         }
 
         private void PasswordForm_Load(object sender, EventArgs e)
@@ -26,6 +28,18 @@ namespace SUB.Forms.Usuario
             lblMensagem.Text = Mensagem;
             txtSenha.PlaceholderText = Placeholder;
             txtSenha.Focus();
+        }
+
+        private void PasswordForm_Shown(object sender, EventArgs e)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                if (IsDisposed)
+                    return;
+
+                ActiveControl = txtSenha;
+                txtSenha.Focus();
+            }));
         }
 
         private void btnConfirmar_Click(object sender, EventArgs e)

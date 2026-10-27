@@ -801,7 +801,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                     {
                         conexao.Open();
                         string query = @"SELECT Id, Nome, Senha_hash, Senha_salt FROM usuarios
-                    WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)'";
+                    WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)' AND (Ativo IS NULL OR Ativo = 1)";
 
                         using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                         {

@@ -23,6 +23,7 @@ namespace SUB.Forms.Usuario
             LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
             this.Load += UsuarioForm_Load;
+            this.FormClosed += UsuarioForm_FormClosed;
         }
 
 
@@ -118,11 +119,24 @@ namespace SUB.Forms.Usuario
 
         private void EventosGlobais_EmprestimoRealizado(object sender, EventArgs e)
         {
-            // Atualiza a lista de usuários após empréstimo
-            this.BeginInvoke(new Action(() =>
+            // A inscrição é global; a tela pode já ter sido fechada quando o evento chegar.
+            if (!IsHandleCreated || IsDisposed || Disposing)
+                return;
+
+            try
             {
-                CarregarUsuarios();
-            }));
+                BeginInvoke(new Action(() => CarregarUsuarios()));
+            }
+            catch (InvalidOperationException) when (IsDisposed || Disposing || !IsHandleCreated)
+            {
+                // A janela foi destruída entre a verificação e o BeginInvoke.
+            }
+        }
+
+        private void UsuarioForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            EventosGlobais.EmprestimoRealizado -= EventosGlobais_EmprestimoRealizado;
+            EventosGlobais.EmprestimoProrrogado -= EventosGlobais_EmprestimoProrrogado;
         }
 
         private void TxtNome_TextChanged(object sender, EventArgs e)

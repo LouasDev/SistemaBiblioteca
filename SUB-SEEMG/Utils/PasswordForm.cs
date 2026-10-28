@@ -43,17 +43,7 @@ namespace SUB.Forms.Usuario
             }));
         }
 
-        private void PasswordForm_Shown(object sender, EventArgs e)
-        {
-            BeginInvoke(new Action(() =>
-            {
-                if (IsDisposed)
-                    return;
-
-                ActiveControl = txtSenha;
-                txtSenha.Focus();
-            }));
-        }
+        
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {

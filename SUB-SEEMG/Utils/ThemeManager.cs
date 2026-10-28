@@ -905,48 +905,7 @@ namespace SUB.Utils
         // Botão plano desabilitado recebe texto escurecido pelo Windows; sobre a cor do tema
         // ficava ilegível. Usa uma superfície neutra e devolve as cores ao reabilitar,
         // preservando estilos que o formulário aplicou por conta própria.
-        private static void ConfigurarEstadoDesabilitado(Button button)
-        {
-            CoresDoBotao cores;
-            if (!CoresAntesDeDesabilitar.TryGetValue(button, out cores))
-            {
-                cores = new CoresDoBotao();
-                CoresAntesDeDesabilitar.Add(button, cores);
-                button.EnabledChanged += (sender, args) => AtualizarEstadoDesabilitado(button, cores);
-            }
-
-            cores.Guardadas = false;
-            AtualizarEstadoDesabilitado(button, cores);
-        }
-
-        private static void AtualizarEstadoDesabilitado(Button button, CoresDoBotao cores)
-        {
-            if (button.FlatStyle != FlatStyle.Flat && button.FlatStyle != FlatStyle.Popup)
-                return;
-
-            Color fundoDesabilitado = Color.FromArgb(226, 229, 234);
-            if (!button.Enabled)
-            {
-                if (!cores.Guardadas)
-                {
-                    cores.Fundo = button.BackColor;
-                    cores.Borda = button.FlatAppearance.BorderColor;
-                    cores.Guardadas = true;
-                }
-                button.BackColor = fundoDesabilitado;
-                button.FlatAppearance.BorderColor = Color.FromArgb(210, 214, 220);
-            }
-            else if (cores.Guardadas)
-            {
-                // Se o formulário trocou a cor enquanto estava desabilitado, a dele prevalece.
-                if (button.BackColor.ToArgb() == fundoDesabilitado.ToArgb())
-                {
-                    button.BackColor = cores.Fundo;
-                    button.FlatAppearance.BorderColor = cores.Borda;
-                }
-                cores.Guardadas = false;
-            }
-        }
+        
 
         private static void ApplyCompactUtilityButton(Button button, Color primaryColor)
         {

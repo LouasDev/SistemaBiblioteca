@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace SUB.Forms.Configuracoes
 {
@@ -26,6 +27,20 @@ namespace SUB.Forms.Configuracoes
         private bool escuroOriginal;
         private bool valoresCarregados;
 
+        private readonly Dictionary<Control, Rectangle> _designerBounds =
+    new Dictionary<Control, Rectangle>();
+
+        private Size _designerClientSize;
+
+        private void CapturarLayoutDesigner(Control container)
+        {
+            foreach (Control controle in container.Controls)
+            {
+                _designerBounds[controle] = controle.Bounds;
+                CapturarLayoutDesigner(controle);
+            }
+        }
+
         private AtualizacaoManifesto manifestoDisponivel;
         private AtualizacaoManifesto notasDisponiveis;
         private CancellationTokenSource ctsDownload;
@@ -37,8 +52,17 @@ namespace SUB.Forms.Configuracoes
         public ConfiguracaoForm()
         {
             InitializeComponent();
+
+            // Captura as medidas definidas no Designer.
+            _designerClientSize = ClientSize;
+            CapturarLayoutDesigner(this);
+
+            // Atualiza o botão Salvar quando algum campo é alterado.
             c.TextChanged += (sender, args) => AtualizarEstadoSalvar();
-        }
+
+            cbAparencia.SelectedIndexChanged += (sender, args) =>
+                AtualizarEstadoSalvar();
+        }   
 
         private void btnReverTutorial_Click(object sender, EventArgs e)
         {
@@ -46,11 +70,7 @@ namespace SUB.Forms.Configuracoes
                 EventosGlobais.OnTutorialSolicitado();
         }
 
-        private void btnReverTutorial_Click(object sender, EventArgs e)
-        {
-            if (!operacaoEmAndamento)
-                EventosGlobais.OnTutorialSolicitado();
-        }
+      
 
         protected override void OnShown(EventArgs e)
         {
@@ -789,52 +809,184 @@ namespace SUB.Forms.Configuracoes
 
         private void AjustarLayout()
         {
-            if (WindowState == FormWindowState.Minimized)
+            if (WindowState == FormWindowState.Minimized ||
+                _designerBounds.Count == 0)
                 return;
+
             SuspendLayout();
-            bool compacto = ClientSize.Height < 600;
-            int margem = 20;
-            int largura = Math.Max(360, ClientSize.Width - margem * 2);
-            lblSubtitulo.Visible = !compacto;
-            pnlLinhaCabecalho.Visible = !compacto;
-            grpAtualizacao.MaximumSize = Size.Empty;
-            grpInstituicao.MaximumSize = Size.Empty;
-            grpInstituicao.SetBounds(margem, compacto ? 68 : 106, largura, 176);
-            lblNome.Font = fonteRotuloCompacto;
-            lblNome.Location = new Point(16, 25);
-            c.SetBounds(16, 54, largura / 2 - 30, 34);
-            int colunaCor = largura / 2 + 6;
-            lblCor.Text = "Cor principal:";
-            lblCor.Font = fonteRotuloCompacto;
-            lblCor.Location = new Point(colunaCor, 25);
-            cbTemas.SetBounds(colunaCor, 54, largura - colunaCor - 66, 34);
-            pnlCorPreview.SetBounds(largura - 50, 54, 34, 34);
-            lblAparencia.Font = fonteRotuloCompacto;
-            lblAparencia.Location = new Point(16, 100);
-            cbAparencia.SetBounds(16, 129, largura / 2 - 30, 34);
-            int topoAtualizacao = grpInstituicao.Bottom + 12;
-            int alturaAtualizacao = 184;
-            grpAtualizacao.SetBounds(margem, topoAtualizacao, largura, alturaAtualizacao);
-            lblVersaoAtual.Location = new Point(16, 23);
-            lblVersaoAtual.Font = fonteRotuloCompacto;
-            lblStatusAtualizacao.AutoSize = false;
-            lblStatusAtualizacao.MaximumSize = Size.Empty;
-            lblStatusAtualizacao.Font = fonteStatusCompacto;
-            lblStatusAtualizacao.SetBounds(16, 50, largura - 32, 38);
-            btnVerificar.SetBounds(16, 96, 190, 34);
-            btnNovidades.SetBounds(214, 96, 144, 34);
-            btnAtualizar.SetBounds(366, 96, 160, 34);
-            btnCancelarDownload.SetBounds(366, 96, 160, 34);
-            pbVerificando.SetBounds(16, 142, largura - 32, 24);
-            pbDownload.SetBounds(16, 142, largura - 32, 24);
-            int topoManutencao = grpAtualizacao.Bottom + 12;
-            int topoSalvar = ClientSize.Height - 60;
-            int larguraManutencao = topoManutencao + 76 > topoSalvar ? largura - 181 : largura;
-            grpManutencao.SetBounds(margem, topoManutencao, larguraManutencao, 76);
-            btnApagarDados.SetBounds(16, 26, 172, 34);
-            btnReverTutorial.SetBounds(200, 26, 154, 34);
-            btnSalvar.SetBounds(ClientSize.Width - margem - 169, topoSalvar, 169, 44);
-            ResumeLayout(false);
+
+            try
+            {
+                bool compacto = ClientSize.Height < 600;
+
+                Rectangle inst = _designerBounds[grpInstituicao];
+                Rectangle atual = _designerBounds[grpAtualizacao];
+                Rectangle manut = _designerBounds[grpManutencao];
+                Rectangle salvar = _designerBounds[btnSalvar];
+
+                int margemEsquerda = inst.Left;
+                int margemDireita = _designerClientSize.Width - inst.Right;
+
+                int largura = Math.Max(
+                    360,
+                    ClientSize.Width - margemEsquerda - margemDireita
+                );
+
+                int diferenca = largura - inst.Width;
+                int metade = diferenca / 2;
+
+                // Cabeçalho
+                lblSubtitulo.Visible = !compacto;
+                pnlLinhaCabecalho.Visible = !compacto;
+
+                // Grupo: Instituição e aparência
+                grpInstituicao.MaximumSize = Size.Empty;
+
+                int topoInstituicao = compacto
+                    ? Math.Max(16, inst.Top - 38)
+                    : inst.Top;
+
+                grpInstituicao.SetBounds(
+                    inst.Left,
+                    topoInstituicao,
+                    largura,
+                    inst.Height
+                );
+
+                // Nome da instituição
+                Rectangle nome = _designerBounds[c];
+
+                c.SetBounds(
+                    nome.X,
+                    nome.Y,
+                    Math.Max(150, nome.Width + metade),
+                    nome.Height
+                );
+
+                // Cor principal
+                Rectangle rotuloCor = _designerBounds[lblCor];
+
+                lblCor.Location = new Point(
+                    rotuloCor.X + metade,
+                    rotuloCor.Y
+                );
+
+                Rectangle temas = _designerBounds[cbTemas];
+
+                cbTemas.SetBounds(
+                    temas.X + metade,
+                    temas.Y,
+                    Math.Max(150, temas.Width + metade),
+                    temas.Height
+                );
+
+                // Pré-visualização da cor
+                Rectangle preview = _designerBounds[pnlCorPreview];
+
+                pnlCorPreview.SetBounds(
+                    preview.X + diferenca,
+                    preview.Y,
+                    preview.Width,
+                    preview.Height
+                );
+
+                // Campo de aparência
+                Rectangle aparencia = _designerBounds[cbAparencia];
+
+                cbAparencia.SetBounds(
+                    aparencia.X,
+                    aparencia.Y,
+                    Math.Max(150, aparencia.Width + metade),
+                    aparencia.Height
+                );
+
+                // Grupo: Atualização
+                grpAtualizacao.MaximumSize = Size.Empty;
+
+                int deslocamentoVertical = topoInstituicao - inst.Top;
+
+                int topoAtualizacao = Math.Max(
+                    atual.Top + deslocamentoVertical,
+                    grpInstituicao.Bottom + 12
+                );
+
+                grpAtualizacao.SetBounds(
+                    atual.Left,
+                    topoAtualizacao,
+                    largura,
+                    atual.Height
+                );
+
+                // Texto de status
+                Rectangle status = _designerBounds[lblStatusAtualizacao];
+
+                lblStatusAtualizacao.SetBounds(
+                    status.X,
+                    status.Y,
+                    Math.Max(200, status.Width + diferenca),
+                    status.Height
+                );
+
+                // Barras de progresso
+                Rectangle verificando = _designerBounds[pbVerificando];
+
+                pbVerificando.SetBounds(
+                    verificando.X,
+                    verificando.Y,
+                    Math.Max(200, verificando.Width + diferenca),
+                    verificando.Height
+                );
+
+                Rectangle download = _designerBounds[pbDownload];
+
+                pbDownload.SetBounds(
+                    download.X,
+                    download.Y,
+                    Math.Max(200, download.Width + diferenca),
+                    download.Height
+                );
+
+                // Botão Salvar: preserva distância das bordas do Designer
+                int distanciaDireita =
+                    _designerClientSize.Width - salvar.Right;
+
+                int distanciaInferior =
+                    _designerClientSize.Height - salvar.Bottom;
+
+                btnSalvar.SetBounds(
+                    ClientSize.Width - distanciaDireita - salvar.Width,
+                    ClientSize.Height - distanciaInferior - salvar.Height,
+                    salvar.Width,
+                    salvar.Height
+                );
+
+                // Grupo: Manutenção
+                int topoManutencao = Math.Max(
+                    manut.Top + deslocamentoVertical,
+                    grpAtualizacao.Bottom + 12
+                );
+
+                int larguraManutencao = largura;
+
+                if (topoManutencao + manut.Height + 12 > btnSalvar.Top)
+                {
+                    larguraManutencao = Math.Max(
+                        360,
+                        largura - salvar.Width - 12
+                    );
+                }
+
+                grpManutencao.SetBounds(
+                    manut.Left,
+                    topoManutencao,
+                    larguraManutencao,
+                    manut.Height
+                );
+            }
+            finally
+            {
+                ResumeLayout(false);
+            }
         }
     }
 }

@@ -243,10 +243,7 @@ namespace SUB.Forms.Inicio
                 Math.Min(desejado.Width, areaUtil.Width),
                 Math.Min(desejado.Height, areaUtil.Height));
         }
-        private Size tamanhoOriginal;
-        private Point localOriginal;
-        private bool maximizado = false;
-        
+        private bool maximizado => WindowState == FormWindowState.Maximized;
 
         //Funções da API para movimentar a aba
         [DllImport("user32.dll")]
@@ -257,6 +254,78 @@ namespace SUB.Forms.Inicio
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
+
+        // FormBorderStyle.None por padrão cria a janela sem WS_SIZEFRAME: mesmo respondendo
+        // WM_NCHITTEST com HTLEFT/HTTOP/etc., o Windows ignora o pedido de resize se a classe
+        // da janela não foi marcada como redimensionável nesse estilo.
+        private const int WS_SIZEFRAME = 0x00040000;
+        private const int WS_MAXIMIZEBOX = 0x00010000;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.Style |= WS_SIZEFRAME | WS_MAXIMIZEBOX;
+                return cp;
+            }
+        }
+
+        // Sem borda nativa (FormBorderStyle.None), o WinForms não sabe até onde a janela
+        // pode crescer ao maximizar — sem isto ela cobriria a barra de tarefas.
+        private void AtualizarLimitesDeMaximizacao()
+        {
+            MaximizedBounds = Screen.FromHandle(Handle).WorkingArea;
+        }
+
+        // Redimensionar arrastando a borda. FormBorderStyle.None tira esse comportamento de
+        // graça; respondendo WM_NCHITTEST com o código de borda certo, o Windows volta a
+        // tratar essas faixas como se fossem a moldura nativa (cursor de resize incluído).
+        private const int WM_NCHITTEST = 0x84;
+        private const int ESPESSURA_BORDA_RESIZE = 6;
+
+        private const int HTLEFT = 10;
+        private const int HTRIGHT = 11;
+        private const int HTTOP = 12;
+        private const int HTTOPLEFT = 13;
+        private const int HTTOPRIGHT = 14;
+        private const int HTBOTTOM = 15;
+        private const int HTBOTTOMLEFT = 16;
+        private const int HTBOTTOMRIGHT = 17;
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_NCHITTEST && WindowState == FormWindowState.Normal)
+            {
+                // LPARAM empacota as coordenadas de tela como dois shorts com sinal
+                // (LOWORD/HIWORD); um cast direto para int quebra em monitores à
+                // esquerda/acima do principal, onde a coordenada é negativa.
+                int lparam = m.LParam.ToInt32();
+                short telaX = unchecked((short)(lparam & 0xFFFF));
+                short telaY = unchecked((short)((lparam >> 16) & 0xFFFF));
+                Point cursor = PointToClient(new Point(telaX, telaY));
+
+                bool dentro = cursor.X >= 0 && cursor.Y >= 0 && cursor.X < ClientSize.Width && cursor.Y < ClientSize.Height;
+                if (dentro)
+                {
+                    bool perto_esquerda = cursor.X <= ESPESSURA_BORDA_RESIZE;
+                    bool perto_direita = cursor.X >= ClientSize.Width - ESPESSURA_BORDA_RESIZE;
+                    bool perto_topo = cursor.Y <= ESPESSURA_BORDA_RESIZE;
+                    bool perto_baixo = cursor.Y >= ClientSize.Height - ESPESSURA_BORDA_RESIZE;
+
+                    if (perto_topo && perto_esquerda) { m.Result = (IntPtr)HTTOPLEFT; return; }
+                    if (perto_topo && perto_direita) { m.Result = (IntPtr)HTTOPRIGHT; return; }
+                    if (perto_baixo && perto_esquerda) { m.Result = (IntPtr)HTBOTTOMLEFT; return; }
+                    if (perto_baixo && perto_direita) { m.Result = (IntPtr)HTBOTTOMRIGHT; return; }
+                    if (perto_esquerda) { m.Result = (IntPtr)HTLEFT; return; }
+                    if (perto_direita) { m.Result = (IntPtr)HTRIGHT; return; }
+                    if (perto_topo) { m.Result = (IntPtr)HTTOP; return; }
+                    if (perto_baixo) { m.Result = (IntPtr)HTBOTTOM; return; }
+                }
+            }
+
+            base.WndProc(ref m);
+        }
 
         //Nome dos Forms
         InicioForm inicio;
@@ -299,25 +368,8 @@ namespace SUB.Forms.Inicio
         //Função de maximizar/restaurar o Form
         private void AlternarMaximizado()
         {
-            
-            if (!maximizado)
-            {
-                tamanhoOriginal = this.Size;
-                localOriginal = this.Location;
-
-                Rectangle areaTrabalho = Screen.FromHandle(this.Handle).WorkingArea; // exclui barra de tarefas
-                this.Location = areaTrabalho.Location;
-                this.Size = areaTrabalho.Size;
-
-                maximizado = true;
-            }
-            else
-            {
-                this.Size = tamanhoOriginal;
-                this.Location = localOriginal;
-
-                maximizado = false;
-            }
+            AtualizarLimitesDeMaximizacao();
+            WindowState = maximizado ? FormWindowState.Normal : FormWindowState.Maximized;
         }
 
         private void PanelControl_MouseDown(object sender, MouseEventArgs e)
@@ -692,15 +744,15 @@ namespace SUB.Forms.Inicio
         private void picMax_Click(object sender, EventArgs e)
         {
             AlternarMaximizado();
+        }
 
-            if (maximizado == false)
-            {
-               picMax.BackgroundImage = Resources.icons8_quadrado_arredondado_20;
-            }
-            else
-            {
-               picMax.BackgroundImage = Resources.icons8_verificar_todos_os_20;
-            }
+        // Mantém o ícone do botão coerente também quando o estado muda sem passar pelo
+        // clique (arrastar a aba até o topo maximiza, arrastar de volta restaura).
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            picMax.BackgroundImage = maximizado
+                ? Resources.icons8_verificar_todos_os_20
+                : Resources.icons8_quadrado_arredondado_20;
         }
         private void picMin_Click(object sender, EventArgs e)
         {
@@ -1142,9 +1194,15 @@ namespace SUB.Forms.Inicio
         //Locomoção do painel
         private void panelControl_MouseDown(object sender, MouseEventArgs e)
         {
-            maximizado = false;
-            picMax.BackgroundImage = Resources.icons8_quadrado_arredondado_20;
-            tamanho();
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            // Com WS_SIZEFRAME ativo (ver CreateParams) o próprio Windows já trata HTCAPTION
+            // como a titlebar nativa: arrastar até o topo maximiza, até a lateral faz snap de
+            // metade de tela, e arrastar de volta restaura sob o cursor. Forçar WindowState
+            // aqui por conta própria conflita com esse snap nativo e deixa a janela com
+            // tamanho inconsistente (sobra conteúdo de outra janela visível atrás).
+            AtualizarLimitesDeMaximizacao();
             ReleaseCapture();
             SendMessage(this.Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
         }

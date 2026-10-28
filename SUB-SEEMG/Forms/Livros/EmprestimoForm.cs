@@ -62,7 +62,12 @@ namespace SUB.Forms.Livros
             lstLivros.Click += lstLivros_Click;
             lstLivros.KeyDown += lstLivros_KeyDown;
 
-            SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarBibliotecarias();
+            SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) =>
+            {
+                CarregarUsuariosDoBanco();
+                CarregarBibliotecarias();
+            };
+            SUB.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => CarregarLivrosDoBanco();
         }
         #endregion
 
@@ -146,13 +151,24 @@ namespace SUB.Forms.Livros
                     }
                 }
             }
-            var livro = Livros.FirstOrDefault(l => l.Nome.Equals(nomeLivro, StringComparison.OrdinalIgnoreCase));
+            // O formulário MDI é reutilizado. Recarrega as listas usadas na validação
+            // para não divergir do livro encontrado pelo código de barras nem do responsável exibido no combo.
+            CarregarUsuariosDoBanco();
+            CarregarLivrosDoBanco();
+
+            var livro = Livros.FirstOrDefault(l => TextoBusca.SaoIguais(l.Nome, nomeLivro));
             var responsavel = Usuarios.FirstOrDefault(u => u.Nome.Equals(nomeBibliotecaria, StringComparison.OrdinalIgnoreCase));
 
             // Verifica se algum dos dados não foi encontrado
             if (usuario == null || livro == null || responsavel == null)
             {
-                MessageBox.Show("Usuário, livro ou responsável não encontrado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                var referenciasAusentes = new List<string>();
+                if (usuario == null) referenciasAusentes.Add("usuário");
+                if (livro == null) referenciasAusentes.Add("livro");
+                if (responsavel == null) referenciasAusentes.Add("bibliotecária responsável");
+
+                MessageBox.Show("Não foi possível localizar: " + string.Join(", ", referenciasAusentes) + ".",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -420,13 +436,10 @@ namespace SUB.Forms.Livros
                     conexao.Open();
                     string sql = @"SELECT Id, Nome, Autor, Genero, Quantidade, CodigoBarras, Disponibilidade 
                            FROM Livros 
-                           WHERE Nome LIKE @nome
+                           WHERE Nome IS NOT NULL
                            ORDER BY Nome";
                     using (var cmd = new SqlCeCommand(sql, conexao))
                     {
-                        // Busca só nomes que começam com o filtro
-                        cmd.Parameters.AddWithValue("@nome", filtro + "%");
-
                         using (var reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -441,6 +454,9 @@ namespace SUB.Forms.Livros
                                     CodigoDeBarras = reader.GetString(5),
                                     Disponibilidade = LerDisponibilidade(reader, 6, reader.GetInt32(4))
                                 };
+
+                                if (!TextoBusca.ComecaCom(livro.Nome, filtro))
+                                    continue;
 
                                 _cacheLivros.Add(livro);
 
@@ -538,11 +554,10 @@ private void lstLivros_KeyDown(object sender, KeyEventArgs e)
             conexao.Open();
             string sql = @"SELECT Id, Nome, Autor, Genero, Quantidade, CodigoBarras, Disponibilidade 
                            FROM Livros 
-                           WHERE Nome LIKE @nome
+                           WHERE Nome IS NOT NULL
                            ORDER BY Nome";
             using (var cmd = new SqlCeCommand(sql, conexao))
             {
-                cmd.Parameters.AddWithValue("@nome", filtro + "%");
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -557,6 +572,9 @@ private void lstLivros_KeyDown(object sender, KeyEventArgs e)
                             CodigoDeBarras = reader.GetString(5),
                             Disponibilidade = LerDisponibilidade(reader, 6, reader.GetInt32(4))
                         };
+                        if (!TextoBusca.ComecaCom(livro.Nome, filtro))
+                            continue;
+
                         _cacheLivros.Add(livro);
                         lstLivros.Items.Add($"{livro.Nome} - {livro.Autor}");
                     }

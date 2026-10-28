@@ -60,15 +60,18 @@ namespace SUB.Forms.Relatorio
             using (var conn = Conexao.ObterConexao())
             {
                 conn.Open();
-                var cmd = new SqlCeCommand($"SELECT Nome FROM [{tblLivros}] WHERE Nome LIKE @filtro", conn);
-                cmd.Parameters.AddWithValue("@filtro", filtro + "%");
+                var cmd = new SqlCeCommand($"SELECT Nome FROM [{tblLivros}] WHERE Nome IS NOT NULL ORDER BY Nome", conn);
 
 
                 var lista = new List<string>();
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
-                        lista.Add(reader.GetString(0));
+                    {
+                        string nome = reader.GetString(0);
+                        if (TextoBusca.ComecaCom(nome, filtro))
+                            lista.Add(nome);
+                    }
                 }
 
                 if (lista.Any())
@@ -616,9 +619,6 @@ namespace SUB.Forms.Relatorio
                         bool usaCbBibl = cbBibliotecaria.SelectedIndex > 0 && cbBibliotecaria.SelectedItem != null && cbBibliotecaria.SelectedItem.ToString() != "Todas";
 
                         if (usaUsuario) final.AppendLine(" AND NomeU LIKE @usuario");
-                        if (usaLivro) final.AppendLine(" AND NomeL LIKE @livro");
-
-
                     var acaoSelecionada = cmbAcao.SelectedItem?.ToString();
                     if (!string.IsNullOrWhiteSpace(acaoSelecionada) && acaoSelecionada != "Todas")
                     {
@@ -637,7 +637,6 @@ namespace SUB.Forms.Relatorio
                     using (var cmd = new SqlCeCommand(sqlFinal, conexao))
                     {
                         if (usaUsuario) cmd.Parameters.AddWithValue("@usuario", "%" + txtUsuario.Text.Trim() + "%");
-                        if (usaLivro) cmd.Parameters.AddWithValue("@livro", "%" + txtLivro.Text.Trim() + "%");
                         if (usaCbBibl) cmd.Parameters.AddWithValue("@bibliotecaria", "%" + cbBibliotecaria.SelectedItem.ToString() + "%");
 
                         
@@ -653,6 +652,13 @@ namespace SUB.Forms.Relatorio
                         using (var adapter = new SqlCeDataAdapter(cmd))
                         {
                             adapter.Fill(tabela);
+                        }
+
+                        if (usaLivro && tabela.Columns.Contains("NomeL"))
+                        {
+                            var linhas = tabela.AsEnumerable()
+                                .Where(linha => TextoBusca.Contem(linha.Field<string>("NomeL"), txtLivro.Text));
+                            tabela = linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
                         }
 
                         dgvHistorico.DataSource = tabela;

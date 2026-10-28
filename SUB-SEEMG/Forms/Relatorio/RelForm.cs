@@ -973,6 +973,15 @@ namespace SUB.Forms.Relatorio
                     using (var wb = new XLWorkbook())
                     {
                         var ws = wb.Worksheets.Add("Relatório");
+                        var largurasEmPixels = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+                        {
+                            ["ID"] = 30,
+                            ["Nome do Usuário"] = 190,
+                            ["Nome do Livro"] = 150,
+                            ["Ação"] = 120,
+                            ["Bibliotecária"] = 190,
+                            ["Data da Ação"] = 140
+                        };
 
                         // Cabeçalhos
                         int colIndex = 1;
@@ -984,11 +993,11 @@ namespace SUB.Forms.Relatorio
                                 headerCell.Value = col.HeaderText;
                                 headerCell.Style.Font.Bold = true;
                                 headerCell.Style.Font.FontSize = 13;
-                                headerCell.Style.Fill.BackgroundColor = XLColor.FromArgb(30, 61, 88);
-                                headerCell.Style.Font.FontColor = XLColor.White;
+                                headerCell.Style.Fill.BackgroundColor = XLColor.FromArgb(242, 244, 247);
+                                headerCell.Style.Font.FontColor = XLColor.FromArgb(55, 65, 81);
                                 headerCell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                                 headerCell.Style.Border.OutsideBorder = XLBorderStyleValues.Thick;
-                                ws.Column(colIndex).Width = 30;
+                                ws.Column(colIndex).Width = (largurasEmPixels[col.HeaderText] - 5d) / 7d;
                                 colIndex++;
                             }
                         }
@@ -1034,9 +1043,6 @@ namespace SUB.Forms.Relatorio
                             used.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
                             used.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
                         }
-
-                        // Opcional: autoajuste das colunas para melhor leitura
-                        ws.Columns().AdjustToContents();
 
                         wb.SaveAs(caminhoCompleto);
                     }

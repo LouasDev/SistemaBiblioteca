@@ -101,11 +101,12 @@ public class CustomButton : Button
 
         RectangleF rect = new RectangleF(0f, 0f, Width, Height);
 
-        Color bgColor = !Enabled ? Color.FromArgb(218, 222, 228)
+        bool escuro = SUB.Utils.ThemeManager.Escuro;
+        Color bgColor = !Enabled ? (escuro ? SUB.Utils.ThemeManager.Dark.Desabilitado : Color.FromArgb(218, 222, 228))
                       : _isPressed ? Darken(_baseColor, 0.20f)
                       : _isHovered ? Darken(_baseColor, 0.10f)
                       : _baseColor;
-        Color textColor = Enabled ? base.ForeColor : Color.FromArgb(110, 118, 128);
+        Color textColor = Enabled ? base.ForeColor : (escuro ? Color.FromArgb(126, 134, 148) : Color.FromArgb(110, 118, 128));
 
         using (GraphicsPath path = CreateRoundedPath(rect, _borderRadius))
         using (SolidBrush brush = new SolidBrush(bgColor))

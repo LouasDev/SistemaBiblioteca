@@ -21,6 +21,7 @@ namespace SUB.Forms.Livros
         public LivrosForm()
         {
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
 
             dgvLivros.CellFormatting += dgvLivros_CellFormatting;
@@ -602,6 +603,13 @@ END AS Status
 
                 // Retorna 'true' para dizer ao Windows Forms:
                 // "Eu já processei esta tecla, não faça mais nada com ela."
+                return true;
+            }
+
+            // Enter no campo de pesquisa também procura, como o botão Procurar.
+            if (keyData == Keys.Enter && this.ActiveControl == txtNome)
+            {
+                btnProcurar.PerformClick();
                 return true;
             }
 

@@ -7,6 +7,7 @@ namespace SUB.Models
     {
         public string Nome { get; set; }
         public string CorPrimaria { get; set; }
+        public bool TemaEscuro { get; set; }
         // Credenciais da primeira bibliotecária pertencem exclusivamente ao banco.
         // Estas propriedades permanecem apenas para leitura de configurações antigas
         // e não devem voltar a gerar chaves nulas no instituicao.json.

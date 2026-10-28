@@ -21,6 +21,8 @@ namespace SUB.Forms.Livros
 
             btnConfirmar.Click += btnConfirmar_Click;
             btnCancelar.Click += btnCancelar_Click;
+            AcceptButton = btnConfirmar;
+            CancelButton = btnCancelar;
 
             AtualizarPreviewData();
         }

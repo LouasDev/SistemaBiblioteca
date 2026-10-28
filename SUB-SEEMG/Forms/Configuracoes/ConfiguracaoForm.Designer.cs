@@ -35,9 +35,11 @@
         {
             this.grpInstituicao = new System.Windows.Forms.GroupBox();
             this.cbTemas = new RoundedComboBox();
+            this.cbAparencia = new RoundedComboBox();
             this.c = new RoundedTextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblCor = new System.Windows.Forms.Label();
+            this.lblAparencia = new System.Windows.Forms.Label();
             this.pnlCorPreview = new System.Windows.Forms.Panel();
             this.grpAtualizacao = new System.Windows.Forms.GroupBox();
             this.btnCancelarDownload = new CustomButton();
@@ -68,14 +70,16 @@
             this.grpInstituicao.Controls.Add(this.lblNome);
             this.grpInstituicao.Controls.Add(this.lblCor);
             this.grpInstituicao.Controls.Add(this.pnlCorPreview);
+            this.grpInstituicao.Controls.Add(this.lblAparencia);
+            this.grpInstituicao.Controls.Add(this.cbAparencia);
             this.grpInstituicao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpInstituicao.Location = new System.Drawing.Point(20, 106);
             this.grpInstituicao.Name = "grpInstituicao";
             this.grpInstituicao.Padding = new System.Windows.Forms.Padding(12, 8, 12, 12);
-            this.grpInstituicao.Size = new System.Drawing.Size(1240, 112);
+            this.grpInstituicao.Size = new System.Drawing.Size(1240, 176);
             this.grpInstituicao.TabIndex = 1;
             this.grpInstituicao.TabStop = false;
-            this.grpInstituicao.Text = "Instituição";
+            this.grpInstituicao.Text = "Instituição e aparência";
             // 
             // cbTemas
             // 
@@ -146,6 +150,39 @@
             this.lblCor.Size = new System.Drawing.Size(101, 20);
             this.lblCor.TabIndex = 2;
             this.lblCor.Text = "Cor principal:";
+            //
+            // lblAparencia
+            //
+            this.lblAparencia.AutoSize = true;
+            this.lblAparencia.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
+            this.lblAparencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
+            this.lblAparencia.Location = new System.Drawing.Point(16, 100);
+            this.lblAparencia.Name = "lblAparencia";
+            this.lblAparencia.Size = new System.Drawing.Size(98, 25);
+            this.lblAparencia.TabIndex = 7;
+            this.lblAparencia.Text = "Aparência:";
+            //
+            // cbAparencia
+            //
+            this.cbAparencia.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.cbAparencia.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cbAparencia.BorderRadius = 8;
+            this.cbAparencia.BorderThickness = 1;
+            this.cbAparencia.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbAparencia.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+            this.cbAparencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAparencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbAparencia.Font = new System.Drawing.Font("Segoe UI", 14.25F);
+            this.cbAparencia.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.cbAparencia.FormattingEnabled = true;
+            this.cbAparencia.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
+            this.cbAparencia.Location = new System.Drawing.Point(16, 129);
+            this.cbAparencia.Name = "cbAparencia";
+            this.cbAparencia.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
+            this.cbAparencia.PlaceholderMargin = 10;
+            this.cbAparencia.PlaceholderText = "Escolha a aparência";
+            this.cbAparencia.Size = new System.Drawing.Size(590, 34);
+            this.cbAparencia.TabIndex = 8;
             // 
             // pnlCorPreview
             // 
@@ -456,6 +493,8 @@
         private System.Windows.Forms.GroupBox grpManutencao;
         private RoundedTextBox c;
         private RoundedComboBox cbTemas;
+        private RoundedComboBox cbAparencia;
+        private System.Windows.Forms.Label lblAparencia;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
         private System.Windows.Forms.Label lblSubtitulo;
         public System.Windows.Forms.Label Titulo;

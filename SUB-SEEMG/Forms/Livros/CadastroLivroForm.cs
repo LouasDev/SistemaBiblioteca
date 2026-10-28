@@ -45,6 +45,7 @@ namespace SUB.Forms.Livros
             validationTimer.Tick += ValidationTimer_Tick;
 
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
             this.StartPosition = FormStartPosition.CenterScreen;
 

@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Manual do SUB</title>
+<meta name="description" content="Guia ilustrado das telas do SUB, com setas numeradas, regras do sistema e atalhos de teclado.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;600&display=swap">
+<style>
+  /* Base que o publicador de artefatos aplicava: margem zero, imagens contidas e
+     respiro para as áreas seguras de celulares com recorte. */
+  :root { color-scheme: light; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+  /* Layout: a página repete a forma do SUB. O menu lateral azul do app vira o índice e o conteúdo
+     fica numa folha clara sobre a superfície azulada do tema padrão; no celular o menu vira uma
+     faixa no topo com os itens roláveis na horizontal. */
+  :root {
+    --fundo: #eef4fa;
+    --folha: #ffffff;
+    --tinta: #14233a;
+    --suave: #56657a;
+    --linha: #d6e0ec;
+    --azul: #1f487e;
+    --azul-texto: #1f487e;
+    --menu: #1f487e;
+    --menu-ativo: #2c5b97;
+    --menu-texto: #ffffff;
+    --menu-suave: #b9cbe3;
+    --seta: #e8590c;
+    --tecla: #f4f7fb;
+    --sombra: 0 1px 2px rgba(20, 35, 58, .06), 0 10px 28px rgba(20, 35, 58, .07);
+    --display: "Lexend", "Segoe UI", system-ui, sans-serif;
+    --corpo: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    --mono: "Atkinson Hyperlegible Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --fundo: #15181e; --folha: #1d2129; --tinta: #e8ebf1; --suave: #9da6b4; --linha: #323844;
+      --azul: #1f487e; --azul-texto: #93b6e8; --menu: #1f487e; --menu-ativo: #2c5b97;
+      --menu-texto: #ffffff; --menu-suave: #b9cbe3; --seta: #ff7a33; --tecla: #262b35;
+      --sombra: 0 0 0 1px rgba(255, 255, 255, .02); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --fundo: #15181e; --folha: #1d2129; --tinta: #e8ebf1; --suave: #9da6b4; --linha: #323844;
+    --azul: #1f487e; --azul-texto: #93b6e8; --menu: #1f487e; --menu-ativo: #2c5b97;
+    --menu-texto: #ffffff; --menu-suave: #b9cbe3; --seta: #ff7a33; --tecla: #262b35;
+    --sombra: 0 0 0 1px rgba(255, 255, 255, .02); color-scheme: dark;
+  }
+
+  body { background: var(--fundo); color: var(--tinta); font-family: var(--corpo); font-size: 17px; line-height: 1.62; }
+  .app { display: grid; grid-template-columns: 268px minmax(0, 1fr); align-items: start; }
+
+  /* Menu lateral, no desenho do menu do SUB */
+  .menu {
+    position: sticky; top: env(safe-area-inset-top, 0px); height: 100vh; overflow-y: auto;
+    background: var(--menu); color: var(--menu-texto);
+    padding-block: 28px 32px;
+    padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: 18px;
+    display: grid; gap: 22px; align-content: start;
+  }
+  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .marca img { width: 52px; height: 52px; border-radius: 6px; box-shadow: 0 0 0 2px rgba(255, 255, 255, .85); }
+  .marca strong { display: block; font-family: var(--display); font-size: 22px; font-weight: 700; line-height: 1.1; letter-spacing: .02em; }
+  .marca span { display: block; font-size: 13px; color: var(--menu-suave); line-height: 1.3; }
+  .menu nav { display: grid; gap: 18px; }
+  .grupo p { margin: 0 0 6px 10px; font-family: var(--mono); font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--menu-suave); }
+  .grupo ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .grupo a {
+    display: block; padding: 7px 10px; border-radius: 6px; color: var(--menu-texto); text-decoration: none;
+    font-size: 15.5px; border-left: 3px solid transparent;
+  }
+  .grupo a:hover { background: rgba(255, 255, 255, .08); }
+  .grupo a:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+  .grupo a[aria-current="true"] { background: var(--menu-ativo); border-left-color: #fff; font-weight: 600; }
+
+  main {
+    padding-block: 44px 96px;
+    padding-left: max(40px, env(safe-area-inset-left, 0px)); padding-right: max(24px, env(safe-area-inset-right, 0px));
+    min-width: 0;
+  }
+  .folha { max-width: 940px; margin: 0 auto; }
+
+  .capa { padding-bottom: 28px; }
+  .rotulo { margin: 0; font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--azul-texto); }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(36px, 5.2vw, 56px); line-height: 1.05; letter-spacing: -.01em; margin: 10px 0 14px; text-wrap: balance; }
+  .lead { font-size: 19px; color: var(--suave); max-width: 60ch; margin: 0; }
+
+  /* Ficha de regras: números reais aplicados pelo sistema */
+  .regras { background: var(--folha); border: 1px solid var(--linha); border-radius: 12px; box-shadow: var(--sombra); padding: 22px 24px; }
+  .regras h2 { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--suave); margin: 0 0 14px; }
+  .fichas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 24px; margin: 0; }
+  @media (max-width: 700px) { .fichas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 420px) { .fichas { grid-template-columns: minmax(0, 1fr); } }
+  .fichas div { display: grid; gap: 4px; align-content: start; padding-left: 12px; border-left: 3px solid var(--azul); }
+  .fichas dt { font-family: var(--display); font-weight: 600; font-size: 24px; line-height: 1.15; font-variant-numeric: tabular-nums; }
+  .fichas dd { margin: 0; font-size: 15px; color: var(--suave); line-height: 1.45; }
+  .chave { display: flex; gap: 12px; align-items: center; margin: 22px 0 0; color: var(--suave); font-size: 15.5px; }
+
+  section { padding-top: 56px; scroll-margin-top: 20px; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 32px; line-height: 1.15; margin: 0 0 8px; text-wrap: balance; }
+  h3 { font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.25; margin: 36px 0 6px; text-wrap: balance; }
+  section > p, .tela > p { max-width: 66ch; color: var(--suave); margin: 0 0 10px; }
+  .onde { font-family: var(--mono); font-size: 13.5px; color: var(--suave); margin: 0 0 12px; }
+  .onde b { color: var(--azul-texto); font-weight: 600; }
+
+  figure { margin: 14px 0 16px; background: var(--folha); border: 1px solid var(--linha); border-radius: 12px; box-shadow: var(--sombra); padding: 12px; }
+  figure img { display: block; margin: 0 auto; max-width: 100%; height: auto; border-radius: 6px; }
+  figure.janela img { max-width: min(100%, 620px); }
+  figure.menu-app img { max-width: min(100%, 340px); }
+
+  ol.passos { list-style: none; counter-reset: passo; margin: 0; padding: 0; display: grid; gap: 10px; max-width: 70ch; }
+  ol.passos li { counter-increment: passo; display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; align-items: start; }
+  ol.passos li::before, .num {
+    content: counter(passo); display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--seta); color: #fff; font-family: var(--display); font-weight: 700; font-size: 14px; line-height: 1;
+    box-shadow: 0 0 0 2px var(--folha);
+  }
+  .num { flex: none; content: none; }
+  ol.passos b { font-weight: 700; }
+
+  .aviso { margin-top: 16px; max-width: 70ch; padding: 14px 16px; border-radius: 8px; background: var(--folha); border: 1px solid var(--linha); border-left: 4px solid #b22222; font-size: 16px; }
+  .aviso strong { color: #b22222; }
+  kbd { font-family: var(--mono); font-size: 13.5px; padding: 1px 7px; border: 1px solid var(--linha); border-bottom-width: 3px; border-radius: 5px; background: var(--tecla); white-space: nowrap; }
+
+  .tabela { overflow-x: auto; margin-top: 12px; border: 1px solid var(--linha); border-radius: 12px; background: var(--folha); box-shadow: var(--sombra); }
+  table { width: 100%; border-collapse: collapse; font-size: 15.5px; min-width: 560px; }
+  th, td { text-align: left; padding: 11px 14px; vertical-align: top; border-bottom: 1px solid var(--linha); }
+  th { font-family: var(--mono); font-size: 12.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
+  tr:last-child td { border-bottom: 0; }
+
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--linha); color: var(--suave); font-size: 15px; }
+
+  @media (max-width: 880px) {
+    .app { grid-template-columns: minmax(0, 1fr); }
+    .menu {
+      position: static; height: auto; overflow: visible; gap: 16px; padding-block: 18px;
+      padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    }
+    .menu nav { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+    .grupo { display: contents; }
+    .grupo p { display: none; }
+    .grupo ul { display: contents; }
+    .grupo a { white-space: nowrap; border-left: 0; border-bottom: 3px solid transparent; background: rgba(255, 255, 255, .08); }
+    .grupo a[aria-current="true"] { border-bottom-color: #fff; }
+    main { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 72px; }
+    h2 { font-size: 27px; }
+  }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="menu">
+    <a class="marca" href="#topo">
+      <img src="img/sub-logo.png" alt="" width="52" height="52">
+      <span><strong>SUB</strong><span>Manual de uso</span></span>
+    </a>
+    <nav aria-label="Seções do manual">
+      <div class="grupo">
+        <p>Antes de começar</p>
+        <ul>
+          <li><a href="#primeiro-uso">Primeiro uso</a></li>
+          <li><a href="#entrar">Entrar no sistema</a></li>
+        </ul>
+      </div>
+      <div class="grupo">
+        <p>No dia a dia</p>
+        <ul>
+          <li><a href="#menu">Menu e Início</a></li>
+          <li><a href="#pessoas">Pessoas</a></li>
+          <li><a href="#acervo">Acervo</a></li>
+          <li><a href="#emprestimos">Empréstimos</a></li>
+          <li><a href="#devolucoes">Devoluções</a></li>
+          <li><a href="#relatorios">Relatórios</a></li>
+        </ul>
+      </div>
+      <div class="grupo">
+        <p>Administração</p>
+        <ul>
+          <li><a href="#configuracoes">Configurações</a></li>
+          <li><a href="#mapeamento">Mapeamento anual</a></li>
+        </ul>
+      </div>
+      <div class="grupo">
+        <p>Consulta rápida</p>
+        <ul>
+          <li><a href="#atalhos">Atalhos de teclado</a></li>
+        </ul>
+      </div>
+    </nav>
+  </aside>
+
+  <main id="topo">
+    <div class="folha">
+      <header class="capa">
+        <p class="rotulo">SUB · Sistema Único Bibliotecário</p>
+        <h1>Manual de uso</h1>
+        <p class="lead">Guia das telas do SUB para quem trabalha na biblioteca: do primeiro acesso ao empréstimo, à devolução, aos relatórios e às configurações.</p>
+      </header>
+
+      <section class="regras" aria-labelledby="regras-titulo" style="padding-top: 22px">
+        <h2 id="regras-titulo">Regras que o sistema aplica</h2>
+        <dl class="fichas">
+          <div><dt>7 dias</dt><dd>Prazo padrão de devolução. Para professores, a data é escolhida livremente.</dd></div>
+          <div><dt>14 dias</dt><dd>Máximo de cada prorrogação de prazo.</dd></div>
+          <div><dt>6 a 25</dt><dd>Caracteres da senha das bibliotecárias.</dd></div>
+          <div><dt>Ctrl + R</dt><dd>Abre o empréstimo rápido a partir do Início.</dd></div>
+          <div><dt>Enter</dt><dd>Faz a pesquisa no Acervo, em Devoluções e em Relatórios.</dd></div>
+          <div><dt>1366 × 768</dt><dd>Menor resolução recomendada. Nela, campos e botões aparecem sem cortes.</dd></div>
+        </dl>
+      </section>
+      <p class="chave"><span class="num" aria-hidden="true">1</span> Os números laranja nas imagens correspondem às explicações logo abaixo de cada tela.</p>
+
+      <section id="primeiro-uso">
+        <h2>Primeiro uso</h2>
+        <p>Na primeira vez que o SUB é aberto em um computador, um assistente de três etapas prepara a instalação. Ele não aparece de novo depois de concluído.</p>
+
+        <div class="tela">
+          <h3>Etapa 1 · Instituição e tema</h3>
+          <figure class="janela"><img src="img/01-primeiro-uso-etapa-1.png" alt="Etapa 1 do assistente de primeiro uso, com nome da instituição e tema" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nome da instituição.</b> Aparece no login, no menu e nos documentos gerados.</span></li>
+            <li><span><b>Tema do sistema.</b> Cor principal usada em todo o SUB. O quadrado ao lado mostra a cor escolhida.</span></li>
+            <li><span><b>Roteiro de configuração.</b> Mostra em qual das três etapas você está.</span></li>
+            <li><span><b>Avançar</b> para a próxima etapa.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Etapa 2 · Acesso da primeira bibliotecária</h3>
+          <figure class="janela"><img src="img/01-primeiro-uso-etapa-2.png" alt="Etapa 2 do assistente, com os dados da bibliotecária e o código de recuperação" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nome completo</b> da bibliotecária responsável.</span></li>
+            <li><span><b>E-mail.</b> É o que ela vai digitar para entrar no SUB.</span></li>
+            <li><span><b>Telefone</b> de contato.</span></li>
+            <li><span><b>Senha e confirmação</b>, com 6 a 25 caracteres.</span></li>
+            <li><span><b>Mostrar senhas</b> para conferir o que foi digitado.</span></li>
+            <li><span><b>Código de recuperação.</b> Gerado pelo sistema. É a única forma de recuperar o acesso se a senha for esquecida.</span></li>
+            <li><span><b>Salvar código.</b> Grava o código em um arquivo TXT. Guarde esse arquivo fora do computador (pen drive ou e-mail): ele também é exigido para resetar o aplicativo.</span></li>
+            <li><span><b>Avançar</b> depois de salvar o código.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Etapa 3 · Turmas</h3>
+          <figure class="janela"><img src="img/01-primeiro-uso-etapa-3.png" alt="Etapa 3 do assistente, com a lista de turmas" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nova turma.</b> Digite o nome, por exemplo “6º Ano 1”.</span></li>
+            <li><span><b>Adicionar turma</b> inclui o nome na lista.</span></li>
+            <li><span><b>Lista de turmas</b> usadas no cadastro de alunos.</span></li>
+            <li><span><b>Remover selecionada</b> tira da lista a turma marcada.</span></li>
+            <li><span><b>Concluir configuração</b> termina o assistente. As turmas podem ser alteradas depois em Pessoas.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="entrar">
+        <h2>Entrar no sistema</h2>
+        <div class="tela">
+          <figure class="janela"><img src="img/02-login.png" alt="Tela de login do SUB" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>E-mail</b> da bibliotecária.</span></li>
+            <li><span><b>Senha.</b></span></li>
+            <li><span><b>Mostrar senha</b> exibe o que foi digitado.</span></li>
+            <li><span><b>Recuperar meu acesso</b>, para quem esqueceu a senha (veja abaixo).</span></li>
+            <li><span><b>Entrar.</b> A tecla <kbd>Enter</kbd> também funciona.</span></li>
+            <li><span><b>Sobre o SUB e sua equipe</b> abre a tela de informações do sistema.</span></li>
+            <li><span><b>Fechar</b> encerra o aplicativo, depois de uma confirmação.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Recuperar acesso</h3>
+          <figure class="janela"><img src="img/03-login-recuperar-senha.png" alt="Janela de recuperação de acesso" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>E-mail de acesso</b> da bibliotecária.</span></li>
+            <li><span><b>Continuar.</b> Em seguida o SUB pede o código de recuperação (o do arquivo TXT salvo no primeiro uso) e a nova senha, com 6 a 25 caracteres.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Sobre o SUB</h3>
+          <figure class="janela"><img src="img/04-sobre.png" alt="Tela Sobre o SUB, com a equipe do projeto" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Ícones da equipe</b> abrem o perfil de cada integrante no GitHub.</span></li>
+            <li><span><b>Repositório do projeto</b> abre o código-fonte do SUB.</span></li>
+            <li><span><b>Licença MIT</b> mostra a licença de uso.</span></li>
+            <li><span><b>Voltar ao login.</b></span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="menu">
+        <h2>Menu e Início</h2>
+        <div class="tela">
+          <h3>Menu lateral</h3>
+          <p>O menu fica sempre à esquerda. Pessoas e Acervo abrem uma lista de opções ao serem clicados; na imagem, o Acervo está aberto.</p>
+          <figure class="menu-app"><img src="img/00-menu.png" alt="Menu lateral do SUB com as opções do Acervo abertas" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Início.</b> Painel com o resumo da biblioteca.</span></li>
+            <li><span><b>Pessoas.</b> Abre Consultar usuários, Cadastrar usuário e Editar usuário.</span></li>
+            <li><span><b>Acervo.</b> Abre as opções de livros e circulação listadas abaixo.</span></li>
+            <li><span><b>Consultar acervo</b>: busca de livros e disponibilidade.</span></li>
+            <li><span><b>Registrar empréstimo</b> de um livro para uma pessoa.</span></li>
+            <li><span><b>Empréstimo rápido</b> de livros didáticos para professores, por turma.</span></li>
+            <li><span><b>Cadastrar livro.</b></span></li>
+            <li><span><b>Registrar devolução</b> e prorrogações.</span></li>
+            <li><span><b>Relatórios</b> do histórico de movimentações.</span></li>
+            <li><span><b>Configuração</b> da instituição, da aparência e das atualizações.</span></li>
+            <li><span><b>Encerrar sessão</b> e voltar ao login.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Início</h3>
+          <p>É a primeira tela depois do login. Os botões de minimizar, maximizar e fechar, no canto superior direito, mostram o que fazem ao passar o mouse.</p>
+          <figure><img src="img/10-inicio.png" alt="Tela Início com os cartões de resumo e a lista de devedores" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Empréstimo Rápido.</b> Atalho para a tela de empréstimo rápido. No teclado: <kbd>Ctrl</kbd> + <kbd>R</kbd>.</span></li>
+            <li><span><b>Cartões de resumo:</b> usuários, livros, empréstimos ativos e atrasados, empréstimos rápidos do dia, média mensal e o leitor que mais pegou livros. Em telas menores, os cartões passam para duas linhas.</span></li>
+            <li><span><b>Abas.</b> Devedores lista quem está com devolução atrasada; Empréstimos traz os números gerais; Livros Populares mostra os títulos mais emprestados e a disponibilidade de cada um.</span></li>
+            <li><span><b>Imprimir carta.</b> Gera, em PDF, uma carta de cobrança para o leitor com o livro em atraso.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="pessoas">
+        <h2>Pessoas</h2>
+        <div class="tela">
+          <h3>Consultar usuários</h3>
+          <p class="onde">Menu: <b>Pessoas › Consultar usuários</b></p>
+          <figure><img src="img/20-pessoas-consultar.png" alt="Tela de consulta de pessoas" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nome.</b> A lista filtra enquanto você digita.</span></li>
+            <li><span><b>Tipo de usuário:</b> aluno, professor, bibliotecária ou outros.</span></li>
+            <li><span><b>Situação do empréstimo:</b> sem empréstimo, ativo ou atrasado.</span></li>
+            <li><span><b>Filtrar</b> aplica os filtros. O botão <b>Editar</b>, no fim de cada linha, abre o cadastro da pessoa.</span></li>
+            <li><span><b>Gerenciar turmas</b> abre a lista de turmas da instituição.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Cadastrar pessoa</h3>
+          <p class="onde">Menu: <b>Pessoas › Cadastrar usuário</b></p>
+          <figure><img src="img/21-pessoas-cadastrar.png" alt="Tela de cadastro de pessoa" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Tipo de usuário.</b> Escolha primeiro: os demais campos são liberados conforme o tipo. Para bibliotecária, aparecem também os campos de senha.</span></li>
+            <li><span><b>Nome completo.</b></span></li>
+            <li><span><b>E-mail.</b> Opcional: sem ele a pessoa não recebe notificações.</span></li>
+            <li><span><b>Turma</b> do aluno. Ao digitar, o SUB sugere as turmas cadastradas.</span></li>
+            <li><span><b>Telefone</b> do aluno ou responsável.</span></li>
+            <li><span><b>CPF.</b></span></li>
+            <li><span><b>Data de nascimento.</b> Clique no calendário para escolher.</span></li>
+            <li><span><b>Limpar</b> apaga o formulário.</span></li>
+            <li><span><b>Cadastrar usuário</b> salva. Os campos com asterisco vermelho são obrigatórios.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Editar pessoa</h3>
+          <p class="onde">Menu: <b>Pessoas › Editar usuário</b>, ou o botão Editar na consulta</p>
+          <figure><img src="img/22-pessoas-editar.png" alt="Tela de edição de pessoa" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Pessoa selecionada.</b> Digite o nome e escolha na lista de sugestões.</span></li>
+            <li><span><b>Dados da pessoa.</b> Ficam liberados para edição depois da escolha.</span></li>
+            <li><span><b>Excluir</b> remove o cadastro.</span></li>
+            <li><span><b>Cancelar</b> descarta as alterações.</span></li>
+            <li><span><b>Salvar</b> grava as alterações.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Gerenciar turmas</h3>
+          <p class="onde">Botão <b>Gerenciar turmas</b> em Consultar usuários</p>
+          <figure class="janela"><img src="img/23-pessoas-gerenciar-turmas.png" alt="Janela Gerenciar turmas" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nova turma.</b> Digite o nome.</span></li>
+            <li><span><b>Adicionar turma</b> inclui na lista.</span></li>
+            <li><span><b>Turmas cadastradas.</b> Clique em uma para selecioná-la.</span></li>
+            <li><span><b>Editar selecionada</b> renomeia a turma marcada.</span></li>
+            <li><span><b>Remover selecionada.</b></span></li>
+            <li><span><b>Salvar alterações</b> grava a lista. Nada muda até clicar aqui.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="acervo">
+        <h2>Acervo</h2>
+        <div class="tela">
+          <h3>Consultar acervo</h3>
+          <p class="onde">Menu: <b>Acervo › Consultar acervo</b></p>
+          <figure><img src="img/30-acervo-livros.png" alt="Tela de consulta do acervo" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Pesquisa</b> por texto. Tecle <kbd>Enter</kbd> para procurar.</span></li>
+            <li><span><b>Código de barras.</b> Clique no campo e passe o leitor no livro; a busca é feita na hora.</span></li>
+            <li><span><b>Busque por</b> nome, autor ou gênero, e <b>Disponibilidade</b>: todos, disponíveis ou indisponíveis.</span></li>
+            <li><span><b>Procurar</b> aplica a pesquisa.</span></li>
+            <li><span><b>Contadores</b> de exemplares (unidades) e de títulos encontrados.</span></li>
+            <li><span><b>Editar</b> abre o cadastro do livro.</span></li>
+            <li><span><b>Livro indisponível:</b> linha em cinza e itálico, quando não há exemplares livres.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Editar livro</h3>
+          <p class="onde">Botão <b>Editar</b> na consulta do acervo</p>
+          <figure><img src="img/30b-acervo-editar-livro.png" alt="Tela de edição de livro" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Etiqueta</b> gera as etiquetas com código de barras do livro.</span></li>
+            <li><span><b>Nome do livro</b> e os demais dados.</span></li>
+            <li><span><b>Quantidade</b> de exemplares no acervo.</span></li>
+            <li><span><b>Excluir</b> o livro.</span></li>
+            <li><span><b>Cancelar</b> sem salvar.</span></li>
+            <li><span><b>Salvar.</b></span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Gerar etiquetas</h3>
+          <figure class="janela"><img src="img/33b-acervo-etiquetas.png" alt="Janela Gerar etiquetas" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Cancelar</b>, ou a tecla <kbd>Esc</kbd>.</span></li>
+            <li><span><b>Imprimir</b> direto na impressora.</span></li>
+            <li><span><b>Salvar em PDF</b> para imprimir depois.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Cadastrar livro</h3>
+          <p class="onde">Menu: <b>Acervo › Cadastrar livro</b></p>
+          <figure><img src="img/33-acervo-cadastrar-livro.png" alt="Tela de cadastro de livro" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Código de barras</b> (ISBN-13) do livro. Pode ser lido com o leitor.</span></li>
+            <li><span><b>Busca online</b> preenche nome, gênero e autor a partir do ISBN. Se o livro não for encontrado, preencha à mão.</span></li>
+            <li><span><b>Nome do livro.</b></span></li>
+            <li><span><b>Gênero.</b></span></li>
+            <li><span><b>Quantidade</b> de exemplares.</span></li>
+            <li><span><b>Autor.</b></span></li>
+            <li><span><b>Limpar</b> o formulário.</span></li>
+            <li><span><b>Cadastrar livro.</b></span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="emprestimos">
+        <h2>Empréstimos</h2>
+        <div class="tela">
+          <h3>Registrar empréstimo</h3>
+          <p class="onde">Menu: <b>Acervo › Registrar empréstimo</b></p>
+          <figure><img src="img/31-acervo-emprestimo.png" alt="Tela de empréstimo de livro" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nome da pessoa.</b> Digite e escolha na lista de sugestões.</span></li>
+            <li><span><b>Livro.</b> Digite e escolha na lista.</span></li>
+            <li><span><b>Código de barras.</b> Alternativa ao campo Livro: clique e passe o leitor.</span></li>
+            <li><span><b>Bibliotecária responsável</b> pelo empréstimo.</span></li>
+            <li><span><b>Data do empréstimo</b>, preenchida com o dia de hoje.</span></li>
+            <li><span><b>Devolução prevista.</b> O prazo padrão é de 7 dias. Para professores, a data pode ser escolhida livremente.</span></li>
+            <li><span><b>Estender devolução</b> libera a escolha de outra data para os demais leitores.</span></li>
+            <li><span><b>Registrar empréstimo.</b></span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Empréstimo rápido</h3>
+          <p class="onde">Menu: <b>Acervo › Empréstimo rápido</b>, o botão do Início ou <kbd>Ctrl</kbd> + <kbd>R</kbd></p>
+          <p>Feito para os livros didáticos que o professor leva para a sala e devolve no mesmo dia, em quantidade.</p>
+          <figure><img src="img/32-acervo-emprestimo-rapido.png" alt="Tela de empréstimo rápido" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Professor.</b></span></li>
+            <li><span><b>Livro.</b></span></li>
+            <li><span><b>Código de barras</b> do livro, pelo leitor.</span></li>
+            <li><span><b>Turma</b> que vai usar os livros.</span></li>
+            <li><span><b>Bibliotecária.</b> A hora do empréstimo é registrada sozinha.</span></li>
+            <li><span><b>Quantidade</b> de exemplares. As setas ao lado aumentam ou diminuem.</span></li>
+            <li><span><b>Registrar empréstimo.</b> O registro entra na lista de empréstimos realizados da semana.</span></li>
+            <li><span><b>Finalizar</b> abre a devolução daquele empréstimo.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Devolver livro didático</h3>
+          <p class="onde">Botão <b>Finalizar</b> no empréstimo rápido</p>
+          <figure class="janela"><img src="img/32b-acervo-devolucao-rapida.png" alt="Janela de devolução de livro didático" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Qtd devolvida.</b> Já vem com a quantidade emprestada. Ajuste se nem todos voltaram.</span></li>
+            <li><span><b>Devolver</b>, ou <kbd>Enter</kbd>, registra a devolução com a hora atual. <kbd>Esc</kbd> fecha sem devolver.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="devolucoes">
+        <h2>Devoluções</h2>
+        <div class="tela">
+          <p class="onde">Menu: <b>Acervo › Registrar devolução</b></p>
+          <figure><img src="img/34-acervo-devolucao.png" alt="Tela de devoluções" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Nome da pessoa.</b></span></li>
+            <li><span><b>Nome do livro.</b> Nos dois campos de nome, <kbd>Enter</kbd> faz a busca.</span></li>
+            <li><span><b>Código de barras</b>, pelo leitor; a busca é feita na hora.</span></li>
+            <li><span><b>Situação:</b> todos, ativos, atrasados ou devolvidos.</span></li>
+            <li><span><b>Procurar</b> aplica os filtros.</span></li>
+            <li><span><b>Devolver</b> registra a devolução do empréstimo selecionado na lista.</span></li>
+            <li><span><b>Prorrogar prazo</b> do empréstimo selecionado.</span></li>
+            <li><span><b>Ficha</b> mostra os dados de contato do leitor.</span></li>
+            <li><span><b>Status:</b> em vermelho os atrasados, em verde os ativos e em cinza os já devolvidos.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Prorrogar empréstimo</h3>
+          <figure class="janela"><img src="img/34b-acervo-prorrogar.png" alt="Janela Prorrogar empréstimo" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Dias de prorrogação</b>, até 14. Use as setas ou digite.</span></li>
+            <li><span><b>Nova data</b> de devolução, calculada na hora.</span></li>
+            <li><span><b>Confirmar</b>, ou <kbd>Enter</kbd>. <kbd>Esc</kbd> cancela.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Ficha do aluno</h3>
+          <figure><img src="img/34c-acervo-ficha-aluno.png" alt="Ficha do aluno" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Dados do leitor</b>: nome, e-mail, turma, telefone, CPF e data de nascimento. A ficha é só para consulta.</span></li>
+            <li><span><b>Fechar ficha</b> volta para Devoluções.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="relatorios">
+        <h2>Relatórios</h2>
+        <p class="onde">Menu: <b>Relatórios</b></p>
+        <figure><img src="img/40-relatorios.png" alt="Tela de relatórios" loading="lazy"></figure>
+        <ol class="passos">
+          <li><span><b>Nome da pessoa.</b></span></li>
+          <li><span><b>Nome do livro.</b> Nos dois campos, <kbd>Enter</kbd> filtra.</span></li>
+          <li><span><b>Tipo de ação:</b> empréstimo, devolução, empréstimo rápido ou prorrogação.</span></li>
+          <li><span><b>Período</b>, com data de início e de fim. Por padrão, os últimos 30 dias.</span></li>
+          <li><span><b>Bibliotecária responsável.</b></span></li>
+          <li><span><b>Filtrar</b> mostra o histórico na tabela.</span></li>
+          <li><span><b>Exportar</b> salva o resultado como planilha do Excel (.xlsx).</span></li>
+        </ol>
+      </section>
+
+      <section id="configuracoes">
+        <h2>Configurações</h2>
+        <p class="onde">Menu: <b>Configuração</b></p>
+        <figure><img src="img/50-configuracao.png" alt="Tela de configurações da instituição" loading="lazy"></figure>
+        <ol class="passos">
+          <li><span><b>Nome da instituição.</b></span></li>
+          <li><span><b>Cor principal</b> do sistema.</span></li>
+          <li><span><b>Prévia</b> da cor escolhida.</span></li>
+          <li><span><b>Aparência:</b> Claro ou Escuro. Vale para todas as telas, inclusive o login, e é aplicada assim que você salva.</span></li>
+          <li><span><b>Verificar atualizações</b> consulta se há uma versão nova do SUB.</span></li>
+          <li><span><b>Ver novidades</b> da versão instalada.</span></li>
+          <li><span><b>Resetar aplicativo</b> apaga todos os dados desta instalação (veja abaixo).</span></li>
+          <li><span><b>Salvar.</b> O SUB pede a senha da bibliotecária para confirmar.</span></li>
+        </ol>
+
+        <div class="tela">
+          <h3>Confirmação de senha</h3>
+          <figure class="janela"><img src="img/52-confirmacao-senha.png" alt="Janela de confirmação de senha" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Senha</b> de quem está usando o sistema.</span></li>
+            <li><span><b>Confirmar</b>, ou <kbd>Enter</kbd>, grava as alterações. <kbd>Esc</kbd> cancela.</span></li>
+          </ol>
+        </div>
+
+        <div class="tela">
+          <h3>Resetar aplicativo</h3>
+          <figure class="janela"><img src="img/51-configuracao-reset-termo.png" alt="Termo de confirmação do reset" loading="lazy"></figure>
+          <ol class="passos">
+            <li><span><b>Dados que serão excluídos</b>, com a contagem desta instalação.</span></li>
+            <li><span><b>Li as informações…</b> Marque para confirmar que entendeu.</span></li>
+            <li><span><b>Selecionar arquivo TXT</b> de recuperação salvo no primeiro uso.</span></li>
+            <li><span><b>Validar e continuar</b>, liberado só com a caixa marcada e o arquivo correto.</span></li>
+          </ol>
+          <p class="aviso"><strong>Atenção:</strong> o reset é definitivo e apaga também os backups locais. Arquivos exportados para outras pastas, como relatórios e PDFs, continuam onde estão.</p>
+        </div>
+      </section>
+
+      <section id="mapeamento">
+        <h2>Mapeamento anual de turmas</h2>
+        <p>No início de cada ano, quando o mapeamento está pendente, o SUB oferece este assistente para passar os alunos para a turma seguinte. Ele sugere a próxima turma de cada uma; você confirma ou ajusta. Em telas menores, a janela se ajusta para os botões continuarem visíveis.</p>
+        <figure><img src="img/60-mapeamento-turmas.png" alt="Assistente de mapeamento de turmas" loading="lazy"></figure>
+        <ol class="passos">
+          <li><span><b>Progresso</b> do assistente, em três etapas.</span></li>
+          <li><span><b>Novo padrão.</b> Clique na célula para escolher para qual turma os alunos vão. “EGRESSO” marca quem está saindo da escola.</span></li>
+          <li><span><b>Cancelar</b> sem aplicar mudanças.</span></li>
+          <li><span><b>Anterior</b> volta uma etapa.</span></li>
+          <li><span><b>Avançar</b> para a próxima etapa.</span></li>
+        </ol>
+      </section>
+
+      <section id="atalhos">
+        <h2>Atalhos de teclado</h2>
+        <p>Para quem usa o leitor de código de barras ou prefere o teclado.</p>
+        <div class="tabela">
+          <table>
+            <thead>
+              <tr><th scope="col">Tecla</th><th scope="col">Onde</th><th scope="col">O que faz</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><kbd>Enter</kbd></td><td>Acervo, Devoluções e Relatórios</td><td>Faz a pesquisa com o que foi digitado. Com a lista de sugestões aberta, escolhe a sugestão.</td></tr>
+              <tr><td><kbd>Enter</kbd></td><td>Campos de código de barras do Acervo e de Devoluções</td><td>Busca pelo código lido. O leitor envia o Enter sozinho.</td></tr>
+              <tr><td><kbd>Enter</kbd></td><td>Login, prorrogação, confirmação de senha e devolução de livro didático</td><td>Confirma.</td></tr>
+              <tr><td><kbd>Esc</kbd></td><td>Prorrogação, confirmação de senha, etiquetas, devolução de livro didático, recuperação de acesso e termo de reset</td><td>Fecha a janela sem fazer nada.</td></tr>
+              <tr><td><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td>Início</td><td>Abre o empréstimo rápido.</td></tr>
+              <tr><td><kbd>↓</kbd> <kbd>↑</kbd></td><td>Listas de sugestão de Devoluções e Relatórios</td><td>Percorre as sugestões.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer>As imagens usam dados fictícios da “Escola Modelo”, com o tema Azul (padrão) e a aparência Clara. No modo escuro, as telas têm a mesma disposição.</footer>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Marca no menu a seção que está na tela.
+  (function () {
+    try {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.grupo a'));
+      var porId = {};
+      links.forEach(function (a) { porId[a.getAttribute('href').slice(1)] = a; });
+      var secoes = Object.keys(porId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+      if (!('IntersectionObserver' in window) || !secoes.length) return;
+      var observador = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function (a) { a.removeAttribute('aria-current'); });
+          var link = porId[e.target.id];
+          if (link) link.setAttribute('aria-current', 'true');
+        });
+      }, { rootMargin: '-35% 0px -60% 0px' });
+      secoes.forEach(function (s) { observador.observe(s); });
+    } catch (erro) { /* o menu continua funcionando sem o realce */ }
+  })();
+</script>
+</body>
+</html>

@@ -59,8 +59,13 @@ namespace SUB.Forms.Inicio
             protected override void OnPaint(PaintEventArgs e)
             {
                 Color tema = ThemeManager.Normalize(corDoTema());
-                Color linha = ThemeManager.Lighten(tema, 0.72F);
-                e.Graphics.Clear(Parent != null ? Parent.BackColor : Color.White);
+                bool escuro = ThemeManager.Escuro;
+                Color linha = escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(tema, 0.72F);
+                Color fundoAtiva = escuro ? ThemeManager.Dark.Superficie : Color.White;
+                Color fundoInativa = escuro ? ThemeManager.Dark.Fundo : ThemeManager.Lighten(tema, 0.93F);
+                Color textoInativa = escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(92, 100, 112);
+                Color destaqueAtiva = escuro ? ThemeManager.Lighten(tema, 0.35F) : tema;
+                e.Graphics.Clear(Parent != null ? Parent.BackColor : fundoAtiva);
 
                 if (TabCount == 0)
                     return;
@@ -75,26 +80,26 @@ namespace SUB.Forms.Inicio
                     aba = new System.Drawing.Rectangle(aba.X + 1, aba.Y + 2, aba.Width - 2, topoPagina - aba.Y - 2);
                     bool selecionada = i == SelectedIndex;
 
-                    using (var pincel = new SolidBrush(selecionada ? Color.White : ThemeManager.Lighten(tema, 0.93F)))
+                    using (var pincel = new SolidBrush(selecionada ? fundoAtiva : fundoInativa))
                         e.Graphics.FillRectangle(pincel, aba);
 
                     if (selecionada)
                     {
-                        using (var destaque = new SolidBrush(tema))
+                        using (var destaque = new SolidBrush(destaqueAtiva))
                             e.Graphics.FillRectangle(destaque, aba.X, aba.Y, aba.Width, 3);
                         using (var caneta = new Pen(linha))
                         {
                             e.Graphics.DrawLine(caneta, aba.Left, aba.Top, aba.Left, aba.Bottom);
                             e.Graphics.DrawLine(caneta, aba.Right - 1, aba.Top, aba.Right - 1, aba.Bottom);
                         }
-                        using (var apagaLinha = new Pen(Color.White))
+                        using (var apagaLinha = new Pen(fundoAtiva))
                             e.Graphics.DrawLine(apagaLinha, aba.Left + 1, topoPagina, aba.Right - 2, topoPagina);
                     }
 
                     TextRenderer.DrawText(e.Graphics, TabPages[i].Text,
                         selecionada ? fonteSelecionada : Font,
                         new System.Drawing.Rectangle(aba.X, aba.Y + 2, aba.Width, aba.Height - 2),
-                        selecionada ? ThemeManager.GetLabelColor(tema) : Color.FromArgb(92, 100, 112),
+                        selecionada ? ThemeManager.GetLabelColor(tema) : textoInativa,
                         TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
                 }
             }
@@ -139,6 +144,7 @@ namespace SUB.Forms.Inicio
         private Panel actionsPanel;           // painel no canto superior direito com botão de Empréstimo Rápido
         private Button btnEmprestimoRapido;   // botão principal no topo-direito, bem visível (maior)
         private Label lblStatusSmall;
+        private int alturaCardsDesenho;
         private ToolTip formToolTip;
 
         // auto-refresh timer
@@ -238,6 +244,10 @@ namespace SUB.Forms.Inicio
             int cardHeight = 110;
 
             foreach (var c in cardsInfo) flowCards.Controls.Add(CriarCard(c.Key, c.Title, c.Sub, c.Color, cardWidth, cardHeight));
+            flowCards.AutoScroll = false;
+            flowCards.WrapContents = true;
+            topPanelInside.Resize -= TopPanelInside_Resize;
+            topPanelInside.Resize += TopPanelInside_Resize;
 
             // === ACTIONS PANEL (topo direito) com botão visível e maior ===
             if (actionsPanel != null) { panelTop.Controls.Remove(actionsPanel); actionsPanel.Dispose(); }
@@ -318,6 +328,7 @@ namespace SUB.Forms.Inicio
                 Anchor = AnchorStyles.Top | AnchorStyles.Left
             };
             panel1.Controls.Add(lblStatusSmall);
+            AjustarCards();
 
             // === TabControl moderno ===
             var tabEstatisticas = new AbasPlanas(() => dashboardThemeColor)
@@ -359,6 +370,7 @@ namespace SUB.Forms.Inicio
                 FlatStyle = FlatStyle.Flat
             });
             dgvDevedores.CellContentClick += dgvDevedores_CellContentClick;
+            dgvDevedores.CellPainting += dgvDevedores_CellPainting;
 
 
 
@@ -410,7 +422,7 @@ namespace SUB.Forms.Inicio
                         else
                         {
                             e.Value = $"#{pos}";
-                            e.CellStyle.ForeColor = Color.Black;
+                            e.CellStyle.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.Texto : Color.Black;
                             e.CellStyle.Font = grid.Font;
                         }
                         e.FormattingApplied = true;
@@ -455,7 +467,7 @@ namespace SUB.Forms.Inicio
                 lblOla.ForeColor = ThemeManager.GetLabelColor(dashboardThemeColor);
 
                 lblRelogio.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Regular); // já aumentado anteriormente
-                lblRelogio.ForeColor = Color.FromArgb(60, 60, 60);
+                lblRelogio.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(60, 60, 60);
 
                 // garantir que o relógio seja centralizado no panelTop
                 CenterClock();
@@ -481,7 +493,9 @@ namespace SUB.Forms.Inicio
 
             foreach (Panel card in flowCards.Controls.OfType<Panel>())
             {
-                card.BackColor = Color.White;
+                card.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Superficie : Color.White;
+                if (ThemeManager.Escuro)
+                    PintarInternosDoCard(card, card.BackColor);
                 card.Invalidate();
                 Panel header = card.Controls.OfType<Panel>().FirstOrDefault(p => p.Dock == DockStyle.Top);
                 string key = card.Tag as string;
@@ -501,6 +515,41 @@ namespace SUB.Forms.Inicio
                 if (value != null)
                     value.ForeColor = text;
             }
+        }
+
+        // Painéis internos (corpo do card do "Leitor mais ativo") nascem brancos; o cabeçalho colorido fica.
+        private void PintarInternosDoCard(Control raiz, Color fundo)
+        {
+            foreach (Control filho in raiz.Controls)
+            {
+                var painel = filho as Panel;
+                if (painel != null && painel.Dock != DockStyle.Top)
+                    painel.BackColor = fundo;
+                PintarInternosDoCard(filho, fundo);
+            }
+        }
+
+        // Mesmo botão arredondado na cor do tema usado nas grades de Acervo, Pessoas e Devoluções.
+        private void dgvDevedores_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            if (grid == null || e.RowIndex < 0 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != "btnImprimir")
+                return;
+
+            e.PaintBackground(e.CellBounds, true);
+            var rect = new System.Drawing.Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 5, e.CellBounds.Width - 12, e.CellBounds.Height - 10);
+            var suavizacaoAnterior = e.Graphics.SmoothingMode;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            using (var path = RoundedRect(rect, 8))
+            using (var brush = new SolidBrush(grid.ColumnHeadersDefaultCellStyle.BackColor))
+                e.Graphics.FillPath(brush, path);
+            e.Graphics.SmoothingMode = suavizacaoAnterior;
+
+            using (var fonte = new System.Drawing.Font("Segoe UI Semibold", 8.5F))
+                TextRenderer.DrawText(e.Graphics, "Imprimir carta", fonte, rect,
+                    grid.ColumnHeadersDefaultCellStyle.ForeColor,
+                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            e.Handled = true;
         }
 
         private void dgvDevedores_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -535,6 +584,51 @@ namespace SUB.Forms.Inicio
             return gp;
         }
 
+        // Ouve o painel de cima (e não o de cartões): mudar a altura do pai durante o layout do
+        // filho não é reaplicado aos controles encaixados, e a segunda linha ficava cortada.
+        private void TopPanelInside_Resize(object sender, EventArgs e)
+        {
+            AjustarCards();
+        }
+
+        // Os sete cartões preenchem a linha inteira; quando não cabem com uma largura legível
+        // (telas de 1366 px), passam para duas linhas em vez de exigir rolagem lateral.
+        private void AjustarCards()
+        {
+            var cards = flowCards.Controls.OfType<Panel>().ToList();
+            if (cards.Count == 0 || topPanelInside.ClientSize.Width <= 0)
+                return;
+
+            const int larguraMinima = 180;
+            int espaco = cards[0].Margin.Horizontal;
+            int disponivel = topPanelInside.ClientSize.Width - topPanelInside.Padding.Horizontal - flowCards.Padding.Horizontal;
+            int porLinha = cards.Count;
+            while (porLinha > 1 && disponivel / porLinha - espaco < larguraMinima)
+                porLinha = (porLinha + 1) / 2;
+
+            int largura = disponivel / porLinha - espaco;
+            int linhas = (cards.Count + porLinha - 1) / porLinha;
+            if (alturaCardsDesenho == 0)
+                alturaCardsDesenho = topPanelInside.Height;
+
+            flowCards.SuspendLayout();
+            foreach (var card in cards)
+            {
+                card.Width = largura;
+                foreach (var valor in card.Controls.Find("val_" + card.Tag, true).OfType<Label>())
+                    valor.Width = largura - 24;
+                foreach (var nome in card.Controls.Find("lblTopName", true).Concat(card.Controls.Find("lblTopTurma", true)).OfType<Label>())
+                    nome.MaximumSize = new Size(largura - 40, 0);
+            }
+            flowCards.ResumeLayout();
+
+            int altura = alturaCardsDesenho + (linhas - 1) * (cards[0].Height + cards[0].Margin.Vertical);
+            if (topPanelInside.Height != altura)
+                topPanelInside.Height = altura;
+            if (lblStatusSmall != null)
+                lblStatusSmall.Top = topPanelInside.Bottom + 6;
+        }
+
         private Panel CriarCard(string key, string title, string subtitle, Color headerColor, int cardWidth, int cardHeight)
         {
             var card = new Panel
@@ -549,7 +643,7 @@ namespace SUB.Forms.Inicio
             };
             card.Paint += (s, e) =>
             {
-                using (var p = new Pen(Color.FromArgb(235, 239, 244)))
+                using (var p = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(235, 239, 244)))
                     e.Graphics.DrawRectangle(p, 0, 0, card.Width - 1, card.Height - 1);
             };
 
@@ -789,22 +883,23 @@ namespace SUB.Forms.Inicio
                     if (grid.Columns[e.ColumnIndex].Name == "Disponibilidade")
                     {
                         string v = e.Value?.ToString() ?? "";
+                        bool escuro = ThemeManager.Escuro;
                         if (v == "Disponível")
                         {
-                            e.CellStyle.BackColor = Color.FromArgb(220, 245, 225);
-                            e.CellStyle.ForeColor = Color.FromArgb(20, 120, 40);
+                            e.CellStyle.BackColor = escuro ? Color.FromArgb(27, 62, 43) : Color.FromArgb(220, 245, 225);
+                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(134, 214, 156) : Color.FromArgb(20, 120, 40);
                             e.Value = "●  " + v;
                         }
                         else if (v == "Poucas unidades")
                         {
-                            e.CellStyle.BackColor = Color.FromArgb(255, 250, 220);
-                            e.CellStyle.ForeColor = Color.FromArgb(150, 110, 20);
+                            e.CellStyle.BackColor = escuro ? Color.FromArgb(68, 58, 24) : Color.FromArgb(255, 250, 220);
+                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(232, 192, 104) : Color.FromArgb(150, 110, 20);
                             e.Value = "●  " + v;
                         }
                         else
                         {
-                            e.CellStyle.BackColor = Color.FromArgb(255, 235, 235);
-                            e.CellStyle.ForeColor = Color.FromArgb(160, 30, 30);
+                            e.CellStyle.BackColor = escuro ? Color.FromArgb(74, 36, 38) : Color.FromArgb(255, 235, 235);
+                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(240, 142, 142) : Color.FromArgb(160, 30, 30);
                             e.Value = "●  " + v;
                         }
                         e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -821,7 +916,7 @@ namespace SUB.Forms.Inicio
                 if (e.RowIndex < 0) return;
                 var dgv = sender as DataGridView;
                 if (dgv == null) return;
-                var hoverColor = Color.FromArgb(245, 248, 251);
+                var hoverColor = ThemeManager.Escuro ? ThemeManager.Dark.EntradaHover : Color.FromArgb(245, 248, 251);
                 dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = hoverColor;
             }
             catch { }
@@ -835,7 +930,10 @@ namespace SUB.Forms.Inicio
                 var dgv = sender as DataGridView;
                 if (dgv == null) return;
                 var row = dgv.Rows[e.RowIndex];
-                row.DefaultCellStyle.BackColor = (e.RowIndex % 2 == 0) ? Color.White : Color.FromArgb(250, 250, 250);
+                if (ThemeManager.Escuro)
+                    row.DefaultCellStyle.BackColor = (e.RowIndex % 2 == 0) ? ThemeManager.Dark.Superficie : ThemeManager.Dark.SuperficieAlt;
+                else
+                    row.DefaultCellStyle.BackColor = (e.RowIndex % 2 == 0) ? Color.White : Color.FromArgb(250, 250, 250);
             }
             catch { }
         }
@@ -861,8 +959,8 @@ namespace SUB.Forms.Inicio
                     AutoSize = false,
                     Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = Color.Gray,
-                    BackColor = Color.White,
+                    ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.Gray,
+                    BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Superficie : Color.White,
                     Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Regular),
                     Visible = false
                 };
@@ -971,7 +1069,7 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
 
             lblRelogio.Text = $"{diaSemana}, {data} - {hora}";
             lblRelogio.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Regular);
-            lblRelogio.ForeColor = Color.FromArgb(60, 60, 60);
+            lblRelogio.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(60, 60, 60);
 
             // centralizar relógio após atualizar o texto
             CenterClock();

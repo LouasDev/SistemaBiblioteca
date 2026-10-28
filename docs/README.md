@@ -6,6 +6,7 @@
 
 | Documento | Uso |
 | --- | --- |
+| [Manual de uso](manual/index.html) | Guia ilustrado das telas para quem usa o sistema na biblioteca. Abra no navegador. |
 | [Contrato funcional](CONTRATO-FUNCIONAL-INSTALACAO-LOCAL.md) | Comportamento implementado, acesso, dados locais e regras de circulação. |
 | [Desenvolvimento](DESENVOLVIMENTO.md) | Ambiente, compilação, organização do código e testes específicos. |
 | [Reset local](RESET-LOCAL.md) | Termo, TXT, senha, exclusão de dados e retomada. |

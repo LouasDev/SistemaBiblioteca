@@ -27,6 +27,7 @@ namespace SUB.Forms.Usuario
         public EditarUsuarioForm()
         {
             InitializeComponent();
+            LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
             dtpDataNasc.Value = DateTime.Today;
 
@@ -859,7 +860,7 @@ WHERE Email = @Email AND Id <> @IdAtual";
             listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
             listBox.ItemHeight = 40;
 
-            listBox.BackColor = Color.White;
+            listBox.BackColor = ThemeManager.FundoDaSugestao(false);
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
@@ -881,12 +882,9 @@ WHERE Email = @Email AND Id <> @IdAtual";
 
             bool hovered = (e.Index == hoveredIndex);
 
-            // Tons de cinza
-            Color backColor = hovered
-                ? Color.FromArgb(235, 235, 235) // cinza claro no hover
-                : Color.White;                  // fundo branco
+            Color backColor = ThemeManager.FundoDaSugestao(hovered);
 
-            Color textColor = Color.FromArgb(60, 60, 60); // cinza escuro
+            Color textColor = ThemeManager.TextoDaSugestao;
 
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
@@ -900,7 +898,7 @@ WHERE Email = @Email AND Id <> @IdAtual";
             // Linha divisória entre itens (cinza bem suave)
             if (e.Index < listBox.Items.Count - 1)
             {
-                using (Pen p = new Pen(Color.FromArgb(220, 220, 220)))
+                using (Pen p = new Pen(ThemeManager.DivisoriaDaSugestao))
                     e.Graphics.DrawLine(p, e.Bounds.Left + 8, e.Bounds.Bottom - 1, e.Bounds.Right - 8, e.Bounds.Bottom - 1);
             }
         }
@@ -940,6 +938,11 @@ WHERE Email = @Email AND Id <> @IdAtual";
         {
             Color backColor = enabled ? Color.WhiteSmoke : Color.White;
             Color borderColor = enabled ? Color.FromArgb(204, 204, 204) : Color.LightGray;
+            if (ThemeManager.Escuro)
+            {
+                backColor = enabled ? ThemeManager.Dark.Entrada : ThemeManager.Dark.Superficie;
+                borderColor = enabled ? ThemeManager.Dark.Borda : ThemeManager.Dark.BordaDesabilitado;
+            }
 
             if (txtNome is RoundedTextBox rtbNome)
             {
@@ -971,7 +974,7 @@ WHERE Email = @Email AND Id <> @IdAtual";
 
         private void SetLabelColors(bool enabled)
         {
-            Color color = enabled ? Color.FromArgb(20, 41, 60) : Color.LightGray;
+            Color color = enabled ? Color.FromArgb(20, 41, 60) : ThemeManager.CorRotuloDesabilitado;
             lblNome.ForeColor = color;
             lblEmail.ForeColor = color;
             lblTurma.ForeColor = color;

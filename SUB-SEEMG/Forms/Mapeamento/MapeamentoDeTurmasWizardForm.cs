@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using SUB.Utils;
+using SeuProjeto;
 
 namespace SUB.Forms.Usuario
 {
@@ -28,6 +29,10 @@ namespace SUB.Forms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
+            Load += (s, e) => this.CaberNaTela();
+            AppPaths.EnsureFolders();
+            _baseFolder = AppPaths.MappingFolder;
+
             // IMPORTANTE: garantir que os handlers não sejam adicionados duplicadamente
             // (muitos problemas surgem porque o designer também pode ter ligado os eventos).
             btnProximo.Click -= BtnProximo_Click;

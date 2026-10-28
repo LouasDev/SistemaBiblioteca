@@ -61,6 +61,18 @@ namespace SUB.Forms.Livros
             numQuantidadeDevolvidos.KeyPress += numQuantidade_KeyPress;
             numQuantidadeDevolvidos.TextChanged += numQuantidade_TextChanged;
             btnConfirmarDevolucao.Click += btnConfirmar_Click;
+            AcceptButton = btnConfirmarDevolucao;
+        }
+
+        // Esc fecha sem devolver, como o X da janela.
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
 

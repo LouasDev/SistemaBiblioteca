@@ -23,6 +23,7 @@ namespace SUB.Forms.Configuracoes
         private Color corSelecionada = ThemeManager.DefaultColor;
         private string corOriginalHtml;
         private string nomeOriginal;
+        private bool escuroOriginal;
         private bool valoresCarregados;
 
         private AtualizacaoManifesto manifestoDisponivel;
@@ -37,6 +38,12 @@ namespace SUB.Forms.Configuracoes
         {
             InitializeComponent();
             c.TextChanged += (sender, args) => AtualizarEstadoSalvar();
+        }
+
+        private void btnReverTutorial_Click(object sender, EventArgs e)
+        {
+            if (!operacaoEmAndamento)
+                EventosGlobais.OnTutorialSolicitado();
         }
 
         private void btnReverTutorial_Click(object sender, EventArgs e)
@@ -131,6 +138,13 @@ namespace SUB.Forms.Configuracoes
 
             cbTemas.SelectedItem = selecionado;
             AtualizarPreviewCor();
+
+            cbAparencia.Items.Clear();
+            cbAparencia.Items.Add("Claro");
+            cbAparencia.Items.Add("Escuro");
+            escuroOriginal = configuracao != null && configuracao.TemaEscuro;
+            cbAparencia.SelectedIndex = escuroOriginal ? 1 : 0;
+
             valoresCarregados = true;
             AtualizarEstadoSalvar();
         }
@@ -181,8 +195,9 @@ namespace SUB.Forms.Configuracoes
                 nomeOriginal ?? string.Empty,
                 StringComparison.Ordinal);
             bool corAlterada = corSelecionada.ToArgb() != ObterCorTemaSalva().ToArgb();
+            bool aparenciaAlterada = (cbAparencia.SelectedIndex == 1) != escuroOriginal;
 
-            return nomeAlterado || corAlterada;
+            return nomeAlterado || corAlterada || aparenciaAlterada;
         }
 
         private void AtualizarEstadoSalvar()
@@ -333,6 +348,7 @@ namespace SUB.Forms.Configuracoes
             // alteramos somente os campos editáveis.
             configuracao.Nome = nome;
             configuracao.CorPrimaria = corHtml;
+            configuracao.TemaEscuro = cbAparencia.SelectedIndex == 1;
 
             try
             {
@@ -711,6 +727,7 @@ namespace SUB.Forms.Configuracoes
             AtualizarEstadoSalvar();
             c.Enabled = !ocupado;
             cbTemas.Enabled = !ocupado;
+            cbAparencia.Enabled = !ocupado;
             btnReverTutorial.Enabled = !ocupado;
         }
 
@@ -782,7 +799,7 @@ namespace SUB.Forms.Configuracoes
             pnlLinhaCabecalho.Visible = !compacto;
             grpAtualizacao.MaximumSize = Size.Empty;
             grpInstituicao.MaximumSize = Size.Empty;
-            grpInstituicao.SetBounds(margem, compacto ? 68 : 106, largura, 112);
+            grpInstituicao.SetBounds(margem, compacto ? 68 : 106, largura, 176);
             lblNome.Font = fonteRotuloCompacto;
             lblNome.Location = new Point(16, 25);
             c.SetBounds(16, 54, largura / 2 - 30, 34);
@@ -792,6 +809,9 @@ namespace SUB.Forms.Configuracoes
             lblCor.Location = new Point(colunaCor, 25);
             cbTemas.SetBounds(colunaCor, 54, largura - colunaCor - 66, 34);
             pnlCorPreview.SetBounds(largura - 50, 54, 34, 34);
+            lblAparencia.Font = fonteRotuloCompacto;
+            lblAparencia.Location = new Point(16, 100);
+            cbAparencia.SetBounds(16, 129, largura / 2 - 30, 34);
             int topoAtualizacao = grpInstituicao.Bottom + 12;
             int alturaAtualizacao = 184;
             grpAtualizacao.SetBounds(margem, topoAtualizacao, largura, alturaAtualizacao);

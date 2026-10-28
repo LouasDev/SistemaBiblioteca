@@ -51,6 +51,33 @@ using System.Windows.Forms;
             set { _borderColor = value; Invalidate(); }
         }
 
+        private Color _arrowColor = Color.Empty;
+
+        // Vazio usa o botão nativo do Windows; com cor definida, desenha uma seta própria
+        // sobre o fundo do controle (o botão nativo é sempre claro).
+        [Category("Aparência")]
+        public Color ArrowColor
+        {
+            get => _arrowColor;
+            set { _arrowColor = value; Invalidate(); }
+        }
+
+        private Color _placeholderColor = Color.Gray;
+
+        [Category("Aparência")]
+        public Color PlaceholderColor
+        {
+            get => _placeholderColor;
+            set { _placeholderColor = value; Invalidate(); }
+        }
+
+        // Vazio usa o realce do Windows (azul do sistema) no item escolhido da lista aberta.
+        [Category("Aparência")]
+        public Color HighlightColor { get; set; } = Color.Empty;
+
+        [Category("Aparência")]
+        public Color HighlightTextColor { get; set; } = Color.Empty;
+
         [Category("Aparência")]
         public int PlaceholderMargin
         {
@@ -89,7 +116,7 @@ using System.Windows.Forms;
             // Texto do item selecionado ou placeholder
             string textToDraw = this.SelectedIndex >= 0 ? this.GetItemText(this.SelectedItem) : PlaceholderText;
             Font textFont = this.SelectedIndex >= 0 ? this.ItemsFont : this.PlaceholderFont;
-            Color textColor = this.SelectedIndex >= 0 ? this.ForeColor : Color.Gray;
+            Color textColor = this.SelectedIndex >= 0 ? this.ForeColor : PlaceholderColor;
 
             using (Brush textBrush = new SolidBrush(textColor))
             {
@@ -98,12 +125,25 @@ using System.Windows.Forms;
                 e.Graphics.DrawString(textToDraw, textFont, textBrush, textRect, format);
             }
 
-            // Desenha a seta nativa
-            ComboBoxRenderer.DrawDropDownButton(
-                e.Graphics,
-                new Rectangle(this.Width - 20, 0, 20, this.Height),
-                System.Windows.Forms.VisualStyles.ComboBoxState.Normal
-            );
+            if (ArrowColor.IsEmpty)
+            {
+                // Desenha a seta nativa
+                ComboBoxRenderer.DrawDropDownButton(
+                    e.Graphics,
+                    new Rectangle(this.Width - 20, 0, 20, this.Height),
+                    System.Windows.Forms.VisualStyles.ComboBoxState.Normal
+                );
+            }
+            else
+            {
+                float centroX = this.Width - 14f;
+                float centroY = this.Height / 2f;
+                using (Pen seta = new Pen(ArrowColor, 1.6f) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+                {
+                    e.Graphics.DrawLine(seta, centroX - 4f, centroY - 2f, centroX, centroY + 2f);
+                    e.Graphics.DrawLine(seta, centroX, centroY + 2f, centroX + 4f, centroY - 2f);
+                }
+            }
         }
 
         private GraphicsPath GetRoundedPath(Rectangle bounds, int radius)
@@ -132,12 +172,22 @@ using System.Windows.Forms;
 
         protected override void OnDrawItem(DrawItemEventArgs e)
         {
-            e.DrawBackground();
+            bool realce = (e.State & DrawItemState.Selected) != 0 && !HighlightColor.IsEmpty;
+            if (realce)
+            {
+                using (var fundo = new SolidBrush(HighlightColor))
+                    e.Graphics.FillRectangle(fundo, e.Bounds);
+            }
+            else
+            {
+                e.DrawBackground();
+            }
 
             if (e.Index >= 0 && e.Index < Items.Count)
             {
                 string itemText = this.GetItemText(Items[e.Index]);
-                using (Brush textBrush = new SolidBrush(ForeColor))
+                Color corTexto = realce && !HighlightTextColor.IsEmpty ? HighlightTextColor : ForeColor;
+                using (Brush textBrush = new SolidBrush(corTexto))
                 {
                     e.Graphics.DrawString(itemText, ItemsFont, textBrush, e.Bounds);
                 }

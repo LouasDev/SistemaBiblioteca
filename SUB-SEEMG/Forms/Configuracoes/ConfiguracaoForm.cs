@@ -70,6 +70,19 @@ namespace SUB.Forms.Configuracoes
                 EventosGlobais.OnTutorialSolicitado();
         }
 
+        private void linkSuporteConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("mailto:subgvsuporte@gmail.com");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível abrir o aplicativo de e-mail: " + ex.Message,
+                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
       
 
         protected override void OnShown(EventArgs e)

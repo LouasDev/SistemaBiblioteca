@@ -755,6 +755,19 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
             lblVersion.LinkColor = Color.White;
         }
 
+        private void lblSuporteLogin_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start("mailto:subgvsuporte@gmail.com");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível abrir o aplicativo de e-mail: " + ex.Message,
+                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {

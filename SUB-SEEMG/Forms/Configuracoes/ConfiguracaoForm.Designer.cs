@@ -52,6 +52,7 @@
             this.btnSalvar = new System.Windows.Forms.Button();
             this.btnApagarDados = new CustomButton();
             this.btnReverTutorial = new System.Windows.Forms.Button();
+            this.linkSuporteConfig = new System.Windows.Forms.LinkLabel();
             this.grpManutencao = new System.Windows.Forms.GroupBox();
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
@@ -407,11 +408,29 @@
             this.btnReverTutorial.Text = "Rever tutorial";
             this.btnReverTutorial.UseVisualStyleBackColor = false;
             this.btnReverTutorial.Click += new System.EventHandler(this.btnReverTutorial_Click);
+            //
+            // linkSuporteConfig
+            //
+            this.linkSuporteConfig.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(54)))), ((int)(((byte)(96)))));
+            this.linkSuporteConfig.AutoSize = true;
+            this.linkSuporteConfig.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkSuporteConfig.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.linkSuporteConfig.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkSuporteConfig.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.linkSuporteConfig.Location = new System.Drawing.Point(1024, 35);
+            this.linkSuporteConfig.Name = "linkSuporteConfig";
+            this.linkSuporteConfig.Size = new System.Drawing.Size(200, 17);
+            this.linkSuporteConfig.TabIndex = 2;
+            this.linkSuporteConfig.TabStop = true;
+            this.linkSuporteConfig.Text = "Suporte: subgvsuporte@gmail.com";
+            this.linkSuporteConfig.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.linkSuporteConfig.Click += new System.EventHandler(this.linkSuporteConfig_Click);
             // 
             // grpManutencao
             // 
             this.grpManutencao.Controls.Add(this.btnReverTutorial);
             this.grpManutencao.Controls.Add(this.btnApagarDados);
+            this.grpManutencao.Controls.Add(this.linkSuporteConfig);
             this.grpManutencao.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold);
             this.grpManutencao.Location = new System.Drawing.Point(20, 426);
             this.grpManutencao.Name = "grpManutencao";
@@ -497,6 +516,7 @@
         private System.Windows.Forms.Button btnSalvar;
         private CustomButton btnApagarDados;
         private System.Windows.Forms.Button btnReverTutorial;
+        private System.Windows.Forms.LinkLabel linkSuporteConfig;
         private System.Windows.Forms.GroupBox grpManutencao;
         private RoundedTextBox c;
         private RoundedComboBox cbTemas;

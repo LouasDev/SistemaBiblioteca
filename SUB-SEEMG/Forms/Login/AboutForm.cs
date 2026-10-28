@@ -67,7 +67,7 @@ namespace SUB.Forms.Login
 
             BtnOk.BaseColor = primaria;
             BtnOk.Invalidate();
-            foreach (LinkLabel link in new[] { btnTerm, linkRepositorio })
+            foreach (LinkLabel link in new[] { btnTerm, linkRepositorio, linkSuporte })
             {
                 link.LinkColor = primaria;
                 link.ActiveLinkColor = ThemeManager.Darken(primaria, 0.18f);
@@ -249,6 +249,19 @@ namespace SUB.Forms.Login
         private void linkRepositorio_Click(object sender, EventArgs e)
         {
             OpenUrl("https://github.com/LouasDev/SistemaBiblioteca");
+        }
+
+        private void linkSuporte_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start("mailto:subgvsuporte@gmail.com");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Não foi possível abrir o aplicativo de e-mail: " + ex.Message,
+                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private static void OpenUrl(string url)

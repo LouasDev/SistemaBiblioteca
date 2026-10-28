@@ -45,6 +45,7 @@ namespace SUB.Forms.Login
             this.linhaMarca = new System.Windows.Forms.Panel();
             this.lblIniciativa = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.LinkLabel();
+            this.lblSuporteLogin = new System.Windows.Forms.LinkLabel();
             this.gradientPanel1 = new SUB.ElementosPersonalizados.GradientPanel();
             this.pnInicial.SuspendLayout();
             this.gradientPanel2.SuspendLayout();
@@ -334,6 +335,7 @@ namespace SUB.Forms.Login
             this.panel1.Controls.Add(this.linhaMarca);
             this.panel1.Controls.Add(this.lblIniciativa);
             this.panel1.Controls.Add(this.lblVersion);
+            this.panel1.Controls.Add(this.lblSuporteLogin);
             this.panel1.Controls.Add(this.gradientPanel1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
@@ -450,7 +452,7 @@ namespace SUB.Forms.Login
             this.lblVersion.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lblVersion.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblVersion.LinkColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(40, 594);
+            this.lblVersion.Location = new System.Drawing.Point(40, 588);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(142, 15);
             this.lblVersion.TabIndex = 7;
@@ -460,6 +462,24 @@ namespace SUB.Forms.Login
             this.lblVersion.Click += new System.EventHandler(this.lblVersion_Click);
             this.lblVersion.MouseEnter += new System.EventHandler(this.lblVersion_MouseEnter);
             this.lblVersion.MouseLeave += new System.EventHandler(this.lblVersion_MouseLeave);
+            //
+            // lblSuporteLogin
+            //
+            this.lblSuporteLogin.ActiveLinkColor = System.Drawing.Color.White;
+            this.lblSuporteLogin.AutoSize = true;
+            this.lblSuporteLogin.BackColor = System.Drawing.Color.Transparent;
+            this.lblSuporteLogin.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblSuporteLogin.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblSuporteLogin.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.lblSuporteLogin.LinkColor = System.Drawing.Color.White;
+            this.lblSuporteLogin.Location = new System.Drawing.Point(40, 611);
+            this.lblSuporteLogin.Name = "lblSuporteLogin";
+            this.lblSuporteLogin.Size = new System.Drawing.Size(185, 14);
+            this.lblSuporteLogin.TabIndex = 8;
+            this.lblSuporteLogin.TabStop = true;
+            this.lblSuporteLogin.Text = "Suporte: subgvsuporte@gmail.com";
+            this.lblSuporteLogin.VisitedLinkColor = System.Drawing.Color.White;
+            this.lblSuporteLogin.Click += new System.EventHandler(this.lblSuporteLogin_Click);
             // 
             // gradientPanel1
             // 
@@ -533,6 +553,7 @@ namespace SUB.Forms.Login
         private System.Windows.Forms.Panel linhaMarca;
         private System.Windows.Forms.Label lblIniciativa;
         private System.Windows.Forms.LinkLabel lblVersion;
+        private System.Windows.Forms.LinkLabel lblSuporteLogin;
         private ElementosPersonalizados.GradientPanel gradientPanel1;
     }
 }

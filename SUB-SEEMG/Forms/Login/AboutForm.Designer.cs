@@ -39,6 +39,7 @@ namespace SUB.Forms.Login
             this.label7 = new System.Windows.Forms.Label();
             this.linkRepositorio = new System.Windows.Forms.LinkLabel();
             this.btnTerm = new System.Windows.Forms.LinkLabel();
+            this.linkSuporte = new System.Windows.Forms.LinkLabel();
             this.BtnOk = new CustomButton();
             this.pnlMarcaAbout = new System.Windows.Forms.Panel();
             this.pnlLogoAbout = new System.Windows.Forms.Panel();
@@ -87,6 +88,7 @@ namespace SUB.Forms.Login
             this.panel5.Controls.Add(this.label7);
             this.panel5.Controls.Add(this.linkRepositorio);
             this.panel5.Controls.Add(this.btnTerm);
+            this.panel5.Controls.Add(this.linkSuporte);
             this.panel5.Controls.Add(this.BtnOk);
             this.panel5.Controls.Add(this.pnlMarcaAbout);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -347,7 +349,24 @@ namespace SUB.Forms.Login
             this.btnTerm.Text = "Licença MIT";
             this.btnTerm.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.btnTerm.Click += new System.EventHandler(this.btnTerm_Click);
-            // 
+            //
+            // linkSuporte
+            //
+            this.linkSuporte.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(54)))), ((int)(((byte)(96)))));
+            this.linkSuporte.AutoSize = true;
+            this.linkSuporte.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.linkSuporte.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.linkSuporte.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkSuporte.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.linkSuporte.Location = new System.Drawing.Point(39, 610);
+            this.linkSuporte.Name = "linkSuporte";
+            this.linkSuporte.Size = new System.Drawing.Size(185, 15);
+            this.linkSuporte.TabIndex = 3;
+            this.linkSuporte.TabStop = true;
+            this.linkSuporte.Text = "Suporte: subgvsuporte@gmail.com";
+            this.linkSuporte.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this.linkSuporte.Click += new System.EventHandler(this.linkSuporte_Click);
+            //
             // BtnOk
             // 
             this.BtnOk.BackColor = System.Drawing.Color.Transparent;
@@ -575,6 +594,7 @@ namespace SUB.Forms.Login
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.LinkLabel linkRepositorio;
         private System.Windows.Forms.LinkLabel btnTerm;
+        private System.Windows.Forms.LinkLabel linkSuporte;
         private CustomButton BtnOk;
         private ElementosPersonalizados.GradientPanel gradientPanel1;
     }

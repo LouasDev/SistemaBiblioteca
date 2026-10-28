@@ -19,7 +19,6 @@ namespace SUB.Utils
             try
             {
                 Directory.CreateDirectory(AppDataFolder);
-                Directory.CreateDirectory(MappingFolder);
                 Directory.CreateDirectory(ReportsFolder);
             }
             catch

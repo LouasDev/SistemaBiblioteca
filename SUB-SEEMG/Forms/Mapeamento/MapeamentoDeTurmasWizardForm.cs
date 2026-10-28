@@ -6,25 +6,22 @@ using System.ComponentModel;
 using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using SUB.Utils;
 using SeuProjeto;
-
-//Para Acessar o form de mapeamento altere o arquivo txt em AppData para um ano anterior ao ano atual
 
 namespace SUB.Forms.Usuario
 {
     public partial class MapeamentoDeTurmasWizardForm : Form
     {
         #region Campos e Variáveis
-        private readonly string _baseFolder;
         private MapeamentoAnualModel _model;
         private int _etapaAtual = 1;
         private Dictionary<string, string> _padroesTurma = new Dictionary<string, string>();
         private List<MapeamentoRegistro> _registrosOriginais = new List<MapeamentoRegistro>();
+        private RegrasMapeamentoTurmas _regrasTurmas;
+        private bool _preenchendoEtapa2;
         #endregion
 
         #region Construtor e Inicialização
@@ -34,7 +31,6 @@ namespace SUB.Forms.Usuario
             ThemeManager.ApplyConfiguredTheme(this);
             Load += (s, e) => this.CaberNaTela();
             AppPaths.EnsureFolders();
-            _baseFolder = AppPaths.MappingFolder;
 
             // IMPORTANTE: garantir que os handlers não sejam adicionados duplicadamente
             // (muitos problemas surgem porque o designer também pode ter ligado os eventos).
@@ -58,7 +54,7 @@ namespace SUB.Forms.Usuario
             try
             {
                 int ano = DateTime.Now.Year;
-                _model = LoadMapping(ano) ?? new MapeamentoAnualModel { Ano = ano, GeradoEm = DateTime.Now, Status = "pendente" };
+                _model = new MapeamentoAnualModel { Ano = ano, GeradoEm = DateTime.Now, Status = "pendente" };
 
                 CarregarDadosIniciais();
                 MostrarEtapa(1);
@@ -75,6 +71,7 @@ namespace SUB.Forms.Usuario
         {
             _registrosOriginais.Clear();
             _padroesTurma.Clear();
+            _regrasTurmas = new RegrasMapeamentoTurmas(TurmasUtil.Carregar());
 
             using (var cn = Conexao.ObterConexao())
             {
@@ -114,11 +111,15 @@ namespace SUB.Forms.Usuario
             }
         }
 
-        /// <summary>
-        /// Sugestão inteligente baseada nas turmas existentes e permitidas.
-        /// Melhoria: 9º Ano (EF) agora sugere 1º EM (INT preferencialmente) e, se não houver, 1º Técnico (sempre bloqueando EP PRO).
-        /// </summary>
         private string SugerirProximaTurmaInteligente(string turmaAtual)
+        {
+            return _regrasTurmas == null ? null : _regrasTurmas.Sugerir(turmaAtual);
+        }
+
+        // Implementação histórica preservada apenas como referência de migração;
+        // a regra institucional ativa está em RegrasMapeamentoTurmas.
+#if false
+        private string SugerirProximaTurmaLegada(string turmaAtual)
         {
             if (string.IsNullOrWhiteSpace(turmaAtual))
                 return "EGRESSO";
@@ -336,6 +337,7 @@ namespace SUB.Forms.Usuario
 
 
 
+        #endif
         #endregion
 
         #region Controle do Wizard
@@ -556,263 +558,24 @@ namespace SUB.Forms.Usuario
                 cell.Value = null;
         }
 
-        /// <summary>
-        /// Opções válidas para turma, baseadas em TurmasUtil.TurmasPermitidas e regras de progressão.
-        /// Inclui 9º Ano -> 1º EM/1º Técnico e bloqueia EP PRO para origem EM/Técnico.
-        /// </summary>
+        
+
         private List<string> ObterOpcoesValidasParaTurmaInteligente(string turmaAtual)
         {
-            var opcoes = new List<string>();
-            if (string.IsNullOrWhiteSpace(turmaAtual))
-                return new List<string> { "EGRESSO" };
-
-            var upper = turmaAtual.ToUpperInvariant();
-            if (upper == "EGRESSO" || upper == "TRANSFERIDO" || upper == "DESISTENTE")
-                return new List<string> { upper };
-
-            var match = Regex.Match(turmaAtual, @"^(\d+)[°º]?\s*(.+)$", RegexOptions.IgnoreCase);
-            if (!match.Success)
-                return new List<string> { "EGRESSO" };
-
-            int serieAtual = int.Parse(match.Groups[1].Value);
-            var turmasPermitidas = TurmasUtil.TurmasPermitidas;
-            var cursoAtual = ExtrairCurso(turmaAtual);
-
-       
-            bool bloquearEpPro = string.Equals(cursoAtual, "AnoEM", StringComparison.OrdinalIgnoreCase) ||
-                                 IsCursoTecnico(turmaAtual) ||
-                                 string.Equals(cursoAtual, "Ano", StringComparison.OrdinalIgnoreCase);
-            IEnumerable<string> FiltrarEpProSeNecessario(IEnumerable<string> lista)
-                => bloquearEpPro ? lista.Where(t => !IsEpPro(t)) : lista;
-
-            Func<int, IEnumerable<string>> turmasPorSerie = (s) =>
-                turmasPermitidas.Where(t => {
-                    var mm = Regex.Match(t, @"^(\d+)[°º]");
-                    return mm.Success && int.Parse(mm.Groups[1].Value) == s;
-                });
-
-            if (serieAtual == 3)
-            {
-                opcoes.Add("EGRESSO");
-                opcoes.AddRange(FiltrarEpProSeNecessario(turmasPorSerie(3)));
-                return opcoes.Distinct().OrderBy(o => o).ToList();
-            }
-
-            if (serieAtual == 2)
-            {
-                opcoes.AddRange(FiltrarEpProSeNecessario(turmasPorSerie(3)));
-                opcoes.AddRange(FiltrarEpProSeNecessario(turmasPorSerie(2)));
-                opcoes.Add("DESISTENTE");
-                opcoes.Add("TRANSFERIDO");
-                return opcoes.Distinct().OrderBy(o => o).ToList();
-            }
-
-            if (serieAtual == 1)
-            {
-                opcoes.AddRange(FiltrarEpProSeNecessario(turmasPorSerie(2)));
-                opcoes.AddRange(FiltrarEpProSeNecessario(turmasPorSerie(1)));
-                opcoes.Add("DESISTENTE");
-                opcoes.Add("TRANSFERIDO");
-                return opcoes.Distinct().OrderBy(o => o).ToList();
-            }
-
-            // EF (6º ao 9º)
-            var ehEF = string.Equals(cursoAtual, "Ano", StringComparison.OrdinalIgnoreCase);
-            if (ehEF)
-            {
-                var proxima = serieAtual + 1;
-
-                // Progressão normal no EF
-                opcoes.AddRange(turmasPermitidas.Where(t =>
-                    Regex.IsMatch(t, @"^" + Regex.Escape(proxima.ToString()) + @"[°º]", RegexOptions.IgnoreCase) &&
-                    string.Equals(ExtrairCurso(t), "Ano", StringComparison.OrdinalIgnoreCase)));
-
-                // Reprovação
-                opcoes.AddRange(turmasPermitidas.Where(t =>
-                    Regex.IsMatch(t, @"^" + Regex.Escape(serieAtual.ToString()) + @"[°º]", RegexOptions.IgnoreCase) &&
-                    string.Equals(ExtrairCurso(t), "Ano", StringComparison.OrdinalIgnoreCase)));
-
-                // Transição 9º -> 1º EM (INT/REG) e 9º -> 1º Técnico
-                if (serieAtual == 9)
-                {
-                    var turmas1Serie = turmasPorSerie(1).ToList();
-                    var em1 = turmas1Serie.Where(t => string.Equals(ExtrairCurso(t), "AnoEM", StringComparison.OrdinalIgnoreCase));
-                    var tecn1 = turmas1Serie.Where(t => IsCursoTecnico(t));
-
-                    opcoes.AddRange(FiltrarEpProSeNecessario(em1));
-                    opcoes.AddRange(FiltrarEpProSeNecessario(tecn1));
-                }
-
-                opcoes.Add("DESISTENTE");
-                opcoes.Add("TRANSFERIDO");
-            }
-
-            if (!opcoes.Any())
-                opcoes.Add("EGRESSO");
-
-            // filtro final contra EP PRO quando origem é EM ou Técnico
-            opcoes = FiltrarEpProSeNecessario(opcoes).ToList();
-
-            return opcoes.Distinct().OrderBy(o => o).ToList();
+            return _regrasTurmas == null
+                ? new List<string>()
+                : _regrasTurmas.OpcoesDeProgressao(turmaAtual);
         }
 
-        /// <summary>
-        /// Verifica se o nome da turma contém palavras-chave de cursos técnicos.
-        /// Diferente de IsCursoTecnico, ESTA FUNÇÃO NÃO ignora turmas "EM".
-        /// </summary>
-        private bool ContemPalavraTecnica(string turma)
-        {
-            if (string.IsNullOrWhiteSpace(turma)) return false;
-            var t = turma.ToLowerInvariant();
-
-            return t.Contains("desenv") || t.Contains("sistemas") ||
-                   t.Contains("agroneg") || t.Contains("propedêutic") ||
-                   t.Contains("propedeut") || t.Contains("proped") ||
-                   t.Contains("admin") || t.Contains("eletromec");
-        }
-
-        // Função para identificar se a turma é técnica (apenas curso técnico puro; EM INT/REG não é técnico puro)
-        private bool IsCursoTecnico(string turma)
-        {
-            if (string.IsNullOrWhiteSpace(turma)) return false;
-            var t = turma.ToLowerInvariant();
-
-            // Qualquer turma com EM (EM INT/EM REG) deve ser tratada como Ensino Médio, não técnico puro
-            if (Regex.IsMatch(t, @"\bem\b"))
-                return false;
-
-            return t.Contains("desenv") || t.Contains("sistemas") ||
-                   t.Contains("agroneg") || t.Contains("propedêutic") ||
-                   t.Contains("propedeut") || t.Contains("proped") ||
-                   t.Contains("admin") || t.Contains("eletromec");
-        }
-
-        // NOVO: identifica turmas EP PRO
-        private bool IsEpPro(string turma)
-        {
-            if (string.IsNullOrWhiteSpace(turma)) return false;
-            return Regex.IsMatch(turma, @"\bEP\s*PRO\b", RegexOptions.IgnoreCase);
-        }
-
-        // Extração de curso robusta (prioriza EM/EM INT/EM REG antes dos nomes de curso)
-        private string ExtrairCurso(string turma)
-        {
-            if (string.IsNullOrWhiteSpace(turma))
-                return "";
-
-            var t = turma.ToLowerInvariant();
-
-            // Ens. Médio (INT/REG) primeiro, para não classificar EM INT como "Desenvolvimento", etc.
-            if (t.Contains("em int") || t.Contains("em reg") || Regex.IsMatch(t, @"\bem\b"))
-                return "AnoEM";
-
-            // Técnicos puros
-            if (t.Contains("desenv") || t.Contains("sistemas")) return "Desenvolvimento";
-            if (t.Contains("agroneg")) return "Agronegócio";
-            if (t.Contains("propedeut") || t.Contains("proped")) return "Propedeutico";
-            if (t.Contains("admin")) return "Administração";
-            if (t.Contains("eletromec")) return "Eletromecânica";
-
-            // *** CORREÇÃO: Fundamental (6º ao 9º ano) - detectar "EF" ou "ano" ***
-            if (t.Contains("ef") || t.Contains("ano")) return "Ano";
-
-            return "";
-        }
-
-
-
-
-
-        // Validação de progressão corrigida (cobre EM INT lateral e 9º->1º EM)
         private bool IsProgressaoInvalida(string turmaAtual, string novaTurma)
         {
-            if (string.IsNullOrWhiteSpace(turmaAtual) || string.IsNullOrWhiteSpace(novaTurma))
-                return true;
-
-            if (turmaAtual == "EGRESSO")
-                return novaTurma != "EGRESSO";
-
-            if (turmaAtual == "TRANSFERIDO" || turmaAtual == "DESISTENTE")
-                return !(novaTurma == "EGRESSO" || novaTurma == "TRANSFERIDO" || novaTurma == "DESISTENTE");
-
-            if (novaTurma == "DESISTENTE" || novaTurma == "TRANSFERIDO")
-                return false;
-
-            var serieAtual = ExtrairNumeroSerie(turmaAtual);
-            var serieNova = ExtrairNumeroSerie(novaTurma);
-            var cursoAtual = ExtrairCurso(turmaAtual);
-            var cursoNovo = ExtrairCurso(novaTurma);
-
-          
-            if ((string.Equals(cursoAtual, "AnoEM", StringComparison.OrdinalIgnoreCase) || IsCursoTecnico(turmaAtual) || string.Equals(cursoAtual, "Ano", StringComparison.OrdinalIgnoreCase)) && IsEpPro(novaTurma))
-                return true;
-
-            // 3º ano pode trocar para qualquer turma do 3º ano (técnico ou EM)
-            if (serieAtual == 3 && serieNova == 3)
-                return false;
-
-            // 3º ano (qualquer modalidade) pode ir para EGRESSO
-            if (serieAtual == 3 && string.Equals(novaTurma, "EGRESSO", StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            // 2º ano técnico: pode ir para qualquer 3º ano técnico
-            if (IsCursoTecnico(turmaAtual) && serieAtual == 2 && serieNova == 3 && IsCursoTecnico(novaTurma))
-                return false;
-
-            // Reprovação no 2º ano: pode ir para qualquer 2º ano do mesmo curso/tipo
-            if (serieAtual == 2 && serieNova == 2 && string.Equals(cursoAtual, cursoNovo, StringComparison.OrdinalIgnoreCase))
-                return false;
-
-            // Troca lateral entre modalidades do EM (REG ↔ INT) na mesma série (1º, 2º ou 3º)
-            if (string.Equals(cursoAtual, "AnoEM", StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(cursoNovo, "AnoEM", StringComparison.OrdinalIgnoreCase) &&
-                serieAtual == serieNova)
-                return false;
-
-            // Troca entre cursos técnicos do mesmo ano (2º ou 3º)
-            if (!string.Equals(cursoAtual, cursoNovo, StringComparison.OrdinalIgnoreCase) &&
-                serieAtual == serieNova &&
-                (serieNova == 2 || serieNova == 3) &&
-                IsCursoTecnico(turmaAtual) && IsCursoTecnico(novaTurma))
-                return false;
-
-            // Progressão normal (mesmo curso, série +1)
-            if (string.Equals(cursoAtual, cursoNovo, StringComparison.OrdinalIgnoreCase) && serieNova == serieAtual + 1)
-                return false;
-
-            // Progressão fundamental (6º ao 9º ano)
-            if (string.Equals(cursoAtual, "Ano", StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(cursoNovo, "Ano", StringComparison.OrdinalIgnoreCase) &&
-                serieNova == serieAtual + 1)
-                return false;
-
-            // 9º ano pode ir para 1º EM (INT/REG) ou 1º técnico
-            if (string.Equals(cursoAtual, "Ano", StringComparison.OrdinalIgnoreCase) &&
-                serieAtual == 9 && serieNova == 1 &&
-                (string.Equals(cursoNovo, "AnoEM", StringComparison.OrdinalIgnoreCase) || IsCursoTecnico(novaTurma)))
-                return false;
-
-            return true;
+            return _regrasTurmas == null || !_regrasTurmas.EhEscolhaDeProgressaoValida(turmaAtual, novaTurma);
         }
 
-
-        private int ExtrairNumeroSerie(string turma)
+        private bool IsAjusteIndividualInvalido(string turmaAtual, string novaTurma)
         {
-            if (string.IsNullOrWhiteSpace(turma))
-                return 0;
-
-            var match = Regex.Match(turma, @"(\d+)[°º]");
-            if (match.Success && int.TryParse(match.Groups[1].Value, out int numero))
-                return numero;
-
-            // Se não há símbolo ordinal, tenta pegar número no começo
-            match = Regex.Match(turma, @"^(\d+)");
-            if (match.Success && int.TryParse(match.Groups[1].Value, out numero))
-                return numero;
-
-            return 0;
+            return _regrasTurmas == null || !_regrasTurmas.EhEscolhaIndividualValida(turmaAtual, novaTurma);
         }
-
 
         private void DgvPadroes_CurrentCellDirtyStateChanged(object sender, EventArgs e)
         {
@@ -912,6 +675,8 @@ namespace SUB.Forms.Usuario
         {
             dgvAjustesIndividuais.Columns.Clear();
 
+            var colUsuarioId = new DataGridViewTextBoxColumn { Name = "UsuarioId", Visible = false };
+            dgvAjustesIndividuais.Columns.Add(colUsuarioId);
             dgvAjustesIndividuais.Columns.Add("Nome", "Nome do Aluno");
             dgvAjustesIndividuais.Columns.Add("TurmaAtual", "Turma Atual");
             dgvAjustesIndividuais.Columns.Add("PadraoDefinido", "Padrão Definido");
@@ -962,21 +727,28 @@ namespace SUB.Forms.Usuario
 
         private void DgvAjustesIndividuais_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvAjustesIndividuais.Columns[e.ColumnIndex].Name == "NovaEscolha")
-            {
-                var turmaAtual = dgvAjustesIndividuais.Rows[e.RowIndex].Cells["TurmaAtual"].Value?.ToString();
-                var novaEscolha = dgvAjustesIndividuais.Rows[e.RowIndex].Cells["NovaEscolha"].Value?.ToString();
-                var nome = dgvAjustesIndividuais.Rows[e.RowIndex].Cells["Nome"].Value?.ToString();
+            if (_preenchendoEtapa2 || e.RowIndex < 0 || e.ColumnIndex < 0 ||
+                dgvAjustesIndividuais.Columns[e.ColumnIndex].Name != "NovaEscolha")
+                return;
 
-                if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) &&
-                    IsProgressaoInvalida(turmaAtual, novaEscolha))
-                {
-                    MessageBox.Show($"Progressão inválida detectada para {nome}: {turmaAtual} → {novaEscolha}",
-                                  "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    dgvAjustesIndividuais.Rows[e.RowIndex].Cells["NovaEscolha"].Value =
-                        dgvAjustesIndividuais.Rows[e.RowIndex].Cells["PadraoDefinido"].Value;
-                }
+            var linha = dgvAjustesIndividuais.Rows[e.RowIndex];
+            var turmaAtual = linha.Cells["TurmaAtual"].Value?.ToString();
+            var novaEscolha = linha.Cells["NovaEscolha"].Value?.ToString();
+            var nome = linha.Cells["Nome"].Value?.ToString();
+            int usuarioId = Convert.ToInt32(linha.Cells["UsuarioId"].Value);
+            var registro = _registrosOriginais.FirstOrDefault(r => r.UsuarioId == usuarioId);
+
+            if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) &&
+                IsAjusteIndividualInvalido(turmaAtual, novaEscolha))
+            {
+                MessageBox.Show($"Progressão inválida detectada para {nome}: {turmaAtual} → {novaEscolha}",
+                              "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                linha.Cells["NovaEscolha"].Value = registro?.NovaTurma;
+                return;
             }
+
+            if (registro != null)
+                registro.NovaTurma = novaEscolha;
         }
 
         private void DgvAjustesIndividuais_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -998,7 +770,10 @@ namespace SUB.Forms.Usuario
 
         private void AtualizarGridEtapa2()
         {
-            dgvAjustesIndividuais.Rows.Clear();
+            _preenchendoEtapa2 = true;
+            try
+            {
+                dgvAjustesIndividuais.Rows.Clear();
 
             // 1. Obter o filtro da turma (ComboBox)
             var filtroTurma = cmbFiltroTurmaEtapa2.SelectedItem?.ToString();
@@ -1023,52 +798,36 @@ namespace SUB.Forms.Usuario
             }
 
             // 6. Popular a grade com os dados filtrados
-            foreach (var registro in registrosFiltrados.OrderBy(r => r.Nome))
-            {
-                var rowIndex = dgvAjustesIndividuais.Rows.Add(
-                    registro.Nome,
-                    registro.TurmaAtual,
-                    registro.NovaTurma, // Padrão Definido (vem da Etapa 1)
-                    registro.NovaTurma, // Nova Escolha (valor inicial)
-                    registro.Observacao
-                );
+                foreach (var registro in registrosFiltrados.OrderBy(r => r.Nome))
+                {
+                    var rowIndex = dgvAjustesIndividuais.Rows.Add(
+                        registro.UsuarioId,
+                        registro.Nome,
+                        registro.TurmaAtual,
+                        registro.NovaTurma,
+                        registro.NovaTurma,
+                        registro.Observacao
+                    );
 
-                ConfigurarOpcoesValidasParaAlunoInteligente(rowIndex, registro.TurmaAtual);
+                    ConfigurarOpcoesValidasParaAlunoInteligente(rowIndex, registro.TurmaAtual);
+                }
+            }
+            finally
+            {
+                _preenchendoEtapa2 = false;
             }
         }
 
-        // Etapa 2: opções individuais – não exibir EGRESSO para séries ≠ 3º
         private void ConfigurarOpcoesValidasParaAlunoInteligente(int rowIndex, string turmaAtual)
         {
             var cell = (DataGridViewComboBoxCell)dgvAjustesIndividuais.Rows[rowIndex].Cells["NovaEscolha"];
-            var opcoesValidas = ObterOpcoesValidasParaTurmaInteligente(turmaAtual);
-
-            // NOVO: só incluir EGRESSO quando a série atual for 3º; manter DESISTENTE/TRANSFERIDO
-            var serieAtual = ExtrairNumeroSerie(turmaAtual);
-            var turmaUpper = (turmaAtual ?? "").ToUpperInvariant();
-            var isEspecial = turmaUpper == "EGRESSO" || turmaUpper == "DESISTENTE" || turmaUpper == "TRANSFERIDO";
-
-            // Em casos "especiais", manter lista original (ObterOpcoes... já devolve o status atual).
-            if (!isEspecial)
-            {
-                // garantir DESISTENTE/TRANSFERIDO sempre disponíveis
-                if (!opcoesValidas.Contains("DESISTENTE")) opcoesValidas.Add("DESISTENTE");
-                if (!opcoesValidas.Contains("TRANSFERIDO")) opcoesValidas.Add("TRANSFERIDO");
-
-                // EGRESSO só para 3º ano
-                if (serieAtual == 3 && !opcoesValidas.Contains("EGRESSO"))
-                    opcoesValidas.Add("EGRESSO");
-                else
-                    opcoesValidas.RemoveAll(o => string.Equals(o, "EGRESSO", StringComparison.OrdinalIgnoreCase));
-            }
+            var opcoesValidas = _regrasTurmas == null
+                ? new List<string>()
+                : _regrasTurmas.OpcoesDeAjusteIndividual(turmaAtual);
 
             cell.Items.Clear();
             foreach (var opcao in opcoesValidas.OrderBy(o => o, StringComparer.OrdinalIgnoreCase))
                 cell.Items.Add(opcao);
-
-            var valorAtual = dgvAjustesIndividuais.Rows[rowIndex].Cells["NovaEscolha"].Value?.ToString();
-            if (!string.IsNullOrEmpty(valorAtual) && !cell.Items.Contains(valorAtual))
-                cell.Items.Add(valorAtual);
         }
 
         private void CmbFiltroTurmaEtapa2_SelectedIndexChanged(object sender, EventArgs e)
@@ -1166,29 +925,8 @@ namespace SUB.Forms.Usuario
             try
             {
                 _model.Registros = _registrosOriginais;
-                _model.Status = "pendente";
-                SaveMapping(_model);
-
-                using (var cn = Conexao.ObterConexao())
-                {
-                    cn.Open();
-                    using (var tx = cn.BeginTransaction())
-                    {
-                        foreach (var registro in _registrosOriginais.Where(r => r.TurmaAtual != r.NovaTurma))
-                        {
-                            using (var cmd = new SqlCeCommand("UPDATE usuarios SET Turma = @turma WHERE Id = @id", cn, tx))
-                            {
-                                cmd.Parameters.AddWithValue("@turma", registro.NovaTurma ?? "");
-                                cmd.Parameters.AddWithValue("@id", registro.UsuarioId);
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        tx.Commit();
-                    }
-                }
-
+                new MapeamentoAnualStore().Aplicar(_model.Ano, _registrosOriginais, Sessao.NomeBibliotecariaLogada);
                 _model.Status = "concluido";
-                SaveMapping(_model);
 
                 MessageBox.Show("Mapeamento aplicado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
@@ -1277,65 +1015,6 @@ namespace SUB.Forms.Usuario
         }
         #endregion
 
-        #region Arquivo de Mapeamento
-        private string MappingFilePath(int ano) => Path.Combine(_baseFolder, $"mapeamento_{ano}.txt");
-
-        private MapeamentoAnualModel LoadMapping(int ano)
-        {
-            var path = MappingFilePath(ano);
-            if (!File.Exists(path))
-                return null;
-
-            try
-            {
-                var content = File.ReadAllText(path);
-                var lines = content.Split('\n');
-                var model = new MapeamentoAnualModel();
-
-                foreach (var line in lines)
-                {
-                    if (line.StartsWith("ANO="))
-                        model.Ano = int.Parse(line.Substring(4));
-                    else if (line.StartsWith("STATUS="))
-                        model.Status = line.Substring(7);
-                    else if (line.StartsWith("GERADO_EM="))
-                        model.GeradoEm = DateTime.Parse(line.Substring(10));
-                }
-
-                return model;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private bool SaveMapping(MapeamentoAnualModel model)
-        {
-            var path = MappingFilePath(model.Ano);
-
-            try
-            {
-                var content = $"ANO={model.Ano}\n";
-                content += $"STATUS={model.Status}\n";
-                content += $"GERADO_EM={model.GeradoEm:O}\n";
-                content += "REGISTROS_START\n";
-
-                foreach (var reg in model.Registros)
-                    content += $"{reg.UsuarioId}|{reg.Nome}|{reg.TurmaAtual}|{reg.NovaTurma}|{reg.Observacao}\n";
-
-                content += "REGISTROS_END\n";
-
-                File.WriteAllText(path, content);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        #endregion
-
         #region Utilitários e Métodos Auxiliares
         private void EstilizarDataGrid(DataGridView dgv)
         {
@@ -1392,16 +1071,11 @@ namespace SUB.Forms.Usuario
 
         private bool ValidarEtapa2()
         {
-            foreach (DataGridViewRow row in dgvAjustesIndividuais.Rows)
+            foreach (var registro in _registrosOriginais)
             {
-                var turmaAtual = row.Cells["TurmaAtual"].Value?.ToString();
-                var novaEscolha = row.Cells["NovaEscolha"].Value?.ToString();
-
-                if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) &&
-                    IsProgressaoInvalida(turmaAtual, novaEscolha))
+                if (IsAjusteIndividualInvalido(registro.TurmaAtual, registro.NovaTurma))
                 {
-                    var nome = row.Cells["Nome"].Value?.ToString();
-                    MessageBox.Show($"Progressão inválida detectada para {nome}: {turmaAtual} → {novaEscolha}",
+                    MessageBox.Show($"Progressão inválida detectada para {registro.Nome}: {registro.TurmaAtual} → {registro.NovaTurma}",
                                   "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }

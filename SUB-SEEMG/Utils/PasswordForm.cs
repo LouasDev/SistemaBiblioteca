@@ -43,6 +43,8 @@ namespace SUB.Forms.Usuario
             }));
         }
 
+        
+
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtSenha.Text))

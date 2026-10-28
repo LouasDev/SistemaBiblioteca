@@ -81,7 +81,7 @@
             this.lblRelogio.Name = "lblRelogio";
             this.lblRelogio.Size = new System.Drawing.Size(481, 32);
             this.lblRelogio.TabIndex = 2;
-            this.lblRelogio.Text = "Quarta, 01 de Janeiro de 2025 - 00:00:00";
+            this.lblRelogio.Text = "Quarta, 01 de Janeiro de 0000 - 00:00:00";
             // 
             // lblOla
             // 
@@ -112,7 +112,8 @@
             // 
             // InicioForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1040, 660);
             this.Controls.Add(this.panel1);

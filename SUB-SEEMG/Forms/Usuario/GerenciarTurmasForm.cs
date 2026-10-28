@@ -18,6 +18,7 @@ namespace SUB.Forms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
+            txtNovaTurma.KeyPress += TxtNovaTurma_KeyPress;
         }
 
         private void GerenciarTurmasForm_Load(object sender, EventArgs e)
@@ -138,6 +139,16 @@ namespace SUB.Forms.Usuario
                 e.SuppressKeyPress = true;
                 btnAdicionar.PerformClick();
             }
+        }
+
+        private void TxtNovaTurma_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) || txtNovaTurma.SelectionStart != 0 || txtNovaTurma.Text.Length != 0)
+                return;
+
+            txtNovaTurma.Text = e.KeyChar + "° ";
+            txtNovaTurma.SelectionStart = txtNovaTurma.Text.Length;
+            e.Handled = true;
         }
 
         private void AtualizarLista()

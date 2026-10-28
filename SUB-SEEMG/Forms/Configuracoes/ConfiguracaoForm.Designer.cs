@@ -35,12 +35,11 @@
         {
             this.grpInstituicao = new System.Windows.Forms.GroupBox();
             this.cbTemas = new RoundedComboBox();
-            this.cbAparencia = new RoundedComboBox();
             this.c = new RoundedTextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblCor = new System.Windows.Forms.Label();
             this.lblAparencia = new System.Windows.Forms.Label();
-            this.pnlCorPreview = new System.Windows.Forms.Panel();
+            this.cbAparencia = new RoundedComboBox();
             this.grpAtualizacao = new System.Windows.Forms.GroupBox();
             this.btnCancelarDownload = new CustomButton();
             this.btnAtualizar = new CustomButton();
@@ -57,6 +56,7 @@
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.Titulo = new System.Windows.Forms.Label();
+            this.pnlCorPreview = new System.Windows.Forms.Panel();
             this.grpInstituicao.SuspendLayout();
             this.grpAtualizacao.SuspendLayout();
             this.grpManutencao.SuspendLayout();
@@ -83,6 +83,7 @@
             // 
             // cbTemas
             // 
+            this.cbTemas.ArrowColor = System.Drawing.Color.Empty;
             this.cbTemas.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbTemas.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbTemas.BorderRadius = 8;
@@ -94,13 +95,16 @@
             this.cbTemas.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbTemas.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cbTemas.FormattingEnabled = true;
+            this.cbTemas.HighlightColor = System.Drawing.Color.Empty;
+            this.cbTemas.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbTemas.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbTemas.Location = new System.Drawing.Point(626, 54);
             this.cbTemas.Name = "cbTemas";
+            this.cbTemas.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbTemas.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbTemas.PlaceholderMargin = 10;
             this.cbTemas.PlaceholderText = "Escolha a cor";
-            this.cbTemas.Size = new System.Drawing.Size(548, 34);
+            this.cbTemas.Size = new System.Drawing.Size(510, 34);
             this.cbTemas.TabIndex = 6;
             this.cbTemas.SelectedIndexChanged += new System.EventHandler(this.cbTemas_SelectedIndexChanged);
             // 
@@ -134,7 +138,7 @@
             this.lblNome.AutoSize = true;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblNome.Location = new System.Drawing.Point(16, 25);
+            this.lblNome.Location = new System.Drawing.Point(16, 31);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(150, 20);
             this.lblNome.TabIndex = 0;
@@ -145,25 +149,26 @@
             this.lblCor.AutoSize = true;
             this.lblCor.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.lblCor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblCor.Location = new System.Drawing.Point(626, 25);
+            this.lblCor.Location = new System.Drawing.Point(622, 31);
             this.lblCor.Name = "lblCor";
             this.lblCor.Size = new System.Drawing.Size(101, 20);
             this.lblCor.TabIndex = 2;
             this.lblCor.Text = "Cor principal:";
-            //
+            // 
             // lblAparencia
-            //
+            // 
             this.lblAparencia.AutoSize = true;
             this.lblAparencia.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold);
             this.lblAparencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblAparencia.Location = new System.Drawing.Point(16, 100);
+            this.lblAparencia.Location = new System.Drawing.Point(15, 105);
             this.lblAparencia.Name = "lblAparencia";
-            this.lblAparencia.Size = new System.Drawing.Size(98, 25);
+            this.lblAparencia.Size = new System.Drawing.Size(82, 20);
             this.lblAparencia.TabIndex = 7;
             this.lblAparencia.Text = "Aparência:";
-            //
+            // 
             // cbAparencia
-            //
+            // 
+            this.cbAparencia.ArrowColor = System.Drawing.Color.Empty;
             this.cbAparencia.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbAparencia.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbAparencia.BorderRadius = 8;
@@ -175,21 +180,17 @@
             this.cbAparencia.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbAparencia.ForeColor = System.Drawing.SystemColors.WindowText;
             this.cbAparencia.FormattingEnabled = true;
+            this.cbAparencia.HighlightColor = System.Drawing.Color.Empty;
+            this.cbAparencia.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbAparencia.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbAparencia.Location = new System.Drawing.Point(16, 129);
+            this.cbAparencia.Location = new System.Drawing.Point(16, 128);
             this.cbAparencia.Name = "cbAparencia";
+            this.cbAparencia.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbAparencia.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbAparencia.PlaceholderMargin = 10;
             this.cbAparencia.PlaceholderText = "Escolha a aparência";
             this.cbAparencia.Size = new System.Drawing.Size(590, 34);
             this.cbAparencia.TabIndex = 8;
-            // 
-            // pnlCorPreview
-            // 
-            this.pnlCorPreview.Location = new System.Drawing.Point(1190, 54);
-            this.pnlCorPreview.Name = "pnlCorPreview";
-            this.pnlCorPreview.Size = new System.Drawing.Size(34, 34);
-            this.pnlCorPreview.TabIndex = 4;
             // 
             // grpAtualizacao
             // 
@@ -392,9 +393,9 @@
             this.btnApagarDados.Text = "Resetar aplicativo";
             this.btnApagarDados.UseVisualStyleBackColor = false;
             this.btnApagarDados.Click += new System.EventHandler(this.btnApagarDados_Click);
-            //
+            // 
             // btnReverTutorial
-            //
+            // 
             this.btnReverTutorial.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(246)))));
             this.btnReverTutorial.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnReverTutorial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -449,6 +450,13 @@
             this.Titulo.TabIndex = 124;
             this.Titulo.Text = "Configurações da instituição";
             // 
+            // pnlCorPreview
+            // 
+            this.pnlCorPreview.Location = new System.Drawing.Point(1159, 41);
+            this.pnlCorPreview.Name = "pnlCorPreview";
+            this.pnlCorPreview.Size = new System.Drawing.Size(60, 60);
+            this.pnlCorPreview.TabIndex = 4;
+            // 
             // ConfiguracaoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -485,7 +493,6 @@
         private System.Windows.Forms.GroupBox grpInstituicao;
         private System.Windows.Forms.Label lblNome;
         private System.Windows.Forms.Label lblCor;
-        private System.Windows.Forms.Panel pnlCorPreview;
         private System.Windows.Forms.GroupBox grpAtualizacao;
         private System.Windows.Forms.Button btnSalvar;
         private CustomButton btnApagarDados;
@@ -506,5 +513,6 @@
         private System.Windows.Forms.Label lblStatusAtualizacao;
         private System.Windows.Forms.ProgressBar pbVerificando;
         private System.Windows.Forms.ProgressBar pbDownload;
+        private System.Windows.Forms.Panel pnlCorPreview;
     }
 }

@@ -902,6 +902,11 @@ namespace SUB.Utils
             return caminho;
         }
 
+        // Botão plano desabilitado recebe texto escurecido pelo Windows; sobre a cor do tema
+        // ficava ilegível. Usa uma superfície neutra e devolve as cores ao reabilitar,
+        // preservando estilos que o formulário aplicou por conta própria.
+        
+
         private static void ApplyCompactUtilityButton(Button button, Color primaryColor)
         {
             button.UseVisualStyleBackColor = false;

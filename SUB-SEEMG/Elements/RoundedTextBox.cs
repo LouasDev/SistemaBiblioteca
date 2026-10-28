@@ -49,6 +49,8 @@ public class RoundedTextBox : UserControl
         {
             if (onlyNumbers && !char.IsControl(e.KeyChar) && (e.KeyChar < '0' || e.KeyChar > '9'))
                 e.Handled = true;
+
+            OnKeyPress(e);
         };
         innerTextBox.GotFocus += (s, e) => { isFocused = true; UpdatePlaceholder(); this.Invalidate(); };
         innerTextBox.LostFocus += (s, e) => { isFocused = false; UpdatePlaceholder(); this.Invalidate(); };

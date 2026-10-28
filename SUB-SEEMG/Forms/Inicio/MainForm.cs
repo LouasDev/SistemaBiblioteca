@@ -230,7 +230,17 @@ namespace SUB.Forms.Inicio
 
         private void tamanho()
         {
-            this.Width = 1440; this.Height = 800;
+            // O tamanho base foi desenhado para 96 DPI. Ao restaurar a janela,
+            // respeitamos a escala atual e nunca ultrapassamos a área útil do monitor.
+            float escalaDpi = DeviceDpi > 0 ? DeviceDpi / 96f : 1f;
+            Size desejado = new Size(
+                (int)Math.Round(1440 * escalaDpi),
+                (int)Math.Round(800 * escalaDpi));
+            Size areaUtil = Screen.FromHandle(Handle).WorkingArea.Size;
+
+            Size = new Size(
+                Math.Min(desejado.Width, areaUtil.Width),
+                Math.Min(desejado.Height, areaUtil.Height));
         }
         private Size tamanhoOriginal;
         private Point localOriginal;
@@ -318,61 +328,17 @@ namespace SUB.Forms.Inicio
         {
             try
             {
-                AppPaths.EnsureFolders();
-                string pasta = AppPaths.MappingFolder;
-                string arquivoMap = Path.Combine(pasta, $"mapeamento_{DateTime.Now.Year}.txt");
-                string marcador = Path.Combine(pasta, "app_instalado_em.txt");
-
-                // primeira execução: criar marcador e não abrir mapeamento
-                if (!File.Exists(marcador))
-                {
-                    File.WriteAllText(marcador, DateTime.Now.Year.ToString());
+                var estado = new MapeamentoAnualStore().ObterEstadoDoAno(DateTime.Now.Year);
+                if (!estado.DeveLembrar)
                     return;
-                }
 
-                // se existe arquivo de mapeamento e está pendente -> perguntar
-                if (File.Exists(arquivoMap))
-                {
-                    try
-                    {
-                        var json = File.ReadAllText(arquivoMap);
-                        var jObj = JObject.Parse(json);
-                        var status = (string)jObj["Status"];
-
-                        if (string.Equals(status, "pendente", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var msg = $"Existe um mapeamento pendente para o ano {DateTime.Now.Year}.\nDeseja executar o mapeamento agora (Sim) ou lembrar depois (Não)?";
-                            var resp = MessageBox.Show(msg, "Mapeamento pendente", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1);
-                            if (resp == DialogResult.Yes)
-                            {
-                                AbrirMapeamentoModal();
-                            }
-                            // se escolher "Não", nada acontece; aparecerá novamente no próximo startup
-                        }
-                    }
-                    catch
-                    {
-                        // ignora erro de leitura para não bloquear app
-                    }
-                    return;
-                }
-
-                // se não existe arquivo de mapeamento e app_instalado_em existe com ano < anoAtual -> primeiro ano após instalação: abrir e gerar automaticamente
-                var instaladoStr = File.ReadAllText(marcador).Trim();
-                if (int.TryParse(instaladoStr, out int anoInstalado))
-                {
-                    var anoAtual = DateTime.Now.Year;
-                    if (anoInstalado < anoAtual)
-                    {
-                        var msg = $"É necessário realizar o mapeamento de turmas para o ano {anoAtual}.\nDeseja executar agora (Sim) ou mais tarde (Não)?";
-                        var resp = MessageBox.Show(msg, "Mapeamento Obrigatório", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-                        if (resp == DialogResult.Yes)
-                        {   
-                            AbrirMapeamentoModal();
-                        }
-                        // se escolher "Não", aparecerá novamente no próximo startup
-                    }
-                }
+                string mensagem = estado.Status == MapeamentoAnualStore.RequerRevisao
+                    ? $"O registro local do mapeamento de {estado.Ano} precisou de revisão. Nenhuma conclusão foi presumida.\nDeseja revisar o mapeamento agora ou ser lembrado no próximo acesso?"
+                    : $"Existe um mapeamento pendente para o ano {estado.Ano}.\nDeseja executá-lo agora ou ser lembrado no próximo acesso?";
+                var resposta = MessageBox.Show(mensagem, "Mapeamento anual", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                if (resposta == DialogResult.Yes)
+                    AbrirMapeamentoModal();
             }
             catch (Exception ex)
             {

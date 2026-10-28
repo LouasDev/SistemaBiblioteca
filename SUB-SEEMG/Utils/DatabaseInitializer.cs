@@ -55,11 +55,29 @@ namespace SUB.Utils
                 DataSolicitacao datetime NULL, Ativo bit NOT NULL)", "NotificacoesDisponibilidade");
             Execute(connection, @"CREATE TABLE Turmas (
                 Id int IDENTITY(1,1) PRIMARY KEY, Nome nvarchar(100) NOT NULL UNIQUE)", "Turmas");
+            Execute(connection, @"CREATE TABLE MapeamentoAnualControle (
+                Id int PRIMARY KEY, AnoBase int NOT NULL, CriadoEm datetime NOT NULL)", "MapeamentoAnualControle");
+            Execute(connection, @"CREATE TABLE MapeamentosAnuais (
+                Ano int PRIMARY KEY, Status nvarchar(40) NOT NULL, CriadoEm datetime NOT NULL,
+                ConcluidoEm datetime NULL, Bibliotecaria nvarchar(200) NULL, VersaoRegra int NOT NULL)", "MapeamentosAnuais");
+            Execute(connection, @"CREATE TABLE MapeamentoAnualItens (
+                Id int IDENTITY(1,1) PRIMARY KEY, Ano int NOT NULL, UsuarioId int NOT NULL,
+                TurmaOrigem nvarchar(100) NOT NULL, TurmaDestino nvarchar(100) NOT NULL,
+                Observacao nvarchar(500) NULL)", "MapeamentoAnualItens");
+            Execute(connection, @"CREATE TABLE ComunicadosAtraso (
+                Id int IDENTITY(1,1) PRIMARY KEY, UsuarioId int NOT NULL,
+                Bibliotecaria nvarchar(200) NULL, Instituicao nvarchar(200) NOT NULL,
+                GeradoEm datetime NOT NULL, VersaoModelo int NOT NULL)", "ComunicadosAtraso");
+            Execute(connection, @"CREATE TABLE ComunicadosAtrasoItens (
+                Id int IDENTITY(1,1) PRIMARY KEY, ComunicadoId int NOT NULL,
+                EmprestimoId int NOT NULL, LivroId int NULL, Titulo nvarchar(250) NOT NULL,
+                Autor nvarchar(200) NULL, DataDevolucaoPrevista datetime NOT NULL,
+                DiasAtraso int NOT NULL)", "ComunicadosAtrasoItens");
             MigrarEmprestimo(connection);
             MigrarEmprestimoRapido(connection);
             MigrarLogProrrogacoes(connection);
             MigrarTurmasDosUsuariosExistentes(connection);
-            GarantirVersaoSchema(connection, 5);
+            GarantirVersaoSchema(connection, 7);
         }
 
         private static void MigrarLogProrrogacoes(SqlCeConnection connection)

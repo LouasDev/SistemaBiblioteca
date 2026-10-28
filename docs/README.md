@@ -12,6 +12,7 @@
 | [Reset local](RESET-LOCAL.md) | Termo, TXT, senha, exclusão de dados e retomada. |
 | [Publicação de atualizações](PUBLICACAO-ATUALIZACOES.md) | Versões, pacotes assinados e distribuição. |
 | [Backlog](backlog.markdown) | Situação das correções e decisões pendentes. |
+| [Checklist de release](CHECKLIST-RELEASE.md) | O que precisa estar pronto antes de criar a versão 1.0.0. |
 | [Roteiro manual do atualizador](../Ferramentas/Testes/roteiro-teste-etapaD.md) | Verificação da interface e preparação do ambiente de teste. |
 
 As verificações específicas de circulação e prorrogação já foram executadas com

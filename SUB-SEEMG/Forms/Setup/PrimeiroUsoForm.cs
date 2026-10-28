@@ -1,4 +1,4 @@
-using SeuProjeto;
+﻿using SeuProjeto;
 using SUB.Models;
 using SUB.Utils;
 using System;
@@ -26,6 +26,9 @@ namespace SUB.Forms.Setup
         private int _etapaAtual = 1;
         private bool _concluindo;
         private readonly List<string> _turmasIniciais = new List<string>();
+        private readonly bool _modoEscuroAnterior = ThemeManager.Escuro;
+        private readonly Dictionary<Label, Color> _coresRotulosClaros = new Dictionary<Label, Color>();
+        private Color _corStatusCodigo = Color.FromArgb(105, 114, 126);
 
 
 
@@ -44,12 +47,20 @@ namespace SUB.Forms.Setup
             if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
                 return;
 
+            GuardarCoresRotulos(pnlConteudo);
+            Disposed += (s, e) =>
+            {
+                if (DialogResult != DialogResult.OK)
+                    ThemeManager.DefinirModo(_modoEscuroAnterior);
+            };
             _tema.SelectedIndexChanged += Tema_SelectedIndexChanged;
+            _aparencia.SelectedIndexChanged += (s, e) => AtualizarVisualizacaoTema();
             foreach (var preset in ThemeManager.Presets)
                 _tema.Items.Add(preset);
 
             _codigoMestre.Text = _codigoMestreGerado;
             ConectarValidacaoProgressiva();
+            _aparencia.SelectedIndex = 0;
             _tema.SelectedIndex = 0;
             MostrarEtapa(1);
             AtualizarEstadoConclusao();
@@ -92,38 +103,62 @@ namespace SUB.Forms.Setup
 
         private void AtualizarVisualizacaoTema()
         {
+            bool escuro = _aparencia.SelectedIndex == 1;
+            ThemeManager.DefinirModo(escuro);
             ThemePreset tema = TemaSelecionado;
             Color primaria = tema.PrimaryColor;
             SubLogoManager.ApplyWindowIcon(this, primaria);
             Color secundaria = tema.SecondaryColor;
-            Color borda = ThemeManager.Lighten(primaria, 0.42f);
-            Color hover = ThemeManager.Lighten(primaria, 0.94f);
+            Color borda = escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaria, 0.42f);
+            Color hover = escuro ? ThemeManager.Dark.EntradaHover : ThemeManager.Lighten(primaria, 0.94f);
+            Color entrada = escuro ? ThemeManager.Dark.Entrada : Color.White;
+            Color texto = escuro ? ThemeManager.Dark.Texto : Color.FromArgb(29, 39, 53);
 
-            BackColor = tema.AccentColor;
+            BackColor = escuro ? ThemeManager.Dark.Fundo : tema.AccentColor;
+            pnlConteudo.BackColor = escuro ? ThemeManager.Dark.Fundo : Color.White;
+            pnlEtapa1.BackColor = Color.Transparent;
+            pnlEtapa2.BackColor = Color.Transparent;
+            pnlEtapa3.BackColor = Color.Transparent;
+            pnlLogo.BackColor = escuro ? ThemeManager.Dark.Superficie : Color.White;
+            foreach (var rotulo in _coresRotulosClaros)
+                rotulo.Key.ForeColor = CorTextoSetup(rotulo.Key == statusCodigo ? _corStatusCodigo : rotulo.Value);
+            chkMostrarSenhas.BackColor = Color.Transparent;
+            chkMostrarSenhas.ForeColor = texto;
             pnlInstitucional.Gradientetop = primaria;
             pnlInstitucional.Gradientebottom = secundaria;
             pnlInstitucional.Invalidate();
-            pnlCodigoRecuperacao.BackColor = tema.AccentColor;
+            pnlCodigoRecuperacao.BackColor = escuro ? ThemeManager.Dark.Superficie : tema.AccentColor;
+            _codigoMestre.BackColor = entrada;
+            _codigoMestre.ForeColor = texto;
             _visualizadorCor.BackColor = primaria;
-            lblEtapaAtual.ForeColor = primaria;
+            lblEtapaAtual.ForeColor = CorTextoSetup(primaria);
             btnAvancar.BaseColor = primaria;
             btnAvancarEtapa2.BaseColor = primaria;
-            btnVoltar.ForeColor = primaria;
-            btnVoltarEtapa3.ForeColor = primaria;
-            btnVoltar.FlatAppearance.MouseOverBackColor = tema.AccentColor;
+            btnVoltar.BackColor = pnlConteudo.BackColor;
+            btnVoltarEtapa3.BackColor = pnlConteudo.BackColor;
+            btnVoltar.ForeColor = CorTextoSetup(primaria);
+            btnVoltarEtapa3.ForeColor = CorTextoSetup(primaria);
+            btnVoltar.FlatAppearance.MouseOverBackColor = hover;
             btnVoltar.FlatAppearance.MouseDownBackColor = ThemeManager.Lighten(primaria, 0.86f);
-            exportarCodigo.ForeColor = primaria;
+            exportarCodigo.BackColor = escuro ? ThemeManager.Dark.Superficie : Color.White;
+            exportarCodigo.ForeColor = CorTextoSetup(primaria);
             exportarCodigo.FlatAppearance.BorderColor = primaria;
-            exportarCodigo.FlatAppearance.MouseOverBackColor = tema.AccentColor;
+            exportarCodigo.FlatAppearance.MouseOverBackColor = hover;
             exportarCodigo.FlatAppearance.MouseDownBackColor = ThemeManager.Lighten(primaria, 0.86f);
             btnAdicionarTurma.BackColor = primaria;
             btnAdicionarTurma.ForeColor = ThemeManager.GetContrastColor(primaria);
             btnAdicionarTurma.FlatAppearance.BorderColor = ThemeManager.Darken(primaria, 0.12f);
-            btnRemoverTurma.BackColor = Color.White;
-            btnRemoverTurma.ForeColor = ThemeManager.GetLabelColor(primaria);
-            btnRemoverTurma.FlatAppearance.BorderColor = ThemeManager.Lighten(primaria, 0.55f);
-            lstTurmasIniciais.BackColor = Color.White;
-            lstTurmasIniciais.ForeColor = Color.FromArgb(29, 39, 53);
+            btnRemoverTurma.BackColor = entrada;
+            btnRemoverTurma.ForeColor = CorTextoSetup(ThemeManager.GetLabelColor(primaria));
+            btnRemoverTurma.FlatAppearance.BorderColor = borda;
+            foreach (Button botao in new[] { btnVoltar, btnVoltarEtapa3, exportarCodigo, btnRemoverTurma })
+            {
+                botao.FlatAppearance.MouseOverBackColor = hover;
+                botao.FlatAppearance.MouseDownBackColor = escuro
+                    ? ThemeManager.Dark.Selecao : ThemeManager.Lighten(primaria, 0.86f);
+            }
+            lstTurmasIniciais.BackColor = entrada;
+            lstTurmasIniciais.ForeColor = texto;
 
             RoundedTextBox[] campos =
             {
@@ -137,23 +172,59 @@ namespace SUB.Forms.Setup
 
             foreach (RoundedTextBox campo in campos)
             {
+                campo.BackColor = entrada;
+                campo.TextColor = texto;
+                campo.PlaceholderColor = escuro ? ThemeManager.Dark.TextoSuave : Color.Gray;
                 campo.BorderColor = borda;
-                campo.BorderFocusColor = primaria;
+                campo.BorderFocusColor = escuro ? ThemeManager.Lighten(primaria, 0.35f) : primaria;
                 campo.HoverBackColor = hover;
                 campo.Invalidate();
             }
 
+            _telefoneBibliotecaria.BackColor = entrada;
+            _telefoneBibliotecaria.ForeColor = texto;
+            _telefoneBibliotecaria.MaskTextColor = texto;
             _telefoneBibliotecaria.BorderColor = borda;
             _telefoneBibliotecaria.BorderFocusColor = primaria;
             _telefoneBibliotecaria.HoverBackColor = hover;
             _telefoneBibliotecaria.HoverBorderColor = primaria;
             _telefoneBibliotecaria.Invalidate();
 
-            _tema.BorderColor = primaria;
-            _tema.Invalidate();
+            foreach (RoundedComboBox combo in new[] { _tema, _aparencia })
+            {
+                combo.BackColor = entrada;
+                combo.ForeColor = texto;
+                combo.BorderColor = escuro ? borda : primaria;
+                combo.ArrowColor = escuro ? ThemeManager.Dark.TextoSuave : Color.Empty;
+                combo.PlaceholderColor = escuro ? ThemeManager.Dark.TextoSuave : Color.Gray;
+                combo.HighlightColor = escuro ? ThemeManager.Dark.Selecao : ThemeManager.Lighten(primaria, 0.90f);
+                combo.HighlightTextColor = escuro ? texto : ThemeManager.Darken(primaria, 0.55f);
+                combo.Invalidate();
+            }
             AtualizarIndicadorEtapa();
             AtualizarEstadoConclusao();
             SubLogoManager.SetImage(picLogo, SubLogoVariant.Square, primaria, pnlLogo.BackColor);
+        }
+
+        private void GuardarCoresRotulos(Control raiz)
+        {
+            foreach (Control filho in raiz.Controls)
+            {
+                if (filho is Label rotulo)
+                    _coresRotulosClaros[rotulo] = rotulo.ForeColor;
+                GuardarCoresRotulos(filho);
+            }
+        }
+
+        private Color CorTextoSetup(Color corClara)
+        {
+            return _aparencia.SelectedIndex == 1 ? ThemeManager.CorTextoParaEscuro(corClara) : corClara;
+        }
+
+        private void AtualizarCorStatusCodigo(Color cor)
+        {
+            _corStatusCodigo = cor;
+            statusCodigo.ForeColor = CorTextoSetup(cor);
         }
 
         private void MostrarEtapa(int etapa)
@@ -195,6 +266,12 @@ namespace SUB.Forms.Setup
                 }
 
                 if (_tema.Focused && !_tema.DroppedDown)
+                {
+                    _aparencia.Focus();
+                    return true;
+                }
+
+                if (_aparencia.Focused && !_aparencia.DroppedDown)
                 {
                     btnAvancar.PerformClick();
                     return true;
@@ -245,8 +322,8 @@ namespace SUB.Forms.Setup
         {
             Color primaria = TemaSelecionado.PrimaryColor;
             indicadorEtapa1.BackColor = primaria;
-            indicadorEtapa2.BackColor = _etapaAtual >= 2 ? primaria : Color.FromArgb(222, 227, 234);
-            indicadorEtapa3.BackColor = _etapaAtual >= 3 ? primaria : Color.FromArgb(222, 227, 234);
+            indicadorEtapa2.BackColor = _etapaAtual >= 2 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
+            indicadorEtapa3.BackColor = _etapaAtual >= 3 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
 
             bool primeiraEtapa = _etapaAtual == 1;
             bool segundaEtapa = _etapaAtual == 2;
@@ -406,7 +483,7 @@ namespace SUB.Forms.Setup
             if (!codigoSalvo)
             {
                 statusCodigo.Text = "Salve o código de recuperação antes de avançar.";
-                statusCodigo.ForeColor = _corErro;
+                AtualizarCorStatusCodigo(_corErro);
             }
 
             ExibirErroGeral(!codigoSalvo
@@ -547,13 +624,13 @@ namespace SUB.Forms.Setup
                     File.WriteAllText(dialogo.FileName, conteudo, new UTF8Encoding(true));
                     _caminhoCodigoMestre = dialogo.FileName;
                     statusCodigo.Text = "Salvo em: " + _caminhoCodigoMestre;
-                    statusCodigo.ForeColor = _corSucesso;
+                    AtualizarCorStatusCodigo(_corSucesso);
                     AtualizarEstadoConclusao();
                 }
                 catch (Exception ex)
                 {
                     statusCodigo.Text = "Não foi possível salvar. Escolha outro local. " + ex.Message;
-                    statusCodigo.ForeColor = _corErro;
+                    AtualizarCorStatusCodigo(_corErro);
                     AtualizarEstadoConclusao();
                 }
             }
@@ -585,7 +662,7 @@ namespace SUB.Forms.Setup
             {
                 _caminhoCodigoMestre = null;
                 statusCodigo.Text = "Arquivo não encontrado. Salve o código novamente para concluir.";
-                statusCodigo.ForeColor = _corErro;
+                AtualizarCorStatusCodigo(_corErro);
                 AtualizarEstadoConclusao();
                 return;
             }
@@ -681,6 +758,7 @@ VALUES
                 {
                     Nome = _nomeInstituicao.Text.Trim(),
                     CorPrimaria = ColorTranslator.ToHtml(tema.PrimaryColor),
+                    TemaEscuro = _aparencia.SelectedIndex == 1,
                     CodigoMestreHash = codigoHash,
                     CodigoMestreSalt = codigoSalt
                 });
@@ -688,6 +766,7 @@ VALUES
                 transacao.Commit();
                 transacao.Dispose();
                 transacao = null;
+                ThemeManager.DefinirModo(_aparencia.SelectedIndex == 1);
                 DialogResult = DialogResult.OK;
                 Close();
             }

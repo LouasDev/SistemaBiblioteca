@@ -1,4 +1,4 @@
-namespace SUB.Forms.Setup
+﻿namespace SUB.Forms.Setup
 {
     partial class PrimeiroUsoForm
     {
@@ -35,6 +35,9 @@ namespace SUB.Forms.Setup
         private System.Windows.Forms.Label lblErroNomeInstituicao;
         private System.Windows.Forms.Label lblTema;
         private RoundedComboBox _tema;
+        private RoundedComboBox _aparencia;
+        private System.Windows.Forms.Label lblAparencia;
+        private System.Windows.Forms.Label lblDicaAparencia;
         private System.Windows.Forms.Panel _visualizadorCor;
         private System.Windows.Forms.Label lblErroTema;
         private CustomButton btnAvancar;
@@ -121,6 +124,9 @@ namespace SUB.Forms.Setup
             this.lblErroNomeInstituicao = new System.Windows.Forms.Label();
             this.lblTema = new System.Windows.Forms.Label();
             this._tema = new RoundedComboBox();
+            this._aparencia = new RoundedComboBox();
+            this.lblAparencia = new System.Windows.Forms.Label();
+            this.lblDicaAparencia = new System.Windows.Forms.Label();
             this._visualizadorCor = new System.Windows.Forms.Panel();
             this.lblErroTema = new System.Windows.Forms.Label();
             this.btnAvancar = new CustomButton();
@@ -507,6 +513,9 @@ namespace SUB.Forms.Setup
             this.pnlEtapa1.Controls.Add(this.lblErroNomeInstituicao);
             this.pnlEtapa1.Controls.Add(this.lblTema);
             this.pnlEtapa1.Controls.Add(this._tema);
+            this.pnlEtapa1.Controls.Add(this._aparencia);
+            this.pnlEtapa1.Controls.Add(this.lblAparencia);
+            this.pnlEtapa1.Controls.Add(this.lblDicaAparencia);
             this.pnlEtapa1.Controls.Add(this._visualizadorCor);
             this.pnlEtapa1.Controls.Add(this.lblErroTema);
             this.pnlEtapa1.Controls.Add(this.btnAvancar);
@@ -602,6 +611,42 @@ namespace SUB.Forms.Setup
             this._tema.PlaceholderText = "Selecione...";
             this._tema.Size = new System.Drawing.Size(421, 27);
             this._tema.TabIndex = 1;
+            //
+            // _aparencia
+            //
+            this._aparencia.BackColor = System.Drawing.Color.White;
+            this._aparencia.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
+            this._aparencia.BorderRadius = 8;
+            this._aparencia.BorderThickness = 1;
+            this._aparencia.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this._aparencia.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._aparencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._aparencia.Font = new System.Drawing.Font("Segoe UI", 10.5F);
+            this._aparencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
+            this._aparencia.Items.AddRange(new object[] { "Claro", "Escuro" });
+            this._aparencia.ItemsFont = new System.Drawing.Font("Segoe UI", 10F);
+            this._aparencia.Location = new System.Drawing.Point(3, 273);
+            this._aparencia.Name = "_aparencia";
+            this._aparencia.PlaceholderFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic);
+            this._aparencia.PlaceholderMargin = 10;
+            this._aparencia.PlaceholderText = "Selecione a aparência";
+            this._aparencia.Size = new System.Drawing.Size(485, 34);
+            this._aparencia.TabIndex = 2;
+            // lblAparencia
+            this.lblAparencia.AutoSize = true;
+            this.lblAparencia.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.lblAparencia.ForeColor = System.Drawing.Color.FromArgb(44, 53, 65);
+            this.lblAparencia.Location = new System.Drawing.Point(0, 250);
+            this.lblAparencia.Name = "lblAparencia";
+            this.lblAparencia.Size = new System.Drawing.Size(78, 17);
+            this.lblAparencia.Text = "Aparência";
+            // lblDicaAparencia
+            this.lblDicaAparencia.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblDicaAparencia.ForeColor = System.Drawing.Color.FromArgb(105, 114, 126);
+            this.lblDicaAparencia.Location = new System.Drawing.Point(2, 315);
+            this.lblDicaAparencia.Name = "lblDicaAparencia";
+            this.lblDicaAparencia.Size = new System.Drawing.Size(485, 38);
+            this.lblDicaAparencia.Text = "A aparência muda ao selecionar. Você poderá alterá-la nas Configurações.";
             // 
             // _visualizadorCor
             // 
@@ -642,7 +687,7 @@ namespace SUB.Forms.Setup
             this.btnAvancar.PressedColor = System.Drawing.Color.Empty;
             this.btnAvancar.ShowBorder = false;
             this.btnAvancar.Size = new System.Drawing.Size(175, 44);
-            this.btnAvancar.TabIndex = 2;
+            this.btnAvancar.TabIndex = 3;
             this.btnAvancar.Text = "Avançar";
             this.btnAvancar.Click += new System.EventHandler(this.btnAvancar_Click);
             // 

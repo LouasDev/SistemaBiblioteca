@@ -1,4 +1,5 @@
-﻿using SUB.Forms.Usuario;
+﻿using SeuProjeto;
+using SUB.Forms.Usuario;
 using SUB.Models;
 using SUB.Utils;
 using System;
@@ -72,15 +73,7 @@ namespace SUB.Forms.Configuracoes
 
         private void linkSuporteConfig_Click(object sender, EventArgs e)
         {
-            try
-            {
-                System.Diagnostics.Process.Start("mailto:subgvsuporte@gmail.com");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Não foi possível abrir o aplicativo de e-mail: " + ex.Message,
-                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            FormHelper.AbrirSuporte("subgvsuporte@gmail.com");
         }
 
       

@@ -757,15 +757,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
 
         private void lblSuporteLogin_Click(object sender, EventArgs e)
         {
-            try
-            {
-                System.Diagnostics.Process.Start("mailto:subgvsuporte@gmail.com");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Não foi possível abrir o aplicativo de e-mail: " + ex.Message,
-                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            FormHelper.AbrirSuporte("subgvsuporte@gmail.com");
         }
 
 

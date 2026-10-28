@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Drawing;
@@ -173,6 +174,28 @@ namespace SeuProjeto
             }
             catch (EntryPointNotFoundException)
             {
+            }
+        }
+
+        // "mailto:" depende de haver um cliente de e-mail configurado como padrão no Windows;
+        // em muitas máquinas não há, e Process.Start tanto pode falhar quanto "ter sucesso"
+        // abrindo um app (ex.: Mail do Windows) que fica preso numa tela de configuração de
+        // conta — nos dois casos o clique pareceria não fazer nada. Copiar o endereço e avisar
+        // funciona sempre, sem depender de nenhum programa externo.
+        public static void AbrirSuporte(string email)
+        {
+            try
+            {
+                Clipboard.SetText(email);
+                MessageBox.Show(
+                    "O endereço de suporte foi copiado para a área de transferência:\n" + email,
+                    "Suporte", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                MessageBox.Show(
+                    "Entre em contato com o suporte pelo endereço:\n" + email,
+                    "Suporte", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

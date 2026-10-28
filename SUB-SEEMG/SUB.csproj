@@ -9,6 +9,7 @@
     <RootNamespace>SUB</RootNamespace>
     <AssemblyName>SUB</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -285,6 +286,8 @@
     <Compile Include="Utils\ThemeManager.cs" />
     <Compile Include="Utils\SubLogoManager.cs" />
     <Compile Include="Utils\DatabaseInitializer.cs" />
+    <Compile Include="Utils\MapeamentoAnualStore.cs" />
+    <Compile Include="Utils\RegrasMapeamentoTurmas.cs" />
     <Compile Include="Utils\ProrrogacaoService.cs" />
     <Compile Include="Utils\CirculacaoService.cs" />
     <Compile Include="Utils\RegrasCirculacao.cs" />
@@ -561,6 +564,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-cardápio-20.png" />
@@ -713,6 +717,9 @@
     <None Include="Resources\icons8-registration-25.png" />
     <None Include="Resources\icons8-adicionar-usuário-masculino-25.png" />
     <None Include="Resources\icons8-livro-25.png" />
+    <Content Include="Resources\sub-monocromatico.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\sub-full.png" />
     <None Include="Resources\sub-200x200px.png" />
   </ItemGroup>

@@ -20,5 +20,14 @@ namespace SUB.Models
         public DateTime GeradoEm { get; set; }
         public List<MapeamentoRegistro> Registros { get; set; } = new List<MapeamentoRegistro>();
     }
+
+    public class EstadoMapeamentoAnual
+    {
+        public int Ano { get; set; }
+        public string Status { get; set; }
+        public DateTime CriadoEm { get; set; }
+        public DateTime? ConcluidoEm { get; set; }
+        public bool DeveLembrar { get; set; }
+    }
 }
 

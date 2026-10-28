@@ -118,6 +118,16 @@ namespace SUB.Forms.Inicio
             public int DiasAtraso { get; set; }
         }
 
+        private class ItemComunicadoAtraso
+        {
+            public int EmprestimoId { get; set; }
+            public int LivroId { get; set; }
+            public string Titulo { get; set; }
+            public string Autor { get; set; }
+            public DateTime DataDevolucaoPrevista { get; set; }
+            public int DiasAtraso { get; set; }
+        }
+
       
 
         private (int Id, string Nome, string Turma, int Qtd) topUsuarioMaisEmprestimos = (0, "-", "", 0);
@@ -341,11 +351,11 @@ namespace SUB.Forms.Inicio
 });
             dgvDevedores.Columns.Add(new DataGridViewButtonColumn
             {
-                Name = "btnImprimir",
+                Name = "btnComunicado",
                 HeaderText = "",
-                Text = "Imprimir Carta",
+                Text = "Gerar comunicado",
                 UseColumnTextForButtonValue = true,
-                Width = 110,
+                Width = 145,
                 FlatStyle = FlatStyle.Flat
             });
             dgvDevedores.CellContentClick += dgvDevedores_CellContentClick;
@@ -498,7 +508,7 @@ namespace SUB.Forms.Inicio
             var dgv = sender as DataGridView;
             if (dgv == null || e.RowIndex < 0) return;
 
-            if (dgv.Columns[e.ColumnIndex].Name == "btnImprimir")
+            if (dgv.Columns[e.ColumnIndex].Name == "btnComunicado")
             {
                 var emprestimo = dgv.Rows[e.RowIndex].DataBoundItem as EmprestimoAtrasadoInfo;
                 if (emprestimo == null)
@@ -507,8 +517,8 @@ namespace SUB.Forms.Inicio
                     return;
                 }
                 // Busca todos os livros atrasados do aluno
-                var livros = this.ObterLivrosAtrasadosPorUsuario(emprestimo.UsuarioId);
-                GerarCartaCobrancaPDF(emprestimo, livros);  
+                var livros = ObterItensAtrasadosPorUsuario(emprestimo.UsuarioId);
+                GerarComunicadoAtrasoPdf(emprestimo, livros);
             }
         }
 
@@ -1505,7 +1515,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
             var dgvDevedores = tabControl.TabPages[0].Controls.Find("dgvDevedores", true).FirstOrDefault() as DataGridView;
             if (dgvDevedores == null || dgvDevedores.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Selecione um empréstimo atrasado na lista para imprimir a carta.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Selecione um empréstimo atrasado para gerar o comunicado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -1517,167 +1527,106 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
             }
 
             // Buscar os livros em atraso do aluno
-            var livros = this.ObterLivrosAtrasadosPorUsuario(emprestimo.UsuarioId);
-            GerarCartaCobrancaPDF(emprestimo, livros);
+            var itens = ObterItensAtrasadosPorUsuario(emprestimo.UsuarioId);
+            GerarComunicadoAtrasoPdf(emprestimo, itens);
         }
 
-        private void GerarCartaCobrancaPDF(EmprestimoAtrasadoInfo devedor, List<(int Id, string Nome, string Autor)> livros)
+        private void GerarComunicadoAtrasoPdf(EmprestimoAtrasadoInfo devedor, List<ItemComunicadoAtraso> itens)
         {
-            // Buscar telefone do usuário (agora por Id)
-            string telefone = "";
-            try
+            if (devedor == null || itens == null || itens.Count == 0)
             {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-                    string sql = @"SELECT Telefone FROM Usuarios WHERE Id = @id";
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@id", devedor.UsuarioId);
-                        var result = cmd.ExecuteScalar();
-                        telefone = result != null ? result.ToString() : "";
-                    }
-                }
+                MessageBox.Show("Não há itens em atraso para gerar o comunicado.", "Comunicado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
-            catch { telefone = ""; }
 
-            // Nome de arquivo seguro
-            string safeName = string.IsNullOrWhiteSpace(devedor?.Nome) ? "Carta_Cobranca" : string.Concat(devedor.Nome.Split(Path.GetInvalidFileNameChars()));
+            string safeName = string.IsNullOrWhiteSpace(devedor.Nome) ? "Aluno" : string.Concat(devedor.Nome.Split(Path.GetInvalidFileNameChars()));
             var dlg = new SaveFileDialog
             {
                 Filter = "PDF (*.pdf)|*.pdf",
-                FileName = $"Carta_Cobranca_{safeName}.pdf"
+                FileName = $"Comunicado_atraso_{safeName}.pdf"
             };
             if (dlg.ShowDialog() != DialogResult.OK) return;
 
-            // Criação do documento PDF
+            var configuracao = InstituicaoConfiguracaoStore.Carregar();
+            string instituicao = string.IsNullOrWhiteSpace(configuracao?.Nome) ? "Biblioteca Escolar" : configuracao.Nome;
+            DateTime agora = DateTime.Now;
             Document doc = new Document(PageSize.A4, 40, 40, 40, 40);
             using (var fs = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                PdfWriter.GetInstance(doc, fs);
                 doc.Open();
 
-                // Fontes
-                var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
-                var fontNormal = FontFactory.GetFont(FontFactory.HELVETICA, 11);
-                var fontBold = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
-                var fontSmall = FontFactory.GetFont(FontFactory.HELVETICA, 9);
-
-                var configuracao = InstituicaoConfiguracaoStore.Carregar();
-                string nomeInstituicao = string.IsNullOrWhiteSpace(configuracao?.Nome)
-                    ? "Biblioteca Escolar"
-                    : configuracao.Nome;
-
-                var headerTable = new PdfPTable(2) { WidthPercentage = 100 };
-                headerTable.SetWidths(new float[] { 1f, 5f });
-
-                var cellLogo = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_LEFT, VerticalAlignment = Element.ALIGN_MIDDLE };
-                // Usar logo embutida (quadrada SUB) nos relatórios, sem depender de arquivo configurável.
+                var titulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 15);
+                var destaque = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
+                var normal = FontFactory.GetFont(FontFactory.HELVETICA, 10.5f);
+                var pequeno = FontFactory.GetFont(FontFactory.HELVETICA, 8.5f);
+                var cabecalho = new PdfPTable(2) { WidthPercentage = 100, SpacingAfter = 22f };
+                cabecalho.SetWidths(new[] { 0.55f, 6.45f });
+                var selo = new PdfPCell { Border = iTextSharp.text.Rectangle.BOTTOM_BORDER, BorderColorBottom = new BaseColor(203, 213, 225), BorderWidthBottom = 0.5f, VerticalAlignment = Element.ALIGN_MIDDLE, PaddingBottom = 7f };
                 try
                 {
-                    var logoPdf = iTextSharp.text.Image.GetInstance(Properties.Resources.sub_200x200px, System.Drawing.Imaging.ImageFormat.Png);
-                    logoPdf.ScaleToFit(48f, 48f);
-                    cellLogo.AddElement(logoPdf);
+                    string caminhoMarca = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "sub-monocromatico.png");
+                    var marca = iTextSharp.text.Image.GetInstance(caminhoMarca);
+                    marca.ScaleToFit(25f, 25f);
+                    selo.AddElement(marca);
                 }
-                catch
+                catch { }
+                cabecalho.AddCell(selo);
+                var assinatura = new Phrase();
+                assinatura.Add(new Chunk("Sistema Único Bibliotecário\n", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10.5f, new BaseColor(31, 41, 55))));
+                assinatura.Add(new Chunk(instituicao, FontFactory.GetFont(FontFactory.HELVETICA, 9.5f, new BaseColor(75, 85, 99))));
+                cabecalho.AddCell(new PdfPCell(assinatura) { Border = iTextSharp.text.Rectangle.BOTTOM_BORDER, BorderColorBottom = new BaseColor(203, 213, 225), BorderWidthBottom = 0.5f, VerticalAlignment = Element.ALIGN_MIDDLE, PaddingLeft = 8f, PaddingBottom = 7f });
+                doc.Add(cabecalho);
+                doc.Add(new Paragraph("NOTIFICAÇÃO DE DEVOLUÇÃO EM ATRASO", titulo) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 16f });
+                doc.Add(new Paragraph("Data: " + agora.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("pt-BR")), normal) { SpacingAfter = 14f });
+                doc.Add(new Paragraph("À família ou ao(à) responsável legal pelo(a) estudante " + devedor.Nome + (string.IsNullOrWhiteSpace(devedor.Turma) ? "." : " — Turma: " + devedor.Turma + "."), normal) { SpacingAfter = 14f });
+                var aviso = new PdfPCell(new Phrase("PENDÊNCIA REGISTRADA", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9, new BaseColor(52, 58, 64))))
                 {
-                    // se houver problema ao carregar o recurso embarcado, deixar a célula vazia (silencioso)
-                }
-                headerTable.AddCell(cellLogo);
+                    BackgroundColor = new BaseColor(243, 244, 246),
+                    BorderColor = new BaseColor(209, 213, 219),
+                    Padding = 7f
+                };
+                var caixaAviso = new PdfPTable(1) { WidthPercentage = 100, SpacingAfter = 14f };
+                caixaAviso.AddCell(aviso);
+                doc.Add(caixaAviso);
+                doc.Add(new Paragraph("Esta notificação formal registra pendência de devolução dos itens relacionados abaixo. Solicitamos a regularização junto à Biblioteca Escolar com prioridade. A pendência permanecerá registrada até a devolução dos itens ou a tratativa pela biblioteca.", normal) { SpacingAfter = 14f });
 
-                var cellTitle = new PdfPCell(new Phrase(nomeInstituicao, fontTitle))
-                { Border = iTextSharp.text.Rectangle.NO_BORDER, HorizontalAlignment = Element.ALIGN_CENTER, VerticalAlignment = Element.ALIGN_MIDDLE };
-                headerTable.AddCell(cellTitle);
-                headerTable.SpacingAfter = 30f;
-                doc.Add(headerTable);
+                var item = itens[0];
+                var pendencia = new PdfPTable(1) { WidthPercentage = 100, SpacingAfter = 22f };
+                var conteudoPendencia = new PdfPCell { BorderColor = new BaseColor(209, 213, 219), Padding = 14f };
+                conteudoPendencia.AddElement(new Paragraph("ITEM COM DEVOLUÇÃO EM ATRASO", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9, new BaseColor(75, 85, 99))) { SpacingAfter = 8f });
+                conteudoPendencia.AddElement(new Paragraph(item.Titulo ?? "Livro não identificado", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, new BaseColor(31, 41, 55))) { SpacingAfter = 3f });
+                if (!string.IsNullOrWhiteSpace(item.Autor))
+                    conteudoPendencia.AddElement(new Paragraph("Autor: " + item.Autor, normal) { SpacingAfter = 14f });
 
-                // Corpo
-                doc.Add(new Paragraph("Eu ____________________________________________________________", fontNormal) { SpacingAfter = 20f });
-
-                var pCompromisso = new Paragraph();
-                pCompromisso.Add(new Chunk("Assumo a responsabilidade de devolver todos os livros (descritos abaixo) que estão em meu poder. Ciente que a ", fontNormal));
-                pCompromisso.Add(new Chunk("não devolução", fontBold));
-                pCompromisso.Add(new Chunk(" dos mesmos poderá resultar em bloqueio temporário de novos empréstimos, conforme as regras da biblioteca.", fontNormal));
-                pCompromisso.SpacingAfter = 18f;
-                doc.Add(pCompromisso);
-
-                // Livros
-                doc.Add(new Paragraph("Livro:", fontBold) { SpacingAfter = 6f });
-                if (livros == null || livros.Count == 0)
-                {
-                    doc.Add(new Paragraph("Nenhum livro em atraso encontrado.", fontSmall) { SpacingAfter = 13f });
-                }
-                else
-                {
-                    foreach (var livro in livros)
-                    {
-                        doc.Add(new Paragraph($"ID: {livro.Id}", fontNormal));
-                        doc.Add(new Paragraph($"Nome: {livro.Nome}", fontNormal));
-                        doc.Add(new Paragraph($"Autor: {livro.Autor}", fontNormal) { SpacingAfter = 14f });
-                    }
-                }
-                for (int i = (livros?.Count ?? 0); i < 4; i++)
-                    doc.Add(new Paragraph("________________________________________________________________________________", fontNormal) { SpacingAfter = 3f });
-
-                doc.Add(new Paragraph("\n", fontNormal));
-
-                var infoTable = new PdfPTable(1) { WidthPercentage = 100, SpacingBefore = 4f, SpacingAfter = 26f };
-
-                var leftCell = new PdfPCell { Border = iTextSharp.text.Rectangle.NO_BORDER, PaddingRight = 10f, VerticalAlignment = Element.ALIGN_MIDDLE };
-
-                // Montagem condicional: se não houver turma, mostrar só "Nome: {Nome}".
-                // Se houver turma, mostrar "Nome: {Nome}    Turma: {Turma}    Turno: ______"
-                var pInfoTopo = new Paragraph();
-                string nomeDisplay = string.IsNullOrWhiteSpace(devedor?.Nome) ? "________________" : devedor.Nome;
-                pInfoTopo.Add(new Chunk("Nome: ", fontNormal));
-                pInfoTopo.Add(new Chunk(nomeDisplay + "    ", fontBold));
-
-                if (!string.IsNullOrWhiteSpace(devedor?.Turma))
-                {
-                    pInfoTopo.Add(new Chunk("Turma: ", fontNormal));
-                    pInfoTopo.Add(new Chunk(devedor.Turma + "    ", fontBold));
-                    pInfoTopo.Add(new Chunk("Turno: ___________", fontNormal));
-                }
-
-                var dataAtual = DateTime.Now;
-                var pData = new Paragraph($"Data da comunicação: ____/ {dataAtual:MM/yyyy}", fontNormal);
-                string contatoStr = "Contato do Aluno/Responsável: " + (string.IsNullOrWhiteSpace(telefone) ? "___________________________" : telefone);
-                var pContato = new Paragraph(contatoStr, fontNormal);
-
-                leftCell.AddElement(pInfoTopo);
-                leftCell.AddElement(new Paragraph(" ", fontSmall)); // pequeno espaçamento
-                leftCell.AddElement(pData);
-                leftCell.AddElement(new Paragraph(" ", fontSmall));
-                leftCell.AddElement(pContato);
-                infoTable.AddCell(leftCell);
-
-                doc.Add(infoTable);
-                // ===== Fim do bloco único =====
-
-                // Assinatura
-                doc.Add(new Paragraph("___________________________________________________", fontNormal) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 2f });
-                doc.Add(new Paragraph("ASSINATURA DO ALUNO/RESPONSÁVEL", fontNormal) { Alignment = Element.ALIGN_CENTER });
+                var dadosItem = new PdfPTable(2) { WidthPercentage = 100 };
+                dadosItem.SetWidths(new[] { 1f, 1f });
+                dadosItem.AddCell(new PdfPCell(new Phrase("DEVOLUÇÃO PREVISTA\n" + item.DataDevolucaoPrevista.ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(52, 58, 64)))) { Border = iTextSharp.text.Rectangle.NO_BORDER, BackgroundColor = new BaseColor(243, 244, 246), Padding = 10f });
+                dadosItem.AddCell(new PdfPCell(new Phrase("DIAS EM ATRASO\n" + item.DiasAtraso, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(52, 58, 64)))) { Border = iTextSharp.text.Rectangle.NO_BORDER, BackgroundColor = new BaseColor(243, 244, 246), Padding = 10f, HorizontalAlignment = Element.ALIGN_CENTER });
+                conteudoPendencia.AddElement(dadosItem);
+                pendencia.AddCell(conteudoPendencia);
+                doc.Add(pendencia);
+                doc.Add(new Paragraph("Atenciosamente,\nBiblioteca Escolar de " + instituicao, normal) { SpacingAfter = 24f });
+                doc.Add(new Paragraph("Em caso de dúvidas, procure a Biblioteca Escolar.\nGerado pelo SUB — Sistema Único Bibliotecário", pequeno) { Alignment = Element.ALIGN_CENTER });
 
                 doc.Close();
             }
 
-            MessageBox.Show("Carta de cobrança gerada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            RegistrarComunicadoAtraso(devedor.UsuarioId, instituicao, agora, itens);
+            MessageBox.Show("Comunicado de atraso gerado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             try { Process.Start(dlg.FileName); } catch { }
         }
 
-
-
-
-        private List<(int Id, string Nome, string Autor)> ObterLivrosAtrasadosPorUsuario(int usuarioId)
+        private List<ItemComunicadoAtraso> ObterItensAtrasadosPorUsuario(int usuarioId)
         {
-            var livros = new List<(int, string, string)>();
+            var itens = new List<ItemComunicadoAtraso>();
             try
             {
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
                     string sql = @"
-SELECT l.Id, l.Nome, l.Autor
+SELECT e.Id, l.Id, l.Nome, l.Autor, COALESCE(e.DataProrrogacao, e.DataDevolucao), DATEDIFF(day, COALESCE(e.DataProrrogacao, e.DataDevolucao), GETDATE())
 FROM Emprestimo e
 INNER JOIN Livros l ON e.LivroId = l.Id
 WHERE e.Alocador = @usuarioId
@@ -1690,17 +1639,62 @@ WHERE e.Alocador = @usuarioId
                         {
                             while (reader.Read())
                             {
-                                int id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
-                                string nome = reader.IsDBNull(1) ? "" : reader.GetString(1);
-                                string autor = reader.IsDBNull(2) ? "" : reader.GetString(2);
-                                livros.Add((id, nome, autor));
+                                itens.Add(new ItemComunicadoAtraso
+                                {
+                                    EmprestimoId = reader.GetInt32(0),
+                                    LivroId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
+                                    Titulo = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                                    Autor = reader.IsDBNull(3) ? "" : reader.GetString(3),
+                                    DataDevolucaoPrevista = reader.GetDateTime(4),
+                                    DiasAtraso = Math.Max(1, reader.GetInt32(5))
+                                });
                             }
                         }
                     }
                 }
             }
             catch { }
-            return livros;
+            return itens;
+        }
+
+        private void RegistrarComunicadoAtraso(int usuarioId, string instituicao, DateTime geradoEm, List<ItemComunicadoAtraso> itens)
+        {
+            using (var conexao = Conexao.ObterConexao())
+            {
+                conexao.Open();
+                using (var transacao = conexao.BeginTransaction())
+                {
+                    int comunicadoId;
+                    using (var inserir = new SqlCeCommand(@"INSERT INTO ComunicadosAtraso (UsuarioId, Bibliotecaria, Instituicao, GeradoEm, VersaoModelo)
+VALUES (@usuario, @bibliotecaria, @instituicao, @geradoEm, @versao)", conexao, transacao))
+                    {
+                        inserir.Parameters.AddWithValue("@usuario", usuarioId);
+                        inserir.Parameters.AddWithValue("@bibliotecaria", (object)(Sessao.NomeBibliotecariaLogada ?? "") ?? DBNull.Value);
+                        inserir.Parameters.AddWithValue("@instituicao", instituicao);
+                        inserir.Parameters.AddWithValue("@geradoEm", geradoEm);
+                        inserir.Parameters.AddWithValue("@versao", 1);
+                        inserir.ExecuteNonQuery();
+                    }
+                    using (var id = new SqlCeCommand("SELECT @@IDENTITY", conexao, transacao))
+                        comunicadoId = Convert.ToInt32(id.ExecuteScalar());
+
+                    foreach (var item in itens)
+                    using (var inserirItem = new SqlCeCommand(@"INSERT INTO ComunicadosAtrasoItens
+(ComunicadoId, EmprestimoId, LivroId, Titulo, Autor, DataDevolucaoPrevista, DiasAtraso)
+VALUES (@comunicado, @emprestimo, @livro, @titulo, @autor, @devolucao, @dias)", conexao, transacao))
+                    {
+                        inserirItem.Parameters.AddWithValue("@comunicado", comunicadoId);
+                        inserirItem.Parameters.AddWithValue("@emprestimo", item.EmprestimoId);
+                        inserirItem.Parameters.AddWithValue("@livro", item.LivroId == 0 ? (object)DBNull.Value : item.LivroId);
+                        inserirItem.Parameters.AddWithValue("@titulo", item.Titulo ?? "");
+                        inserirItem.Parameters.AddWithValue("@autor", item.Autor ?? "");
+                        inserirItem.Parameters.AddWithValue("@devolucao", item.DataDevolucaoPrevista);
+                        inserirItem.Parameters.AddWithValue("@dias", item.DiasAtraso);
+                        inserirItem.ExecuteNonQuery();
+                    }
+                    transacao.Commit();
+                }
+            }
         }
     }
 }

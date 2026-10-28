@@ -157,11 +157,6 @@ namespace SUB.Forms.Inicio
             item.Click += (s, e) =>
             {
                 DefinirNavegacaoAtiva(grupo);
-                BeginInvoke(new Action(() =>
-                {
-                    if (!IsDisposed)
-                        item.Enabled = true;
-                }));
             };
         }
 
@@ -263,20 +258,7 @@ namespace SUB.Forms.Inicio
         //Variável criada para inicialização do Form de inicio no MDI
         private void btnInicio_Click(object sender, EventArgs e)
         {
-
             btnIn();
-
-            btnInicio.Enabled = false;
-            btnLivros.Enabled = true;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
         }
 
         //Função de maximizar/restaurar o Form
@@ -420,7 +402,6 @@ namespace SUB.Forms.Inicio
             }
 
             OpenChild(inicio, keepPreviousHidden: false);
-            btnInicio.Enabled = false;
         }
 
         private void Inicio_FormClosed(object sender, FormClosedEventArgs e)
@@ -470,18 +451,6 @@ namespace SUB.Forms.Inicio
         //Botão de cadastro do usuário
         public void btnUser_Click(object sender, EventArgs e)
         {
-            btnUser.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (usuario == null || usuario.IsDisposed)
             {
                 usuario = new UsuarioForm();
@@ -494,18 +463,6 @@ namespace SUB.Forms.Inicio
         //Botão de cadastro do usuário
         private void btnUserCad_Click(object sender, EventArgs e)
         {
-            btnUserCad.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (usuarioCad == null || usuarioCad.IsDisposed)
             {
                 usuarioCad = new CadUsuario();
@@ -543,18 +500,6 @@ namespace SUB.Forms.Inicio
         //Botão de edição do usuário
         public void btnUserEdit_Click(object sender, EventArgs e)
         {
-            btnUserEdit.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-
             if (usuarioEdit == null || usuarioEdit.IsDisposed)
             {
                 usuarioEdit = new EditarUsuarioForm();
@@ -610,18 +555,6 @@ namespace SUB.Forms.Inicio
         //Botão Livro(Bilbioteca)
         private void btnLivros_Click(object sender, EventArgs e)
         {
-            btnLivros.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (livros == null || livros.IsDisposed)
             {
                 livros = new LivrosForm();
@@ -638,17 +571,6 @@ namespace SUB.Forms.Inicio
         //Botão de empréstimo do livro
         private void btnEmprestimo_Click(object sender, EventArgs e)
         {
-            btnEmprestimo.Enabled = false;
-            btnRel.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (emprestimo == null || emprestimo.IsDisposed)
             {
                 emprestimo = new EmprestimoForm();
@@ -665,18 +587,6 @@ namespace SUB.Forms.Inicio
         //Botão Empréstimo Rápido
         public void btnEmprestimoRap_Click(object sender, EventArgs e)
         {
-            btnEmprestimoRap.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (emprestimoRap == null || emprestimoRap.IsDisposed)
             {
                 emprestimoRap = new EmprestimoRapidoForm();
@@ -694,18 +604,6 @@ namespace SUB.Forms.Inicio
         }
         private void btnLivroCad_Click(object sender, EventArgs e)
         {
-            btnLivroCad.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (cadastroLivro == null || cadastroLivro.IsDisposed)
             {
                 cadastroLivro = new CadastroLivroForm();
@@ -724,18 +622,6 @@ namespace SUB.Forms.Inicio
         //Botão Devolução
         private void btnDev_Click(object sender, EventArgs e)
         {
-            btnDev.Enabled = false;
-            btnRel.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (devolução == null || devolução.IsDisposed)
             {
                 devolução = new DevoluçãoForm();
@@ -755,18 +641,6 @@ namespace SUB.Forms.Inicio
         //Form rel
         private void btnRel_Click(object sender, EventArgs e)
         {
-            btnRel.Enabled = false;
-            btnEmprestimo.Enabled = true;
-            btnLivros.Enabled = true;
-            btnInicio.Enabled = true;
-            btnDev.Enabled = true;
-            btnLivroCad.Enabled = true;
-            btnEmprestimoRap.Enabled = true;
-            btnEmprestimo.Enabled = true;
-            btnUser.Enabled = true;
-            btnUserCad.Enabled = true;
-            btnUserEdit.Enabled = true;
-
             if (rel == null || rel.IsDisposed)
             {
                 rel = new RelForm();
@@ -1346,6 +1220,7 @@ namespace SUB.Forms.Inicio
 
 
         Form activeChild = null;
+        private bool abrindoFilhoMdi;
 
         /// <summary>
         /// Mostra o form child como único MDI child visível (esconde o anterior),
@@ -1353,8 +1228,16 @@ namespace SUB.Forms.Inicio
         /// </summary>
         private void OpenChild(Form child, bool keepPreviousHidden = false)
         {
-            if (child == null) return;
+            if (child == null || child.IsDisposed || abrindoFilhoMdi)
+                return;
 
+            if (activeChild == child && child.Visible)
+            {
+                AtualizarDisponibilidadeDaNavegacao(child);
+                return;
+            }
+
+            abrindoFilhoMdi = true;
             try
             {
                 // Se já existe um filho ativo diferente, esconde/fecha ele
@@ -1382,8 +1265,38 @@ namespace SUB.Forms.Inicio
                 child.Activate();
 
                 activeChild = child;
+                AtualizarDisponibilidadeDaNavegacao(child);
             }
             catch { /*silent para não quebrar UI*/ }
+            finally
+            {
+                abrindoFilhoMdi = false;
+            }
+        }
+
+        private void AtualizarDisponibilidadeDaNavegacao(Form child)
+        {
+            ReabilitarBotoesDeNavegacao();
+
+            Button botaoAtivo = ObterBotaoDeNavegacao(child);
+            if (botaoAtivo != null)
+                botaoAtivo.Enabled = false;
+        }
+
+        private Button ObterBotaoDeNavegacao(Form child)
+        {
+            if (child is InicioForm) return btnInicio;
+            if (child is UsuarioForm) return btnUser;
+            if (child is CadUsuario) return btnUserCad;
+            if (child is EditarUsuarioForm) return btnUserEdit;
+            if (child is LivrosForm) return btnLivros;
+            if (child is EmprestimoForm) return btnEmprestimo;
+            if (child is EmprestimoRapidoForm) return btnEmprestimoRap;
+            if (child is CadastroLivroForm) return btnLivroCad;
+            if (child is DevoluçãoForm) return btnDev;
+            if (child is RelForm) return btnRel;
+            if (child is ConfiguracaoForm) return btnConfiguracao;
+            return null;
         }
 
         private void NotifyIcon_DoubleClick(object sender, EventArgs e)
@@ -1453,10 +1366,6 @@ namespace SUB.Forms.Inicio
 
         private void btnConfiguracao_Click(object sender, EventArgs e)
         {
-            // Os outros handlers desabilitam o próprio botão e reabilitam os demais;
-            // sem isto, o botão do grupo ativo (ex.: Início) fica morto ao voltar.
-            ReabilitarBotoesDeNavegacao();
-
             if (configuracao == null || configuracao.IsDisposed)
             {
                 configuracao = new ConfiguracaoForm();
@@ -1471,6 +1380,7 @@ namespace SUB.Forms.Inicio
             btnUsuario.Enabled = true;
             btnLivro.Enabled = true;
             btnRel.Enabled = true;
+            btnConfiguracao.Enabled = true;
             btnLivros.Enabled = true;
             btnEmprestimo.Enabled = true;
             btnEmprestimoRap.Enabled = true;

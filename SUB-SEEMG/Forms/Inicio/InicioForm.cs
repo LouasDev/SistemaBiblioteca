@@ -363,6 +363,7 @@ namespace SUB.Forms.Inicio
                 new DataGridViewTextBoxColumn { Name = "Valor", HeaderText = "Valor", DataPropertyName = "Valor", Width = 100 },
                 new DataGridViewTextBoxColumn { Name = "Detalhes", HeaderText = "Detalhes", DataPropertyName = "Detalhes", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill }
             });
+            dgvEstatEmp.CellFormatting += DgvEstatisticasEmprestimos_CellFormatting;
 
             tabEstEmp.Controls.Add(dgvEstatEmp);
 
@@ -662,6 +663,26 @@ namespace SUB.Forms.Inicio
 
 
 
+
+        private void DgvEstatisticasEmprestimos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            var grid = sender as DataGridView;
+            if (grid == null || e.RowIndex < 0 || e.ColumnIndex < 0 ||
+                grid.Columns[e.ColumnIndex].Name != "Valor")
+            {
+                return;
+            }
+
+            string categoria = grid.Rows[e.RowIndex].Cells["Categoria"].Value as string;
+            if (!string.Equals(categoria, "Devolução no Prazo", StringComparison.Ordinal) || e.Value == null)
+                return;
+
+            if (double.TryParse(e.Value.ToString(), out double taxa))
+            {
+                e.Value = taxa.ToString("0.#") + "%";
+                e.FormattingApplied = true;
+            }
+        }
 
         private DataGridView CriarDataGridBasico(string name)
         {

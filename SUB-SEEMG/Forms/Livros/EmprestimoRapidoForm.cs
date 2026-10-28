@@ -543,20 +543,7 @@ namespace SUB.Forms.Livros
 
         private bool NomeContemTodosTokens(string nome, string query)
         {
-            if (string.IsNullOrWhiteSpace(query)) return true;
-            if (string.IsNullOrWhiteSpace(nome)) return false;
-
-            var tokens = query
-                .Trim()
-                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var t in tokens)
-            {
-                // busca "contains" case-insensitive para cada token
-                if (nome.IndexOf(t, StringComparison.CurrentCultureIgnoreCase) < 0)
-                    return false;
-            }
-            return true;
+            return TextoBusca.ContemTodosTokens(nome, query);
         }
 
         private void txtProfessor_TextChanged(object sender, EventArgs e)
@@ -717,10 +704,13 @@ namespace SUB.Forms.Livros
             }
             try
             {
+                string livro = livrosCadastrados.FirstOrDefault(nome => TextoBusca.SaoIguais(nome, txtLivro.Text))
+                    ?? txtLivro.Text.Trim();
+
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    CirculacaoService.EmprestarRapido(conexao, txtProfessor.Text.Trim(), txtLivro.Text.Trim(),
+                    CirculacaoService.EmprestarRapido(conexao, txtProfessor.Text.Trim(), livro,
                         txtTurma.Text.Trim(), qtd, cbBibliotecaria.SelectedItem.ToString(), DateTime.Now);
                 }
             }

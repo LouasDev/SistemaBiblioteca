@@ -163,16 +163,6 @@ namespace SUB.Forms.Livros
             dgvLivros.ResumeLayout();
         }
 
-        /// <summary>
-        /// Escapa caracteres especiais para uso em consultas LIKE
-        /// </summary>
-        /// <param name="value">Valor a ser escapado</param>
-        /// <returns>Valor com caracteres especiais escapados</returns>
-        private string EscapeLikeValue(string value)
-        {
-            return value.Replace("[", "[[]").Replace("%", "[%]").Replace("_", "[_]").Replace("\\", "[\\]");
-        }
-
         private void dgvLivros_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
@@ -223,13 +213,13 @@ namespace SUB.Forms.Livros
                 {
                     conexao.Open();
 
-                    string campo = "nome"; // padrão
+                    string campo = "Nome"; // padrão
                     if (cbFiltro.SelectedItem != null)
                     {
                         string selecionado = cbFiltro.SelectedItem.ToString();
-                        if (selecionado == "Autor") campo = "autor";
-                        else if (selecionado == "Gênero") campo = "genero";
-                        else if (selecionado == "Nome") campo = "nome";
+                        if (selecionado == "Autor") campo = "Autor";
+                        else if (selecionado == "Gênero") campo = "Genero";
+                        else if (selecionado == "Nome") campo = "Nome";
                     }
 
                     string query = @"
@@ -246,10 +236,6 @@ namespace SUB.Forms.Livros
                     END AS Status
                 FROM Livros
                 WHERE 1=1";
-
-                    // 🔍 Filtro por nome, autor ou gênero
-                    if (!string.IsNullOrWhiteSpace(txtNome.Text))
-                        query += $" AND {campo} LIKE @termo";
 
                     // 🔍 Filtro por código de barras (busca por prefixo)
                     if (!string.IsNullOrWhiteSpace(ObterCodigoDeBarrasFormatado()))
@@ -269,15 +255,15 @@ namespace SUB.Forms.Livros
 
                     using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                     {
-                        if (!string.IsNullOrWhiteSpace(txtNome.Text))
-                            comando.Parameters.AddWithValue("@termo", "%" + txtNome.Text.Trim() + "%");
-
                         if (!string.IsNullOrWhiteSpace(ObterCodigoDeBarrasFormatado()))
                             comando.Parameters.AddWithValue("@codigo", ObterCodigoDeBarrasFormatado() + "%");
 
                         SqlCeDataAdapter adaptador = new SqlCeDataAdapter(comando);
                         DataTable tabela = new DataTable();
                         adaptador.Fill(tabela);
+
+                        if (!string.IsNullOrWhiteSpace(txtNome.Text))
+                            tabela = FiltrarTabela(tabela, campo, txtNome.Text, buscaPorPrefixo: false);
 
                         dgvLivros.AutoGenerateColumns = false;
                         dgvLivros.DataSource = tabela;
@@ -371,12 +357,6 @@ END AS Status
                 FROM Livros
                 WHERE 1 = 1";
 
-                    if (!string.IsNullOrWhiteSpace(nomeFiltro))
-                        sql += " AND Nome LIKE @nome ESCAPE '\\'";
-
-                    if (!string.Equals(generoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
-                        sql += " AND Genero LIKE @genero";
-
                     if (!string.Equals(disponibilidadeFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                     {
                         switch (disponibilidadeFiltro)
@@ -395,20 +375,17 @@ END AS Status
 
                     using (var cmd = new SqlCeCommand(sql, conexao))
                     {
-                        if (!string.IsNullOrWhiteSpace(nomeFiltro))
-                        {
-                            var seguro = EscapeLikeValue(nomeFiltro.Trim());
-                            cmd.Parameters.AddWithValue("@nome", seguro + "%");
-                        }
-
-                        if (!string.Equals(generoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
-                            cmd.Parameters.AddWithValue("@genero", "%" + generoFiltro + "%");
-
                         var tabela = new DataTable();
                         using (var adapter = new SqlCeDataAdapter(cmd))
                         {
                             adapter.Fill(tabela);
                         }
+
+                        if (!string.IsNullOrWhiteSpace(nomeFiltro))
+                            tabela = FiltrarTabela(tabela, "Nome", nomeFiltro, buscaPorPrefixo: true);
+
+                        if (!string.Equals(generoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
+                            tabela = FiltrarTabela(tabela, "Genero", generoFiltro, buscaPorPrefixo: false);
 
                         dgvLivros.DataSource = tabela;
 
@@ -436,6 +413,20 @@ END AS Status
                 lblTitulos.Text = "Títulos encontrados: 0";
                 lblUnidades.Text = "Unidades encontradas: 0";
             }
+        }
+
+        private static DataTable FiltrarTabela(DataTable tabela, string coluna, string termo, bool buscaPorPrefixo)
+        {
+            var linhas = tabela.AsEnumerable()
+                .Where(linha =>
+                {
+                    string valor = linha.Field<string>(coluna) ?? string.Empty;
+                    return buscaPorPrefixo
+                        ? TextoBusca.ComecaCom(valor, termo)
+                        : TextoBusca.Contem(valor, termo);
+                });
+
+            return linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
         }
 
         #endregion

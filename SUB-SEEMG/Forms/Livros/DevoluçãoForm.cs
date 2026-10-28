@@ -476,6 +476,13 @@ namespace SUB.Forms.Livros
                     DataTable tabela = new DataTable();
                     adaptador.Fill(tabela);
 
+                    if (!string.IsNullOrWhiteSpace(filtros.NomeLivro))
+                    {
+                        var linhas = tabela.AsEnumerable()
+                            .Where(linha => TextoBusca.Contem(linha.Field<string>("Livro"), filtros.NomeLivro));
+                        tabela = linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
+                    }
+
                     dgvEmprestimos.DataSource = tabela;
                 }
             }
@@ -503,7 +510,7 @@ namespace SUB.Forms.Livros
             e.Id AS [ID do Empréstimo],
             uAlocador.Nome AS [Alocador],
             COALESCE(uResponsavel.Nome, 'Não informado') AS [Responsável],
-            e.Responsavel AS [IdResponsavel],
+            e.Alocador AS [IdAluno],
             l.Nome AS [Livro],
             l.CodigoBarras AS [Código De Barras],
             e.DataEmprestimo AS [Data do Empréstimo],
@@ -513,7 +520,7 @@ namespace SUB.Forms.Livros
         JOIN Usuarios uAlocador ON e.Alocador = uAlocador.Id
         LEFT JOIN Usuarios uResponsavel ON e.Responsavel = uResponsavel.Id
         JOIN Livros l ON e.LivroId = l.Id
-        WHERE l.Nome LIKE @LivroNome";
+        WHERE 1=1";
 
             if (filtros.FiltrarCodigoBarras)
                 queryBase += " AND l.CodigoBarras LIKE @CodigoBarras";
@@ -539,8 +546,6 @@ namespace SUB.Forms.Livros
 
         private void AdicionarParametrosBusca(SqlCeCommand comando, FiltrosBusca filtros)
         {
-            comando.Parameters.AddWithValue("@LivroNome", "%" + filtros.NomeLivro + "%");
-
             if (filtros.FiltrarCodigoBarras)
                 comando.Parameters.AddWithValue("@CodigoBarras", "%" + filtros.CodigoBarras + "%");
 
@@ -597,7 +602,7 @@ namespace SUB.Forms.Livros
                 AdicionarColuna(coluna);
             }
 
-            dgvEmprestimos.Columns["IdResponsavel"].Visible = false;
+            dgvEmprestimos.Columns["IdAluno"].Visible = false;
         }
 
         private DefinicaoColuna[] ObterDefinicoesColunas()
@@ -612,7 +617,7 @@ namespace SUB.Forms.Livros
                 new DefinicaoColuna("Data do Empréstimo", "Data de Empréstimo", 150, DataGridViewContentAlignment.MiddleCenter, 110),
                 new DefinicaoColuna("Data de Devolução", "Data de Devolução", 140, DataGridViewContentAlignment.MiddleCenter, 100),
                 new DefinicaoColuna("Status", "Status", 100, DataGridViewContentAlignment.MiddleCenter, 80),
-                new DefinicaoColuna("IdResponsavel", "IdResponsavel", 50, DataGridViewContentAlignment.MiddleCenter, 40)
+                new DefinicaoColuna("IdAluno", "IdAluno", 50, DataGridViewContentAlignment.MiddleCenter, 40)
             };
         }
 
@@ -807,7 +812,7 @@ namespace SUB.Forms.Livros
             var btnFicha = new DataGridViewButtonColumn
             {
                 Name = "Ficha",
-                HeaderText = "Ficha",
+                HeaderText = string.Empty,
                 Text = "Abrir",
                 UseColumnTextForButtonValue = true,
                 Width = 80,
@@ -830,7 +835,7 @@ namespace SUB.Forms.Livros
             if (e.RowIndex < 0 || dgvEmprestimos.Columns[e.ColumnIndex].Name != "Ficha")
                 return;
 
-            var idObj = dgvEmprestimos.Rows[e.RowIndex].Cells["IdResponsavel"].Value;
+            var idObj = dgvEmprestimos.Rows[e.RowIndex].Cells["IdAluno"].Value;
             if (idObj != null && int.TryParse(idObj.ToString(), out int idUsuario))
             {
                 AbrirFichaAluno(idUsuario);

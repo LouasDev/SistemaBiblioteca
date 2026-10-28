@@ -77,7 +77,7 @@ namespace SUB.Forms.Inicio
                 {
                     corPrimaria = Color.FromArgb(31, 72, 126);
                 }
-                ThemeManager.DefinirModo(configuracaoInstituicao.TemaEscuro);
+                ThemeManager.DefinirModo(configuracaoInstituicao);
                 menu.BackColor = corPrimaria;
                 Text = configuracaoInstituicao.Nome;
 
@@ -101,6 +101,7 @@ namespace SUB.Forms.Inicio
             AplicarTemaDaNavegacao();
             EventosGlobais.ConfiguracaoSalva += MainForm_ConfiguracaoSalva;
             EventosGlobais.TutorialSolicitado += MainForm_TutorialSolicitado;
+            ThemeManager.TemaDoSistemaAlterado += ThemeManager_TemaDoSistemaAlterado;
 
 
 
@@ -1316,6 +1317,7 @@ namespace SUB.Forms.Inicio
             // sem dessinar, o form antigo continuaria recebendo o evento.
             EventosGlobais.ConfiguracaoSalva -= MainForm_ConfiguracaoSalva;
             EventosGlobais.TutorialSolicitado -= MainForm_TutorialSolicitado;
+            ThemeManager.TemaDoSistemaAlterado -= ThemeManager_TemaDoSistemaAlterado;
 
             if (tutorialOverlay != null)
             {
@@ -1393,16 +1395,16 @@ namespace SUB.Forms.Inicio
 
             if (InvokeRequired)
             {
-                BeginInvoke(new Action(ReaplicarConfiguracaoEDashboard));
+                BeginInvoke(new Action(() => ReaplicarConfiguracaoEDashboard()));
                 return;
             }
 
             ReaplicarConfiguracaoEDashboard();
         }
 
-        private void ReaplicarConfiguracaoEDashboard()
+        private void ReaplicarConfiguracaoEDashboard(bool forcarRecriacaoDasTelas = false)
         {
-            ReaplicarConfiguracao();
+            ReaplicarConfiguracao(forcarRecriacaoDasTelas);
 
             // Após salvar, o ConfiguracaoForm já foi fechado (evento disparado
             // depois do Close): abre o dashboard e marca Início como ativo,
@@ -1412,7 +1414,21 @@ namespace SUB.Forms.Inicio
             DefinirNavegacaoAtiva(btnInicio);
         }
 
-        private void ReaplicarConfiguracao()
+        private void ThemeManager_TemaDoSistemaAlterado(object sender, EventArgs e)
+        {
+            if (IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new EventHandler(ThemeManager_TemaDoSistemaAlterado), sender, e);
+                return;
+            }
+
+            ReaplicarConfiguracaoEDashboard(true);
+        }
+
+        private void ReaplicarConfiguracao(bool forcarRecriacaoDasTelas = false)
         {
             InstituicaoConfiguracao configuracaoInstituicao;
             try
@@ -1428,10 +1444,11 @@ namespace SUB.Forms.Inicio
 
             // As cores claras originais das telas não são guardadas; ao trocar de modo as telas
             // abertas são fechadas e recriadas sob demanda já no modo novo.
-            bool novoModoEscuro = configuracaoInstituicao != null && configuracaoInstituicao.TemaEscuro;
-            if (novoModoEscuro != ThemeManager.Escuro)
+            bool novoModoEscuro = ThemeManager.ResolverModoEscuro(configuracaoInstituicao);
+            if (forcarRecriacaoDasTelas || novoModoEscuro != ThemeManager.Escuro)
             {
-                ThemeManager.DefinirModo(novoModoEscuro);
+                if (!forcarRecriacaoDasTelas)
+                    ThemeManager.DefinirModo(configuracaoInstituicao);
                 foreach (Form filho in MdiChildren.ToArray())
                     filho.Close();
                 activeChild = null;

@@ -24,7 +24,7 @@ namespace SUB.Forms.Configuracoes
         private Color corSelecionada = ThemeManager.DefaultColor;
         private string corOriginalHtml;
         private string nomeOriginal;
-        private bool escuroOriginal;
+        private ModoAparencia aparenciaOriginal;
         private bool valoresCarregados;
 
         private readonly Dictionary<Control, Rectangle> _designerBounds =
@@ -160,10 +160,11 @@ namespace SUB.Forms.Configuracoes
             AtualizarPreviewCor();
 
             cbAparencia.Items.Clear();
-            cbAparencia.Items.Add("Claro");
+            cbAparencia.Items.Add("Claro (Padrão)");
             cbAparencia.Items.Add("Escuro");
-            escuroOriginal = configuracao != null && configuracao.TemaEscuro;
-            cbAparencia.SelectedIndex = escuroOriginal ? 1 : 0;
+            cbAparencia.Items.Add("Sistema");
+            aparenciaOriginal = ThemeManager.ObterModoAparencia(configuracao);
+            cbAparencia.SelectedIndex = (int)aparenciaOriginal;
 
             valoresCarregados = true;
             AtualizarEstadoSalvar();
@@ -215,7 +216,7 @@ namespace SUB.Forms.Configuracoes
                 nomeOriginal ?? string.Empty,
                 StringComparison.Ordinal);
             bool corAlterada = corSelecionada.ToArgb() != ObterCorTemaSalva().ToArgb();
-            bool aparenciaAlterada = (cbAparencia.SelectedIndex == 1) != escuroOriginal;
+            bool aparenciaAlterada = cbAparencia.SelectedIndex != (int)aparenciaOriginal;
 
             return nomeAlterado || corAlterada || aparenciaAlterada;
         }
@@ -368,7 +369,9 @@ namespace SUB.Forms.Configuracoes
             // alteramos somente os campos editáveis.
             configuracao.Nome = nome;
             configuracao.CorPrimaria = corHtml;
-            configuracao.TemaEscuro = cbAparencia.SelectedIndex == 1;
+            configuracao.Aparencia = (ModoAparencia)cbAparencia.SelectedIndex;
+            // Mantém a chave antiga para leitores de versões anteriores do SUB.
+            configuracao.TemaEscuro = ThemeManager.ResolverModoEscuro(configuracao.Aparencia.Value);
 
             try
             {

@@ -623,7 +623,7 @@
             this._aparencia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this._aparencia.Font = new System.Drawing.Font("Segoe UI", 10.5F);
             this._aparencia.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(39)))), ((int)(((byte)(53)))));
-            this._aparencia.Items.AddRange(new object[] { "Claro", "Escuro" });
+            this._aparencia.Items.AddRange(new object[] { "Claro (Padrão)", "Escuro", "Sistema" });
             this._aparencia.ItemsFont = new System.Drawing.Font("Segoe UI", 10F);
             this._aparencia.Location = new System.Drawing.Point(3, 273);
             this._aparencia.Name = "_aparencia";

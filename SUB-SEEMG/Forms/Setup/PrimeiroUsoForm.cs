@@ -55,6 +55,7 @@ namespace SUB.Forms.Setup
             };
             _tema.SelectedIndexChanged += Tema_SelectedIndexChanged;
             _aparencia.SelectedIndexChanged += (s, e) => AtualizarVisualizacaoTema();
+            txtNovaTurma.KeyPress += TxtNovaTurma_KeyPress;
             foreach (var preset in ThemeManager.Presets)
                 _tema.Items.Add(preset);
 
@@ -103,8 +104,8 @@ namespace SUB.Forms.Setup
 
         private void AtualizarVisualizacaoTema()
         {
-            bool escuro = _aparencia.SelectedIndex == 1;
-            ThemeManager.DefinirModo(escuro);
+            ThemeManager.DefinirModo((ModoAparencia)_aparencia.SelectedIndex);
+            bool escuro = ThemeManager.Escuro;
             ThemePreset tema = TemaSelecionado;
             Color primaria = tema.PrimaryColor;
             SubLogoManager.ApplyWindowIcon(this, primaria);
@@ -119,7 +120,7 @@ namespace SUB.Forms.Setup
             pnlEtapa1.BackColor = Color.Transparent;
             pnlEtapa2.BackColor = Color.Transparent;
             pnlEtapa3.BackColor = Color.Transparent;
-            pnlLogo.BackColor = escuro ? ThemeManager.Dark.Superficie : Color.White;
+            pnlLogo.BackColor = Color.White;
             foreach (var rotulo in _coresRotulosClaros)
                 rotulo.Key.ForeColor = CorTextoSetup(rotulo.Key == statusCodigo ? _corStatusCodigo : rotulo.Value);
             chkMostrarSenhas.BackColor = Color.Transparent;
@@ -218,7 +219,7 @@ namespace SUB.Forms.Setup
 
         private Color CorTextoSetup(Color corClara)
         {
-            return _aparencia.SelectedIndex == 1 ? ThemeManager.CorTextoParaEscuro(corClara) : corClara;
+            return ThemeManager.Escuro ? ThemeManager.CorTextoParaEscuro(corClara) : corClara;
         }
 
         private void AtualizarCorStatusCodigo(Color cor)
@@ -414,6 +415,18 @@ namespace SUB.Forms.Setup
                 e.SuppressKeyPress = true;
                 btnAdicionarTurma.PerformClick();
             }
+        }
+
+        // Mantém a mesma convenção de digitação da tela Gerenciar Turmas:
+        // ao iniciar por um número, completa o ordinal antes do nome da turma.
+        private void TxtNovaTurma_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) || txtNovaTurma.SelectionStart != 0 || txtNovaTurma.Text.Length != 0)
+                return;
+
+            txtNovaTurma.Text = e.KeyChar + "º ";
+            txtNovaTurma.SelectionStart = txtNovaTurma.Text.Length;
+            e.Handled = true;
         }
 
         private void lstTurmasIniciais_SelectedIndexChanged(object sender, EventArgs e)
@@ -758,7 +771,8 @@ VALUES
                 {
                     Nome = _nomeInstituicao.Text.Trim(),
                     CorPrimaria = ColorTranslator.ToHtml(tema.PrimaryColor),
-                    TemaEscuro = _aparencia.SelectedIndex == 1,
+                    Aparencia = (ModoAparencia)_aparencia.SelectedIndex,
+                    TemaEscuro = ThemeManager.Escuro,
                     CodigoMestreHash = codigoHash,
                     CodigoMestreSalt = codigoSalt
                 });
@@ -766,7 +780,7 @@ VALUES
                 transacao.Commit();
                 transacao.Dispose();
                 transacao = null;
-                ThemeManager.DefinirModo(_aparencia.SelectedIndex == 1);
+                ThemeManager.DefinirModo((ModoAparencia)_aparencia.SelectedIndex);
                 DialogResult = DialogResult.OK;
                 Close();
             }

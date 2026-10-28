@@ -69,8 +69,29 @@ namespace SUB.Forms.Login
                 }
             }
 
-            ThemeManager.DefinirModo(configuracao != null && configuracao.TemaEscuro);
+            ThemeManager.DefinirModo(configuracao);
             AplicarTema(corPrimaria);
+            ThemeManager.TemaDoSistemaAlterado += ThemeManager_TemaDoSistemaAlterado;
+        }
+
+        private void ThemeManager_TemaDoSistemaAlterado(object sender, EventArgs e)
+        {
+            if (IsDisposed)
+                return;
+
+            if (InvokeRequired)
+            {
+                BeginInvoke(new EventHandler(ThemeManager_TemaDoSistemaAlterado), sender, e);
+                return;
+            }
+
+            AplicarTema(_corPrimariaAtual);
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            ThemeManager.TemaDoSistemaAlterado -= ThemeManager_TemaDoSistemaAlterado;
+            base.OnFormClosed(e);
         }
 
         private void LoginForm_Shown(object sender, EventArgs e)
@@ -106,10 +127,28 @@ namespace SUB.Forms.Login
 
             foreach (RoundedTextBox campo in new[] { txtEmail, txtSenha })
             {
+                campo.BackColor = escuro ? ThemeManager.Dark.Entrada : Color.White;
+                campo.TextColor = escuro ? ThemeManager.Dark.Texto : Color.FromArgb(29, 39, 53);
+                campo.PlaceholderColor = escuro ? ThemeManager.Dark.TextoSuave : Color.Gray;
                 campo.BorderColor = _corBordaPadrao;
                 campo.BorderFocusColor = _corFocoCampo;
                 campo.HoverBackColor = focoSuave;
                 campo.Invalidate();
+            }
+
+            if (!escuro)
+            {
+                // AplicarModoEscuro converte os rótulos do painel. Ao voltar ao claro,
+                // estas são as cores intencionais do layout original do login.
+                label2.ForeColor = Color.FromArgb(23, 36, 52);
+                lblSubtituloLogin.ForeColor = Color.FromArgb(91, 104, 120);
+                label3.ForeColor = Color.FromArgb(43, 55, 69);
+                label4.ForeColor = Color.FromArgb(43, 55, 69);
+                lblErroEmail.ForeColor = Color.FromArgb(184, 50, 50);
+                lblErroSenha.ForeColor = Color.FromArgb(184, 50, 50);
+                cbMostrarSenha.ForeColor = Color.FromArgb(73, 86, 102);
+                lblAcessoRestrito.ForeColor = Color.FromArgb(105, 116, 130);
+                this.AlterarCorDaBorda(Color.FromArgb(188, 199, 212));
             }
 
             BtnEntrar.BaseColor = _corPrimariaAtual;

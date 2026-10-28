@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using SUB.Models;
 using SUB.ElementosPersonalizados;
 
 namespace SUB.Utils
@@ -64,9 +66,87 @@ namespace SUB.Utils
         // não são guardadas para voltar atrás.
         public static bool Escuro { get; private set; }
 
+        public static ModoAparencia ModoAparenciaAtual { get; private set; } = ModoAparencia.Claro;
+        public static event EventHandler TemaDoSistemaAlterado;
+        private static bool observandoTemaDoSistema;
+
         public static void DefinirModo(bool escuro)
         {
+            ModoAparenciaAtual = escuro ? ModoAparencia.Escuro : ModoAparencia.Claro;
             Escuro = escuro;
+        }
+
+        public static ModoAparencia ObterModoAparencia(InstituicaoConfiguracao configuracao)
+        {
+            if (configuracao != null && configuracao.Aparencia.HasValue)
+                return configuracao.Aparencia.Value;
+
+            // Compatibilidade com instituicao.json anterior à opção do sistema.
+            return configuracao != null && configuracao.TemaEscuro
+                ? ModoAparencia.Escuro
+                : ModoAparencia.Claro;
+        }
+
+        public static void DefinirModo(ModoAparencia modo)
+        {
+            ModoAparenciaAtual = modo;
+            Escuro = ResolverModoEscuro(modo);
+            GarantirObservacaoDoTemaDoSistema();
+        }
+
+        public static void DefinirModo(InstituicaoConfiguracao configuracao)
+        {
+            DefinirModo(ObterModoAparencia(configuracao));
+        }
+
+        public static bool ResolverModoEscuro(ModoAparencia modo)
+        {
+            return modo == ModoAparencia.PadraoDoSistema
+                ? WindowsUsaTemaEscuro()
+                : modo == ModoAparencia.Escuro;
+        }
+
+        public static bool ResolverModoEscuro(InstituicaoConfiguracao configuracao)
+        {
+            return ResolverModoEscuro(ObterModoAparencia(configuracao));
+        }
+
+        private static bool WindowsUsaTemaEscuro()
+        {
+            try
+            {
+                object valor = Registry.GetValue(
+                    @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize",
+                    "AppsUseLightTheme", 1);
+                return Convert.ToInt32(valor) == 0;
+            }
+            catch
+            {
+                // Em Windows sem a chave (ou sem permissão), a aparência segura é clara.
+                return false;
+            }
+        }
+
+        private static void GarantirObservacaoDoTemaDoSistema()
+        {
+            if (observandoTemaDoSistema)
+                return;
+
+            SystemEvents.UserPreferenceChanged += TemaDoWindowsAlterado;
+            observandoTemaDoSistema = true;
+        }
+
+        private static void TemaDoWindowsAlterado(object sender, UserPreferenceChangedEventArgs e)
+        {
+            if (ModoAparenciaAtual != ModoAparencia.PadraoDoSistema)
+                return;
+
+            bool escuro = WindowsUsaTemaEscuro();
+            if (escuro == Escuro)
+                return;
+
+            Escuro = escuro;
+            TemaDoSistemaAlterado?.Invoke(null, EventArgs.Empty);
         }
 
         public static class Dark
@@ -211,7 +291,7 @@ namespace SUB.Utils
                 var configuracao = InstituicaoConfiguracaoStore.Carregar();
                 if (configuracao != null)
                 {
-                    Escuro = configuracao.TemaEscuro;
+                    DefinirModo(configuracao);
                     if (!string.IsNullOrWhiteSpace(configuracao.CorPrimaria))
                         primaryColor = ColorTranslator.FromHtml(configuracao.CorPrimaria);
                 }
@@ -848,8 +928,10 @@ namespace SUB.Utils
 
         private static void DesenharBotaoArredondado(Button button, EstadoDoBotao estado, PaintEventArgs e)
         {
-            if (button.FlatStyle != FlatStyle.Flat || button.Image != null || button.BackgroundImage != null ||
-                button.Width < 8 || button.Height < 8)
+            if (button.FlatStyle != FlatStyle.Flat ||
+    button.BackgroundImage != null ||
+    button.Width < 8 ||
+    button.Height < 8)
                 return;
 
             Color fundo = button.BackColor;
@@ -887,7 +969,48 @@ namespace SUB.Utils
             else
                 alinhamento |= TextFormatFlags.HorizontalCenter;
             var areaTexto = Rectangle.Inflate(button.ClientRectangle, -button.Padding.Horizontal / 2 - 2, -2);
-            TextRenderer.DrawText(e.Graphics, button.Text, button.Font, areaTexto, texto, alinhamento);
+            string textoBotao = button.Text;
+
+            if (button.Image != null)
+            {
+                Image imagem = button.Image;
+
+                int xImagem = button.Padding.Left + 4;
+                int yImagem = (button.Height - imagem.Height) / 2;
+
+                e.Graphics.DrawImage(
+                    imagem,
+                    new Rectangle(
+                        xImagem,
+                        yImagem,
+                        imagem.Width,
+                        imagem.Height
+                    )
+                );
+
+                int inicioTexto = xImagem + imagem.Width + 8;
+
+                areaTexto = new Rectangle(
+                    inicioTexto,
+                    0,
+                    Math.Max(0, button.Width - inicioTexto - button.Padding.Right - 4),
+                    button.Height
+                );
+
+                alinhamento &= ~(TextFormatFlags.HorizontalCenter | TextFormatFlags.Right);
+                alinhamento |= TextFormatFlags.Left;
+
+                textoBotao = textoBotao.TrimStart();
+            }
+
+            TextRenderer.DrawText(
+                e.Graphics,
+                textoBotao,
+                button.Font,
+                areaTexto,
+                texto,
+                alinhamento
+            );
         }
 
         private static GraphicsPath CaminhoArredondado(Rectangle area, int raio)

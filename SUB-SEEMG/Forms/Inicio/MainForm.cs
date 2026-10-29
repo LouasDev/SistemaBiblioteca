@@ -880,19 +880,15 @@ namespace SUB.Forms.Inicio
                 return;
             }
 
+            MdiClient areaMdi = Controls.OfType<MdiClient>().FirstOrDefault();
+            IntPtr janelaMdi = areaMdi != null ? areaMdi.Handle : IntPtr.Zero;
             abrindoFilhoMdi = true;
+            SuspendLayout();
             try
             {
-                // Se já existe um filho ativo diferente, esconde/fecha ele
-                if (activeChild != null && activeChild != child && !activeChild.IsDisposed)
-                {
-                    if (keepPreviousHidden)
-                        activeChild.Hide();
-                    else
-                        activeChild.Close(); // fecha para liberar recursos (troque por Hide se preferir manter estado)
-                }
-
-                // se a instância atual do child foi descartada, tente recriar? (faça fora se necessário)
+                // Prepara a tela sem expor as etapas intermediárias de layout e tema.
+                if (janelaMdi != IntPtr.Zero)
+                    SendMessage(janelaMdi, 0x000B /* WM_SETREDRAW */, 0, 0);
                 child.MdiParent = this;
                 child.Dock = DockStyle.Fill;
                 ThemeManager.Apply(child, corPrimaria);
@@ -905,6 +901,15 @@ namespace SUB.Forms.Inicio
                 ThemeManager.Apply(child, corPrimaria);
                 child.BringToFront();
                 child.Activate();
+                // Se já existe um filho ativo diferente, esconde/fecha ele
+                if (activeChild != null && activeChild != child && !activeChild.IsDisposed)
+                {
+                    if (keepPreviousHidden)
+                        activeChild.Hide();
+                    else
+                        activeChild.Close(); // fecha para liberar recursos (troque por Hide se preferir manter estado)
+                }
+
                 activeChild = child;
                 AtualizarDisponibilidadeDaNavegacao(child);
             }
@@ -913,7 +918,20 @@ namespace SUB.Forms.Inicio
             }
             finally
             {
-                abrindoFilhoMdi = false;
+                try
+                {
+                    ResumeLayout(true);
+                    if (janelaMdi != IntPtr.Zero && areaMdi != null && !areaMdi.IsDisposed)
+                    {
+                        SendMessage(janelaMdi, 0x000B /* WM_SETREDRAW */, 1, 0);
+                        areaMdi.Invalidate(true);
+                        areaMdi.Update();
+                    }
+                }
+                finally
+                {
+                    abrindoFilhoMdi = false;
+                }
             }
         }
 

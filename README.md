@@ -108,9 +108,11 @@ Alunos responsáveis pelo sistema original e pela construção do SUB, conforme 
 | [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. |
 | [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. |
 
-<p align="center"><a href="https://github.com/renato0x"><img src="assets/contribuicoes/renato0x.svg" width="100%" alt="Card de contribuição de renato0x no SistemaBiblioteca."></a></p>
-<p align="center"><a href="https://github.com/LouasDev"><img src="assets/contribuicoes/LouasDev.svg" width="100%" alt="Card de contribuição de LouasDev no SistemaBiblioteca."></a></p>
-<p align="center"><a href="https://github.com/Ithaloluzdepanela"><img src="assets/contribuicoes/Ithaloluzdepanela.svg" width="100%" alt="Card de contribuição de Ithaloluzdepanela no SistemaBiblioteca."></a></p>
+<p align="center">
+  <a href="https://github.com/renato0x"><img src="assets/contribuicoes/renato0x.svg" width="32%" alt="Card de contribuição de renato0x no SistemaBiblioteca."></a>
+  <a href="https://github.com/LouasDev"><img src="assets/contribuicoes/LouasDev.svg" width="32%" alt="Card de contribuição de LouasDev no SistemaBiblioteca."></a>
+  <a href="https://github.com/Ithaloluzdepanela"><img src="assets/contribuicoes/Ithaloluzdepanela.svg" width="32%" alt="Card de contribuição de Ithaloluzdepanela no SistemaBiblioteca."></a>
+</p>
 
 <sub>Cards atualizados automaticamente pela GitHub Actions a partir do histórico Git, incluindo aliases de autoria conhecidos e sem commits de merge.</sub>
 

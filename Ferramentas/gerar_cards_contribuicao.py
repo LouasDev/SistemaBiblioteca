@@ -21,6 +21,12 @@ CONTRIBUTORS = {
     },
 }
 
+AVATAR_URLS = {
+    "renato0x": "https://avatars.githubusercontent.com/u/199422215?v=4",
+    "LouasDev": "https://avatars.githubusercontent.com/u/269842284?v=4",
+    "Ithaloluzdepanela": "https://avatars.githubusercontent.com/u/163846279?v=4",
+}
+
 
 def collect_statistics(repository: Path) -> dict[str, dict[str, int]]:
     aliases = {email.lower(): handle for handle, emails in CONTRIBUTORS.items() for email in emails}
@@ -56,26 +62,29 @@ def render_card(handle: str, stats: dict[str, int]) -> str:
     commits = display_number(stats["commits"])
     added = display_number(stats["added"], "+")
     removed = display_number(stats["removed"], "−")
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="270" viewBox="0 0 1000 270" role="img" aria-labelledby="title desc">
+    avatar_url = AVATAR_URLS[handle]
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="480" height="180" viewBox="0 0 480 180" role="img" aria-labelledby="title desc">
   <title id="title">Contribuições de {safe_handle} no SUB</title>
   <desc id="desc">{commits} commits, {added} linhas adicionadas e {removed} linhas removidas no repositório SistemaBiblioteca.</desc>
   <style>
-    .handle {{ font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }}
-    .label {{ font: 15px 'Segoe UI', Arial, sans-serif; fill: #60758c; }}
-    .value {{ font: 700 31px 'Segoe UI', Arial, sans-serif; }}
+    .handle {{ font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #ffffff; }}
+    .label {{ font: 11px 'Segoe UI', Arial, sans-serif; fill: #60758c; }}
+    .value {{ font: 700 19px 'Segoe UI', Arial, sans-serif; }}
   </style>
-  <rect width="1000" height="270" rx="18" fill="#eef4fa"/>
-  <path d="M0 18Q0 0 18 0H982Q1000 0 1000 18V100H0Z" fill="#1f487e"/>
-  <text x="48" y="61" class="handle">{safe_handle}</text>
-  <rect x="48" y="132" width="278" height="94" rx="14" fill="#ffffff"/>
-  <rect x="361" y="132" width="278" height="94" rx="14" fill="#ffffff"/>
-  <rect x="674" y="132" width="278" height="94" rx="14" fill="#ffffff"/>
-  <text x="74" y="163" class="label">Commits</text>
-  <text x="74" y="202" class="value" fill="#1f487e">{commits}</text>
-  <text x="387" y="163" class="label">Linhas adicionadas</text>
-  <text x="387" y="202" class="value" fill="#16803c">{added}</text>
-  <text x="700" y="163" class="label">Linhas removidas</text>
-  <text x="700" y="202" class="value" fill="#bb3e32">{removed}</text>
+  <defs><clipPath id="avatar"><circle cx="45" cy="33" r="20"/></clipPath></defs>
+  <rect width="480" height="180" rx="16" fill="#eef4fa"/>
+  <path d="M0 16Q0 0 16 0H464Q480 0 480 16V66H0Z" fill="#1f487e"/>
+  <image href="{avatar_url}" x="25" y="13" width="40" height="40" clip-path="url(#avatar)" preserveAspectRatio="xMidYMid slice"/>
+  <text x="78" y="42" class="handle">{safe_handle}</text>
+  <rect x="18" y="86" width="136" height="68" rx="11" fill="#ffffff"/>
+  <rect x="172" y="86" width="136" height="68" rx="11" fill="#ffffff"/>
+  <rect x="326" y="86" width="136" height="68" rx="11" fill="#ffffff"/>
+  <text x="31" y="110" class="label">Commits</text>
+  <text x="31" y="139" class="value" fill="#1f487e">{commits}</text>
+  <text x="185" y="110" class="label">Linhas adicionadas</text>
+  <text x="185" y="139" class="value" fill="#16803c">{added}</text>
+  <text x="339" y="110" class="label">Linhas removidas</text>
+  <text x="339" y="139" class="value" fill="#bb3e32">{removed}</text>
 </svg>
 '''
 

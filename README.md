@@ -114,7 +114,6 @@ Alunos responsáveis pelo sistema original e pela construção do SUB, conforme 
   <a href="https://github.com/Ithaloluzdepanela"><img src="assets/contribuicoes/Ithaloluzdepanela.svg" width="32%" alt="Card de contribuição de Ithaloluzdepanela no SistemaBiblioteca."></a>
 </p>
 
-<sub>Cards atualizados automaticamente pela GitHub Actions a partir do histórico Git, incluindo aliases de autoria conhecidos e sem commits de merge.</sub>
 
 Veja também o [histórico de contribuidores](https://github.com/LouasDev/SistemaBiblioteca/graphs/contributors) do repositório.
 

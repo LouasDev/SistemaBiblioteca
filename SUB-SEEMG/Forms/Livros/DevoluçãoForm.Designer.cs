@@ -38,6 +38,7 @@
             this.dgvEmprestimos = new System.Windows.Forms.DataGridView();
             this.lblDadosLivro = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlFiltrosDevolucao = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.mtxCodigoBarras = new RoundedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtUsuario = new RoundedTextBox();
@@ -53,6 +54,7 @@
             this.pnlResultadosEmprestimos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).BeginInit();
             this.panel1.SuspendLayout();
+            this.pnlFiltrosDevolucao.SuspendLayout();
             this.pnlAcoesDev.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,7 +70,7 @@
             this.btnConfirmarDevolucao.Location = new System.Drawing.Point(16, 46);
             this.btnConfirmarDevolucao.Name = "btnConfirmarDevolucao";
             this.btnConfirmarDevolucao.Size = new System.Drawing.Size(220, 44);
-            this.btnConfirmarDevolucao.TabIndex = 118;
+            this.btnConfirmarDevolucao.TabIndex = 1;
             this.btnConfirmarDevolucao.Text = "Devolver";
             this.btnConfirmarDevolucao.UseVisualStyleBackColor = false;
             this.btnConfirmarDevolucao.Click += new System.EventHandler(this.btnConfirmarDevolucao_Click);
@@ -85,7 +87,7 @@
             this.btnProrrogar.Location = new System.Drawing.Point(16, 100);
             this.btnProrrogar.Name = "btnProrrogar";
             this.btnProrrogar.Size = new System.Drawing.Size(220, 44);
-            this.btnProrrogar.TabIndex = 117;
+            this.btnProrrogar.TabIndex = 2;
             this.btnProrrogar.Text = "Prorrogar prazo";
             this.btnProrrogar.UseVisualStyleBackColor = false;
             this.btnProrrogar.Click += new System.EventHandler(this.btnProrrogar_Click);
@@ -98,7 +100,7 @@
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(163, 38);
-            this.Titulo.TabIndex = 106;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Devoluções";
             // 
             // lblSubtitulo
@@ -109,7 +111,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(362, 17);
-            this.lblSubtitulo.TabIndex = 157;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Localize o empréstimo e confirme a devolução do exemplar.";
             // 
             // pnlLinhaCabecalho
@@ -118,7 +120,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 158;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // pnlResultadosEmprestimos
             // 
@@ -131,7 +133,7 @@
             this.pnlResultadosEmprestimos.Name = "pnlResultadosEmprestimos";
             this.pnlResultadosEmprestimos.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultadosEmprestimos.Size = new System.Drawing.Size(1088, 425);
-            this.pnlResultadosEmprestimos.TabIndex = 122;
+            this.pnlResultadosEmprestimos.TabIndex = 6;
             // 
             // dgvEmprestimos
             // 
@@ -151,11 +153,12 @@
             this.dgvEmprestimos.Location = new System.Drawing.Point(1, 1);
             this.dgvEmprestimos.Name = "dgvEmprestimos";
             this.dgvEmprestimos.ReadOnly = true;
+            this.dgvEmprestimos.StandardTab = true;
             this.dgvEmprestimos.RowHeadersWidth = 51;
             this.dgvEmprestimos.RowTemplate.Height = 40;
             this.dgvEmprestimos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmprestimos.Size = new System.Drawing.Size(1086, 423);
-            this.dgvEmprestimos.TabIndex = 119;
+            this.dgvEmprestimos.TabIndex = 0;
             this.dgvEmprestimos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellClick);
             this.dgvEmprestimos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellContentClick);
             this.dgvEmprestimos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmprestimos_CellFormatting);
@@ -168,27 +171,34 @@
             this.lblDadosLivro.Location = new System.Drawing.Point(22, 321);
             this.lblDadosLivro.Name = "lblDadosLivro";
             this.lblDadosLivro.Size = new System.Drawing.Size(0, 19);
-            this.lblDadosLivro.TabIndex = 121;
+            this.lblDadosLivro.TabIndex = 1;
             // 
             // panel1
             // 
             this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.lstSugestoesUsuario);
-            this.panel1.Controls.Add(this.mtxCodigoBarras);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.txtUsuario);
-            this.panel1.Controls.Add(this.cbFiltroEmprestimo);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.btnBuscarEmprestimo);
-            this.panel1.Controls.Add(this.lblNome);
-            this.panel1.Controls.Add(this.txtLivro);
-            this.panel1.Controls.Add(this.label4);
+            this.pnlFiltrosDevolucao.Controls.Add(this.mtxCodigoBarras);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label1);
+            this.pnlFiltrosDevolucao.Controls.Add(this.txtUsuario);
+            this.pnlFiltrosDevolucao.Controls.Add(this.cbFiltroEmprestimo);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label6);
+            this.pnlFiltrosDevolucao.Controls.Add(this.btnBuscarEmprestimo);
+            this.pnlFiltrosDevolucao.Controls.Add(this.lblNome);
+            this.pnlFiltrosDevolucao.Controls.Add(this.txtLivro);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
             this.panel1.Controls.Add(this.lblSubtitulo);
             this.panel1.Controls.Add(this.Titulo);
             this.panel1.Controls.Add(this.pnlResultadosEmprestimos);
             this.panel1.Controls.Add(this.pnlAcoesDev);
+            this.panel1.Controls.Add(this.pnlFiltrosDevolucao);
+            this.pnlFiltrosDevolucao.BackColor = System.Drawing.Color.White;
+            this.pnlFiltrosDevolucao.BorderRadius = 20;
+            this.pnlFiltrosDevolucao.Location = new System.Drawing.Point(96, 136);
+            this.pnlFiltrosDevolucao.Name = "pnlFiltrosDevolucao";
+            this.pnlFiltrosDevolucao.Size = new System.Drawing.Size(820, 168);
+            this.pnlFiltrosDevolucao.TabIndex = 3;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -209,7 +219,7 @@
             this.mtxCodigoBarras.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtxCodigoBarras.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.mtxCodigoBarras.HoverBackColor = System.Drawing.Color.LightGray;
-            this.mtxCodigoBarras.Location = new System.Drawing.Point(658, 183);
+            this.mtxCodigoBarras.Location = new System.Drawing.Point(562, 47);
             this.mtxCodigoBarras.Margin = new System.Windows.Forms.Padding(4);
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.OnlyNumbers = true;
@@ -222,7 +232,7 @@
             this.mtxCodigoBarras.SelectionLength = 0;
             this.mtxCodigoBarras.SelectionStart = 0;
             this.mtxCodigoBarras.Size = new System.Drawing.Size(243, 34);
-            this.mtxCodigoBarras.TabIndex = 156;
+            this.mtxCodigoBarras.TabIndex = 5;
             this.mtxCodigoBarras.TextColor = System.Drawing.Color.Black;
             this.mtxCodigoBarras.UseSystemPasswordChar = false;
             // 
@@ -232,10 +242,10 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label1.Location = new System.Drawing.Point(105, 155);
+            this.label1.Location = new System.Drawing.Point(9, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(159, 25);
-            this.label1.TabIndex = 154;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Nome da pessoa:";
             // 
             // txtUsuario
@@ -251,7 +261,7 @@
             this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsuario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtUsuario.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtUsuario.Location = new System.Drawing.Point(109, 183);
+            this.txtUsuario.Location = new System.Drawing.Point(13, 47);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Padding = new System.Windows.Forms.Padding(7);
             this.txtUsuario.PlaceholderColor = System.Drawing.Color.Gray;
@@ -262,7 +272,7 @@
             this.txtUsuario.SelectionLength = 0;
             this.txtUsuario.SelectionStart = 0;
             this.txtUsuario.Size = new System.Drawing.Size(258, 34);
-            this.txtUsuario.TabIndex = 147;
+            this.txtUsuario.TabIndex = 3;
             this.txtUsuario.TextColor = System.Drawing.Color.Black;
             this.txtUsuario.UseSystemPasswordChar = false;
             // 
@@ -283,24 +293,24 @@
             "Atrasado",
             "Ativo"});
             this.cbFiltroEmprestimo.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbFiltroEmprestimo.Location = new System.Drawing.Point(110, 256);
+            this.cbFiltroEmprestimo.Location = new System.Drawing.Point(14, 120);
             this.cbFiltroEmprestimo.Name = "cbFiltroEmprestimo";
             this.cbFiltroEmprestimo.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbFiltroEmprestimo.PlaceholderMargin = 10;
             this.cbFiltroEmprestimo.PlaceholderText = "Selecione uma situação...";
             this.cbFiltroEmprestimo.Size = new System.Drawing.Size(258, 34);
-            this.cbFiltroEmprestimo.TabIndex = 153;
+            this.cbFiltroEmprestimo.TabIndex = 7;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label6.Location = new System.Drawing.Point(106, 228);
+            this.label6.Location = new System.Drawing.Point(10, 92);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 25);
-            this.label6.TabIndex = 152;
+            this.label6.TabIndex = 6;
             this.label6.Text = "Situação:";
             // 
             // btnBuscarEmprestimo
@@ -311,10 +321,10 @@
             this.btnBuscarEmprestimo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscarEmprestimo.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnBuscarEmprestimo.ForeColor = System.Drawing.Color.White;
-            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(695, 245);
+            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(599, 109);
             this.btnBuscarEmprestimo.Name = "btnBuscarEmprestimo";
             this.btnBuscarEmprestimo.Size = new System.Drawing.Size(168, 41);
-            this.btnBuscarEmprestimo.TabIndex = 151;
+            this.btnBuscarEmprestimo.TabIndex = 8;
             this.btnBuscarEmprestimo.Text = "Procurar";
             this.btnBuscarEmprestimo.UseVisualStyleBackColor = false;
             // 
@@ -324,10 +334,10 @@
             this.lblNome.BackColor = System.Drawing.Color.Transparent;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblNome.Location = new System.Drawing.Point(389, 155);
+            this.lblNome.Location = new System.Drawing.Point(293, 19);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(140, 25);
-            this.lblNome.TabIndex = 149;
+            this.lblNome.TabIndex = 1;
             this.lblNome.Text = "Nome do livro:";
             // 
             // txtLivro
@@ -343,7 +353,7 @@
             this.txtLivro.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLivro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtLivro.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtLivro.Location = new System.Drawing.Point(393, 183);
+            this.txtLivro.Location = new System.Drawing.Point(297, 47);
             this.txtLivro.Name = "txtLivro";
             this.txtLivro.Padding = new System.Windows.Forms.Padding(7);
             this.txtLivro.PlaceholderColor = System.Drawing.Color.Gray;
@@ -354,7 +364,7 @@
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
             this.txtLivro.Size = new System.Drawing.Size(238, 34);
-            this.txtLivro.TabIndex = 148;
+            this.txtLivro.TabIndex = 4;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
             // 
@@ -364,10 +374,10 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(654, 155);
+            this.label4.Location = new System.Drawing.Point(558, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
-            this.label4.TabIndex = 150;
+            this.label4.TabIndex = 2;
             this.label4.Text = "Código de barras:";
             // 
             // lstSugestoesUsuario
@@ -381,7 +391,8 @@
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
             this.lstSugestoesUsuario.Size = new System.Drawing.Size(258, 102);
-            this.lstSugestoesUsuario.TabIndex = 155;
+            this.lstSugestoesUsuario.TabStop = false;
+            this.lstSugestoesUsuario.TabIndex = 5;
             this.lstSugestoesUsuario.Visible = false;
             // 
             // pnlAcoesDev
@@ -397,7 +408,7 @@
             this.pnlAcoesDev.Location = new System.Drawing.Point(934, 136);
             this.pnlAcoesDev.Name = "pnlAcoesDev";
             this.pnlAcoesDev.Size = new System.Drawing.Size(252, 168);
-            this.pnlAcoesDev.TabIndex = 159;
+            this.pnlAcoesDev.TabIndex = 4;
             this.pnlAcoesDev.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel1_Paint);
             // 
             // label2
@@ -409,7 +420,7 @@
             this.label2.Location = new System.Drawing.Point(13, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 25);
-            this.label2.TabIndex = 151;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Ações:";
             // 
             // DevoluçãoForm
@@ -432,6 +443,8 @@
             this.Load += new System.EventHandler(this.DevoluçãoForm_Load);
             this.pnlResultadosEmprestimos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).EndInit();
+            this.pnlFiltrosDevolucao.ResumeLayout(false);
+            this.pnlFiltrosDevolucao.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnlAcoesDev.ResumeLayout(false);
@@ -452,6 +465,7 @@
         private System.Windows.Forms.DataGridView dgvEmprestimos;
         private System.Windows.Forms.Label lblDadosLivro;
         private System.Windows.Forms.Panel panel1;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltrosDevolucao;
         private RoundedTextBox mtxCodigoBarras;
         private System.Windows.Forms.ListBox lstSugestoesUsuario;
         public System.Windows.Forms.Label label1;

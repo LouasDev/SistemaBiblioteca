@@ -86,7 +86,7 @@ namespace SUB.Forms.Inicio
             this.panelControl.Location = new System.Drawing.Point(264, 0);
             this.panelControl.Name = "panelControl";
             this.panelControl.Size = new System.Drawing.Size(1176, 30);
-            this.panelControl.TabIndex = 0;
+            this.panelControl.TabIndex = 1;
             this.panelControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelControl_MouseDown);
             // 
             // ControlPanel
@@ -100,7 +100,7 @@ namespace SUB.Forms.Inicio
             this.ControlPanel.Location = new System.Drawing.Point(1068, 0);
             this.ControlPanel.Name = "ControlPanel";
             this.ControlPanel.Size = new System.Drawing.Size(108, 30);
-            this.ControlPanel.TabIndex = 4;
+            this.ControlPanel.TabIndex = 0;
             // 
             // picExit
             // 
@@ -111,7 +111,7 @@ namespace SUB.Forms.Inicio
             this.picExit.Location = new System.Drawing.Point(80, 3);
             this.picExit.Name = "picExit";
             this.picExit.Size = new System.Drawing.Size(25, 25);
-            this.picExit.TabIndex = 3;
+            this.picExit.TabIndex = 2;
             this.picExit.TabStop = false;
             this.picExit.Click += new System.EventHandler(this.picExit_Click);
             this.picExit.MouseEnter += new System.EventHandler(this.picExit_MouseEnter);
@@ -126,7 +126,7 @@ namespace SUB.Forms.Inicio
             this.picMax.Location = new System.Drawing.Point(49, 3);
             this.picMax.Name = "picMax";
             this.picMax.Size = new System.Drawing.Size(25, 25);
-            this.picMax.TabIndex = 6;
+            this.picMax.TabIndex = 1;
             this.picMax.TabStop = false;
             this.picMax.Click += new System.EventHandler(this.picMax_Click);
             this.picMax.MouseEnter += new System.EventHandler(this.picMax_MouseEnter);
@@ -141,7 +141,7 @@ namespace SUB.Forms.Inicio
             this.picMin.Location = new System.Drawing.Point(18, 3);
             this.picMin.Name = "picMin";
             this.picMin.Size = new System.Drawing.Size(25, 25);
-            this.picMin.TabIndex = 5;
+            this.picMin.TabIndex = 0;
             this.picMin.TabStop = false;
             this.picMin.Click += new System.EventHandler(this.picMin_Click);
             this.picMin.MouseEnter += new System.EventHandler(this.picMin_MouseEnter);
@@ -162,7 +162,7 @@ namespace SUB.Forms.Inicio
             this.btnSair.Name = "btnSair";
             this.btnSair.Padding = new System.Windows.Forms.Padding(18, 0, 10, 0);
             this.btnSair.Size = new System.Drawing.Size(258, 54);
-            this.btnSair.TabIndex = 3;
+            this.btnSair.TabIndex = 6;
             this.btnSair.TabStop = false;
             this.btnSair.Text = "  Encerrar sessão";
             this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -177,7 +177,7 @@ namespace SUB.Forms.Inicio
             this.relContainer.Location = new System.Drawing.Point(3, 303);
             this.relContainer.Name = "relContainer";
             this.relContainer.Size = new System.Drawing.Size(258, 56);
-            this.relContainer.TabIndex = 6;
+            this.relContainer.TabIndex = 4;
             this.relContainer.Tag = 56;
             // 
             // btnRel
@@ -195,7 +195,7 @@ namespace SUB.Forms.Inicio
             this.btnRel.Name = "btnRel";
             this.btnRel.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
             this.btnRel.Size = new System.Drawing.Size(258, 56);
-            this.btnRel.TabIndex = 3;
+            this.btnRel.TabIndex = 0;
             this.btnRel.TabStop = false;
             this.btnRel.Text = "  Relatórios";
             this.btnRel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -213,7 +213,7 @@ namespace SUB.Forms.Inicio
             this.userContainer.Location = new System.Drawing.Point(3, 179);
             this.userContainer.Name = "userContainer";
             this.userContainer.Size = new System.Drawing.Size(258, 56);
-            this.userContainer.TabIndex = 4;
+            this.userContainer.TabIndex = 2;
             this.userContainer.Tag = 200;
             // 
             // btnUser
@@ -231,7 +231,7 @@ namespace SUB.Forms.Inicio
             this.btnUser.Name = "btnUser";
             this.btnUser.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnUser.Size = new System.Drawing.Size(258, 48);
-            this.btnUser.TabIndex = 15;
+            this.btnUser.TabIndex = 1;
             this.btnUser.TabStop = false;
             this.btnUser.Text = "  Consultar usuários";
             this.btnUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -254,7 +254,7 @@ namespace SUB.Forms.Inicio
             this.btnUserCad.Name = "btnUserCad";
             this.btnUserCad.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnUserCad.Size = new System.Drawing.Size(258, 48);
-            this.btnUserCad.TabIndex = 13;
+            this.btnUserCad.TabIndex = 2;
             this.btnUserCad.TabStop = false;
             this.btnUserCad.Text = "  Cadastrar usuário";
             this.btnUserCad.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -277,7 +277,7 @@ namespace SUB.Forms.Inicio
             this.btnUsuario.Name = "btnUsuario";
             this.btnUsuario.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
             this.btnUsuario.Size = new System.Drawing.Size(258, 56);
-            this.btnUsuario.TabIndex = 3;
+            this.btnUsuario.TabIndex = 0;
             this.btnUsuario.TabStop = false;
             this.btnUsuario.Text = "  Pessoas";
             this.btnUsuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -300,7 +300,7 @@ namespace SUB.Forms.Inicio
             this.btnUserEdit.Name = "btnUserEdit";
             this.btnUserEdit.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnUserEdit.Size = new System.Drawing.Size(258, 48);
-            this.btnUserEdit.TabIndex = 14;
+            this.btnUserEdit.TabIndex = 3;
             this.btnUserEdit.TabStop = false;
             this.btnUserEdit.Text = "  Editar usuário";
             this.btnUserEdit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -315,7 +315,7 @@ namespace SUB.Forms.Inicio
             this.incioContainer.Location = new System.Drawing.Point(3, 117);
             this.incioContainer.Name = "incioContainer";
             this.incioContainer.Size = new System.Drawing.Size(258, 56);
-            this.incioContainer.TabIndex = 2;
+            this.incioContainer.TabIndex = 1;
             this.incioContainer.Tag = 56;
             // 
             // btnInicio
@@ -333,7 +333,7 @@ namespace SUB.Forms.Inicio
             this.btnInicio.Name = "btnInicio";
             this.btnInicio.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
             this.btnInicio.Size = new System.Drawing.Size(258, 56);
-            this.btnInicio.TabIndex = 3;
+            this.btnInicio.TabIndex = 0;
             this.btnInicio.TabStop = false;
             this.btnInicio.Text = "  Início";
             this.btnInicio.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -357,7 +357,7 @@ namespace SUB.Forms.Inicio
             this.menu.Name = "menu";
             this.menu.Padding = new System.Windows.Forms.Padding(0, 12, 0, 16);
             this.menu.Size = new System.Drawing.Size(264, 800);
-            this.menu.TabIndex = 1;
+            this.menu.TabIndex = 0;
             this.menu.WrapContents = false;
             this.menu.Paint += new System.Windows.Forms.PaintEventHandler(this.menu_Paint);
             // 
@@ -370,7 +370,7 @@ namespace SUB.Forms.Inicio
             this.panel1.Location = new System.Drawing.Point(3, 15);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(258, 96);
-            this.panel1.TabIndex = 10;
+            this.panel1.TabIndex = 0;
             // 
             // lblContextoMenu
             // 
@@ -380,7 +380,7 @@ namespace SUB.Forms.Inicio
             this.lblContextoMenu.Location = new System.Drawing.Point(91, 48);
             this.lblContextoMenu.Name = "lblContextoMenu";
             this.lblContextoMenu.Size = new System.Drawing.Size(150, 32);
-            this.lblContextoMenu.TabIndex = 12;
+            this.lblContextoMenu.TabIndex = 2;
             this.lblContextoMenu.Text = "Sistema Único\r\nBibliotecário";
             // 
             // lblMarcaMenu
@@ -392,7 +392,7 @@ namespace SUB.Forms.Inicio
             this.lblMarcaMenu.Location = new System.Drawing.Point(90, 20);
             this.lblMarcaMenu.Name = "lblMarcaMenu";
             this.lblMarcaMenu.Size = new System.Drawing.Size(55, 30);
-            this.lblMarcaMenu.TabIndex = 11;
+            this.lblMarcaMenu.TabIndex = 1;
             this.lblMarcaMenu.Text = "SUB";
             // 
             // picLogoMenu
@@ -403,7 +403,7 @@ namespace SUB.Forms.Inicio
             this.picLogoMenu.Name = "picLogoMenu";
             this.picLogoMenu.Size = new System.Drawing.Size(56, 56);
             this.picLogoMenu.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picLogoMenu.TabIndex = 9;
+            this.picLogoMenu.TabIndex = 0;
             this.picLogoMenu.TabStop = false;
             // 
             // livroContainer
@@ -418,7 +418,7 @@ namespace SUB.Forms.Inicio
             this.livroContainer.Location = new System.Drawing.Point(3, 241);
             this.livroContainer.Name = "livroContainer";
             this.livroContainer.Size = new System.Drawing.Size(258, 56);
-            this.livroContainer.TabIndex = 8;
+            this.livroContainer.TabIndex = 3;
             this.livroContainer.Tag = 296;
             // 
             // btnDev
@@ -436,7 +436,7 @@ namespace SUB.Forms.Inicio
             this.btnDev.Name = "btnDev";
             this.btnDev.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnDev.Size = new System.Drawing.Size(258, 48);
-            this.btnDev.TabIndex = 7;
+            this.btnDev.TabIndex = 5;
             this.btnDev.TabStop = false;
             this.btnDev.Text = "  Registrar devolução";
             this.btnDev.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -459,7 +459,7 @@ namespace SUB.Forms.Inicio
             this.btnLivros.Name = "btnLivros";
             this.btnLivros.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnLivros.Size = new System.Drawing.Size(258, 48);
-            this.btnLivros.TabIndex = 9;
+            this.btnLivros.TabIndex = 1;
             this.btnLivros.TabStop = false;
             this.btnLivros.Text = "  Consultar acervo";
             this.btnLivros.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -482,7 +482,7 @@ namespace SUB.Forms.Inicio
             this.btnLivroCad.Name = "btnLivroCad";
             this.btnLivroCad.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnLivroCad.Size = new System.Drawing.Size(258, 48);
-            this.btnLivroCad.TabIndex = 6;
+            this.btnLivroCad.TabIndex = 4;
             this.btnLivroCad.TabStop = false;
             this.btnLivroCad.Text = "  Cadastrar livro";
             this.btnLivroCad.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -505,7 +505,7 @@ namespace SUB.Forms.Inicio
             this.btnEmprestimoRap.Name = "btnEmprestimoRap";
             this.btnEmprestimoRap.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnEmprestimoRap.Size = new System.Drawing.Size(258, 48);
-            this.btnEmprestimoRap.TabIndex = 5;
+            this.btnEmprestimoRap.TabIndex = 3;
             this.btnEmprestimoRap.TabStop = false;
             this.btnEmprestimoRap.Text = "  Empréstimo rápido";
             this.btnEmprestimoRap.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -528,7 +528,7 @@ namespace SUB.Forms.Inicio
             this.btnLivro.Name = "btnLivro";
             this.btnLivro.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
             this.btnLivro.Size = new System.Drawing.Size(258, 56);
-            this.btnLivro.TabIndex = 3;
+            this.btnLivro.TabIndex = 0;
             this.btnLivro.TabStop = false;
             this.btnLivro.Text = "  Acervo";
             this.btnLivro.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -551,7 +551,7 @@ namespace SUB.Forms.Inicio
             this.btnEmprestimo.Name = "btnEmprestimo";
             this.btnEmprestimo.Padding = new System.Windows.Forms.Padding(20, 0, 10, 0);
             this.btnEmprestimo.Size = new System.Drawing.Size(258, 48);
-            this.btnEmprestimo.TabIndex = 4;
+            this.btnEmprestimo.TabIndex = 2;
             this.btnEmprestimo.TabStop = false;
             this.btnEmprestimo.Text = "  Registrar empréstimo";
             this.btnEmprestimo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -584,7 +584,7 @@ namespace SUB.Forms.Inicio
             this.btnConfiguracao.Name = "btnConfiguracao";
             this.btnConfiguracao.Padding = new System.Windows.Forms.Padding(16, 0, 10, 0);
             this.btnConfiguracao.Size = new System.Drawing.Size(258, 56);
-            this.btnConfiguracao.TabIndex = 4;
+            this.btnConfiguracao.TabIndex = 5;
             this.btnConfiguracao.TabStop = false;
             this.btnConfiguracao.Text = "  Configuração";
             this.btnConfiguracao.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

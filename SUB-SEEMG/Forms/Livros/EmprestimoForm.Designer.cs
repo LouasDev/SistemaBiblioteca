@@ -81,7 +81,7 @@
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 720;
+            this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // dtpDataDevolucao
@@ -108,8 +108,8 @@
             this.dtpDataDevolucao.PlaceholderText = "";
             this.dtpDataDevolucao.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpDataDevolucao.Size = new System.Drawing.Size(400, 40);
-            this.dtpDataDevolucao.TabIndex = 128;
-            this.dtpDataDevolucao.TabStop = false;
+            this.dtpDataDevolucao.TabIndex = 16;
+            this.dtpDataDevolucao.TabStop = true;
             this.dtpDataDevolucao.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // dtpDataEmprestimo
@@ -136,8 +136,8 @@
             this.dtpDataEmprestimo.PlaceholderText = "";
             this.dtpDataEmprestimo.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpDataEmprestimo.Size = new System.Drawing.Size(400, 40);
-            this.dtpDataEmprestimo.TabIndex = 127;
-            this.dtpDataEmprestimo.TabStop = false;
+            this.dtpDataEmprestimo.TabIndex = 15;
+            this.dtpDataEmprestimo.TabStop = true;
             this.dtpDataEmprestimo.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // lstSugestoesUsuario
@@ -152,7 +152,8 @@
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
             this.lstSugestoesUsuario.Size = new System.Drawing.Size(840, 127);
-            this.lstSugestoesUsuario.TabIndex = 98;
+            this.lstSugestoesUsuario.TabStop = false;
+            this.lstSugestoesUsuario.TabIndex = 5;
             this.lstSugestoesUsuario.Visible = false;
             this.lstSugestoesUsuario.Click += new System.EventHandler(this.lstSugestoesUsuario_Click);
             this.lstSugestoesUsuario.SelectedIndexChanged += new System.EventHandler(this.lstSugestoesUsuario_SelectedIndexChanged);
@@ -170,7 +171,8 @@
             this.lstLivros.Name = "lstLivros";
             this.lstLivros.ScrollAlwaysVisible = true;
             this.lstLivros.Size = new System.Drawing.Size(520, 127);
-            this.lstLivros.TabIndex = 102;
+            this.lstLivros.TabStop = false;
+            this.lstLivros.TabIndex = 10;
             this.lstLivros.Visible = false;
             this.lstLivros.Click += new System.EventHandler(this.lstLivros_Click);
             this.lstLivros.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstLivros_KeyDown);
@@ -194,7 +196,7 @@
             this.cbBibliotecaria.PlaceholderMargin = 10;
             this.cbBibliotecaria.PlaceholderText = "Selecione a bibliotecária...";
             this.cbBibliotecaria.Size = new System.Drawing.Size(840, 34);
-            this.cbBibliotecaria.TabIndex = 103;
+            this.cbBibliotecaria.TabIndex = 12;
             this.cbBibliotecaria.SelectedIndexChanged += new System.EventHandler(this.cbBibliotecaria_SelectedIndexChanged);
             // 
             // txtBarcode
@@ -224,7 +226,7 @@
             this.txtBarcode.SelectionLength = 0;
             this.txtBarcode.SelectionStart = 0;
             this.txtBarcode.Size = new System.Drawing.Size(300, 40);
-            this.txtBarcode.TabIndex = 101;
+            this.txtBarcode.TabIndex = 9;
             this.txtBarcode.TextColor = System.Drawing.Color.Black;
             this.txtBarcode.UseSystemPasswordChar = false;
             this.txtBarcode.Load += new System.EventHandler(this.txtBarcode_Load);
@@ -240,7 +242,7 @@
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(162, 25);
-            this.label7.TabIndex = 100;
+            this.label7.TabIndex = 7;
             this.label7.Text = "Código de barras:";
             // 
             // chkDevolucaoPersonalizada
@@ -254,7 +256,7 @@
             this.chkDevolucaoPersonalizada.Margin = new System.Windows.Forms.Padding(4);
             this.chkDevolucaoPersonalizada.Name = "chkDevolucaoPersonalizada";
             this.chkDevolucaoPersonalizada.Size = new System.Drawing.Size(162, 24);
-            this.chkDevolucaoPersonalizada.TabIndex = 99;
+            this.chkDevolucaoPersonalizada.TabIndex = 17;
             this.chkDevolucaoPersonalizada.Text = "Estender devolução";
             this.chkDevolucaoPersonalizada.UseVisualStyleBackColor = false;
             this.chkDevolucaoPersonalizada.CheckedChanged += new System.EventHandler(this.chkDevolucaoPersonalizada_CheckedChanged);
@@ -285,7 +287,7 @@
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
             this.txtLivro.Size = new System.Drawing.Size(520, 40);
-            this.txtLivro.TabIndex = 95;
+            this.txtLivro.TabIndex = 8;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
             this.txtLivro.Load += new System.EventHandler(this.txtLivro_Load);
@@ -317,7 +319,7 @@
             this.txtNomeUsuario.SelectionLength = 0;
             this.txtNomeUsuario.SelectionStart = 0;
             this.txtNomeUsuario.Size = new System.Drawing.Size(840, 40);
-            this.txtNomeUsuario.TabIndex = 1;
+            this.txtNomeUsuario.TabIndex = 4;
             this.txtNomeUsuario.TextColor = System.Drawing.Color.Black;
             this.txtNomeUsuario.UseSystemPasswordChar = false;
             this.txtNomeUsuario.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNomeUsuario_KeyDown);
@@ -335,7 +337,7 @@
             this.btnEmprestar.Margin = new System.Windows.Forms.Padding(4);
             this.btnEmprestar.Name = "btnEmprestar";
             this.btnEmprestar.Size = new System.Drawing.Size(180, 48);
-            this.btnEmprestar.TabIndex = 91;
+            this.btnEmprestar.TabIndex = 18;
             this.btnEmprestar.Text = "Registrar empréstimo";
             this.btnEmprestar.UseVisualStyleBackColor = false;
             this.btnEmprestar.Click += new System.EventHandler(this.btnEmprestar_Click);
@@ -350,7 +352,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(229, 25);
-            this.label6.TabIndex = 21;
+            this.label6.TabIndex = 11;
             this.label6.Text = "Bibliotecária responsável:";
             // 
             // label5
@@ -363,7 +365,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(181, 25);
-            this.label5.TabIndex = 20;
+            this.label5.TabIndex = 14;
             this.label5.Text = "Devolução prevista:";
             // 
             // label4
@@ -376,7 +378,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(193, 25);
-            this.label4.TabIndex = 19;
+            this.label4.TabIndex = 13;
             this.label4.Text = "Data do empréstimo:";
             // 
             // label3
@@ -389,7 +391,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(59, 25);
-            this.label3.TabIndex = 18;
+            this.label3.TabIndex = 6;
             this.label3.Text = "Livro:";
             // 
             // label2
@@ -402,7 +404,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(159, 25);
-            this.label2.TabIndex = 17;
+            this.label2.TabIndex = 3;
             this.label2.Text = "Nome da pessoa:";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
@@ -412,7 +414,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 105;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -422,7 +424,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(353, 17);
-            this.lblSubtitulo.TabIndex = 104;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Registre o empréstimo e acompanhe a devolução prevista.";
             // 
             // label1
@@ -434,7 +436,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(273, 38);
-            this.label1.TabIndex = 16;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Empréstimo de livro";
             // 
             // EmprestimoForm

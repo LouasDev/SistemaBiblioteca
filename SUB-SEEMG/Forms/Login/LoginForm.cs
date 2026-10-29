@@ -1,25 +1,21 @@
-﻿using SUB.Forms.Utils;
-using SUB.Models;
-using SUB.Utils;
-using SeuProjeto;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlServerCe;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SUB.Forms.Utils;
+using SUB.Models;
+using SUB.Utils;
 
 namespace SUB.Forms.Login
 {
     public partial class LoginForm : Form
     {
-        #region Propriedades
+#region Propriedades
         // Variável para controle externo de login
         public static bool cancelar = false;
-
         // Indica se o login atual foi realizado por uma bibliotecária
         public static bool UsuarioBibliotecaria { get; set; } = false;
 
@@ -30,20 +26,16 @@ namespace SUB.Forms.Login
         private Color _corBordaPadrao = Color.FromArgb(174, 188, 204);
         private Color _corErro = Color.FromArgb(184, 50, 50);
         private Color _corFocoCampo = ThemeManager.DefaultColor;
-        #endregion
-
-        #region Construtor
+#endregion
+#region Construtor
         public LoginForm()
         {
             InitializeComponent();
-
             //aredondar cantos e desenhar borda cinza
-
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(188, 199, 212), meuRaio, 1);
             this.AcceptButton = BtnEntrar;
-
             txtEmail.TextChanged += (s, e) => LimparErroCampo(txtEmail, lblErroEmail);
             txtSenha.TextChanged += (s, e) => LimparErroCampo(txtSenha, lblErroSenha);
         }
@@ -52,10 +44,7 @@ namespace SUB.Forms.Login
         private void LoginForm_Load(object sender, EventArgs e)
         {
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
-            lblNomeEscola.Text = configuracao == null || string.IsNullOrWhiteSpace(configuracao.Nome)
-                ? "Biblioteca da instituição"
-                : configuracao.Nome.Trim();
-
+            lblNomeEscola.Text = configuracao == null || string.IsNullOrWhiteSpace(configuracao.Nome) ? "Biblioteca da instituição" : configuracao.Nome.Trim();
             Color corPrimaria = ThemeManager.DefaultColor;
             if (configuracao != null)
             {
@@ -110,7 +99,6 @@ namespace SUB.Forms.Login
             _corBordaPadrao = escuro ? ThemeManager.Dark.Borda : Color.FromArgb(174, 188, 204);
             _corErro = escuro ? ThemeManager.CorTextoParaEscuro(Color.FromArgb(184, 50, 50)) : Color.FromArgb(184, 50, 50);
             _corFocoCampo = escuro ? ThemeManager.Lighten(_corPrimariaAtual, 0.35f) : _corPrimariaAtual;
-
             BackColor = superficie;
             pnInicial.BackColor = superficie;
             panel1.BackColor = _corPrimariaAtual;
@@ -119,13 +107,17 @@ namespace SUB.Forms.Login
             gradientPanel2.Gradientebottom = gradientPanel2.BackColor;
             pnlLogo.BackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.88f);
             linhaMarca.BackColor = ThemeManager.Lighten(_corPrimariaAtual, 0.48f);
-
             lblAcessoInstitucional.ForeColor = _corPrimariaAtual;
             lblEsqueceuSenha.LinkColor = _corPrimariaAtual;
             lblEsqueceuSenha.ActiveLinkColor = ThemeManager.Darken(_corPrimariaAtual, 0.18f);
             lblEsqueceuSenha.VisitedLinkColor = _corPrimariaAtual;
+            foreach (RoundedTextBox campo in new[]
+            {
+                txtEmail,
+                txtSenha
+            }
 
-            foreach (RoundedTextBox campo in new[] { txtEmail, txtSenha })
+            )
             {
                 campo.BackColor = escuro ? ThemeManager.Dark.Entrada : Color.White;
                 campo.TextColor = escuro ? ThemeManager.Dark.Texto : Color.FromArgb(29, 39, 53);
@@ -156,7 +148,6 @@ namespace SUB.Forms.Login
             BtnEntrar.BorderColor = _corPrimariaAtual;
             BtnEntrar.Invalidate();
             SubLogoManager.SetImage(picLogoLogin, SubLogoVariant.Square, _corPrimariaAtual, pnlLogo.BackColor);
-
             // O painel da marca já é escuro (cor da instituição); muda só o lado do formulário.
             if (escuro)
             {
@@ -164,10 +155,9 @@ namespace SUB.Forms.Login
                 this.AlterarCorDaBorda(ThemeManager.Dark.Borda);
             }
         }
-        #endregion
 
-        #region Métodos de Login
-
+#endregion
+#region Métodos de Login
         private void BtnEntrar_MouseLeave(object sender, EventArgs e)
         {
             Color cor = ThemeManager.Normalize(BtnEntrar.BaseColor);
@@ -180,15 +170,14 @@ namespace SUB.Forms.Login
             BtnEntrar.BackColor = ThemeManager.Lighten(ThemeManager.Normalize(BtnEntrar.BaseColor), 0.12f);
             BtnEntrar.Refresh();
         }
-        #endregion
 
-        #region Métodos de Atualização
+#endregion
+#region Métodos de Atualização
         private async Task AtualizarStatusEmprestimosAsync()
         {
             using (var progressForm = new frmProgresso())
             {
                 progressForm.Show();
-
                 await Task.Run(() =>
                 {
                     AtualizarEmprestimos(progressForm);
@@ -203,23 +192,17 @@ namespace SUB.Forms.Login
                 using (var connection = Conexao.ObterConexao())
                 {
                     connection.Open();
-
                     string selectQuery = @"
                     SELECT Id, DataDevolucao, DataProrrogacao, DataRealDevolucao
                     FROM Emprestimo
                     WHERE Status <> 'Devolvido'";
-
                     using (var selectCommand = new SqlCeCommand(selectQuery, connection))
                     using (var reader = selectCommand.ExecuteReader())
                     {
                         var emprestimos = new List<Tuple<int, DateTime, DateTime?, DateTime?>>();
                         while (reader.Read())
                         {
-                            emprestimos.Add(Tuple.Create(
-                                reader.GetInt32(0),
-                                reader.GetDateTime(1),
-                                reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
-                                reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3)));
+                            emprestimos.Add(Tuple.Create(reader.GetInt32(0), reader.GetDateTime(1), reader.IsDBNull(2) ? (DateTime? )null : reader.GetDateTime(2), reader.IsDBNull(3) ? (DateTime? )null : reader.GetDateTime(3)));
                         }
 
                         if (emprestimos.Count == 0)
@@ -232,9 +215,7 @@ namespace SUB.Forms.Login
                         {
                             var emprestimo = emprestimos[i];
                             string novoStatus = CalcularStatus(emprestimo.Item2, emprestimo.Item3, emprestimo.Item4);
-
-                            using (var updateCommand = new SqlCeCommand(
-                                "UPDATE Emprestimo SET Status = @Status WHERE Id = @Id", connection))
+                            using (var updateCommand = new SqlCeCommand("UPDATE Emprestimo SET Status = @Status WHERE Id = @Id", connection))
                             {
                                 updateCommand.Parameters.AddWithValue("@Status", novoStatus);
                                 updateCommand.Parameters.AddWithValue("@Id", emprestimo.Item1);
@@ -242,23 +223,20 @@ namespace SUB.Forms.Login
                             }
 
                             int progresso = (int)((double)(i + 1) / emprestimos.Count * 100);
-                            progressForm.AtualizarProgresso(progresso,
-                                $"Atualizando empréstimo {i + 1} de {emprestimos.Count}.");
+                            progressForm.AtualizarProgresso(progresso, $"Atualizando empréstimo {i + 1} de {emprestimos.Count}.");
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao atualizar empréstimos: {ex.Message}", "Erro",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao atualizar empréstimos: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private string CalcularStatus(DateTime dataDevolucao, DateTime? dataProrrogacao, DateTime? dataRealDevolucao)
         {
             DateTime dataReferencia = dataProrrogacao ?? dataDevolucao;
-
             if (dataRealDevolucao.HasValue)
             {
                 return "Devolvido";
@@ -272,9 +250,9 @@ namespace SUB.Forms.Login
                 return "Ativo";
             }
         }
-        #endregion
 
-        #region Eventos de Teclado
+#endregion
+#region Eventos de Teclado
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Enter && txtEmail.ContainsFocus)
@@ -291,8 +269,8 @@ namespace SUB.Forms.Login
 
             return base.ProcessCmdKey(ref msg, keyData);
         }
-        #endregion
 
+#endregion
         private void lblEsqueceuSenha_Click(object sender, EventArgs e)
         {
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
@@ -305,10 +283,8 @@ namespace SUB.Forms.Login
             int idBibliotecaria;
             if (!ConfirmarEmailRecuperacao(out idBibliotecaria))
                 return;
-
             if (!ConfirmarCodigoRecuperacao(configuracao))
                 return;
-
             if (DefinirNovaSenha(idBibliotecaria))
                 MostrarStatusLogin("Senha atualizada. Você já pode entrar com a nova senha.", true);
         }
@@ -318,7 +294,6 @@ namespace SUB.Forms.Login
             idBibliotecaria = 0;
             bool confirmado = false;
             int idConfirmado = 0;
-
             using (var dialogo = CriarDialogoRecuperacao("Recuperar acesso", new Size(440, 260)))
             using (var email = new TextBox
             {
@@ -326,41 +301,25 @@ namespace SUB.Forms.Login
                 Font = new Font("Segoe UI", 10.5F),
                 Location = new Point(30, 116),
                 Size = new Size(380, 34)
-            })
+            }
+
+            )
             using (var erro = CriarLabelErro(new Point(30, 158), new Size(380, 38)))
             using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 208), new Size(96, 36)))
             using (var continuar = CriarBotaoPrimario("Continuar", new Point(306, 208), new Size(104, 36)))
             {
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(23, 36, 52),
-                    Location = new Point(27, 20),
-                    Text = "Recuperar acesso"
-                });
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 9.5F),
-                    ForeColor = Color.FromArgb(91, 104, 120),
-                    Location = new Point(30, 60),
-                    Text = "Informe o e-mail usado para entrar no SUB."
-                });
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(43, 55, 69),
-                    Location = new Point(30, 94),
-                    Text = "E-mail de acesso"
-                });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 17F, FontStyle.Bold), ForeColor = Color.FromArgb(23, 36, 52), Location = new Point(27, 20), Text = "Recuperar acesso" });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 9.5F), ForeColor = Color.FromArgb(91, 104, 120), Location = new Point(30, 60), Text = "Informe o e-mail usado para entrar no SUB." });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold), ForeColor = Color.FromArgb(43, 55, 69), Location = new Point(30, 94), Text = "E-mail de acesso" });
                 dialogo.Controls.Add(email);
                 dialogo.Controls.Add(erro);
                 dialogo.Controls.Add(cancelar);
                 dialogo.Controls.Add(continuar);
-
-                email.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                email.TextChanged += (s, e) =>
+                {
+                    erro.Text = string.Empty;
+                    erro.Visible = false;
+                };
                 cancelar.Click += (s, e) => dialogo.Close();
                 continuar.Click += (s, e) =>
                 {
@@ -376,8 +335,7 @@ namespace SUB.Forms.Login
                     try
                     {
                         using (var conexao = Conexao.ObterConexao())
-                        using (var comando = new SqlCeCommand(
-                            "SELECT TOP (1) Id FROM usuarios WHERE Email = @Email AND TipoUsuario = 'Bibliotecário(a)'", conexao))
+                        using (var comando = new SqlCeCommand("SELECT TOP (1) Id FROM usuarios WHERE Email = @Email AND TipoUsuario = 'Bibliotecário(a)'", conexao))
                         {
                             comando.Parameters.AddWithValue("@Email", emailInformado);
                             conexao.Open();
@@ -403,7 +361,6 @@ namespace SUB.Forms.Login
                         erro.Visible = true;
                     }
                 };
-
                 dialogo.AcceptButton = continuar;
                 dialogo.CancelButton = cancelar;
                 dialogo.Shown += (s, e) => email.Focus();
@@ -417,7 +374,6 @@ namespace SUB.Forms.Login
         private bool ConfirmarCodigoRecuperacao(InstituicaoConfiguracao configuracao)
         {
             bool confirmado = false;
-
             using (var dialogo = CriarDialogoRecuperacao("Recuperar acesso", new Size(440, 250)))
             using (var codigo = new TextBox
             {
@@ -426,42 +382,35 @@ namespace SUB.Forms.Login
                 Location = new Point(30, 91),
                 Size = new Size(380, 34),
                 UseSystemPasswordChar = true
-            })
+            }
+
+            )
             using (var mostrar = new CheckBox
             {
                 AutoSize = true,
                 Font = new Font("Segoe UI", 9F),
                 Location = new Point(30, 133),
                 Text = "Mostrar código"
-            })
+            }
+
+            )
             using (var erro = CriarLabelErro(new Point(30, 158), new Size(380, 34)))
             using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 202), new Size(96, 36)))
             using (var validar = CriarBotaoPrimario("Validar código", new Point(306, 202), new Size(104, 36)))
             {
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(23, 36, 52),
-                    Location = new Point(27, 20),
-                    Text = "Recuperar acesso"
-                });
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 9.5F),
-                    ForeColor = Color.FromArgb(91, 104, 120),
-                    Location = new Point(30, 60),
-                    Text = "Informe o código de recuperação salvo na configuração inicial."
-                });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 17F, FontStyle.Bold), ForeColor = Color.FromArgb(23, 36, 52), Location = new Point(27, 20), Text = "Recuperar acesso" });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 9.5F), ForeColor = Color.FromArgb(91, 104, 120), Location = new Point(30, 60), Text = "Informe o código de recuperação salvo na configuração inicial." });
                 dialogo.Controls.Add(codigo);
                 dialogo.Controls.Add(mostrar);
                 dialogo.Controls.Add(erro);
                 dialogo.Controls.Add(cancelar);
                 dialogo.Controls.Add(validar);
-
                 mostrar.CheckedChanged += (s, e) => codigo.UseSystemPasswordChar = !mostrar.Checked;
-                codigo.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                codigo.TextChanged += (s, e) =>
+                {
+                    erro.Text = string.Empty;
+                    erro.Visible = false;
+                };
                 cancelar.Click += (s, e) => dialogo.Close();
                 validar.Click += (s, e) =>
                 {
@@ -486,7 +435,6 @@ namespace SUB.Forms.Login
                     dialogo.DialogResult = DialogResult.OK;
                     dialogo.Close();
                 };
-
                 dialogo.AcceptButton = validar;
                 dialogo.CancelButton = cancelar;
                 dialogo.Shown += (s, e) => codigo.Focus();
@@ -499,7 +447,6 @@ namespace SUB.Forms.Login
         private bool DefinirNovaSenha(int idBibliotecaria)
         {
             bool atualizada = false;
-
             using (var dialogo = CriarDialogoRecuperacao("Nova senha da bibliotecária", new Size(440, 360)))
             using (var senha = new TextBox
             {
@@ -509,7 +456,9 @@ namespace SUB.Forms.Login
                 MaxLength = 25,
                 Size = new Size(380, 34),
                 UseSystemPasswordChar = true
-            })
+            }
+
+            )
             using (var confirmar = new TextBox
             {
                 AutoSize = false,
@@ -518,65 +467,48 @@ namespace SUB.Forms.Login
                 MaxLength = 25,
                 Size = new Size(380, 34),
                 UseSystemPasswordChar = true
-            })
+            }
+
+            )
             using (var mostrar = new CheckBox
             {
                 AutoSize = true,
                 Font = new Font("Segoe UI", 9F),
                 Location = new Point(30, 230),
                 Text = "Mostrar senhas"
-            })
+            }
+
+            )
             using (var erro = CriarLabelErro(new Point(30, 255), new Size(380, 40)))
             using (var cancelar = CriarBotaoSecundario("Cancelar", new Point(202, 307), new Size(96, 38)))
             using (var salvar = CriarBotaoPrimario("Salvar senha", new Point(306, 307), new Size(104, 38)))
             {
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 17F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(23, 36, 52),
-                    Location = new Point(27, 20),
-                    Text = "Crie uma nova senha"
-                });
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI", 9.5F),
-                    ForeColor = Color.FromArgb(91, 104, 120),
-                    Location = new Point(30, 60),
-                    Text = "Use entre 6 e 25 caracteres."
-                });
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(43, 55, 69),
-                    Location = new Point(30, 94),
-                    Text = "Nova senha"
-                });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 17F, FontStyle.Bold), ForeColor = Color.FromArgb(23, 36, 52), Location = new Point(27, 20), Text = "Crie uma nova senha" });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI", 9.5F), ForeColor = Color.FromArgb(91, 104, 120), Location = new Point(30, 60), Text = "Use entre 6 e 25 caracteres." });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold), ForeColor = Color.FromArgb(43, 55, 69), Location = new Point(30, 94), Text = "Nova senha" });
                 dialogo.Controls.Add(senha);
-                dialogo.Controls.Add(new Label
-                {
-                    AutoSize = true,
-                    Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(43, 55, 69),
-                    Location = new Point(30, 164),
-                    Text = "Confirmar senha"
-                });
+                dialogo.Controls.Add(new Label { AutoSize = true, Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold), ForeColor = Color.FromArgb(43, 55, 69), Location = new Point(30, 164), Text = "Confirmar senha" });
                 dialogo.Controls.Add(confirmar);
                 dialogo.Controls.Add(mostrar);
                 dialogo.Controls.Add(erro);
                 dialogo.Controls.Add(cancelar);
                 dialogo.Controls.Add(salvar);
-
                 mostrar.CheckedChanged += (s, e) =>
                 {
                     bool ocultar = !mostrar.Checked;
                     senha.UseSystemPasswordChar = ocultar;
                     confirmar.UseSystemPasswordChar = ocultar;
                 };
-                senha.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
-                confirmar.TextChanged += (s, e) => { erro.Text = string.Empty; erro.Visible = false; };
+                senha.TextChanged += (s, e) =>
+                {
+                    erro.Text = string.Empty;
+                    erro.Visible = false;
+                };
+                confirmar.TextChanged += (s, e) =>
+                {
+                    erro.Text = string.Empty;
+                    erro.Visible = false;
+                };
                 senha.KeyDown += (s, e) =>
                 {
                     if (e.KeyCode == Keys.Enter)
@@ -608,7 +540,6 @@ namespace SUB.Forms.Login
 
                     salvar.Enabled = false;
                     salvar.Text = "Salvando...";
-
                     CriptografiaSenha.CriarHash(senha.Text, out string hash, out string salt);
                     try
                     {
@@ -640,7 +571,6 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                         salvar.Text = "Salvar senha";
                     }
                 };
-
                 dialogo.AcceptButton = salvar;
                 dialogo.CancelButton = cancelar;
                 dialogo.Shown += (s, e) => senha.Focus();
@@ -710,6 +640,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                 botao.FlatAppearance.BorderColor = ThemeManager.Dark.Borda;
                 botao.FlatAppearance.MouseOverBackColor = ThemeManager.Dark.EntradaHover;
             }
+
             return botao;
         }
 
@@ -729,7 +660,6 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
         private void lblVersion_Click(object sender, EventArgs e)
         {
             Hide();
-
             try
             {
                 using (AboutForm popup = new AboutForm())
@@ -781,9 +711,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
         {
             bool valido = true;
             string email = txtEmail.Text.Trim();
-
             LimparStatusLogin();
-
             if (string.IsNullOrWhiteSpace(email))
             {
                 MostrarErroCampo(txtEmail, lblErroEmail, "Informe seu e-mail.");
@@ -844,6 +772,7 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                 lblStatusLogin.BackColor = sucesso ? Color.FromArgb(237, 247, 241) : Color.FromArgb(253, 240, 240);
                 lblStatusLogin.ForeColor = sucesso ? Color.FromArgb(31, 122, 73) : Color.FromArgb(143, 38, 38);
             }
+
             lblStatusLogin.Visible = true;
         }
 
@@ -868,14 +797,11 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
         {
             if (_isAuthenticating || !ValidarCamposLogin())
                 return;
-
             DefinirEstadoAutenticacao(true);
-
             try
             {
                 string email = txtEmail.Text.Trim().ToLowerInvariant();
                 string senha = txtSenha.Text;
-
                 try
                 {
                     using (SqlCeConnection conexao = Conexao.ObterConexao())
@@ -883,11 +809,9 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                         conexao.Open();
                         string query = @"SELECT Id, Nome, Senha_hash, Senha_salt FROM usuarios
                     WHERE Email = @email AND TipoUsuario = 'Bibliotecário(a)' AND (Ativo IS NULL OR Ativo = 1)";
-
                         using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                         {
                             comando.Parameters.AddWithValue("@email", email);
-
                             using (SqlCeDataReader reader = comando.ExecuteReader())
                             {
                                 if (reader.Read())
@@ -895,19 +819,15 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                                     string hashSalvo = reader["Senha_hash"].ToString();
                                     string saltSalvo = reader["Senha_salt"].ToString();
                                     string nomeBibliotecario = reader["Nome"].ToString();
-
                                     bool senhaCorreta = CriptografiaSenha.VerificarSenha(senha, hashSalvo, saltSalvo);
-
                                     if (senhaCorreta)
                                     {
                                         Sessao.UsuarioId = Convert.ToInt32(reader["Id"]);
-                                          Sessao.NomeUsuario = nomeBibliotecario;
-                                         Sessao.Perfil = "Bibliotecário(a)";
+                                        Sessao.NomeUsuario = nomeBibliotecario;
+                                        Sessao.Perfil = "Bibliotecário(a)";
                                         Sessao.NomeBibliotecariaLogada = nomeBibliotecario;
                                         LoginForm.UsuarioBibliotecaria = true;
-
                                         await AtualizarStatusEmprestimosAsync();
-
                                         cancelar = true;
                                         this.DialogResult = DialogResult.OK;
                                         this.Close();
@@ -947,9 +867,6 @@ WHERE Id = @Id AND TipoUsuario = 'Bibliotecário(a)'";
                     DefinirEstadoAutenticacao(false);
             }
         }
-
-
-
 
         private void BtnTeste_Click(object sender, EventArgs e)
         {

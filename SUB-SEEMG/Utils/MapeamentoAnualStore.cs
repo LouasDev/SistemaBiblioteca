@@ -1,10 +1,10 @@
-using SUB.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlServerCe;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using SUB.Models;
 
 namespace SUB.Utils
 {
@@ -15,11 +15,9 @@ namespace SUB.Utils
         public const string RequerRevisao = "RequerRevisao";
         public const string Concluido = "Concluido";
         public const int VersaoRegraAtual = 2;
-
         public EstadoMapeamentoAnual ObterEstadoDoAno(int ano)
         {
             MigrarLegadoSeNecessario();
-
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
@@ -34,8 +32,11 @@ namespace SUB.Utils
                 }
 
                 if (ano <= anoBase)
-                    return new EstadoMapeamentoAnual { Ano = ano, DeveLembrar = false };
-
+                    return new EstadoMapeamentoAnual
+                    {
+                        Ano = ano,
+                        DeveLembrar = false
+                    };
                 if (estado == null)
                 {
                     InserirEstado(conexao, null, ano, Pendente, null);
@@ -49,10 +50,7 @@ namespace SUB.Utils
 
         public void Aplicar(int ano, IEnumerable<MapeamentoRegistro> registros, string bibliotecaria)
         {
-            List<MapeamentoRegistro> alteracoes = (registros ?? Enumerable.Empty<MapeamentoRegistro>())
-                .Where(r => !string.Equals(r.TurmaAtual, r.NovaTurma, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
+            List<MapeamentoRegistro> alteracoes = (registros ?? Enumerable.Empty<MapeamentoRegistro>()).Where(r => !string.Equals(r.TurmaAtual, r.NovaTurma, StringComparison.OrdinalIgnoreCase)).ToList();
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
@@ -61,11 +59,9 @@ namespace SUB.Utils
                     EstadoMapeamentoAnual existente = LerEstado(conexao, ano, transacao);
                     if (existente != null && string.Equals(existente.Status, Concluido, StringComparison.OrdinalIgnoreCase))
                         throw new InvalidOperationException("O mapeamento deste ano já foi concluído e não pode ser aplicado novamente.");
-
                     foreach (MapeamentoRegistro registro in alteracoes)
                     {
-                        using (var atualizar = new SqlCeCommand(
-                            "UPDATE usuarios SET Turma = @turma WHERE Id = @id", conexao, transacao))
+                        using (var atualizar = new SqlCeCommand("UPDATE usuarios SET Turma = @turma WHERE Id = @id", conexao, transacao))
                         {
                             atualizar.Parameters.AddWithValue("@turma", registro.NovaTurma ?? string.Empty);
                             atualizar.Parameters.AddWithValue("@id", registro.UsuarioId);
@@ -104,22 +100,25 @@ namespace SUB.Utils
         {
             if (!Directory.Exists(AppPaths.MappingFolder))
                 return;
-
             foreach (string caminho in Directory.GetFiles(AppPaths.MappingFolder, "mapeamento_*.txt"))
             {
                 int ano;
                 if (!TentarExtrairAno(caminho, out ano))
                     continue;
-
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
                     if (LerEstado(conexao, ano) != null)
                         continue;
-
                     string status;
-                    try { status = File.ReadLines(caminho).FirstOrDefault(l => l.StartsWith("STATUS=", StringComparison.OrdinalIgnoreCase)); }
-                    catch { status = null; }
+                    try
+                    {
+                        status = File.ReadLines(caminho).FirstOrDefault(l => l.StartsWith("STATUS=", StringComparison.OrdinalIgnoreCase));
+                    }
+                    catch
+                    {
+                        status = null;
+                    }
 
                     if (string.Equals(status, "STATUS=concluido", StringComparison.OrdinalIgnoreCase))
                     {
@@ -165,13 +164,13 @@ namespace SUB.Utils
             string marcador = Path.Combine(AppPaths.MappingFolder, "app_instalado_em.txt");
             if (File.Exists(marcador) && int.TryParse(File.ReadAllText(marcador).Trim(), out int legado) && legado >= 2000 && legado <= 2100)
                 anoBase = legado;
-
             using (var inserir = new SqlCeCommand("INSERT INTO MapeamentoAnualControle (Id, AnoBase, CriadoEm) VALUES (1, @ano, @agora)", conexao))
             {
                 inserir.Parameters.AddWithValue("@ano", anoBase);
                 inserir.Parameters.AddWithValue("@agora", DateTime.Now);
                 inserir.ExecuteNonQuery();
             }
+
             return anoBase;
         }
 
@@ -182,13 +181,14 @@ namespace SUB.Utils
                 comando.Parameters.AddWithValue("@ano", ano);
                 using (var leitor = comando.ExecuteReader())
                 {
-                    if (!leitor.Read()) return null;
+                    if (!leitor.Read())
+                        return null;
                     return new EstadoMapeamentoAnual
                     {
                         Ano = leitor.GetInt32(0),
                         Status = leitor.GetString(1),
                         CriadoEm = leitor.GetDateTime(2),
-                        ConcluidoEm = leitor.IsDBNull(3) ? (DateTime?)null : leitor.GetDateTime(3)
+                        ConcluidoEm = leitor.IsDBNull(3) ? (DateTime? )null : leitor.GetDateTime(3)
                     };
                 }
             }
@@ -221,8 +221,10 @@ namespace SUB.Utils
                 atualizar.Parameters.AddWithValue("@concluido", concluidoEm);
                 atualizar.Parameters.AddWithValue("@bibliotecaria", (object)bibliotecaria ?? DBNull.Value);
                 atualizar.Parameters.AddWithValue("@versao", VersaoRegraAtual);
-                if (atualizar.ExecuteNonQuery() > 0) return;
+                if (atualizar.ExecuteNonQuery() > 0)
+                    return;
             }
+
             InserirEstado(conexao, transacao, ano, status, bibliotecaria);
         }
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using SUB.Utils;
 
 namespace SUB.Utils.Etiquetas
 {
@@ -22,7 +21,6 @@ namespace SUB.Utils.Etiquetas
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
-
             string tituloSafe = string.IsNullOrWhiteSpace(tituloLivro) ? "o livro" : $"\"{tituloLivro}\"";
             lblMensagem.Text = $"Como deseja gerar as etiquetas para {tituloSafe}?";
             SetQuantity(1);
@@ -54,8 +52,10 @@ namespace SUB.Utils.Etiquetas
 
         private void SetQuantity(int value)
         {
-            if (value < 1) value = 1;
-            if (value > MaxQuantity) value = MaxQuantity;
+            if (value < 1)
+                value = 1;
+            if (value > MaxQuantity)
+                value = MaxQuantity;
             Quantity = value;
             numQuantidade.Text = Quantity.ToString();
         }
@@ -114,7 +114,6 @@ namespace SUB.Utils.Etiquetas
         {
             if (e.KeyCode != Keys.Escape)
                 return;
-
             Choice = LabelActionChoice.None;
             DialogResult = DialogResult.Cancel;
             Close();

@@ -82,7 +82,7 @@
             this.btnSair.Margin = new System.Windows.Forms.Padding(5);
             this.btnSair.Name = "btnSair";
             this.btnSair.Size = new System.Drawing.Size(150, 48);
-            this.btnSair.TabIndex = 101;
+            this.btnSair.TabIndex = 10;
             this.btnSair.Text = "Fechar ficha";
             this.btnSair.UseVisualStyleBackColor = false;
             this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
@@ -100,7 +100,7 @@
             this.panel2.Location = new System.Drawing.Point(280, 346);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(720, 94);
-            this.panel2.TabIndex = 137;
+            this.panel2.TabIndex = 9;
             // 
             // dtpDataNasc
             // 
@@ -126,8 +126,8 @@
             this.dtpDataNasc.PlaceholderText = "";
             this.dtpDataNasc.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpDataNasc.Size = new System.Drawing.Size(210, 40);
-            this.dtpDataNasc.TabIndex = 129;
-            this.dtpDataNasc.TabStop = false;
+            this.dtpDataNasc.TabIndex = 5;
+            this.dtpDataNasc.TabStop = true;
             this.dtpDataNasc.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // mtxCPF
@@ -151,7 +151,7 @@
             this.mtxCPF.Name = "mtxCPF";
             this.mtxCPF.Padding = new System.Windows.Forms.Padding(18, 6, 6, 6);
             this.mtxCPF.Size = new System.Drawing.Size(210, 40);
-            this.mtxCPF.TabIndex = 6;
+            this.mtxCPF.TabIndex = 4;
             // 
             // mtxTelefone
             // 
@@ -174,7 +174,7 @@
             this.mtxTelefone.Name = "mtxTelefone";
             this.mtxTelefone.Padding = new System.Windows.Forms.Padding(15, 6, 6, 6);
             this.mtxTelefone.Size = new System.Drawing.Size(210, 40);
-            this.mtxTelefone.TabIndex = 5;
+            this.mtxTelefone.TabIndex = 3;
             // 
             // lblTelefone
             // 
@@ -186,7 +186,7 @@
             this.lblTelefone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTelefone.Name = "lblTelefone";
             this.lblTelefone.Size = new System.Drawing.Size(89, 25);
-            this.lblTelefone.TabIndex = 100;
+            this.lblTelefone.TabIndex = 0;
             this.lblTelefone.Text = "Telefone:";
             // 
             // lblCPF
@@ -199,7 +199,7 @@
             this.lblCPF.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(50, 25);
-            this.lblCPF.TabIndex = 97;
+            this.lblCPF.TabIndex = 1;
             this.lblCPF.Text = "CPF:";
             // 
             // lblDataNasc
@@ -212,7 +212,7 @@
             this.lblDataNasc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
-            this.lblDataNasc.TabIndex = 98;
+            this.lblDataNasc.TabIndex = 2;
             this.lblDataNasc.Text = "Data de nascimento:";
             // 
             // pnlLinhaCabecalho
@@ -221,7 +221,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 139;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -231,7 +231,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(317, 17);
-            this.lblSubtitulo.TabIndex = 138;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Consulte os dados cadastrais e de contato do aluno.";
             // 
             // txtTurma
@@ -261,7 +261,7 @@
             this.txtTurma.SelectionLength = 0;
             this.txtTurma.SelectionStart = 0;
             this.txtTurma.Size = new System.Drawing.Size(230, 40);
-            this.txtTurma.TabIndex = 135;
+            this.txtTurma.TabIndex = 8;
             this.txtTurma.TextColor = System.Drawing.Color.Black;
             this.txtTurma.UseSystemPasswordChar = false;
             // 
@@ -275,7 +275,7 @@
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(71, 25);
-            this.label4.TabIndex = 136;
+            this.label4.TabIndex = 6;
             this.label4.Text = "Turma:";
             // 
             // txtEmail
@@ -305,7 +305,7 @@
             this.txtEmail.SelectionLength = 0;
             this.txtEmail.SelectionStart = 0;
             this.txtEmail.Size = new System.Drawing.Size(470, 40);
-            this.txtEmail.TabIndex = 133;
+            this.txtEmail.TabIndex = 7;
             this.txtEmail.TextColor = System.Drawing.Color.Black;
             this.txtEmail.UseSystemPasswordChar = false;
             // 
@@ -319,7 +319,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 25);
-            this.label3.TabIndex = 134;
+            this.label3.TabIndex = 5;
             this.label3.Text = "E-mail:";
             // 
             // txtNomeAluno
@@ -349,7 +349,7 @@
             this.txtNomeAluno.SelectionLength = 0;
             this.txtNomeAluno.SelectionStart = 0;
             this.txtNomeAluno.Size = new System.Drawing.Size(720, 40);
-            this.txtNomeAluno.TabIndex = 131;
+            this.txtNomeAluno.TabIndex = 4;
             this.txtNomeAluno.TextColor = System.Drawing.Color.Black;
             this.txtNomeAluno.UseSystemPasswordChar = false;
             // 
@@ -363,7 +363,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(153, 25);
-            this.label1.TabIndex = 132;
+            this.label1.TabIndex = 3;
             this.label1.Text = "Nome do aluno:";
             // 
             // label2
@@ -375,7 +375,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(204, 38);
-            this.label2.TabIndex = 130;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Ficha do aluno";
             // 
             // FichaAlunoForm

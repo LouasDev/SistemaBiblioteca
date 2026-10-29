@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace SUB.Models
 {
@@ -27,4 +26,3 @@ namespace SUB.Models
         public DateTime AtualizadaEm { get; set; }
     }
 }
-

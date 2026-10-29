@@ -10,7 +10,6 @@ namespace SUB.Utils
         internal const string FiltroPainelRapido = @"(r.Status IS NULL OR r.Status <> 'Devolvido'
             OR r.Quantidade IS NULL OR r.Quantidade <> 0
             OR r.DataHoraDevolucaoReal IS NULL OR r.DataHoraDevolucaoReal >= @InicioSemana)";
-
         internal static DateTime InicioSemana(DateTime data)
         {
             return data.Date.AddDays(-(((int)data.DayOfWeek + 6) % 7));
@@ -27,8 +26,7 @@ namespace SUB.Utils
             return cmd;
         }
 
-        internal static void EmprestarNormal(SqlCeConnection c, int usuarioId, int livroId,
-            int responsavelId, DateTime prazo, DateTime agora, DateTime? dataEmprestimoInformada = null)
+        internal static void EmprestarNormal(SqlCeConnection c, int usuarioId, int livroId, int responsavelId, DateTime prazo, DateTime agora, DateTime? dataEmprestimoInformada = null)
         {
             if (!RegrasCirculacao.PrazoValido(dataEmprestimoInformada ?? agora, prazo))
                 throw new InvalidOperationException(RegrasCirculacao.ErroPrazo);
@@ -37,10 +35,8 @@ namespace SUB.Utils
                 string perfil = PerfilAtivo(c, tx, usuarioId);
                 if (PerfilAtivo(c, tx, responsavelId) != RegrasCirculacao.PerfilBibliotecario)
                     throw new InvalidOperationException("Selecione uma bibliotecária responsável válida.");
-                if (perfil == RegrasCirculacao.PerfilAluno && RegrasCirculacao.AlunoAtingiuLimite(perfil, Contar(c, tx,
-                    "SELECT COUNT(*) FROM Emprestimo WHERE Alocador = @Id AND Status = 'Ativo'", usuarioId)))
+                if (perfil == RegrasCirculacao.PerfilAluno && RegrasCirculacao.AlunoAtingiuLimite(perfil, Contar(c, tx, "SELECT COUNT(*) FROM Emprestimo WHERE Alocador = @Id AND Status = 'Ativo'", usuarioId)))
                     throw new InvalidOperationException("Este aluno já possui um empréstimo ativo.");
-
                 RetirarEstoque(c, tx, livroId, 1);
                 using (var cmd = new SqlCeCommand(@"INSERT INTO Emprestimo
                     (UsuarioId, LivroId, Alocador, Responsavel, DataEmprestimo, DataDevolucao, Status)
@@ -53,12 +49,12 @@ namespace SUB.Utils
                     cmd.Parameters.AddWithValue("@Prazo", prazo);
                     cmd.ExecuteNonQuery();
                 }
+
                 tx.Commit();
             }
         }
 
-        internal static void EmprestarRapido(SqlCeConnection c, string professor, string livro,
-            string turma, int quantidade, string bibliotecaria, DateTime agora)
+        internal static void EmprestarRapido(SqlCeConnection c, string professor, string livro, string turma, int quantidade, string bibliotecaria, DateTime agora)
         {
             if (!RegrasCirculacao.QuantidadeRetiradaValida(quantidade) || string.IsNullOrWhiteSpace(turma) || string.IsNullOrWhiteSpace(bibliotecaria))
                 throw new InvalidOperationException("Preencha os campos e informe uma quantidade maior que zero.");
@@ -68,7 +64,6 @@ namespace SUB.Utils
                 int livroId = BuscarId(c, tx, "SELECT Id FROM Livros WHERE Nome = @Nome AND Genero = @Genero AND (Ativo = 1 OR Ativo IS NULL)", livro, RegrasCirculacao.GeneroRapido);
                 if (RegrasCirculacao.AtingiuLimitePendencias(Contar(c, tx, "SELECT COUNT(*) FROM EmprestimoRapido WHERE ProfessorId = @Id AND Status = 'Faltando'", professorId)))
                     throw new InvalidOperationException("Este professor já possui duas devoluções faltando. Regularize uma pendência antes de um novo empréstimo rápido.");
-
                 RetirarEstoque(c, tx, livroId, quantidade);
                 using (var cmd = new SqlCeCommand(@"INSERT INTO EmprestimoRapido
                     (ProfessorId, LivroId, LivroNome, Turma, Quantidade, DataHoraEmprestimo, Bibliotecaria, Status)
@@ -83,6 +78,7 @@ namespace SUB.Utils
                     cmd.Parameters.AddWithValue("@Bibliotecaria", bibliotecaria);
                     cmd.ExecuteNonQuery();
                 }
+
                 tx.Commit();
             }
         }
@@ -100,6 +96,7 @@ namespace SUB.Utils
                         throw new InvalidOperationException("Empréstimo ou livro não localizado. Atualize a lista.");
                     livroId = Convert.ToInt32(valor);
                 }
+
                 using (var cmd = new SqlCeCommand(@"UPDATE Emprestimo
                     SET Status = 'Devolvido', DataRealDevolucao = @Agora
                     WHERE Id = @Id AND DataRealDevolucao IS NULL AND Status IN ('Ativo', 'Atrasado')", c, tx))
@@ -109,13 +106,13 @@ namespace SUB.Utils
                     if (cmd.ExecuteNonQuery() != 1)
                         throw new InvalidOperationException("Este empréstimo já foi devolvido ou não está mais em aberto. Atualize a lista.");
                 }
+
                 ReporEstoque(c, tx, livroId, 1);
                 tx.Commit();
             }
         }
 
-        internal static void DevolverRapido(SqlCeConnection c, int emprestimoId, int saldoConfirmado,
-            int devolvidos, DateTime agora)
+        internal static void DevolverRapido(SqlCeConnection c, int emprestimoId, int saldoConfirmado, int devolvidos, DateTime agora)
         {
             if (!RegrasCirculacao.QuantidadeDevolvidaValida(saldoConfirmado, devolvidos))
                 throw new InvalidOperationException(RegrasCirculacao.ErroQuantidadeDevolvida);
@@ -136,16 +133,15 @@ namespace SUB.Utils
                         status = r.IsDBNull(3) ? "" : r.GetString(3);
                     }
                 }
+
                 if (!RegrasCirculacao.EmprestimoRapidoAberto(status, saldo))
                     throw new InvalidOperationException("Este empréstimo já foi devolvido ou não está em aberto.");
                 if (saldo != saldoConfirmado)
                     throw new InvalidOperationException("O saldo foi alterado após a consulta. Atualize a lista antes de devolver.");
                 int restante = RegrasCirculacao.SaldoAposDevolucao(saldo, devolvidos);
                 // Não impede a regularização de uma pendência que já estava como Faltando.
-                if (restante > 0 && status != RegrasCirculacao.Faltando && RegrasCirculacao.AtingiuLimitePendencias(Contar(c, tx,
-                    "SELECT COUNT(*) FROM EmprestimoRapido WHERE ProfessorId = @Id AND Status = 'Faltando'", professorId)))
+                if (restante > 0 && status != RegrasCirculacao.Faltando && RegrasCirculacao.AtingiuLimitePendencias(Contar(c, tx, "SELECT COUNT(*) FROM EmprestimoRapido WHERE ProfessorId = @Id AND Status = 'Faltando'", professorId)))
                     throw new InvalidOperationException("O professor já possui duas devoluções faltando.");
-
                 using (var cmd = new SqlCeCommand(@"UPDATE EmprestimoRapido
                     SET Status = @Status, DataHoraDevolucaoReal = @Agora, Quantidade = @Restante
                     WHERE Id = @Id AND Quantidade = @Saldo AND Status = @StatusAnterior", c, tx))
@@ -159,6 +155,7 @@ namespace SUB.Utils
                     if (cmd.ExecuteNonQuery() != 1)
                         throw new InvalidOperationException("O empréstimo foi alterado. Atualize a lista antes de devolver.");
                 }
+
                 ReporEstoque(c, tx, livroId, devolvidos);
                 tx.Commit();
             }
@@ -217,7 +214,8 @@ namespace SUB.Utils
             using (var cmd = new SqlCeCommand(sql, c, tx))
             {
                 cmd.Parameters.AddWithValue("@Nome", nome);
-                if (genero != null) cmd.Parameters.AddWithValue("@Genero", genero);
+                if (genero != null)
+                    cmd.Parameters.AddWithValue("@Genero", genero);
                 using (var r = cmd.ExecuteReader())
                 {
                     if (!r.Read())

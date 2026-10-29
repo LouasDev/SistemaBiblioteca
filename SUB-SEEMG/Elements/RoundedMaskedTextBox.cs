@@ -1,224 +1,281 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 
-
-    public class RoundedMaskedTextBox : UserControl
+public class RoundedMaskedTextBox : UserControl
+{
+    private readonly MaskedTextBox maskedTextBox = new MaskedTextBox();
+    private bool isMouseOver = false;
+    private bool isFocused = false;
+    private Color borderColor = Color.Gray;
+    private int borderRadius = 10;
+    private Color maskTextColor = Color.Black;
+    private int leftMargin = 0;
+    // ==== NOVAS PROPRIEDADES PARA PERSONALIZAÇÃO ====
+    [Category("Aparência")]
+    public Color BorderColor
     {
-        private readonly MaskedTextBox maskedTextBox = new MaskedTextBox();
-
-        private bool isMouseOver = false;
-        private bool isFocused = false;
-
-        private Color borderColor = Color.Gray;
-        private int borderRadius = 10;
-        private Color maskTextColor = Color.Black;
-        private int leftMargin = 0;
-
-        // ==== NOVAS PROPRIEDADES PARA PERSONALIZAÇÃO ====
-
-        [Category("Aparência")]
-        public Color BorderColor
+        get => borderColor;
+        set
         {
-            get => borderColor;
-            set { borderColor = value; Invalidate(); }
-        }
-
-        [Category("Aparência")]
-        public Color BorderFocusColor { get; set; } = Color.Blue;
-
-        [Category("Aparência")]
-        public Color HoverBackColor { get; set; } = Color.LightGray;
-
-        [Category("Aparência")]
-        public Color HoverBorderColor { get; set; } = Color.DarkGray;
-
-        [Category("Aparência")]
-        public int BorderRadius
-        {
-            get => borderRadius;
-            set { borderRadius = value; PerformLayout(); Invalidate(); }
-        }
-
-        [Category("Aparência")]
-        public Color MaskTextColor
-        {
-            get => maskTextColor;
-            set { maskTextColor = value; maskedTextBox.ForeColor = value; Invalidate(); }
-        }
-
-        [Category("Aparência")]
-        public int LeftMargin
-        {
-            get => leftMargin;
-            set
-            {
-                leftMargin = value;
-                maskedTextBox.Location = new Point(Padding.Left + leftMargin, Padding.Top);
-                Invalidate();
-            }
-        }
-
-        [Category("Aparência")]
-        public override string Text
-        {
-            get => maskedTextBox.Text;
-            set => maskedTextBox.Text = value;
-        }
-
-        [Category("Aparência")]
-        public string Mask
-        {
-            get => maskedTextBox.Mask;
-            set => maskedTextBox.Mask = value;
-        }
-
-        public override Color BackColor
-        {
-            get => base.BackColor;
-            set
-            {
-                base.BackColor = value;
-                maskedTextBox.BackColor = value;
-                Invalidate();
-            }
-        }
-
-        public override Color ForeColor
-        {
-            get => base.ForeColor;
-            set
-            {
-                base.ForeColor = value;
-                maskedTextBox.ForeColor = value;
-            }
-        }
-
-        // ==== CONSTRUTOR ====
-
-        public RoundedMaskedTextBox()
-        {
-            SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw |
-                     ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
-
-            this.Padding = new Padding(5);
-            maskedTextBox.BorderStyle = BorderStyle.None;
-            maskedTextBox.Dock = DockStyle.Fill;
-            maskedTextBox.BackColor = this.BackColor;
-            maskedTextBox.ForeColor = this.ForeColor;
-
-            Controls.Add(maskedTextBox);
-
-            Size = new Size(200, 30);
-
-            // === EVENTOS PARA REDESENHO ===
-
-            maskedTextBox.GotFocus += (s, e) => { isFocused = true; Invalidate(); };
-            maskedTextBox.LostFocus += (s, e) => { isFocused = false; Invalidate(); };
-
-            maskedTextBox.MouseEnter += (s, e) => { isMouseOver = true; Invalidate(); };
-            maskedTextBox.MouseLeave += (s, e) => { isMouseOver = false; Invalidate(); };
-
-            this.MouseEnter += (s, e) => { isMouseOver = true; Invalidate(); };
-            this.MouseLeave += (s, e) => { isMouseOver = false; Invalidate(); };
-
-            // Encaminha eventos de tecla do inner MaskedTextBox para o UserControl
-            // Isso permite que handlers registrados em mtxCodigoBarras.KeyDown / KeyPress / KeyUp
-            // sejam chamados (por exemplo, para detectar Enter de scanners).
-            maskedTextBox.KeyDown += (s, e) =>
-            {
-                try { OnKeyDown(e); } catch { /* não propagar exceções */ }
-            };
-            maskedTextBox.KeyPress += (s, e) =>
-            {
-                try { OnKeyPress(e); } catch { /* não propagar exceções */ }
-            };
-            maskedTextBox.KeyUp += (s, e) =>
-            {
-                try { OnKeyUp(e); } catch { /* não propagar exceções */ }
-            };
-
-            // O conteúdo é digitado no MaskedTextBox interno. Repassar a alteração
-            // permite que formulários validem o controle como qualquer outro campo.
-            maskedTextBox.TextChanged += (s, e) => OnTextChanged(e);
-        }
-
-        // ==== DESENHO PERSONALIZADO ====
-
-        // O campo interno é ancorado com Dock=Fill; com Padding.Right = 0 ele cobria
-        // a borda direita arredondada. Garante um recuo mínimo para a curva.
-        public override Rectangle DisplayRectangle
-        {
-            get
-            {
-                Rectangle area = base.DisplayRectangle;
-                int recuoMinimo = Math.Max(4, borderRadius / 2 + 2);
-                int extra = Math.Max(0, recuoMinimo - Padding.Right);
-                area.Width = Math.Max(0, area.Width - extra);
-                return area;
-            }
-        }
-
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-            if (Parent != null)
-                ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
-            else
-                base.OnPaintBackground(e);
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
-            Rectangle rect = ClientRectangle;
-            rect.Width -= 1;
-            rect.Height -= 1;
-
-            Color back = isMouseOver ? HoverBackColor : BackColor;
-            Color border = isFocused ? BorderFocusColor : (isMouseOver ? HoverBorderColor : BorderColor);
-
-            using (GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius))
-            using (SolidBrush brush = new SolidBrush(back))
-            using (Pen pen = new Pen(border, 1.5f))
-            {
-                e.Graphics.FillPath(brush, path);
-                e.Graphics.DrawPath(pen, path);
-            }
-
-            // Atualizar o fundo da MaskedTextBox também
-            maskedTextBox.BackColor = back;
-        }
-
-        private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            int r = radius * 2;
-
-            if (radius <= 0)
-            {
-                path.AddRectangle(rect);
-            }
-            else
-            {
-                path.StartFigure();
-                path.AddArc(rect.X, rect.Y, r, r, 180, 90);
-                path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
-                path.AddArc(rect.Right - r, rect.Bottom - r, r, r, 0, 90);
-                path.AddArc(rect.X, rect.Bottom - r, r, r, 90, 90);
-                path.CloseFigure();
-            }
-
-            return path;
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
+            borderColor = value;
             Invalidate();
         }
     }
 
+    [Category("Aparência")]
+    public Color BorderFocusColor { get; set; } = Color.Blue;
+
+    [Category("Aparência")]
+    public Color HoverBackColor { get; set; } = Color.LightGray;
+
+    [Category("Aparência")]
+    public Color HoverBorderColor { get; set; } = Color.DarkGray;
+
+    [Category("Aparência")]
+    public int BorderRadius
+    {
+        get => borderRadius;
+        set
+        {
+            borderRadius = value;
+            PerformLayout();
+            Invalidate();
+        }
+    }
+
+    [Category("Aparência")]
+    public Color MaskTextColor
+    {
+        get => maskTextColor;
+        set
+        {
+            maskTextColor = value;
+            maskedTextBox.ForeColor = value;
+            Invalidate();
+        }
+    }
+
+    [Category("Aparência")]
+    public int LeftMargin
+    {
+        get => leftMargin;
+        set
+        {
+            leftMargin = value;
+            maskedTextBox.Location = new Point(Padding.Left + leftMargin, Padding.Top);
+            Invalidate();
+        }
+    }
+
+    [Category("Aparência")]
+    public override string Text { get => maskedTextBox.Text; set => maskedTextBox.Text = value; }
+
+    [Category("Aparência")]
+    public string Mask { get => maskedTextBox.Mask; set => maskedTextBox.Mask = value; }
+
+    public override Color BackColor
+    {
+        get => base.BackColor;
+        set
+        {
+            base.BackColor = value;
+            maskedTextBox.BackColor = value;
+            Invalidate();
+        }
+    }
+
+    public override Color ForeColor
+    {
+        get => base.ForeColor;
+        set
+        {
+            base.ForeColor = value;
+            maskedTextBox.ForeColor = value;
+        }
+    }
+
+    // ==== CONSTRUTOR ====
+    public RoundedMaskedTextBox()
+    {
+        TabStop = true;
+        SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
+        this.Padding = new Padding(5);
+        maskedTextBox.BorderStyle = BorderStyle.None;
+        maskedTextBox.Dock = DockStyle.Fill;
+        maskedTextBox.BackColor = this.BackColor;
+        maskedTextBox.ForeColor = this.ForeColor;
+        Controls.Add(maskedTextBox);
+        Size = new Size(200, 30);
+        // === EVENTOS PARA REDESENHO ===
+        maskedTextBox.GotFocus += (s, e) =>
+        {
+            isFocused = true;
+            Invalidate();
+        };
+        maskedTextBox.LostFocus += (s, e) =>
+        {
+            isFocused = false;
+            Invalidate();
+        };
+        maskedTextBox.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            Invalidate();
+        };
+        maskedTextBox.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            Invalidate();
+        };
+        this.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            Invalidate();
+        };
+        this.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            Invalidate();
+        };
+        // Encaminha eventos de tecla do inner MaskedTextBox para o UserControl
+        // Isso permite que handlers registrados em mtxCodigoBarras.KeyDown / KeyPress / KeyUp
+        // sejam chamados (por exemplo, para detectar Enter de scanners).
+        maskedTextBox.KeyDown += (s, e) =>
+        {
+            try
+            {
+                OnKeyDown(e);
+            }
+            catch
+            { /* não propagar exceções */
+            }
+        };
+        maskedTextBox.KeyPress += (s, e) =>
+        {
+            try
+            {
+                OnKeyPress(e);
+            }
+            catch
+            { /* não propagar exceções */
+            }
+        };
+        maskedTextBox.KeyUp += (s, e) =>
+        {
+            try
+            {
+                OnKeyUp(e);
+            }
+            catch
+            { /* não propagar exceções */
+            }
+        };
+        // O conteúdo é digitado no MaskedTextBox interno. Repassar a alteração
+        // permite que formulários validem o controle como qualquer outro campo.
+        maskedTextBox.TextChanged += (s, e) => OnTextChanged(e);
+    }
+
+    // ==== DESENHO PERSONALIZADO ====
+    // O campo interno é ancorado com Dock=Fill; com Padding.Right = 0 ele cobria
+    // a borda direita arredondada. Garante um recuo mínimo para a curva.
+    public override Rectangle DisplayRectangle
+    {
+        get
+        {
+            Rectangle area = base.DisplayRectangle;
+            int recuoMinimo = Math.Max(4, borderRadius / 2 + 2);
+            int extra = Math.Max(0, recuoMinimo - Padding.Right);
+            area.Width = Math.Max(0, area.Width - extra);
+            return area;
+        }
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
+    }
+
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
+            base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
+    }
+
+    protected override void OnPaint(PaintEventArgs e)
+    {
+        base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
+        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+        Rectangle rect = ClientRectangle;
+        rect.Width -= 1;
+        rect.Height -= 1;
+        Color back = isMouseOver ? HoverBackColor : BackColor;
+        Color border = isFocused ? BorderFocusColor : (isMouseOver ? HoverBorderColor : BorderColor);
+        using (GraphicsPath path = GetRoundedRectanglePath(rect, borderRadius))
+        using (SolidBrush brush = new SolidBrush(back))
+        using (Pen pen = new Pen(border, 1.5f))
+        {
+            e.Graphics.FillPath(brush, path);
+            e.Graphics.DrawPath(pen, path);
+        }
+
+        // Atualizar o fundo da MaskedTextBox também
+        maskedTextBox.BackColor = back;
+    }
+
+    private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
+    {
+        GraphicsPath path = new GraphicsPath();
+        int r = Math.Min(Math.Max(0, radius * 2), Math.Min(rect.Width, rect.Height));
+        if (radius <= 0)
+        {
+            path.AddRectangle(rect);
+        }
+        else
+        {
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, r, r, 180, 90);
+            path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
+            path.AddArc(rect.Right - r, rect.Bottom - r, r, r, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - r, r, r, 90, 90);
+            path.CloseFigure();
+        }
+
+        return path;
+    }
+
+    protected override void OnResize(EventArgs e)
+    {
+        base.OnResize(e);
+        Invalidate();
+    }
+}

@@ -49,7 +49,7 @@
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(440, 50);
-            this.panelHeader.TabIndex = 65;
+            this.panelHeader.TabIndex = 0;
             // 
             // lblTitulo
             // 
@@ -70,7 +70,7 @@
             this.lblErro.Location = new System.Drawing.Point(24, 158);
             this.lblErro.Name = "lblErro";
             this.lblErro.Size = new System.Drawing.Size(392, 15);
-            this.lblErro.TabIndex = 69;
+            this.lblErro.TabIndex = 6;
             this.lblErro.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErro.Visible = false;
             // 
@@ -86,7 +86,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(164, 184);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(110, 42);
-            this.btnCancelar.TabIndex = 68;
+            this.btnCancelar.TabIndex = 7;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
             // 
@@ -101,7 +101,7 @@
             this.btnConfirmar.Location = new System.Drawing.Point(286, 184);
             this.btnConfirmar.Name = "btnConfirmar";
             this.btnConfirmar.Size = new System.Drawing.Size(130, 42);
-            this.btnConfirmar.TabIndex = 66;
+            this.btnConfirmar.TabIndex = 8;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = false;
             this.btnConfirmar.Click += new System.EventHandler(this.btnConfirmar_Click);
@@ -112,7 +112,7 @@
             this.lblMensagem.Location = new System.Drawing.Point(24, 62);
             this.lblMensagem.Name = "lblMensagem";
             this.lblMensagem.Size = new System.Drawing.Size(392, 40);
-            this.lblMensagem.TabIndex = 67;
+            this.lblMensagem.TabIndex = 1;
             this.lblMensagem.Text = "Quantos dias você quer prorrogar:";
             this.lblMensagem.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -124,7 +124,7 @@
             this.btnMenos.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenos.Name = "btnMenos";
             this.btnMenos.Size = new System.Drawing.Size(18, 21);
-            this.btnMenos.TabIndex = 102;
+            this.btnMenos.TabIndex = 4;
             this.btnMenos.Text = "▼";
             this.btnMenos.UseVisualStyleBackColor = true;
             this.btnMenos.Click += new System.EventHandler(this.btnMenos_Click);
@@ -155,7 +155,7 @@
             this.numQuantidade.SelectionLength = 0;
             this.numQuantidade.SelectionStart = 0;
             this.numQuantidade.Size = new System.Drawing.Size(54, 40);
-            this.numQuantidade.TabIndex = 99;
+            this.numQuantidade.TabIndex = 2;
             this.numQuantidade.TextColor = System.Drawing.Color.Black;
             this.numQuantidade.UseSystemPasswordChar = false;
             // 
@@ -168,7 +168,7 @@
             this.btnMais.Name = "btnMais";
             this.btnMais.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnMais.Size = new System.Drawing.Size(18, 21);
-            this.btnMais.TabIndex = 101;
+            this.btnMais.TabIndex = 3;
             this.btnMais.Text = "▲";
             this.btnMais.UseVisualStyleBackColor = true;
             this.btnMais.Click += new System.EventHandler(this.btnMais_Click);
@@ -179,7 +179,7 @@
             this.lblPreviewData.Location = new System.Drawing.Point(126, 123);
             this.lblPreviewData.Name = "lblPreviewData";
             this.lblPreviewData.Size = new System.Drawing.Size(290, 18);
-            this.lblPreviewData.TabIndex = 103;
+            this.lblPreviewData.TabIndex = 5;
             this.lblPreviewData.Text = "Nova data de devolução:";
             // 
             // ProrrogarDiasForm

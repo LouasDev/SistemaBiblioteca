@@ -1,18 +1,15 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SUB.Utils
 {
     public static class TutorialStateStore
     {
         public const int VersaoAtual = 3;
-
         private sealed class RegistroTutorial
         {
-            public Dictionary<int, int> VersaoVistaPorUsuario { get; set; } =
-                new Dictionary<int, int>();
+            public Dictionary<int, int> VersaoVistaPorUsuario { get; set; } = new Dictionary<int, int>();
         }
 
         private static string CaminhoArquivo => Path.Combine(AppPaths.AppDataFolder, "tutorial.json");
@@ -21,18 +18,15 @@ namespace SUB.Utils
         {
             if (!usuarioId.HasValue)
                 return false;
-
             RegistroTutorial registro = Carregar();
             int versaoVista;
-            return !registro.VersaoVistaPorUsuario.TryGetValue(usuarioId.Value, out versaoVista) ||
-                versaoVista < VersaoAtual;
+            return !registro.VersaoVistaPorUsuario.TryGetValue(usuarioId.Value, out versaoVista) || versaoVista < VersaoAtual;
         }
 
         public static void MarcarComoVisto(int? usuarioId)
         {
             if (!usuarioId.HasValue)
                 return;
-
             try
             {
                 RegistroTutorial registro = Carregar();
@@ -41,8 +35,8 @@ namespace SUB.Utils
             }
             catch
             {
-                // Falhar ao gravar não pode impedir a operação do sistema.
-                // Neste caso, o tutorial será exibido novamente no próximo login.
+            // Falhar ao gravar não pode impedir a operação do sistema.
+            // Neste caso, o tutorial será exibido novamente no próximo login.
             }
         }
 
@@ -52,14 +46,11 @@ namespace SUB.Utils
             {
                 if (!File.Exists(CaminhoArquivo))
                     return new RegistroTutorial();
-
                 RegistroTutorial registro = JsonConvert.DeserializeObject<RegistroTutorial>(File.ReadAllText(CaminhoArquivo));
                 if (registro == null)
                     return new RegistroTutorial();
-
                 if (registro.VersaoVistaPorUsuario == null)
                     registro.VersaoVistaPorUsuario = new Dictionary<int, int>();
-
                 return registro;
             }
             catch
@@ -73,7 +64,6 @@ namespace SUB.Utils
             AppPaths.EnsureFolders();
             string temporario = CaminhoArquivo + ".tmp";
             File.WriteAllText(temporario, JsonConvert.SerializeObject(registro, Formatting.Indented));
-
             if (File.Exists(CaminhoArquivo))
                 File.Replace(temporario, CaminhoArquivo, null);
             else

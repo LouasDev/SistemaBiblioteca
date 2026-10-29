@@ -1,9 +1,9 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using SUB.Models;
@@ -34,33 +34,24 @@ namespace SUB.Utils
 
     public static class ThemeManager
     {
-        private static readonly ConditionalWeakTable<Control, object> ControlsWithThemeHandler =
-            new ConditionalWeakTable<Control, object>();
-        private static readonly ConditionalWeakTable<DataGridView, object> GridsWithThemeHandler =
-            new ConditionalWeakTable<DataGridView, object>();
-        private static readonly ConditionalWeakTable<Button, CoresDoBotao> CoresAntesDeDesabilitar =
-            new ConditionalWeakTable<Button, CoresDoBotao>();
-
+        private static readonly ConditionalWeakTable<Control, object> ControlsWithThemeHandler = new ConditionalWeakTable<Control, object>();
+        private static readonly ConditionalWeakTable<DataGridView, object> GridsWithThemeHandler = new ConditionalWeakTable<DataGridView, object>();
+        private static readonly ConditionalWeakTable<Button, CoresDoBotao> CoresAntesDeDesabilitar = new ConditionalWeakTable<Button, CoresDoBotao>();
         private sealed class CoresDoBotao
         {
             public Color Fundo;
             public Color Borda;
             public bool Guardadas;
         }
-        private static readonly ConditionalWeakTable<Control, object> ControlsComBarraDeTitulo =
-            new ConditionalWeakTable<Control, object>();
-        private static readonly ConditionalWeakTable<Control, object> ControlsComRolagemEscura =
-            new ConditionalWeakTable<Control, object>();
-        private static readonly ConditionalWeakTable<Control, object> ControlsComProgressoEscuro =
-            new ConditionalWeakTable<Control, object>();
-        private static readonly ConditionalWeakTable<Control, object> ControlsComTextoAcompanhado =
-            new ConditionalWeakTable<Control, object>();
-        private static bool adaptandoCorDoTexto;
 
+        private static readonly ConditionalWeakTable<Control, object> ControlsComBarraDeTitulo = new ConditionalWeakTable<Control, object>();
+        private static readonly ConditionalWeakTable<Control, object> ControlsComRolagemEscura = new ConditionalWeakTable<Control, object>();
+        private static readonly ConditionalWeakTable<Control, object> ControlsComProgressoEscuro = new ConditionalWeakTable<Control, object>();
+        private static readonly ConditionalWeakTable<Control, object> ControlsComTextoAcompanhado = new ConditionalWeakTable<Control, object>();
+        private static bool adaptandoCorDoTexto;
         // Cor do último Apply; lida pelos handlers de ControlAdded/Grid para não
         // congelar a cor capturada por closure quando o tema muda em tempo de execução.
         private static Color corTemaAtual;
-
         // Modo de aparência da instalação. Definido a partir de instituicao.json;
         // quem muda o modo recria as telas abertas, pois as cores claras originais
         // não são guardadas para voltar atrás.
@@ -167,15 +158,12 @@ namespace SUB.Utils
 
         [DllImport("dwmapi.dll")]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int atributo, ref int valor, int tamanho);
-
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
         private static extern int SetWindowTheme(IntPtr hwnd, string subApp, string subIdList);
-
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
         private const int DWMWA_BORDER_COLOR = 34;
         private const int DWMWA_CAPTION_COLOR = 35;
         private const int DWMWA_TEXT_COLOR = 36;
-
         public static double Luminancia(Color cor)
         {
             return (0.299 * cor.R) + (0.587 * cor.G) + (0.114 * cor.B);
@@ -200,7 +188,6 @@ namespace SUB.Utils
                 return cor;
             if (cor.ToArgb() == Dark.TextoSuave.ToArgb() || cor.ToArgb() == Dark.TextoDesabilitado.ToArgb())
                 return cor;
-
             double lum = Luminancia(cor);
             int croma = Croma(cor);
             if (lum >= 225)
@@ -209,11 +196,16 @@ namespace SUB.Utils
                 return croma < 16 ? Dark.TextoDesabilitado : cor;
             if (croma < 64)
                 return lum < 80 ? Dark.Texto : Dark.TextoSuave;
-
             return Lighten(cor, 0.45f);
         }
 
-        public static Color DefaultColor { get { return Presets[0].PrimaryColor; } }
+        public static Color DefaultColor
+        {
+            get
+            {
+                return Presets[0].PrimaryColor;
+            }
+        }
 
         public static IList<ThemePreset> Presets { get; } = new List<ThemePreset>
         {
@@ -244,20 +236,12 @@ namespace SUB.Utils
 
         public static Color Darken(Color color, float amount)
         {
-            return Color.FromArgb(
-                color.A,
-                Math.Max(0, (int)(color.R * (1f - amount))),
-                Math.Max(0, (int)(color.G * (1f - amount))),
-                Math.Max(0, (int)(color.B * (1f - amount))));
+            return Color.FromArgb(color.A, Math.Max(0, (int)(color.R * (1f - amount))), Math.Max(0, (int)(color.G * (1f - amount))), Math.Max(0, (int)(color.B * (1f - amount))));
         }
 
         public static Color Lighten(Color color, float amount)
         {
-            return Color.FromArgb(
-                color.A,
-                Math.Min(255, (int)(color.R + (255 - color.R) * amount)),
-                Math.Min(255, (int)(color.G + (255 - color.G) * amount)),
-                Math.Min(255, (int)(color.B + (255 - color.B) * amount)));
+            return Color.FromArgb(color.A, Math.Min(255, (int)(color.R + (255 - color.R) * amount)), Math.Min(255, (int)(color.G + (255 - color.G) * amount)), Math.Min(255, (int)(color.B + (255 - color.B) * amount)));
         }
 
         public static Color GetContrastColor(Color color)
@@ -270,13 +254,11 @@ namespace SUB.Utils
         {
             if (root == null)
                 return;
-
             corTemaAtual = Normalize(primaryColor);
             Form form = root as Form;
             if (form != null)
                 SubLogoManager.ApplyWindowIcon(form, corTemaAtual);
             ApplyRecursive(root, corTemaAtual, false);
-
             var formulario = root as Form;
             if (formulario != null)
                 AplicarBarraDeTitulo(formulario);
@@ -285,7 +267,6 @@ namespace SUB.Utils
         public static void ApplyConfiguredTheme(Control root)
         {
             Color primaryColor = DefaultColor;
-
             try
             {
                 var configuracao = InstituicaoConfiguracaoStore.Carregar();
@@ -310,7 +291,6 @@ namespace SUB.Utils
         {
             if (!Escuro || raiz == null)
                 return;
-
             AdaptarParaEscuro(raiz, Normalize(primaryColor));
             foreach (Control filho in raiz.Controls)
                 AplicarModoEscuro(filho, primaryColor);
@@ -319,10 +299,9 @@ namespace SUB.Utils
         private static void ApplyRecursive(Control control, Color primaryColor, bool insideNavigation)
         {
             bool isNavigation = insideNavigation || IsNavigationContainer(control) || IsThemedHeaderPanel(control);
-
             if (!ControlsWithThemeHandler.TryGetValue(control, out _))
             {
-                ControlsWithThemeHandler.Add(control, new object());
+                ControlsWithThemeHandler.Add(control, new object ());
                 control.ControlAdded += (sender, args) => ApplyRecursive(args.Control, corTemaAtual, isNavigation);
             }
 
@@ -340,6 +319,7 @@ namespace SUB.Utils
                     gradientPanel.Gradientetop = primaryColor;
                     gradientPanel.Gradientebottom = Darken(primaryColor, 0.12f);
                 }
+
                 gradientPanel.Invalidate();
             }
 
@@ -361,6 +341,7 @@ namespace SUB.Utils
                 textBox.BorderFocusColor = primaryColor;
                 textBox.HoverBackColor = Color.FromArgb(245, 247, 250);
             }
+
             var comboBox = control as RoundedComboBox;
             if (comboBox != null)
             {
@@ -404,7 +385,6 @@ namespace SUB.Utils
             var label = control as Label;
             if (label != null && !IsSemanticLabel(label) && !(Escuro && ControlsComTextoAcompanhado.TryGetValue(label, out _)))
                 label.ForeColor = isNavigation ? GetContrastColor(primaryColor) : GetLabelColor(primaryColor);
-
             var grid = control as DataGridView;
             if (grid != null)
             {
@@ -423,7 +403,6 @@ namespace SUB.Utils
                 panel.BackColor = primaryColor;
             else if (panel != null && isNavigation && panel.BackColor != Color.Transparent)
                 panel.BackColor = Darken(primaryColor, 0.08f);
-
             var button = control as Button;
             if (button != null && !(control is CustomButton))
             {
@@ -441,7 +420,6 @@ namespace SUB.Utils
 
             if (Escuro && !isNavigation)
                 AdaptarParaEscuro(control, primaryColor);
-
             foreach (Control child in control.Controls)
                 ApplyRecursive(child, primaryColor, isNavigation);
         }
@@ -573,14 +551,11 @@ namespace SUB.Utils
             Color fundo = rotulo.BackColor;
             if (EhPilula(fundo))
                 return;
-
             // Fundo claro explícito (branco do designer) deixa de aparecer como uma caixa sobre o tema escuro.
             if (Luminancia(fundo) > 150 && rotulo.Parent != null)
                 rotulo.BackColor = Color.Transparent;
-
             rotulo.ForeColor = CorDoTextoNoEscuro(rotulo, rotulo.ForeColor);
             AcompanharCorDoTexto(rotulo);
-
             var link = rotulo as LinkLabel;
             if (link != null)
             {
@@ -604,13 +579,11 @@ namespace SUB.Utils
             object marcador;
             if (ControlsComTextoAcompanhado.TryGetValue(controle, out marcador))
                 return;
-            ControlsComTextoAcompanhado.Add(controle, new object());
-
+            ControlsComTextoAcompanhado.Add(controle, new object ());
             controle.ForeColorChanged += (sender, args) =>
             {
                 if (!Escuro || adaptandoCorDoTexto || EhPilula(controle.BackColor))
                     return;
-
                 adaptandoCorDoTexto = true;
                 try
                 {
@@ -631,12 +604,12 @@ namespace SUB.Utils
         {
             if (cor.IsEmpty || cor.A != 0)
                 return CorTextoParaEscuro(cor);
-
             for (Control atual = controle.Parent; atual != null; atual = atual.Parent)
             {
                 if (atual.BackColor.A == 255)
                     return Color.FromArgb(0, atual.BackColor);
             }
+
             return Color.FromArgb(0, Dark.Fundo);
         }
 
@@ -644,7 +617,6 @@ namespace SUB.Utils
         {
             if (painel.AutoScroll)
                 AplicarRolagemEscura(painel);
-
             string nome = painel.Name ?? string.Empty;
             var gradiente = painel as GradientPanel;
             if (gradiente != null)
@@ -659,13 +631,13 @@ namespace SUB.Utils
                 {
                     gradiente.BackColor = Dark.Superficie;
                 }
+
                 gradiente.Invalidate();
                 return;
             }
 
             if (painel.BackColor.A == 0)
                 return;
-
             // Só superfícies claras neutras escurecem; cabeçalhos coloridos (laranja, verde dos
             // cartões) continuam com a cor de destaque.
             if (nome.StartsWith("pnlResultados", StringComparison.OrdinalIgnoreCase))
@@ -683,7 +655,6 @@ namespace SUB.Utils
         {
             if (!formulario.TopLevel)
                 return;
-
             // A borda é conferida na hora: o assistente de mapeamento nasce sem borda e vira
             // diálogo depois de criado.
             Action aplicar = delegate
@@ -701,17 +672,19 @@ namespace SUB.Utils
                     DwmSetWindowAttribute(formulario.Handle, DWMWA_TEXT_COLOR, ref texto, sizeof(int));
                     DwmSetWindowAttribute(formulario.Handle, DWMWA_BORDER_COLOR, ref borda, sizeof(int));
                 }
-                catch (DllNotFoundException) { }
-                catch (EntryPointNotFoundException) { }
+                catch (DllNotFoundException)
+                {
+                }
+                catch (EntryPointNotFoundException)
+                {
+                }
             };
-
             if (formulario.IsHandleCreated)
                 aplicar();
-
             object marcador;
             if (ControlsComBarraDeTitulo.TryGetValue(formulario, out marcador))
                 return;
-            ControlsComBarraDeTitulo.Add(formulario, new object());
+            ControlsComBarraDeTitulo.Add(formulario, new object ());
             formulario.HandleCreated += (s, e) => aplicar();
         }
 
@@ -726,8 +699,7 @@ namespace SUB.Utils
             object marcador;
             if (ControlsComRolagemEscura.TryGetValue(controle, out marcador))
                 return;
-            ControlsComRolagemEscura.Add(controle, new object());
-
+            ControlsComRolagemEscura.Add(controle, new object ());
             // Ao fechar a tela, a grade ainda recebe VisibleChanged depois de descartar as próprias barras.
             Action aplicar = delegate
             {
@@ -742,14 +714,21 @@ namespace SUB.Utils
                             SetWindowTheme(filho.Handle, "DarkMode_Explorer", null);
                     }
                 }
-                catch (DllNotFoundException) { }
-                catch (EntryPointNotFoundException) { }
+                catch (DllNotFoundException)
+                {
+                }
+                catch (EntryPointNotFoundException)
+                {
+                }
             };
-
             if (controle.IsHandleCreated)
                 aplicar();
             controle.HandleCreated += (s, e) => aplicar();
-            controle.VisibleChanged += (s, e) => { if (controle.IsHandleCreated) aplicar(); };
+            controle.VisibleChanged += (s, e) =>
+            {
+                if (controle.IsHandleCreated)
+                    aplicar();
+            };
         }
 
         // A barra do tema do Windows é verde, com trilho sempre claro; sem o estilo visual a barra
@@ -759,18 +738,20 @@ namespace SUB.Utils
             object marcador;
             if (ControlsComProgressoEscuro.TryGetValue(barra, out marcador))
                 return;
-            ControlsComProgressoEscuro.Add(barra, new object());
-
+            ControlsComProgressoEscuro.Add(barra, new object ());
             Action aplicar = delegate
             {
                 try
                 {
                     SetWindowTheme(barra.Handle, string.Empty, string.Empty);
                 }
-                catch (DllNotFoundException) { }
-                catch (EntryPointNotFoundException) { }
+                catch (DllNotFoundException)
+                {
+                }
+                catch (EntryPointNotFoundException)
+                {
+                }
             };
-
             if (barra.IsHandleCreated)
                 aplicar();
             barra.HandleCreated += (s, e) => aplicar();
@@ -779,9 +760,7 @@ namespace SUB.Utils
         private static bool IsNavigationContainer(Control control)
         {
             string name = control.Name ?? string.Empty;
-            return name.Equals("menu", StringComparison.OrdinalIgnoreCase) ||
-                   name.IndexOf("navigation", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("navContainer", StringComparison.OrdinalIgnoreCase) >= 0;
+            return name.Equals("menu", StringComparison.OrdinalIgnoreCase) || name.IndexOf("navigation", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("navContainer", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static bool PreserveDesignerGradient(Control control)
@@ -792,15 +771,13 @@ namespace SUB.Utils
         private static bool IsThemeLinePanel(Control control)
         {
             string name = control.Name ?? string.Empty;
-            return name.StartsWith("sublinha", StringComparison.OrdinalIgnoreCase) ||
-                   name.StartsWith("pnlLinha", StringComparison.OrdinalIgnoreCase);
+            return name.StartsWith("sublinha", StringComparison.OrdinalIgnoreCase) || name.StartsWith("pnlLinha", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsThemedHeaderPanel(Control control)
         {
             string name = control.Name ?? string.Empty;
-            return name.Equals("panelHeader", StringComparison.OrdinalIgnoreCase) ||
-                   name.Equals("pnlHeader", StringComparison.OrdinalIgnoreCase);
+            return name.Equals("panelHeader", StringComparison.OrdinalIgnoreCase) || name.Equals("pnlHeader", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsFilterSurfacePanel(Control control)
@@ -835,22 +812,13 @@ namespace SUB.Utils
 
             bool isDestructive = IsDestructiveActionButton(button);
             bool isSecondary = !isDestructive && IsSecondaryActionButton(button);
-            Color baseColor = isDestructive
-                ? Color.FromArgb(178, 34, 34)
-                : (isSecondary ? (Escuro ? Dark.SuperficieAlt : Lighten(primaryColor, 0.86f)) : primaryColor);
-
+            Color baseColor = isDestructive ? Color.FromArgb(178, 34, 34) : (isSecondary ? (Escuro ? Dark.SuperficieAlt : Lighten(primaryColor, 0.86f)) : primaryColor);
             button.UseVisualStyleBackColor = false;
             button.BackColor = baseColor;
             button.ForeColor = isSecondary ? GetLabelColor(primaryColor) : GetContrastColor(baseColor);
-            button.FlatAppearance.BorderColor = isSecondary
-                ? (Escuro ? Dark.Borda : Lighten(primaryColor, 0.62f))
-                : Darken(baseColor, 0.12f);
-            button.FlatAppearance.MouseOverBackColor = isSecondary
-                ? (Escuro ? Dark.EntradaHover : Lighten(primaryColor, 0.76f))
-                : Darken(baseColor, 0.1f);
-            button.FlatAppearance.MouseDownBackColor = isSecondary
-                ? (Escuro ? Dark.Selecao : Lighten(primaryColor, 0.68f))
-                : Darken(baseColor, 0.2f);
+            button.FlatAppearance.BorderColor = isSecondary ? (Escuro ? Dark.Borda : Lighten(primaryColor, 0.62f)) : Darken(baseColor, 0.12f);
+            button.FlatAppearance.MouseOverBackColor = isSecondary ? (Escuro ? Dark.EntradaHover : Lighten(primaryColor, 0.76f)) : Darken(baseColor, 0.1f);
+            button.FlatAppearance.MouseDownBackColor = isSecondary ? (Escuro ? Dark.Selecao : Lighten(primaryColor, 0.68f)) : Darken(baseColor, 0.2f);
         }
 
         // Botão plano desabilitado recebe texto escurecido pelo Windows; sobre a cor do tema
@@ -874,7 +842,6 @@ namespace SUB.Utils
         {
             if (button.FlatStyle != FlatStyle.Flat && button.FlatStyle != FlatStyle.Popup)
                 return;
-
             Color fundoDesabilitado = Escuro ? Dark.Desabilitado : Color.FromArgb(226, 229, 234);
             if (!button.Enabled)
             {
@@ -884,6 +851,7 @@ namespace SUB.Utils
                     cores.Borda = button.FlatAppearance.BorderColor;
                     cores.Guardadas = true;
                 }
+
                 button.BackColor = fundoDesabilitado;
                 button.FlatAppearance.BorderColor = Escuro ? Dark.BordaDesabilitado : Color.FromArgb(210, 214, 220);
             }
@@ -895,6 +863,7 @@ namespace SUB.Utils
                     button.BackColor = cores.Fundo;
                     button.FlatAppearance.BorderColor = cores.Borda;
                 }
+
                 cores.Guardadas = false;
             }
         }
@@ -905,9 +874,7 @@ namespace SUB.Utils
             public bool Pressionado;
         }
 
-        private static readonly ConditionalWeakTable<Button, EstadoDoBotao> BotoesArredondados =
-            new ConditionalWeakTable<Button, EstadoDoBotao>();
-
+        private static readonly ConditionalWeakTable<Button, EstadoDoBotao> BotoesArredondados = new ConditionalWeakTable<Button, EstadoDoBotao>();
         // Botão plano do Windows é um retângulo reto; campos, cartões e botões das grades já são
         // arredondados. Redesenha por cima com cantos suaves, mantendo as cores do FlatAppearance
         // (passar o mouse, clicar, desabilitado). Botões com imagem ficam com o desenho original.
@@ -918,11 +885,30 @@ namespace SUB.Utils
                 return;
             estado = new EstadoDoBotao();
             BotoesArredondados.Add(button, estado);
-
-            button.MouseEnter += (s, e) => { estado.Sobre = true; button.Invalidate(); };
-            button.MouseLeave += (s, e) => { estado.Sobre = false; estado.Pressionado = false; button.Invalidate(); };
-            button.MouseDown += (s, e) => { if (e.Button == MouseButtons.Left) { estado.Pressionado = true; button.Invalidate(); } };
-            button.MouseUp += (s, e) => { estado.Pressionado = false; button.Invalidate(); };
+            button.MouseEnter += (s, e) =>
+            {
+                estado.Sobre = true;
+                button.Invalidate();
+            };
+            button.MouseLeave += (s, e) =>
+            {
+                estado.Sobre = false;
+                estado.Pressionado = false;
+                button.Invalidate();
+            };
+            button.MouseDown += (s, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    estado.Pressionado = true;
+                    button.Invalidate();
+                }
+            };
+            button.MouseUp += (s, e) =>
+            {
+                estado.Pressionado = false;
+                button.Invalidate();
+            };
             button.Paint += (s, e) => DesenharBotaoArredondado(button, estado, e);
         }
 
@@ -933,20 +919,13 @@ namespace SUB.Utils
     button.Width < 8 ||
     button.Height < 8)
                 return;
-
             Color fundo = button.BackColor;
             if (button.Enabled && estado.Pressionado && !button.FlatAppearance.MouseDownBackColor.IsEmpty)
                 fundo = button.FlatAppearance.MouseDownBackColor;
             else if (button.Enabled && estado.Sobre && !button.FlatAppearance.MouseOverBackColor.IsEmpty)
                 fundo = button.FlatAppearance.MouseOverBackColor;
-
-            Color borda = button.FlatAppearance.BorderSize > 0 && !button.FlatAppearance.BorderColor.IsEmpty
-                ? button.FlatAppearance.BorderColor
-                : fundo;
-            Color texto = button.Enabled
-                ? button.ForeColor
-                : (Escuro ? Color.FromArgb(126, 134, 148) : Color.FromArgb(140, 147, 158));
-
+            Color borda = button.FlatAppearance.BorderSize > 0 && !button.FlatAppearance.BorderColor.IsEmpty ? button.FlatAppearance.BorderColor : fundo;
+            Color texto = button.Enabled ? button.ForeColor : (Escuro ? Color.FromArgb(126, 134, 148) : Color.FromArgb(140, 147, 158));
             ButtonRenderer.DrawParentBackground(e.Graphics, button.ClientRectangle, button);
             int raio = Math.Min(8, button.Height / 3);
             var area = new Rectangle(0, 0, button.Width - 1, button.Height - 1);
@@ -959,8 +938,8 @@ namespace SUB.Utils
                 e.Graphics.FillPath(pincel, caminho);
                 e.Graphics.DrawPath(caneta, caminho);
             }
-            e.Graphics.SmoothingMode = suavizacao;
 
+            e.Graphics.SmoothingMode = suavizacao;
             var alinhamento = TextFormatFlags.VerticalCenter | TextFormatFlags.WordBreak;
             if (button.TextAlign == ContentAlignment.MiddleLeft || button.TextAlign == ContentAlignment.TopLeft || button.TextAlign == ContentAlignment.BottomLeft)
                 alinhamento |= TextFormatFlags.Left;
@@ -1028,8 +1007,6 @@ namespace SUB.Utils
         // Botão plano desabilitado recebe texto escurecido pelo Windows; sobre a cor do tema
         // ficava ilegível. Usa uma superfície neutra e devolve as cores ao reabilitar,
         // preservando estilos que o formulário aplicou por conta própria.
-        
-
         private static void ApplyCompactUtilityButton(Button button, Color primaryColor)
         {
             button.UseVisualStyleBackColor = false;
@@ -1056,39 +1033,24 @@ namespace SUB.Utils
         private static bool IsCompactUtilityButton(Button button)
         {
             string name = button.Name ?? string.Empty;
-            return name.Equals("btnMais", StringComparison.OrdinalIgnoreCase) ||
-                   name.Equals("btnMenos", StringComparison.OrdinalIgnoreCase);
+            return name.Equals("btnMais", StringComparison.OrdinalIgnoreCase) || name.Equals("btnMenos", StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsSecondaryActionButton(Button button)
         {
             string name = button.Name ?? string.Empty;
-            return name.IndexOf("cancel", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("voltar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("anterior", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("limpar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("sair", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("fechar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("export", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("prorrogar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("tutorial", StringComparison.OrdinalIgnoreCase) >= 0;
+            return name.IndexOf("cancel", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("voltar", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("anterior", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("limpar", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("sair", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("fechar", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("export", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("prorrogar", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("pdf", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("tutorial", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static bool IsDestructiveActionButton(Button button)
         {
             string name = button.Name ?? string.Empty;
-            return name.IndexOf("excluir", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("remover", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("apagar", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("deletar", StringComparison.OrdinalIgnoreCase) >= 0;
+            return name.IndexOf("excluir", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("remover", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("apagar", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("deletar", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static bool IsLoginGradient(Control control)
         {
-            return control.Name.Equals("gradientPanel2", StringComparison.OrdinalIgnoreCase) &&
-                   control.FindForm() != null &&
-                   control.FindForm().GetType().Name.Equals("LoginForm", StringComparison.Ordinal);
+            return control.Name.Equals("gradientPanel2", StringComparison.OrdinalIgnoreCase) && control.FindForm() != null && control.FindForm().GetType().Name.Equals("LoginForm", StringComparison.Ordinal);
         }
 
         private static bool IsSemanticColor(Color color)
@@ -1107,7 +1069,10 @@ namespace SUB.Utils
         // trata cinzas como cor de situação e não os troca pela cor dos rótulos.
         public static Color CorRotuloDesabilitado
         {
-            get { return Escuro ? Dark.TextoDesabilitado : Color.FromArgb(156, 156, 156); }
+            get
+            {
+                return Escuro ? Dark.TextoDesabilitado : Color.FromArgb(156, 156, 156);
+            }
         }
 
         // Listas de sugestão (autocompletar) desenhadas pelas próprias telas.
@@ -1120,12 +1085,18 @@ namespace SUB.Utils
 
         public static Color TextoDaSugestao
         {
-            get { return Escuro ? Dark.Texto : Color.FromArgb(60, 60, 60); }
+            get
+            {
+                return Escuro ? Dark.Texto : Color.FromArgb(60, 60, 60);
+            }
         }
 
         public static Color DivisoriaDaSugestao
         {
-            get { return Escuro ? Dark.Borda : Color.FromArgb(220, 220, 220); }
+            get
+            {
+                return Escuro ? Dark.Borda : Color.FromArgb(220, 220, 220);
+            }
         }
 
         private static bool IsSemanticLabel(Label label)
@@ -1133,12 +1104,7 @@ namespace SUB.Utils
             string name = label.Name ?? string.Empty;
             string text = label.Text ?? string.Empty;
             Color color = label.ForeColor;
-
-            return IsSemanticColor(color) ||
-                   name.IndexOf("erro", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("aviso", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   name.IndexOf("sucesso", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                   text.IndexOf("erro", StringComparison.OrdinalIgnoreCase) >= 0;
+            return IsSemanticColor(color) || name.IndexOf("erro", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("aviso", StringComparison.OrdinalIgnoreCase) >= 0 || name.IndexOf("sucesso", StringComparison.OrdinalIgnoreCase) >= 0 || text.IndexOf("erro", StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         private static void ApplyGridTheme(DataGridView grid, Color primaryColor)
@@ -1149,7 +1115,6 @@ namespace SUB.Utils
             Color texto = Escuro ? Dark.Texto : Color.FromArgb(35, 42, 50);
             Color selectedText = texto;
             Color contrast = GetContrastColor(primaryColor);
-
             grid.EnableHeadersVisualStyles = false;
             grid.BackgroundColor = surface;
             grid.GridColor = Escuro ? Dark.Borda : Lighten(primaryColor, 0.58f);
@@ -1167,14 +1132,12 @@ namespace SUB.Utils
             grid.RowHeadersDefaultCellStyle.ForeColor = texto;
             grid.RowHeadersDefaultCellStyle.SelectionBackColor = selected;
             grid.RowHeadersDefaultCellStyle.SelectionForeColor = selectedText;
-
             foreach (DataGridViewColumn column in grid.Columns)
             {
                 column.HeaderCell.Style.BackColor = primaryColor;
                 column.HeaderCell.Style.ForeColor = contrast;
                 column.HeaderCell.Style.SelectionBackColor = primaryColor;
                 column.HeaderCell.Style.SelectionForeColor = contrast;
-
                 if (!column.DefaultCellStyle.BackColor.IsEmpty)
                     column.DefaultCellStyle.BackColor = surface;
                 if (!column.DefaultCellStyle.ForeColor.IsEmpty)
@@ -1190,11 +1153,9 @@ namespace SUB.Utils
         {
             if (GridsWithThemeHandler.TryGetValue(grid, out _))
                 return;
-
-            GridsWithThemeHandler.Add(grid, new object());
+            GridsWithThemeHandler.Add(grid, new object ());
             grid.ColumnAdded += (sender, args) => ApplyGridTheme(grid, corTemaAtual);
             grid.DataBindingComplete += (sender, args) => ApplyGridTheme(grid, corTemaAtual);
-
             // Na formatação o ajuste chega também ao controle de edição; na pintura ele vem depois
             // dos handlers de formatação que as telas registram depois do tema.
             grid.CellFormatting += (sender, args) =>
@@ -1209,7 +1170,6 @@ namespace SUB.Utils
                 AdaptarCelulaParaEscuro(args.CellStyle, args.RowIndex);
                 PintarCelulaDeListaEscura(grid, args);
             };
-
             // Telas que estilizam a grade depois do tema devolvem fundo e linhas brancas.
             grid.BackgroundColorChanged += (sender, args) =>
             {
@@ -1245,7 +1205,6 @@ namespace SUB.Utils
             Color selecao = estilo.SelectionBackColor;
             if (!selecao.IsEmpty && Luminancia(selecao) > 170 && Croma(selecao) < 24)
                 estilo.SelectionBackColor = Dark.Selecao;
-
             Color frente = estilo.ForeColor;
             if (!frente.IsEmpty && Luminancia(frente) < 150)
                 estilo.ForeColor = CorTextoParaEscuro(frente);
@@ -1263,22 +1222,25 @@ namespace SUB.Utils
             var coluna = grid.Columns[args.ColumnIndex] as DataGridViewComboBoxColumn;
             if (coluna == null || coluna.DisplayStyle == DataGridViewComboBoxDisplayStyle.Nothing)
                 return;
-
             args.Paint(args.CellBounds, args.PaintParts & ~DataGridViewPaintParts.ContentBackground);
-
             float centroX = args.CellBounds.Right - 14f;
             float centroY = args.CellBounds.Top + args.CellBounds.Height / 2f;
             var suavizacao = args.Graphics.SmoothingMode;
             args.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            using (var seta = new Pen(Dark.TextoSuave, 1.6f) { StartCap = LineCap.Round, EndCap = LineCap.Round })
+            using (var seta = new Pen(Dark.TextoSuave, 1.6f)
+            {
+                StartCap = LineCap.Round,
+                EndCap = LineCap.Round
+            }
+
+            )
             {
                 args.Graphics.DrawLine(seta, centroX - 4f, centroY - 2f, centroX, centroY + 2f);
                 args.Graphics.DrawLine(seta, centroX, centroY + 2f, centroX + 4f, centroY - 2f);
             }
+
             args.Graphics.SmoothingMode = suavizacao;
             args.Handled = true;
         }
-
     }
 }
-

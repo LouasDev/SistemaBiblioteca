@@ -207,7 +207,7 @@
             this.pnlInstitucional.Location = new System.Drawing.Point(0, 0);
             this.pnlInstitucional.Name = "pnlInstitucional";
             this.pnlInstitucional.Size = new System.Drawing.Size(365, 750);
-            this.pnlInstitucional.TabIndex = 2;
+            this.pnlInstitucional.TabIndex = 0;
             this.pnlInstitucional.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlInstitucional_Paint);
             // 
             // linhaRoteiro2
@@ -216,7 +216,7 @@
             this.linhaRoteiro2.Location = new System.Drawing.Point(53, 512);
             this.linhaRoteiro2.Name = "linhaRoteiro2";
             this.linhaRoteiro2.Size = new System.Drawing.Size(2, 48);
-            this.linhaRoteiro2.TabIndex = 9;
+            this.linhaRoteiro2.TabIndex = 13;
             // 
             // pnlLogo
             // 
@@ -225,7 +225,7 @@
             this.pnlLogo.Location = new System.Drawing.Point(40, 40);
             this.pnlLogo.Name = "pnlLogo";
             this.pnlLogo.Size = new System.Drawing.Size(84, 84);
-            this.pnlLogo.TabIndex = 0;
+            this.pnlLogo.TabIndex = 2;
             // 
             // picLogo
             // 
@@ -247,7 +247,7 @@
             this.lblSub.Location = new System.Drawing.Point(142, 40);
             this.lblSub.Name = "lblSub";
             this.lblSub.Size = new System.Drawing.Size(180, 40);
-            this.lblSub.TabIndex = 1;
+            this.lblSub.TabIndex = 3;
             this.lblSub.Text = "SUB";
             this.lblSub.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -259,7 +259,7 @@
             this.lblNomeSistema.Location = new System.Drawing.Point(145, 80);
             this.lblNomeSistema.Name = "lblNomeSistema";
             this.lblNomeSistema.Size = new System.Drawing.Size(180, 44);
-            this.lblNomeSistema.TabIndex = 2;
+            this.lblNomeSistema.TabIndex = 4;
             this.lblNomeSistema.Text = "Sistema Único Bibliotecário";
             // 
             // lblConfiguracaoInicial
@@ -270,7 +270,7 @@
             this.lblConfiguracaoInicial.Location = new System.Drawing.Point(40, 175);
             this.lblConfiguracaoInicial.Name = "lblConfiguracaoInicial";
             this.lblConfiguracaoInicial.Size = new System.Drawing.Size(285, 77);
-            this.lblConfiguracaoInicial.TabIndex = 3;
+            this.lblConfiguracaoInicial.TabIndex = 5;
             this.lblConfiguracaoInicial.Text = "Vamos preparar sua biblioteca";
             this.lblConfiguracaoInicial.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -282,7 +282,7 @@
             this.lblTextoInstitucional.Location = new System.Drawing.Point(40, 274);
             this.lblTextoInstitucional.Name = "lblTextoInstitucional";
             this.lblTextoInstitucional.Size = new System.Drawing.Size(285, 70);
-            this.lblTextoInstitucional.TabIndex = 4;
+            this.lblTextoInstitucional.TabIndex = 6;
             this.lblTextoInstitucional.Text = "Prepare o ambiente da sua instituição para organizar acervo, usuários e empréstim" +
     "os em um único sistema.";
             // 
@@ -295,7 +295,7 @@
             this.lblRoteiro.Location = new System.Drawing.Point(40, 372);
             this.lblRoteiro.Name = "lblRoteiro";
             this.lblRoteiro.Size = new System.Drawing.Size(166, 15);
-            this.lblRoteiro.TabIndex = 5;
+            this.lblRoteiro.TabIndex = 7;
             this.lblRoteiro.Text = "ROTEIRO DE CONFIGURAÇÃO";
             // 
             // lblPasso1Numero
@@ -305,7 +305,7 @@
             this.lblPasso1Numero.Location = new System.Drawing.Point(40, 408);
             this.lblPasso1Numero.Name = "lblPasso1Numero";
             this.lblPasso1Numero.Size = new System.Drawing.Size(28, 28);
-            this.lblPasso1Numero.TabIndex = 6;
+            this.lblPasso1Numero.TabIndex = 8;
             this.lblPasso1Numero.Text = "1";
             this.lblPasso1Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -317,7 +317,7 @@
             this.lblPasso1Texto.Location = new System.Drawing.Point(82, 405);
             this.lblPasso1Texto.Name = "lblPasso1Texto";
             this.lblPasso1Texto.Size = new System.Drawing.Size(220, 34);
-            this.lblPasso1Texto.TabIndex = 7;
+            this.lblPasso1Texto.TabIndex = 9;
             this.lblPasso1Texto.Text = "Instituição e identidade visual";
             this.lblPasso1Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -327,7 +327,7 @@
             this.linhaRoteiro.Location = new System.Drawing.Point(53, 436);
             this.linhaRoteiro.Name = "linhaRoteiro";
             this.linhaRoteiro.Size = new System.Drawing.Size(2, 48);
-            this.linhaRoteiro.TabIndex = 8;
+            this.linhaRoteiro.TabIndex = 10;
             // 
             // lblPasso2Numero
             // 
@@ -336,7 +336,7 @@
             this.lblPasso2Numero.Location = new System.Drawing.Point(40, 484);
             this.lblPasso2Numero.Name = "lblPasso2Numero";
             this.lblPasso2Numero.Size = new System.Drawing.Size(28, 28);
-            this.lblPasso2Numero.TabIndex = 9;
+            this.lblPasso2Numero.TabIndex = 11;
             this.lblPasso2Numero.Text = "2";
             this.lblPasso2Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -348,7 +348,7 @@
             this.lblPasso2Texto.Location = new System.Drawing.Point(82, 481);
             this.lblPasso2Texto.Name = "lblPasso2Texto";
             this.lblPasso2Texto.Size = new System.Drawing.Size(263, 34);
-            this.lblPasso2Texto.TabIndex = 10;
+            this.lblPasso2Texto.TabIndex = 12;
             this.lblPasso2Texto.Text = "Acesso do primeiro bibliotecário";
             this.lblPasso2Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -359,7 +359,7 @@
             this.lblPasso3Numero.Location = new System.Drawing.Point(40, 560);
             this.lblPasso3Numero.Name = "lblPasso3Numero";
             this.lblPasso3Numero.Size = new System.Drawing.Size(28, 28);
-            this.lblPasso3Numero.TabIndex = 11;
+            this.lblPasso3Numero.TabIndex = 14;
             this.lblPasso3Numero.Text = "3";
             this.lblPasso3Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -371,7 +371,7 @@
             this.lblPasso3Texto.Location = new System.Drawing.Point(82, 557);
             this.lblPasso3Texto.Name = "lblPasso3Texto";
             this.lblPasso3Texto.Size = new System.Drawing.Size(263, 34);
-            this.lblPasso3Texto.TabIndex = 12;
+            this.lblPasso3Texto.TabIndex = 15;
             this.lblPasso3Texto.Text = "Turmas da instituição";
             this.lblPasso3Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -381,7 +381,7 @@
             this.linhaInstitucional.Location = new System.Drawing.Point(54, 651);
             this.linhaInstitucional.Name = "linhaInstitucional";
             this.linhaInstitucional.Size = new System.Drawing.Size(256, 1);
-            this.linhaInstitucional.TabIndex = 5;
+            this.linhaInstitucional.TabIndex = 16;
             // 
             // lblIniciativa
             // 
@@ -391,7 +391,7 @@
             this.lblIniciativa.Location = new System.Drawing.Point(42, 666);
             this.lblIniciativa.Name = "lblIniciativa";
             this.lblIniciativa.Size = new System.Drawing.Size(280, 30);
-            this.lblIniciativa.TabIndex = 6;
+            this.lblIniciativa.TabIndex = 17;
             this.lblIniciativa.Text = "Uma iniciativa da SEE/MG";
             this.lblIniciativa.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -404,7 +404,7 @@
             this.gradientPanel1.Location = new System.Drawing.Point(0, 0);
             this.gradientPanel1.Name = "gradientPanel1";
             this.gradientPanel1.Size = new System.Drawing.Size(1, 1);
-            this.gradientPanel1.TabIndex = 7;
+            this.gradientPanel1.TabIndex = 0;
             this.gradientPanel1.Visible = false;
             // 
             // gradientPanel2
@@ -416,7 +416,7 @@
             this.gradientPanel2.Location = new System.Drawing.Point(37, 37);
             this.gradientPanel2.Name = "gradientPanel2";
             this.gradientPanel2.Size = new System.Drawing.Size(90, 90);
-            this.gradientPanel2.TabIndex = 11;
+            this.gradientPanel2.TabIndex = 1;
             this.gradientPanel2.Visible = false;
             // 
             // pnlConteudo
@@ -435,7 +435,7 @@
             this.pnlConteudo.Location = new System.Drawing.Point(397, 27);
             this.pnlConteudo.Name = "pnlConteudo";
             this.pnlConteudo.Size = new System.Drawing.Size(574, 696);
-            this.pnlConteudo.TabIndex = 1;
+            this.pnlConteudo.TabIndex = 2;
             // 
             // indicadorEtapa3
             // 
@@ -443,7 +443,7 @@
             this.indicadorEtapa3.Location = new System.Drawing.Point(371, 108);
             this.indicadorEtapa3.Name = "indicadorEtapa3";
             this.indicadorEtapa3.Size = new System.Drawing.Size(160, 5);
-            this.indicadorEtapa3.TabIndex = 5;
+            this.indicadorEtapa3.TabIndex = 6;
             // 
             // lblTitulo
             // 
@@ -463,7 +463,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(42, 72);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(380, 24);
-            this.lblSubtitulo.TabIndex = 1;
+            this.lblSubtitulo.TabIndex = 2;
             this.lblSubtitulo.Text = "Informe os dados iniciais da sua instituição.";
             // 
             // lblEtapaAtual
@@ -473,7 +473,7 @@
             this.lblEtapaAtual.Location = new System.Drawing.Point(421, 39);
             this.lblEtapaAtual.Name = "lblEtapaAtual";
             this.lblEtapaAtual.Size = new System.Drawing.Size(112, 22);
-            this.lblEtapaAtual.TabIndex = 2;
+            this.lblEtapaAtual.TabIndex = 1;
             this.lblEtapaAtual.Text = "Etapa 1 de 3";
             this.lblEtapaAtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -490,7 +490,7 @@
             this.indicadorEtapa2.Location = new System.Drawing.Point(207, 108);
             this.indicadorEtapa2.Name = "indicadorEtapa2";
             this.indicadorEtapa2.Size = new System.Drawing.Size(160, 5);
-            this.indicadorEtapa2.TabIndex = 4;
+            this.indicadorEtapa2.TabIndex = 5;
             // 
             // lblErroGeral
             // 
@@ -501,7 +501,7 @@
             this.lblErroGeral.Name = "lblErroGeral";
             this.lblErroGeral.Padding = new System.Windows.Forms.Padding(8, 3, 8, 3);
             this.lblErroGeral.Size = new System.Drawing.Size(491, 34);
-            this.lblErroGeral.TabIndex = 5;
+            this.lblErroGeral.TabIndex = 4;
             this.lblErroGeral.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErroGeral.Visible = false;
             // 
@@ -522,7 +522,7 @@
             this.pnlEtapa1.Location = new System.Drawing.Point(42, 153);
             this.pnlEtapa1.Name = "pnlEtapa1";
             this.pnlEtapa1.Size = new System.Drawing.Size(491, 517);
-            this.pnlEtapa1.TabIndex = 6;
+            this.pnlEtapa1.TabIndex = 7;
             // 
             // lblTituloEtapa1
             // 
@@ -566,7 +566,7 @@
             this._nomeInstituicao.SelectionLength = 0;
             this._nomeInstituicao.SelectionStart = 0;
             this._nomeInstituicao.Size = new System.Drawing.Size(485, 34);
-            this._nomeInstituicao.TabIndex = 0;
+            this._nomeInstituicao.TabIndex = 2;
             this._nomeInstituicao.TextColor = System.Drawing.Color.Black;
             this._nomeInstituicao.UseSystemPasswordChar = false;
             // 
@@ -578,7 +578,7 @@
             this.lblErroNomeInstituicao.Location = new System.Drawing.Point(2, 132);
             this.lblErroNomeInstituicao.Name = "lblErroNomeInstituicao";
             this.lblErroNomeInstituicao.Size = new System.Drawing.Size(485, 17);
-            this.lblErroNomeInstituicao.TabIndex = 2;
+            this.lblErroNomeInstituicao.TabIndex = 3;
             this.lblErroNomeInstituicao.Visible = false;
             // 
             // lblTema
@@ -589,7 +589,7 @@
             this.lblTema.Location = new System.Drawing.Point(0, 155);
             this.lblTema.Name = "lblTema";
             this.lblTema.Size = new System.Drawing.Size(120, 17);
-            this.lblTema.TabIndex = 3;
+            this.lblTema.TabIndex = 4;
             this.lblTema.Text = "Tema do sistema *";
             // 
             // _tema
@@ -610,7 +610,7 @@
             this._tema.PlaceholderMargin = 10;
             this._tema.PlaceholderText = "Selecione...";
             this._tema.Size = new System.Drawing.Size(421, 27);
-            this._tema.TabIndex = 1;
+            this._tema.TabIndex = 5;
             //
             // _aparencia
             //
@@ -631,7 +631,7 @@
             this._aparencia.PlaceholderMargin = 10;
             this._aparencia.PlaceholderText = "Selecione a aparência";
             this._aparencia.Size = new System.Drawing.Size(485, 34);
-            this._aparencia.TabIndex = 2;
+            this._aparencia.TabIndex = 8;
             // lblAparencia
             this.lblAparencia.AutoSize = true;
             this.lblAparencia.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
@@ -655,7 +655,7 @@
             this._visualizadorCor.Location = new System.Drawing.Point(438, 170);
             this._visualizadorCor.Name = "_visualizadorCor";
             this._visualizadorCor.Size = new System.Drawing.Size(51, 42);
-            this._visualizadorCor.TabIndex = 4;
+            this._visualizadorCor.TabIndex = 6;
             // 
             // lblErroTema
             // 
@@ -665,7 +665,7 @@
             this.lblErroTema.Location = new System.Drawing.Point(1, 205);
             this.lblErroTema.Name = "lblErroTema";
             this.lblErroTema.Size = new System.Drawing.Size(423, 17);
-            this.lblErroTema.TabIndex = 5;
+            this.lblErroTema.TabIndex = 7;
             this.lblErroTema.Visible = false;
             // 
             // btnAvancar
@@ -687,7 +687,7 @@
             this.btnAvancar.PressedColor = System.Drawing.Color.Empty;
             this.btnAvancar.ShowBorder = false;
             this.btnAvancar.Size = new System.Drawing.Size(175, 44);
-            this.btnAvancar.TabIndex = 3;
+            this.btnAvancar.TabIndex = 9;
             this.btnAvancar.Text = "Avançar";
             this.btnAvancar.Click += new System.EventHandler(this.btnAvancar_Click);
             // 
@@ -717,7 +717,7 @@
             this.pnlEtapa2.Location = new System.Drawing.Point(42, 153);
             this.pnlEtapa2.Name = "pnlEtapa2";
             this.pnlEtapa2.Size = new System.Drawing.Size(491, 517);
-            this.pnlEtapa2.TabIndex = 7;
+            this.pnlEtapa2.TabIndex = 8;
             this.pnlEtapa2.Visible = false;
             // 
             // lblTituloEtapa2
@@ -763,7 +763,7 @@
             this._nomeBibliotecaria.SelectionLength = 0;
             this._nomeBibliotecaria.SelectionStart = 0;
             this._nomeBibliotecaria.Size = new System.Drawing.Size(485, 34);
-            this._nomeBibliotecaria.TabIndex = 0;
+            this._nomeBibliotecaria.TabIndex = 2;
             this._nomeBibliotecaria.TextColor = System.Drawing.Color.Black;
             this._nomeBibliotecaria.UseSystemPasswordChar = false;
             // 
@@ -775,7 +775,7 @@
             this.lblErroNomeBibliotecaria.Location = new System.Drawing.Point(3, 90);
             this.lblErroNomeBibliotecaria.Name = "lblErroNomeBibliotecaria";
             this.lblErroNomeBibliotecaria.Size = new System.Drawing.Size(485, 17);
-            this.lblErroNomeBibliotecaria.TabIndex = 2;
+            this.lblErroNomeBibliotecaria.TabIndex = 3;
             this.lblErroNomeBibliotecaria.Visible = false;
             // 
             // lblEmailBibliotecaria
@@ -786,7 +786,7 @@
             this.lblEmailBibliotecaria.Location = new System.Drawing.Point(0, 111);
             this.lblEmailBibliotecaria.Name = "lblEmailBibliotecaria";
             this.lblEmailBibliotecaria.Size = new System.Drawing.Size(49, 15);
-            this.lblEmailBibliotecaria.TabIndex = 3;
+            this.lblEmailBibliotecaria.TabIndex = 4;
             this.lblEmailBibliotecaria.Text = "E-mail *";
             // 
             // _emailBibliotecaria
@@ -810,7 +810,7 @@
             this._emailBibliotecaria.SelectionLength = 0;
             this._emailBibliotecaria.SelectionStart = 0;
             this._emailBibliotecaria.Size = new System.Drawing.Size(485, 34);
-            this._emailBibliotecaria.TabIndex = 1;
+            this._emailBibliotecaria.TabIndex = 5;
             this._emailBibliotecaria.TextColor = System.Drawing.Color.Black;
             this._emailBibliotecaria.UseSystemPasswordChar = false;
             // 
@@ -821,7 +821,7 @@
             this.lblAuxiliarEmail.Location = new System.Drawing.Point(3, 166);
             this.lblAuxiliarEmail.Name = "lblAuxiliarEmail";
             this.lblAuxiliarEmail.Size = new System.Drawing.Size(250, 16);
-            this.lblAuxiliarEmail.TabIndex = 4;
+            this.lblAuxiliarEmail.TabIndex = 6;
             this.lblAuxiliarEmail.Text = "Será usado para entrar no SUB.";
             // 
             // lblErroEmailBibliotecaria
@@ -832,7 +832,7 @@
             this.lblErroEmailBibliotecaria.Location = new System.Drawing.Point(255, 166);
             this.lblErroEmailBibliotecaria.Name = "lblErroEmailBibliotecaria";
             this.lblErroEmailBibliotecaria.Size = new System.Drawing.Size(233, 17);
-            this.lblErroEmailBibliotecaria.TabIndex = 5;
+            this.lblErroEmailBibliotecaria.TabIndex = 7;
             this.lblErroEmailBibliotecaria.Visible = false;
             // 
             // lblTelefoneBibliotecaria
@@ -843,7 +843,7 @@
             this.lblTelefoneBibliotecaria.Location = new System.Drawing.Point(0, 191);
             this.lblTelefoneBibliotecaria.Name = "lblTelefoneBibliotecaria";
             this.lblTelefoneBibliotecaria.Size = new System.Drawing.Size(60, 15);
-            this.lblTelefoneBibliotecaria.TabIndex = 6;
+            this.lblTelefoneBibliotecaria.TabIndex = 8;
             this.lblTelefoneBibliotecaria.Text = "Telefone *";
             // 
             // _telefoneBibliotecaria
@@ -863,7 +863,7 @@
             this._telefoneBibliotecaria.Name = "_telefoneBibliotecaria";
             this._telefoneBibliotecaria.Padding = new System.Windows.Forms.Padding(9, 5, 5, 5);
             this._telefoneBibliotecaria.Size = new System.Drawing.Size(485, 34);
-            this._telefoneBibliotecaria.TabIndex = 2;
+            this._telefoneBibliotecaria.TabIndex = 9;
             // 
             // lblErroTelefoneBibliotecaria
             // 
@@ -873,7 +873,7 @@
             this.lblErroTelefoneBibliotecaria.Location = new System.Drawing.Point(3, 247);
             this.lblErroTelefoneBibliotecaria.Name = "lblErroTelefoneBibliotecaria";
             this.lblErroTelefoneBibliotecaria.Size = new System.Drawing.Size(485, 17);
-            this.lblErroTelefoneBibliotecaria.TabIndex = 7;
+            this.lblErroTelefoneBibliotecaria.TabIndex = 10;
             this.lblErroTelefoneBibliotecaria.Visible = false;
             // 
             // lblSenhaBibliotecaria
@@ -884,7 +884,7 @@
             this.lblSenhaBibliotecaria.Location = new System.Drawing.Point(0, 267);
             this.lblSenhaBibliotecaria.Name = "lblSenhaBibliotecaria";
             this.lblSenhaBibliotecaria.Size = new System.Drawing.Size(48, 15);
-            this.lblSenhaBibliotecaria.TabIndex = 8;
+            this.lblSenhaBibliotecaria.TabIndex = 11;
             this.lblSenhaBibliotecaria.Text = "Senha *";
             // 
             // _senhaBibliotecaria
@@ -908,7 +908,7 @@
             this._senhaBibliotecaria.SelectionLength = 0;
             this._senhaBibliotecaria.SelectionStart = 0;
             this._senhaBibliotecaria.Size = new System.Drawing.Size(235, 34);
-            this._senhaBibliotecaria.TabIndex = 3;
+            this._senhaBibliotecaria.TabIndex = 13;
             this._senhaBibliotecaria.TextColor = System.Drawing.Color.Black;
             this._senhaBibliotecaria.UseSystemPasswordChar = true;
             // 
@@ -920,7 +920,7 @@
             this.lblErroSenhaBibliotecaria.Location = new System.Drawing.Point(3, 322);
             this.lblErroSenhaBibliotecaria.Name = "lblErroSenhaBibliotecaria";
             this.lblErroSenhaBibliotecaria.Size = new System.Drawing.Size(235, 17);
-            this.lblErroSenhaBibliotecaria.TabIndex = 9;
+            this.lblErroSenhaBibliotecaria.TabIndex = 15;
             this.lblErroSenhaBibliotecaria.Visible = false;
             // 
             // lblConfirmarSenhaBibliotecaria
@@ -931,7 +931,7 @@
             this.lblConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(250, 267);
             this.lblConfirmarSenhaBibliotecaria.Name = "lblConfirmarSenhaBibliotecaria";
             this.lblConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(102, 15);
-            this.lblConfirmarSenhaBibliotecaria.TabIndex = 10;
+            this.lblConfirmarSenhaBibliotecaria.TabIndex = 12;
             this.lblConfirmarSenhaBibliotecaria.Text = "Confirmar senha *";
             // 
             // _confirmarSenhaBibliotecaria
@@ -955,7 +955,7 @@
             this._confirmarSenhaBibliotecaria.SelectionLength = 0;
             this._confirmarSenhaBibliotecaria.SelectionStart = 0;
             this._confirmarSenhaBibliotecaria.Size = new System.Drawing.Size(235, 34);
-            this._confirmarSenhaBibliotecaria.TabIndex = 4;
+            this._confirmarSenhaBibliotecaria.TabIndex = 14;
             this._confirmarSenhaBibliotecaria.TextColor = System.Drawing.Color.Black;
             this._confirmarSenhaBibliotecaria.UseSystemPasswordChar = true;
             // 
@@ -967,7 +967,7 @@
             this.lblErroConfirmarSenhaBibliotecaria.Location = new System.Drawing.Point(253, 322);
             this.lblErroConfirmarSenhaBibliotecaria.Name = "lblErroConfirmarSenhaBibliotecaria";
             this.lblErroConfirmarSenhaBibliotecaria.Size = new System.Drawing.Size(235, 17);
-            this.lblErroConfirmarSenhaBibliotecaria.TabIndex = 11;
+            this.lblErroConfirmarSenhaBibliotecaria.TabIndex = 16;
             this.lblErroConfirmarSenhaBibliotecaria.Visible = false;
             // 
             // chkMostrarSenhas
@@ -978,7 +978,7 @@
             this.chkMostrarSenhas.Location = new System.Drawing.Point(3, 344);
             this.chkMostrarSenhas.Name = "chkMostrarSenhas";
             this.chkMostrarSenhas.Size = new System.Drawing.Size(106, 19);
-            this.chkMostrarSenhas.TabIndex = 5;
+            this.chkMostrarSenhas.TabIndex = 17;
             this.chkMostrarSenhas.Text = "Mostrar senhas";
             this.chkMostrarSenhas.CheckedChanged += new System.EventHandler(this.chkMostrarSenhas_CheckedChanged);
             // 
@@ -993,7 +993,7 @@
             this.pnlCodigoRecuperacao.Location = new System.Drawing.Point(3, 367);
             this.pnlCodigoRecuperacao.Name = "pnlCodigoRecuperacao";
             this.pnlCodigoRecuperacao.Size = new System.Drawing.Size(485, 104);
-            this.pnlCodigoRecuperacao.TabIndex = 12;
+            this.pnlCodigoRecuperacao.TabIndex = 18;
             // 
             // lblCodigoTitulo
             // 
@@ -1035,7 +1035,7 @@
             this.exportarCodigo.Location = new System.Drawing.Point(344, 48);
             this.exportarCodigo.Name = "exportarCodigo";
             this.exportarCodigo.Size = new System.Drawing.Size(127, 28);
-            this.exportarCodigo.TabIndex = 6;
+            this.exportarCodigo.TabIndex = 3;
             this.exportarCodigo.Text = "Salvar código...";
             this.exportarCodigo.Click += new System.EventHandler(this.exportarCodigo_Click);
             // 
@@ -1047,7 +1047,7 @@
             this.statusCodigo.Location = new System.Drawing.Point(12, 80);
             this.statusCodigo.Name = "statusCodigo";
             this.statusCodigo.Size = new System.Drawing.Size(459, 17);
-            this.statusCodigo.TabIndex = 7;
+            this.statusCodigo.TabIndex = 4;
             this.statusCodigo.Text = "Pendente de salvamento. Salve o código para concluir.";
             // 
             // btnVoltar
@@ -1059,7 +1059,7 @@
             this.btnVoltar.Location = new System.Drawing.Point(3, 480);
             this.btnVoltar.Name = "btnVoltar";
             this.btnVoltar.Size = new System.Drawing.Size(92, 34);
-            this.btnVoltar.TabIndex = 7;
+            this.btnVoltar.TabIndex = 19;
             this.btnVoltar.Text = "Voltar";
             this.btnVoltar.Click += new System.EventHandler(this.btnVoltar_Click);
             // 
@@ -1082,7 +1082,7 @@
             this.btnAvancarEtapa2.PressedColor = System.Drawing.Color.Empty;
             this.btnAvancarEtapa2.ShowBorder = false;
             this.btnAvancarEtapa2.Size = new System.Drawing.Size(200, 40);
-            this.btnAvancarEtapa2.TabIndex = 8;
+            this.btnAvancarEtapa2.TabIndex = 20;
             this.btnAvancarEtapa2.Text = "Avançar";
             this.btnAvancarEtapa2.Click += new System.EventHandler(this.btnAvancarEtapa2_Click);
             // 
@@ -1100,7 +1100,7 @@
             this.pnlEtapa3.Location = new System.Drawing.Point(42, 153);
             this.pnlEtapa3.Name = "pnlEtapa3";
             this.pnlEtapa3.Size = new System.Drawing.Size(491, 517);
-            this.pnlEtapa3.TabIndex = 8;
+            this.pnlEtapa3.TabIndex = 9;
             this.pnlEtapa3.Visible = false;
             // 
             // lblTituloEtapa3
@@ -1145,7 +1145,7 @@
             this.txtNovaTurma.SelectionLength = 0;
             this.txtNovaTurma.SelectionStart = 0;
             this.txtNovaTurma.Size = new System.Drawing.Size(300, 34);
-            this.txtNovaTurma.TabIndex = 0;
+            this.txtNovaTurma.TabIndex = 2;
             this.txtNovaTurma.TextColor = System.Drawing.Color.Black;
             this.txtNovaTurma.UseSystemPasswordChar = false;
             this.txtNovaTurma.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNovaTurma_KeyDown);
@@ -1158,7 +1158,7 @@
             this.btnAdicionarTurma.Location = new System.Drawing.Point(313, 96);
             this.btnAdicionarTurma.Name = "btnAdicionarTurma";
             this.btnAdicionarTurma.Size = new System.Drawing.Size(175, 36);
-            this.btnAdicionarTurma.TabIndex = 1;
+            this.btnAdicionarTurma.TabIndex = 3;
             this.btnAdicionarTurma.Text = "Adicionar turma";
             this.btnAdicionarTurma.UseVisualStyleBackColor = false;
             this.btnAdicionarTurma.Click += new System.EventHandler(this.btnAdicionarTurma_Click);
@@ -1172,7 +1172,7 @@
             this.lstTurmasIniciais.Location = new System.Drawing.Point(3, 151);
             this.lstTurmasIniciais.Name = "lstTurmasIniciais";
             this.lstTurmasIniciais.Size = new System.Drawing.Size(485, 211);
-            this.lstTurmasIniciais.TabIndex = 2;
+            this.lstTurmasIniciais.TabIndex = 4;
             this.lstTurmasIniciais.SelectedIndexChanged += new System.EventHandler(this.lstTurmasIniciais_SelectedIndexChanged);
             // 
             // btnRemoverTurma
@@ -1183,7 +1183,7 @@
             this.btnRemoverTurma.Location = new System.Drawing.Point(345, 370);
             this.btnRemoverTurma.Name = "btnRemoverTurma";
             this.btnRemoverTurma.Size = new System.Drawing.Size(143, 32);
-            this.btnRemoverTurma.TabIndex = 3;
+            this.btnRemoverTurma.TabIndex = 6;
             this.btnRemoverTurma.Text = "Remover selecionada";
             this.btnRemoverTurma.UseVisualStyleBackColor = false;
             this.btnRemoverTurma.Click += new System.EventHandler(this.btnRemoverTurma_Click);
@@ -1195,7 +1195,7 @@
             this.lblErroTurmas.Location = new System.Drawing.Point(3, 373);
             this.lblErroTurmas.Name = "lblErroTurmas";
             this.lblErroTurmas.Size = new System.Drawing.Size(330, 26);
-            this.lblErroTurmas.TabIndex = 4;
+            this.lblErroTurmas.TabIndex = 5;
             this.lblErroTurmas.Visible = false;
             // 
             // btnVoltarEtapa3
@@ -1207,7 +1207,7 @@
             this.btnVoltarEtapa3.Location = new System.Drawing.Point(3, 480);
             this.btnVoltarEtapa3.Name = "btnVoltarEtapa3";
             this.btnVoltarEtapa3.Size = new System.Drawing.Size(92, 34);
-            this.btnVoltarEtapa3.TabIndex = 4;
+            this.btnVoltarEtapa3.TabIndex = 7;
             this.btnVoltarEtapa3.Text = "Voltar";
             this.btnVoltarEtapa3.Click += new System.EventHandler(this.btnVoltarEtapa3_Click);
             // 
@@ -1244,7 +1244,7 @@
             this.btnFechar.Name = "btnFechar";
             this.btnFechar.Size = new System.Drawing.Size(23, 24);
             this.btnFechar.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.btnFechar.TabIndex = 3;
+            this.btnFechar.TabIndex = 1;
             this.btnFechar.TabStop = false;
             this.btnFechar.Click += new System.EventHandler(this.pictureBox1_Click);
             // 

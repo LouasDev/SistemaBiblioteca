@@ -1,31 +1,18 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SeuProjeto;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using SUB.Forms.Configuracoes;
 using SUB.Forms.Livros;
 using SUB.Forms.Login;
 using SUB.Forms.Relatorio;
 using SUB.Forms.Usuario;
-using SUB.Froms.Usuario;
 using SUB.Models;
 using SUB.Properties;
 using SUB.Utils;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ToggleSwitch;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SUB.Forms.Inicio
 {
@@ -36,34 +23,14 @@ namespace SUB.Forms.Inicio
         private ContextMenuStrip notifyMenu;
         private Color corPrimaria = ThemeManager.DefaultColor;
         private Button navAtiva;
-        private GuidedTourOverlay tutorialOverlay;
-        private bool tutorialInicialAgendado;
-        private readonly List<Form> formulariosCriadosPeloTutorial = new List<Form>();
-
-        private enum TelaDoTutorial
-        {
-            Inicio,
-            Pessoas,
-            CadastroUsuario,
-            EditarUsuario,
-            Acervo,
-            CadastroLivro,
-            Emprestimos,
-            EmprestimoRapido,
-            Devolucao,
-            Relatorios,
-            Configuracao
-        }
         private Color fundoClaroDoForm;
         private Color fundoClaroDoPainelControle;
-
         public MainForm()
         {
             InitializeComponent();
             fundoClaroDoForm = BackColor;
             fundoClaroDoPainelControle = panelControl.BackColor;
             mdiProp();
-
             var configuracaoInstituicao = InstituicaoConfiguracaoStore.Carregar();
             if (configuracaoInstituicao != null)
             {
@@ -80,19 +47,13 @@ namespace SUB.Forms.Inicio
                 ThemeManager.DefinirModo(configuracaoInstituicao);
                 menu.BackColor = corPrimaria;
                 Text = configuracaoInstituicao.Nome;
-
                 SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
             }
-            AtualizarFundoMdi();
 
+            AtualizarFundoMdi();
             if (InstituicaoConfiguracaoStore.CorrupcaoDetectada)
             {
-                MessageBox.Show(
-                    "O arquivo de configuração da instituição estava danificado e não pôde ser lido.\n" +
-                    "O tema padrão foi aplicado.\n\n" +
-                    "Uma cópia do arquivo foi guardada em:\n" +
-                    (InstituicaoConfiguracaoStore.BackupCorrompidoPath ?? "(cópia não disponível)"),
-                    "Configurações", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("O arquivo de configuração da instituição estava danificado e não pôde ser lido.\n" + "O tema padrão foi aplicado.\n\n" + "Uma cópia do arquivo foi guardada em:\n" + (InstituicaoConfiguracaoStore.BackupCorrompidoPath ?? "(cópia não disponível)"), "Configurações", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             menu.BackColor = corPrimaria;
@@ -106,36 +67,36 @@ namespace SUB.Forms.Inicio
 
 
             //aredondar cantos e desenhar borda cinza
-
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
-
             // Os botões da janela são só ícones; a dica diz o que cada um faz.
             var dicas = new ToolTip(components);
             dicas.SetToolTip(picMin, "Minimizar");
             dicas.SetToolTip(picMax, "Maximizar ou restaurar");
             dicas.SetToolTip(picExit, "Fechar o SUB");
-
-
-
             // Inicializa NotifyIcon e menu de contexto
             notifyMenu = new ContextMenuStrip();
             var abrirItem = new ToolStripMenuItem("Abrir");
             var sairItem = new ToolStripMenuItem("Sair");
-
             abrirItem.Click += (s, e) => RestoreFromTray();
             sairItem.Click += (s, e) =>
             {
                 // remove o ícone antes de sair para não deixar resíduo
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
+
                 Application.Exit();
             };
-
             notifyMenu.Items.Add(abrirItem);
             notifyMenu.Items.Add(new ToolStripSeparator());
             notifyMenu.Items.Add(sairItem);
-
             notifyIcon = new NotifyIcon
             {
                 Icon = SystemIcons.Application,
@@ -144,8 +105,6 @@ namespace SUB.Forms.Inicio
                 ContextMenuStrip = notifyMenu
             };
             notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
-
-            
         }
 
         private void VincularEventosNavegacao()
@@ -179,18 +138,35 @@ namespace SUB.Forms.Inicio
             Color itemFilho = ThemeManager.Darken(baseMenu, 0.08F);
             Color hover = ThemeManager.Lighten(baseMenu, 0.12F);
             Color texto = ThemeManager.GetContrastColor(baseMenu);
-
             menu.BackColor = baseMenu;
             panel1.BackColor = baseMenu;
             lblMarcaMenu.ForeColor = texto;
             lblContextoMenu.ForeColor = ThemeManager.Lighten(texto, 0.18F);
+            foreach (var botao in new[]
+            {
+                btnInicio,
+                btnUsuario,
+                btnLivro,
+                btnRel,
+                btnConfiguracao
+            }
 
-            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel, btnConfiguracao })
+            )
                 EstilizarBotaoMenu(botao, baseMenu, hover, texto);
+            foreach (var botao in new[]
+            {
+                btnUser,
+                btnUserCad,
+                btnUserEdit,
+                btnLivros,
+                btnEmprestimo,
+                btnEmprestimoRap,
+                btnLivroCad,
+                btnDev
+            }
 
-            foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
+            )
                 EstilizarBotaoMenu(botao, itemFilho, hover, texto);
-
             EstilizarBotaoMenu(btnSair, ThemeManager.Darken(baseMenu, 0.14F), hover, texto);
             if (navAtiva != null)
                 DefinirNavegacaoAtiva(navAtiva);
@@ -208,7 +184,6 @@ namespace SUB.Forms.Inicio
         {
             if (botao == null)
                 return;
-
             navAtiva = botao;
             AplicarTemaDaNavegacaoSemRecursao();
         }
@@ -219,39 +194,50 @@ namespace SUB.Forms.Inicio
             Color itemFilho = ThemeManager.Darken(baseMenu, 0.08F);
             Color hover = ThemeManager.Lighten(baseMenu, 0.12F);
             Color texto = ThemeManager.GetContrastColor(baseMenu);
+            foreach (var botao in new[]
+            {
+                btnInicio,
+                btnUsuario,
+                btnLivro,
+                btnRel,
+                btnConfiguracao
+            }
 
-            foreach (var botao in new[] { btnInicio, btnUsuario, btnLivro, btnRel, btnConfiguracao })
+            )
                 EstilizarBotaoMenu(botao, botao == navAtiva ? ThemeManager.Lighten(baseMenu, 0.10F) : baseMenu, hover, texto);
-            foreach (var botao in new[] { btnUser, btnUserCad, btnUserEdit, btnLivros, btnEmprestimo, btnEmprestimoRap, btnLivroCad, btnDev })
+            foreach (var botao in new[]
+            {
+                btnUser,
+                btnUserCad,
+                btnUserEdit,
+                btnLivros,
+                btnEmprestimo,
+                btnEmprestimoRap,
+                btnLivroCad,
+                btnDev
+            }
+
+            )
                 EstilizarBotaoMenu(botao, itemFilho, hover, texto);
             EstilizarBotaoMenu(btnSair, ThemeManager.Darken(baseMenu, 0.14F), hover, texto);
         }
-
-        #region Componentes de inicialização
 
         private void tamanho()
         {
             // O tamanho base foi desenhado para 96 DPI. Ao restaurar a janela,
             // respeitamos a escala atual e nunca ultrapassamos a área útil do monitor.
             float escalaDpi = DeviceDpi > 0 ? DeviceDpi / 96f : 1f;
-            Size desejado = new Size(
-                (int)Math.Round(1440 * escalaDpi),
-                (int)Math.Round(800 * escalaDpi));
+            Size desejado = new Size((int)Math.Round(1440 * escalaDpi), (int)Math.Round(800 * escalaDpi));
             Size areaUtil = Screen.FromHandle(Handle).WorkingArea.Size;
-
-            Size = new Size(
-                Math.Min(desejado.Width, areaUtil.Width),
-                Math.Min(desejado.Height, areaUtil.Height));
+            Size = new Size(Math.Min(desejado.Width, areaUtil.Width), Math.Min(desejado.Height, areaUtil.Height));
         }
         private bool maximizado => WindowState == FormWindowState.Maximized;
 
         //Funções da API para movimentar a aba
         [DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
-
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HTCAPTION = 0x2;
 
@@ -336,10 +322,9 @@ namespace SUB.Forms.Inicio
         EmprestimoRapidoForm emprestimoRap;
         CadastroLivroForm cadastroLivro;
         DevoluçãoForm devolução;
-        CadUsuario usuarioCad; 
+        CadUsuario usuarioCad;
         public EditarUsuarioForm usuarioEdit;
         ConfiguracaoForm configuracao;
-
         //Proporção dos Forms
         private void mdiProp()
         {
@@ -384,12 +369,8 @@ namespace SUB.Forms.Inicio
                 var estado = new MapeamentoAnualStore().ObterEstadoDoAno(DateTime.Now.Year);
                 if (!estado.DeveLembrar)
                     return;
-
-                string mensagem = estado.Status == MapeamentoAnualStore.RequerRevisao
-                    ? $"O registro local do mapeamento de {estado.Ano} precisou de revisão. Nenhuma conclusão foi presumida.\nDeseja revisar o mapeamento agora ou ser lembrado no próximo acesso?"
-                    : $"Existe um mapeamento pendente para o ano {estado.Ano}.\nDeseja executá-lo agora ou ser lembrado no próximo acesso?";
-                var resposta = MessageBox.Show(mensagem, "Mapeamento anual", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                string mensagem = estado.Status == MapeamentoAnualStore.RequerRevisao ? $"O registro local do mapeamento de {estado.Ano} precisou de revisão. Nenhuma conclusão foi presumida.\nDeseja revisar o mapeamento agora ou ser lembrado no próximo acesso?" : $"Existe um mapeamento pendente para o ano {estado.Ano}.\nDeseja executá-lo agora ou ser lembrado no próximo acesso?";
+                var resposta = MessageBox.Show(mensagem, "Mapeamento anual", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                 if (resposta == DialogResult.Yes)
                     AbrirMapeamentoModal();
             }
@@ -398,42 +379,28 @@ namespace SUB.Forms.Inicio
                 System.Diagnostics.Trace.WriteLine($"Erro checar mapeamento: {ex.Message}");
             }
         }
+
         private void AbrirMapeamentoModal()
         {
             var mapeamentoForm = new SUB.Forms.Usuario.MapeamentoDeTurmasWizardForm();
-
             // Configurar como modal dialog
             mapeamentoForm.StartPosition = FormStartPosition.CenterParent;
             mapeamentoForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             mapeamentoForm.MaximizeBox = false;
             mapeamentoForm.MinimizeBox = false;
             mapeamentoForm.ShowInTaskbar = false;
-
             // Abrir como modal - não permite clicar fora
             var resultado = mapeamentoForm.ShowDialog(this);
-
             if (resultado == DialogResult.OK)
             {
-                
-                MessageBox.Show(
-                    "Mapeamento de turmas concluído com sucesso!",
-                    "Sucesso",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Mapeamento de turmas concluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (resultado == DialogResult.Cancel)
             {
-                MessageBox.Show(
-                    "Mapeamento cancelado. Será solicitado novamente na próxima inicialização.",
-                    "Mapeamento Cancelado",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Mapeamento cancelado. Será solicitado novamente na próxima inicialização.", "Mapeamento Cancelado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
-        #endregion
-
-        #region Botões
         //Form Inicio
         public void btnIn()
         {
@@ -450,21 +417,18 @@ namespace SUB.Forms.Inicio
         private void Inicio_FormClosed(object sender, FormClosedEventArgs e)
         {
             inicio = null;
-            if (activeChild == null) activeChild = null;
+            if (activeChild == null)
+                activeChild = null;
         }
 
-        #region Form do Usuários
-
-        
         //Form usuário
         private async void btnUsuario_Click(object sender, EventArgs e)
         {
-
-            if (menuAnimating) return;      // já estamos animando -> ignora
+            if (menuAnimating)
+                return; // já estamos animando -> ignora
             menuAnimating = true;
             btnUsuario.Enabled = false;
             btnLivro.Enabled = true;
-
             if (livroContainer.Height > 60)
             {
                 livroTransition.Start();
@@ -472,14 +436,11 @@ namespace SUB.Forms.Inicio
             }
 
             userTransition.Start();
-
             await Task.Delay(120);
             menuAnimating = false;
             btnUsuario.Enabled = true;
             // após a animação, garanta que o menu receba foco para não ativar outro MDI child
             menu.Focus();
-
-
         }
 
         // MainForm.cs
@@ -489,8 +450,6 @@ namespace SUB.Forms.Inicio
             btnUserEdit.Enabled = userEditEnabled;
         }
 
-       
-
         //Botão de cadastro do usuário
         public void btnUser_Click(object sender, EventArgs e)
         {
@@ -499,8 +458,8 @@ namespace SUB.Forms.Inicio
                 usuario = new UsuarioForm();
                 usuario.FormClosed += Usuario_FormClosed;
             }
-            OpenChild(usuario, keepPreviousHidden: true); // keepPreviousHidden se quiser manter estado do anterior (opcional)
 
+            OpenChild(usuario, keepPreviousHidden: true); // keepPreviousHidden se quiser manter estado do anterior (opcional)
         }
 
         //Botão de cadastro do usuário
@@ -509,11 +468,9 @@ namespace SUB.Forms.Inicio
             if (usuarioCad == null || usuarioCad.IsDisposed)
             {
                 usuarioCad = new CadUsuario();
-
                 // evitar múltiplos +=
                 usuarioCad.UsuarioCriado -= UsuarioCad_UsuarioCriado;
                 usuarioCad.UsuarioCriado += UsuarioCad_UsuarioCriado;
-
                 usuarioCad.FormClosed += UsuarioCad_FormClosed;
             }
 
@@ -526,6 +483,7 @@ namespace SUB.Forms.Inicio
             {
                 usuarioCad.UsuarioCriado -= UsuarioCad_UsuarioCriado;
             }
+
             usuarioCad = null;
         }
 
@@ -548,6 +506,7 @@ namespace SUB.Forms.Inicio
                 usuarioEdit = new EditarUsuarioForm();
                 usuarioEdit.FormClosed += UsuarioEdit_FormClosed;
             }
+
             OpenChild(usuarioEdit, keepPreviousHidden: true);
         }
 
@@ -556,31 +515,25 @@ namespace SUB.Forms.Inicio
             ResetarUsuarioEdit();
         }
 
-
         public void ResetarUsuarioEdit()
         {
             usuarioEdit = null;
         }
 
         //Botão Usuário(Biblioteca)
-
-        #endregion
-
         private void Usuario_FormClosed(object sender, FormClosedEventArgs e)
         {
             usuario = null;
         }
 
-        #region Form dos Livros
         //Botão Expansão do Livro
         public async void btnLivro_Click(object sender, EventArgs e)
         {
-            if (menuAnimating) return;
+            if (menuAnimating)
+                return;
             btnLivro.Enabled = false;
             menuAnimating = true;
-            
             btnUsuario.Enabled = true;
-
             if (userContainer.Height > 60)
             {
                 userTransition.Start();
@@ -589,7 +542,6 @@ namespace SUB.Forms.Inicio
 
             livroTransition.Start();
             await Task.Delay(150);
-            
             menuAnimating = false;
             btnLivro.Enabled = true;
             menu.Focus();
@@ -603,9 +555,11 @@ namespace SUB.Forms.Inicio
                 livros = new LivrosForm();
                 livros.FormClosed += Livros_FormClosed;
             }
+
             OpenChild(livros, keepPreviousHidden: true);
-           livros.btnProcurar_Click(null, null); // Carrega lista inicial
+            livros.btnProcurar_Click(null, null); // Carrega lista inicial
         }
+
         private void Livros_FormClosed(object sender, FormClosedEventArgs e)
         {
             livros = null;
@@ -619,6 +573,7 @@ namespace SUB.Forms.Inicio
                 emprestimo = new EmprestimoForm();
                 emprestimo.FormClosed += Emprestimo_FormClosed;
             }
+
             OpenChild(emprestimo, keepPreviousHidden: true);
         }
 
@@ -635,9 +590,8 @@ namespace SUB.Forms.Inicio
                 emprestimoRap = new EmprestimoRapidoForm();
                 emprestimoRap.FormClosed += EmprestimoRap_FormClosed;
             }
+
             OpenChild(emprestimoRap, keepPreviousHidden: true);
-
-
         }
 
         //Botão de empréstimo rápido
@@ -645,6 +599,7 @@ namespace SUB.Forms.Inicio
         {
             emprestimoRap = null; // corrigido
         }
+
         private void btnLivroCad_Click(object sender, EventArgs e)
         {
             if (cadastroLivro == null || cadastroLivro.IsDisposed)
@@ -652,9 +607,8 @@ namespace SUB.Forms.Inicio
                 cadastroLivro = new CadastroLivroForm();
                 cadastroLivro.FormClosed += CadastroLivro_FormClosed;
             }
+
             OpenChild(cadastroLivro, keepPreviousHidden: true);
-
-
         }
 
         private void CadastroLivro_FormClosed(object sender, FormClosedEventArgs e)
@@ -670,6 +624,7 @@ namespace SUB.Forms.Inicio
                 devolução = new DevoluçãoForm();
                 devolução.FormClosed += Devolução_FormClosed;
             }
+
             OpenChild(devolução, keepPreviousHidden: true);
         }
 
@@ -677,9 +632,6 @@ namespace SUB.Forms.Inicio
         {
             devolução = null;
         }
-
-
-        #endregion
 
         //Form rel
         private void btnRel_Click(object sender, EventArgs e)
@@ -689,8 +641,8 @@ namespace SUB.Forms.Inicio
                 rel = new RelForm();
                 rel.FormClosed += Relatorios_FormClosed;
             }
-            OpenChild(rel, keepPreviousHidden: true);
 
+            OpenChild(rel, keepPreviousHidden: true);
         }
 
         private void Relatorios_FormClosed(object sender, FormClosedEventArgs e)
@@ -707,38 +659,38 @@ namespace SUB.Forms.Inicio
             {
                 // sinaliza logout para permitir fechamento real do MainForm
                 Program.RequestLogout = true;
-
                 // garante liberar notifyIcon
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
 
                 // fecha o MainForm (OnFormClosing permitirá o fechamento por causa da flag)
                 this.Close();
             }
         }
 
-
-
-        #endregion
-
-        #region Interações/Funcionalidades do Form
-
-        #region Control box
         private void picExit_Click(object sender, EventArgs e)
         {
-            var confirma = MessageBox.Show(
-                "Tem certeza de que quer sair da aplicação?",
-                "Confirmação de saída",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
-
+            var confirma = MessageBox.Show("Tem certeza de que quer sair da aplicação?", "Confirmação de saída", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirma == DialogResult.Yes)
             {
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
+
                 Application.Exit(); // Fecha completamente o app
             }
         }
-
-
 
         //Funcionalidade dos botões
         private void picMax_Click(object sender, EventArgs e)
@@ -754,6 +706,7 @@ namespace SUB.Forms.Inicio
                 ? Resources.icons8_verificar_todos_os_20
                 : Resources.icons8_quadrado_arredondado_20;
         }
+
         private void picMin_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
@@ -789,7 +742,6 @@ namespace SUB.Forms.Inicio
         {
             picMin.BackColor = Color.Transparent;
         }
-        #endregion
 
         protected override void OnShown(EventArgs e)
         {
@@ -806,21 +758,24 @@ namespace SUB.Forms.Inicio
                 dialogo.AplicarTema(corPrimaria);
                 dialogo.ShowDialog(this);
             }
-            try { novidades.MarcarExibida(AtualizacaoService.VersaoAtual()); }
-            catch (IOException) { }
-            catch (UnauthorizedAccessException) { }
+
+            try
+            {
+                novidades.MarcarExibida(AtualizacaoService.VersaoAtual());
+            }
+            catch (IOException)
+            {
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
         }
 
         //Load para fechar o Login
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-
-
-
             btnIn();
             DefinirNavegacaoAtiva(btnInicio);
-
             if (LoginForm.cancelar == false)
             {
                 Application.Exit();
@@ -831,364 +786,9 @@ namespace SUB.Forms.Inicio
             {
                 AlternarMaximizado();
             }
-           
 
             ChecarMapeamentoPendenteAoInicializar();
             AgendarTutorialInicial();
-        }
-
-        private void AgendarTutorialInicial()
-        {
-            if (tutorialInicialAgendado)
-                return;
-
-            tutorialInicialAgendado = true;
-            BeginInvoke(new Action(() =>
-            {
-                if (!IsDisposed && TutorialStateStore.DeveExibir(Sessao.UsuarioId))
-                    IniciarTutorial();
-            }));
-        }
-
-        private void MainForm_TutorialSolicitado(object sender, EventArgs e)
-        {
-            if (IsDisposed)
-                return;
-
-            BeginInvoke(new Action(() =>
-            {
-                if (!IsDisposed)
-                    IniciarTutorial();
-            }));
-        }
-
-        private void IniciarTutorial()
-        {
-            if (tutorialOverlay != null && !tutorialOverlay.IsDisposed)
-                return;
-
-            ReabilitarBotoesDeNavegacao();
-            btnIn();
-            DefinirNavegacaoAtiva(btnInicio);
-            inicio?.DefinirVisibilidadeDoStatus(false);
-
-            tutorialOverlay = new GuidedTourOverlay();
-            tutorialOverlay.Completed += TutorialOverlay_Completed;
-            tutorialOverlay.Skipped += TutorialOverlay_Skipped;
-            Controls.Add(tutorialOverlay);
-            tutorialOverlay.Bounds = ClientRectangle;
-            tutorialOverlay.BringToFront();
-            tutorialOverlay.Start(CriarEtapasTutorial(), corPrimaria, CapturarFundoDoTutorial,
-                picLogoMenu.Image ?? picLogoMenu.BackgroundImage);
-        }
-
-        private void TutorialOverlay_Completed(object sender, EventArgs e)
-        {
-            TutorialStateStore.MarcarComoVisto(Sessao.UsuarioId);
-            EncerrarTutorial(retornarAoInicio: true);
-        }
-
-        private void TutorialOverlay_Skipped(object sender, EventArgs e)
-        {
-            TutorialStateStore.MarcarComoVisto(Sessao.UsuarioId);
-            EncerrarTutorial(retornarAoInicio: true);
-        }
-
-        private void EncerrarTutorial(bool retornarAoInicio)
-        {
-            if (tutorialOverlay == null)
-                return;
-
-            FecharFormulariosCriadosPeloTutorial();
-            tutorialOverlay.Completed -= TutorialOverlay_Completed;
-            tutorialOverlay.Skipped -= TutorialOverlay_Skipped;
-            inicio?.DefinirVisibilidadeDoStatus(true);
-            GarantirMenusDoTutorial(false, false);
-            if (retornarAoInicio)
-            {
-                ReabilitarBotoesDeNavegacao();
-                btnIn();
-                DefinirNavegacaoAtiva(btnInicio);
-            }
-            Controls.Remove(tutorialOverlay);
-            tutorialOverlay.Dispose();
-            tutorialOverlay = null;
-        }
-
-        private List<TutorialStep> CriarEtapasTutorial()
-        {
-            return new List<TutorialStep>
-            {
-                new TutorialStep(
-                    "INÍCIO",
-                    "Seu painel principal",
-                    "Acompanhe a operação da biblioteca e acesse os recursos principais pelo menu lateral.",
-                    () => btnInicio,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Inicio, false, false)),
-                new TutorialStep(
-                    "PESSOAS",
-                    "Pessoas",
-                    "Use esta seção para consultar, cadastrar e editar os usuários atendidos pela biblioteca.",
-                    () => btnUsuario,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Pessoas, true, false)),
-                new TutorialStep(
-                    "PESSOAS",
-                    "Consultar usuários",
-                    "Encontre usuários cadastrados e consulte suas informações antes de iniciar uma operação.",
-                    () => btnUser,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Pessoas, true, false)),
-                new TutorialStep(
-                    "PESSOAS",
-                    "Cadastrar usuário",
-                    "Inclua novos usuários para que eles possam utilizar os serviços da biblioteca.",
-                    () => btnUserCad,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.CadastroUsuario, true, false)),
-                new TutorialStep(
-                    "PESSOAS",
-                    "Editar usuário",
-                    "Atualize informações de usuários já cadastrados sempre que for necessário.",
-                    () => btnUserEdit,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.EditarUsuario, true, false)),
-                new TutorialStep(
-                    "ACERVO",
-                    "Acervo",
-                    "Aqui ficam a consulta do acervo e o cadastro dos livros didáticos da instituição.",
-                    () => btnLivro,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Acervo, false, true)),
-                new TutorialStep(
-                    "ACERVO",
-                    "Consultar acervo",
-                    "Consulte a disponibilidade e os dados dos livros antes de registrar uma operação.",
-                    () => btnLivros,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Acervo, false, true)),
-                new TutorialStep(
-                    "ACERVO",
-                    "Cadastrar livro",
-                    "Cadastre novos livros para deixá-los disponíveis para empréstimos.",
-                    () => btnLivroCad,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.CadastroLivro, false, true)),
-                new TutorialStep(
-                    "EMPRÉSTIMOS",
-                    "Registrar empréstimo",
-                    "Registre empréstimos com todos os dados necessários para acompanhar a devolução corretamente.",
-                    () => btnEmprestimo,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Emprestimos, false, true)),
-                new TutorialStep(
-                    "EMPRÉSTIMOS",
-                    "Empréstimo rápido",
-                    "Use esta opção para registrar rapidamente os empréstimos mais frequentes da rotina.",
-                    () => btnEmprestimoRap,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.EmprestimoRapido, false, true)),
-                new TutorialStep(
-                    "EMPRÉSTIMOS",
-                    "Registrar devolução",
-                    "Registre a devolução assim que o livro retornar para manter o acervo atualizado.",
-                    () => btnDev,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Devolucao, false, true)),
-                new TutorialStep(
-                    "RELATÓRIOS",
-                    "Relatórios",
-                    "Consulte o histórico da operação, aplique filtros e exporte as informações que precisar.",
-                    () => btnRel,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Relatorios, false, false)),
-                new TutorialStep(
-                    "CONFIGURAÇÃO",
-                    "Configuração",
-                    "Altere o tema, mantenha os dados da instituição atualizados e use “Rever tutorial” quando quiser rever esta visão geral.",
-                    () => btnConfiguracao,
-                    () => PrepararTelaDoTutorial(TelaDoTutorial.Configuracao, false, false))
-            };
-        }
-
-        private void PrepararTelaDoTutorial(TelaDoTutorial tela, bool pessoasExpandido, bool acervoExpandido)
-        {
-            ReabilitarBotoesDeNavegacao();
-
-            switch (tela)
-            {
-                case TelaDoTutorial.Inicio:
-                    btnIn();
-                    DefinirNavegacaoAtiva(btnInicio);
-                    break;
-
-                case TelaDoTutorial.Pessoas:
-                    if (usuario == null || usuario.IsDisposed)
-                    {
-                        usuario = new UsuarioForm();
-                        usuario.FormClosed += Usuario_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(usuario);
-                    }
-                    OpenChild(usuario, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnUsuario);
-                    break;
-
-                case TelaDoTutorial.CadastroUsuario:
-                    if (usuarioCad == null || usuarioCad.IsDisposed)
-                    {
-                        usuarioCad = new CadUsuario();
-                        usuarioCad.FormClosed += UsuarioCad_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(usuarioCad);
-                    }
-                    OpenChild(usuarioCad, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnUsuario);
-                    break;
-
-                case TelaDoTutorial.EditarUsuario:
-                    if (usuarioEdit == null || usuarioEdit.IsDisposed)
-                    {
-                        usuarioEdit = new EditarUsuarioForm();
-                        usuarioEdit.FormClosed += UsuarioEdit_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(usuarioEdit);
-                    }
-                    OpenChild(usuarioEdit, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnUsuario);
-                    break;
-
-                case TelaDoTutorial.Acervo:
-                    if (livros == null || livros.IsDisposed)
-                    {
-                        livros = new LivrosForm();
-                        livros.FormClosed += Livros_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(livros);
-                    }
-                    OpenChild(livros, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnLivro);
-                    break;
-
-                case TelaDoTutorial.CadastroLivro:
-                    if (cadastroLivro == null || cadastroLivro.IsDisposed)
-                    {
-                        cadastroLivro = new CadastroLivroForm();
-                        cadastroLivro.FormClosed += CadastroLivro_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(cadastroLivro);
-                    }
-                    OpenChild(cadastroLivro, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnLivro);
-                    break;
-
-                case TelaDoTutorial.Emprestimos:
-                    if (emprestimo == null || emprestimo.IsDisposed)
-                    {
-                        emprestimo = new EmprestimoForm();
-                        emprestimo.FormClosed += Emprestimo_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(emprestimo);
-                    }
-                    OpenChild(emprestimo, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnLivro);
-                    break;
-
-                case TelaDoTutorial.EmprestimoRapido:
-                    if (emprestimoRap == null || emprestimoRap.IsDisposed)
-                    {
-                        emprestimoRap = new EmprestimoRapidoForm();
-                        emprestimoRap.FormClosed += EmprestimoRap_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(emprestimoRap);
-                    }
-                    OpenChild(emprestimoRap, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnLivro);
-                    break;
-
-                case TelaDoTutorial.Devolucao:
-                    if (devolução == null || devolução.IsDisposed)
-                    {
-                        devolução = new DevoluçãoForm();
-                        devolução.FormClosed += Devolução_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(devolução);
-                    }
-                    OpenChild(devolução, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnLivro);
-                    break;
-
-                case TelaDoTutorial.Relatorios:
-                    if (rel == null || rel.IsDisposed)
-                    {
-                        rel = new RelForm();
-                        rel.FormClosed += Relatorios_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(rel);
-                    }
-                    OpenChild(rel, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnRel);
-                    break;
-
-                case TelaDoTutorial.Configuracao:
-                    if (configuracao == null || configuracao.IsDisposed)
-                    {
-                        configuracao = new ConfiguracaoForm();
-                        configuracao.FormClosed += Configuracao_FormClosed;
-                        RegistrarFormularioCriadoPeloTutorial(configuracao);
-                    }
-                    OpenChild(configuracao, keepPreviousHidden: true);
-                    DefinirNavegacaoAtiva(btnConfiguracao);
-                    break;
-            }
-
-            GarantirMenusDoTutorial(pessoasExpandido, acervoExpandido);
-            PerformLayout();
-            Update();
-        }
-
-        private void RegistrarFormularioCriadoPeloTutorial(Form formulario)
-        {
-            if (formulario != null && !formulariosCriadosPeloTutorial.Contains(formulario))
-                formulariosCriadosPeloTutorial.Add(formulario);
-        }
-
-        private void FecharFormulariosCriadosPeloTutorial()
-        {
-            foreach (Form formulario in formulariosCriadosPeloTutorial.ToArray())
-            {
-                if (!formulario.IsDisposed)
-                    formulario.Close();
-            }
-
-            formulariosCriadosPeloTutorial.Clear();
-            activeChild = null;
-        }
-
-        private Bitmap CapturarFundoDoTutorial()
-        {
-            if (ClientSize.Width <= 0 || ClientSize.Height <= 0)
-                return null;
-
-            Bitmap snapshot = new Bitmap(ClientSize.Width, ClientSize.Height);
-            using (Graphics graphics = Graphics.FromImage(snapshot))
-            {
-                graphics.Clear(BackColor);
-                DesenharControleNoSnapshot(graphics, activeChild);
-                DesenharControleNoSnapshot(graphics, menu);
-                DesenharControleNoSnapshot(graphics, panelControl);
-            }
-            return snapshot;
-        }
-
-        private void DesenharControleNoSnapshot(Graphics graphics, Control control)
-        {
-            if (control == null || control.IsDisposed || !control.Visible || control.Width <= 0 || control.Height <= 0)
-                return;
-
-            using (Bitmap image = new Bitmap(control.Width, control.Height))
-            {
-                control.DrawToBitmap(image, control.ClientRectangle);
-                Point location = RectangleToClient(control.RectangleToScreen(control.ClientRectangle)).Location;
-                graphics.DrawImageUnscaled(image, location);
-            }
-        }
-
-        private void GarantirMenusDoTutorial(bool pessoasExpandido, bool acervoExpandido)
-        {
-            userTransition.Stop();
-            livroTransition.Stop();
-            menuAnimating = false;
-
-            userContainer.Height = pessoasExpandido
-                ? (userContainer.Tag is int alturaPessoas ? alturaPessoas : 200)
-                : 56;
-            livroContainer.Height = acervoExpandido
-                ? (livroContainer.Tag is int alturaAcervo ? alturaAcervo : 296)
-                : 56;
-            userExpand = pessoasExpandido;
-            livroExpand = acervoExpandido;
-            menu.PerformLayout();
         }
 
         //Locomoção do painel
@@ -1210,7 +810,6 @@ namespace SUB.Forms.Inicio
         //Transição de expansão do livro e usuário
         bool userExpand = false;
         bool livroExpand = false;
-
         // expor leitura do estado para outros forms
         public bool IsLivroExpanded => livroExpand;
         public bool IsMenuAnimating => menuAnimating;
@@ -1239,10 +838,10 @@ namespace SUB.Forms.Inicio
                 }
             }
         }
+
         private void livroTransition_Tick(object sender, EventArgs e)
         {
             int expandedHeight = livroContainer.Tag is int value ? value : 296;
-
             if (livroExpand == false)
             {
                 livroContainer.Height += 10;
@@ -1265,12 +864,8 @@ namespace SUB.Forms.Inicio
             }
         }
 
-
-
-
         Form activeChild = null;
         private bool abrindoFilhoMdi;
-
         /// <summary>
         /// Mostra o form child como único MDI child visível (esconde o anterior),
         /// garante Dock, MdiParent, BringToFront e Activate.
@@ -1279,54 +874,70 @@ namespace SUB.Forms.Inicio
         {
             if (child == null || child.IsDisposed || abrindoFilhoMdi)
                 return;
-
             if (activeChild == child && child.Visible)
             {
                 AtualizarDisponibilidadeDaNavegacao(child);
                 return;
             }
 
+            MdiClient areaMdi = Controls.OfType<MdiClient>().FirstOrDefault();
+            IntPtr janelaMdi = areaMdi != null ? areaMdi.Handle : IntPtr.Zero;
             abrindoFilhoMdi = true;
+            SuspendLayout();
             try
             {
-                // Se já existe um filho ativo diferente, esconde/fecha ele
-                if (activeChild != null && activeChild != child && !activeChild.IsDisposed)
-                {
-                    if (keepPreviousHidden) activeChild.Hide();
-                    else activeChild.Close(); // fecha para liberar recursos (troque por Hide se preferir manter estado)
-                }
-
-                // se a instância atual do child foi descartada, tente recriar? (faça fora se necessário)
+                // Prepara a tela sem expor as etapas intermediárias de layout e tema.
+                if (janelaMdi != IntPtr.Zero)
+                    SendMessage(janelaMdi, 0x000B /* WM_SETREDRAW */, 0, 0);
                 child.MdiParent = this;
                 child.Dock = DockStyle.Fill;
                 ThemeManager.Apply(child, corPrimaria);
-
                 var inicioForm = child as InicioForm;
                 if (inicioForm != null)
                     inicioForm.AplicarTema(corPrimaria);
-
                 // Se o form já está criado mas escondido, apenas BringToFront
                 if (!child.Visible)
                     child.Show();
-
                 ThemeManager.Apply(child, corPrimaria);
                 child.BringToFront();
                 child.Activate();
+                // Se já existe um filho ativo diferente, esconde/fecha ele
+                if (activeChild != null && activeChild != child && !activeChild.IsDisposed)
+                {
+                    if (keepPreviousHidden)
+                        activeChild.Hide();
+                    else
+                        activeChild.Close(); // fecha para liberar recursos (troque por Hide se preferir manter estado)
+                }
 
                 activeChild = child;
                 AtualizarDisponibilidadeDaNavegacao(child);
             }
-            catch { /*silent para não quebrar UI*/ }
+            catch
+            { /*silent para não quebrar UI*/
+            }
             finally
             {
-                abrindoFilhoMdi = false;
+                try
+                {
+                    ResumeLayout(true);
+                    if (janelaMdi != IntPtr.Zero && areaMdi != null && !areaMdi.IsDisposed)
+                    {
+                        SendMessage(janelaMdi, 0x000B /* WM_SETREDRAW */, 1, 0);
+                        areaMdi.Invalidate(true);
+                        areaMdi.Update();
+                    }
+                }
+                finally
+                {
+                    abrindoFilhoMdi = false;
+                }
             }
         }
 
         private void AtualizarDisponibilidadeDaNavegacao(Form child)
         {
             ReabilitarBotoesDeNavegacao();
-
             Button botaoAtivo = ObterBotaoDeNavegacao(child);
             if (botaoAtivo != null)
                 botaoAtivo.Enabled = false;
@@ -1334,17 +945,28 @@ namespace SUB.Forms.Inicio
 
         private Button ObterBotaoDeNavegacao(Form child)
         {
-            if (child is InicioForm) return btnInicio;
-            if (child is UsuarioForm) return btnUser;
-            if (child is CadUsuario) return btnUserCad;
-            if (child is EditarUsuarioForm) return btnUserEdit;
-            if (child is LivrosForm) return btnLivros;
-            if (child is EmprestimoForm) return btnEmprestimo;
-            if (child is EmprestimoRapidoForm) return btnEmprestimoRap;
-            if (child is CadastroLivroForm) return btnLivroCad;
-            if (child is DevoluçãoForm) return btnDev;
-            if (child is RelForm) return btnRel;
-            if (child is ConfiguracaoForm) return btnConfiguracao;
+            if (child is InicioForm)
+                return btnInicio;
+            if (child is UsuarioForm)
+                return btnUser;
+            if (child is CadUsuario)
+                return btnUserCad;
+            if (child is EditarUsuarioForm)
+                return btnUserEdit;
+            if (child is LivrosForm)
+                return btnLivros;
+            if (child is EmprestimoForm)
+                return btnEmprestimo;
+            if (child is EmprestimoRapidoForm)
+                return btnEmprestimoRap;
+            if (child is CadastroLivroForm)
+                return btnLivroCad;
+            if (child is DevoluçãoForm)
+                return btnDev;
+            if (child is RelForm)
+                return btnRel;
+            if (child is ConfiguracaoForm)
+                return btnConfiguracao;
             return null;
         }
 
@@ -1363,11 +985,10 @@ namespace SUB.Forms.Inicio
                 this.Activate();
                 this.BringToFront();
             }
-            catch { }
+            catch
+            {
+            }
         }
-
-
-
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -1386,7 +1007,15 @@ namespace SUB.Forms.Inicio
 
             if (Program.RequestLogout)
             {
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
+
                 base.OnFormClosing(e);
                 return;
             }
@@ -1394,24 +1023,34 @@ namespace SUB.Forms.Inicio
             if (e.CloseReason == CloseReason.UserClosing)
             {
                 // Fecha normalmente
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
+
                 base.OnFormClosing(e);
             }
             else
             {
-                try { notifyIcon.Visible = false; notifyIcon.Dispose(); } catch { }
+                try
+                {
+                    notifyIcon.Visible = false;
+                    notifyIcon.Dispose();
+                }
+                catch
+                {
+                }
+
                 base.OnFormClosing(e);
             }
         }
 
-
-
-
-        #endregion
-
         private void menu_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void btnConfiguracao_Click(object sender, EventArgs e)
@@ -1421,6 +1060,7 @@ namespace SUB.Forms.Inicio
                 configuracao = new ConfiguracaoForm();
                 configuracao.FormClosed += Configuracao_FormClosed;
             }
+
             OpenChild(configuracao, keepPreviousHidden: true);
         }
 
@@ -1450,7 +1090,6 @@ namespace SUB.Forms.Inicio
         {
             if (IsDisposed)
                 return;
-
             if (InvokeRequired)
             {
                 BeginInvoke(new Action(() => ReaplicarConfiguracaoEDashboard()));
@@ -1535,34 +1174,26 @@ namespace SUB.Forms.Inicio
 
             if (configuracaoInstituicao != null && !string.IsNullOrWhiteSpace(configuracaoInstituicao.Nome))
                 Text = configuracaoInstituicao.Nome;
-
             if (notifyIcon != null)
                 notifyIcon.Text = configuracaoInstituicao?.Nome ?? "Biblioteca Escolar";
-
             menu.BackColor = corPrimaria;
             SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
             ThemeManager.Apply(this, corPrimaria);
             AplicarTemaDaNavegacao();
-
             if (tutorialOverlay != null && !tutorialOverlay.IsDisposed)
                 tutorialOverlay.ApplyTheme(corPrimaria);
-
             foreach (Form child in MdiChildren)
             {
                 if (child.IsDisposed)
                     continue;
-
                 ThemeManager.Apply(child, corPrimaria);
-
                 var inicioForm = child as InicioForm;
                 if (inicioForm != null)
                     inicioForm.AplicarTema(corPrimaria);
             }
-
-            // Borda da janela: DesenharBorda registra um novo handler de Paint a
-            // cada chamada e captura a cor por closure — reaplicar duplicaria o
-            // handler. Permanece com a cor fixa original.
+        // Borda da janela: DesenharBorda registra um novo handler de Paint a
+        // cada chamada e captura a cor por closure — reaplicar duplicaria o
+        // handler. Permanece com a cor fixa original.
         }
     }
 }
-

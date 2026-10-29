@@ -6,24 +6,18 @@ namespace SUB.Forms.Livros
 {
     public partial class ProrrogarDiasForm : Form
     {
-
         public event EventHandler LivroAtualizado;
-
         private const int MAX_DIAS = RegrasCirculacao.MaximoDiasProrrogacao;
-
         public ProrrogarDiasForm()
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
-
             numQuantidade.KeyPress += numQuantidade_KeyPress;
             numQuantidade.TextChanged += numQuantidade_TextChanged;
-
             btnConfirmar.Click += btnConfirmar_Click;
             btnCancelar.Click += btnCancelar_Click;
             AcceptButton = btnConfirmar;
             CancelButton = btnCancelar;
-
             AtualizarPreviewData();
         }
 
@@ -128,8 +122,5 @@ namespace SUB.Forms.Livros
                 lblPreviewData.Text = "Devolução: -";
             }
         }
-
-        
     }
 }
-

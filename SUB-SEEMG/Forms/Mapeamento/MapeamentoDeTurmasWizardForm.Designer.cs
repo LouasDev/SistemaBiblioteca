@@ -81,7 +81,7 @@
             this.pnlTutorial.Location = new System.Drawing.Point(0, 0);
             this.pnlTutorial.Name = "pnlTutorial";
             this.pnlTutorial.Size = new System.Drawing.Size(1200, 92);
-            this.pnlTutorial.TabIndex = 7;
+            this.pnlTutorial.TabIndex = 0;
             // 
             // lblTutorialTexto
             // 
@@ -91,7 +91,7 @@
             this.lblTutorialTexto.Location = new System.Drawing.Point(36, 52);
             this.lblTutorialTexto.Name = "lblTutorialTexto";
             this.lblTutorialTexto.Size = new System.Drawing.Size(1040, 20);
-            this.lblTutorialTexto.TabIndex = 9;
+            this.lblTutorialTexto.TabIndex = 1;
             this.lblTutorialTexto.Text = "Revise as turmas e confirme as mudanças com segurança antes de aplicá-las ao cadastro dos alunos.";
             this.lblTutorialTexto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -103,7 +103,7 @@
             this.lblTutorialTitulo.Location = new System.Drawing.Point(34, 14);
             this.lblTutorialTitulo.Name = "lblTutorialTitulo";
             this.lblTutorialTitulo.Size = new System.Drawing.Size(232, 38);
-            this.lblTutorialTitulo.TabIndex = 8;
+            this.lblTutorialTitulo.TabIndex = 0;
             this.lblTutorialTitulo.Text = "Mapeamento de turmas";
             this.lblTutorialTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -113,7 +113,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 80);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 10;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // progressBarWizard
             // 
@@ -179,7 +179,7 @@
             this.dgvPadroes.Location = new System.Drawing.Point(1, 1);
             this.dgvPadroes.Name = "dgvPadroes";
             this.dgvPadroes.Size = new System.Drawing.Size(1118, 513);
-            this.dgvPadroes.TabIndex = 1;
+            this.dgvPadroes.TabIndex = 0;
             // 
             // panelEtapa2
             // 
@@ -237,7 +237,7 @@
             this.pnlResultadosAjustes.Name = "pnlResultadosAjustes";
             this.pnlResultadosAjustes.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultadosAjustes.Size = new System.Drawing.Size(1120, 480);
-            this.pnlResultadosAjustes.TabIndex = 3;
+            this.pnlResultadosAjustes.TabIndex = 5;
             //
             // dgvAjustesIndividuais
             // 
@@ -245,7 +245,7 @@
             this.dgvAjustesIndividuais.Location = new System.Drawing.Point(1, 1);
             this.dgvAjustesIndividuais.Name = "dgvAjustesIndividuais";
             this.dgvAjustesIndividuais.Size = new System.Drawing.Size(1118, 478);
-            this.dgvAjustesIndividuais.TabIndex = 3;
+            this.dgvAjustesIndividuais.TabIndex = 0;
             // 
             // panelEtapa3
             // 
@@ -304,7 +304,7 @@
             this.btnAnterior.Location = new System.Drawing.Point(780, 10);
             this.btnAnterior.Name = "btnAnterior";
             this.btnAnterior.Size = new System.Drawing.Size(120, 40);
-            this.btnAnterior.TabIndex = 0;
+            this.btnAnterior.TabIndex = 1;
             this.btnAnterior.Text = "← Anterior";
             this.btnAnterior.UseVisualStyleBackColor = false;
             this.btnAnterior.Click += new System.EventHandler(this.BtnAnterior_Click);
@@ -320,7 +320,7 @@
             this.btnProximo.Location = new System.Drawing.Point(920, 10);
             this.btnProximo.Name = "btnProximo";
             this.btnProximo.Size = new System.Drawing.Size(120, 40);
-            this.btnProximo.TabIndex = 1;
+            this.btnProximo.TabIndex = 2;
             this.btnProximo.Text = "Avançar →";
             this.btnProximo.UseVisualStyleBackColor = false;
             this.btnProximo.Click += new System.EventHandler(this.BtnProximo_Click);
@@ -337,7 +337,7 @@
             this.btnCancelar.Location = new System.Drawing.Point(10, 10);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(120, 40);
-            this.btnCancelar.TabIndex = 2;
+            this.btnCancelar.TabIndex = 0;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.BtnCancelar_Click);
@@ -350,7 +350,7 @@
             this.lblFiltroNomeEtapa2.Location = new System.Drawing.Point(486, 47);
             this.lblFiltroNomeEtapa2.Name = "lblFiltroNomeEtapa2";
             this.lblFiltroNomeEtapa2.Size = new System.Drawing.Size(100, 20);
-            this.lblFiltroNomeEtapa2.TabIndex = 4;
+            this.lblFiltroNomeEtapa2.TabIndex = 3;
             this.lblFiltroNomeEtapa2.Text = "Filtrar nome:";
             // 
             // txtBuscaAlunoEtapa2
@@ -378,7 +378,7 @@
             this.txtBuscaAlunoEtapa2.SelectionLength = 0;
             this.txtBuscaAlunoEtapa2.SelectionStart = 0;
             this.txtBuscaAlunoEtapa2.Size = new System.Drawing.Size(324, 31);
-            this.txtBuscaAlunoEtapa2.TabIndex = 5;
+            this.txtBuscaAlunoEtapa2.TabIndex = 4;
             this.txtBuscaAlunoEtapa2.TextColor = System.Drawing.Color.Black;
             this.txtBuscaAlunoEtapa2.UseSystemPasswordChar = false;
             // 

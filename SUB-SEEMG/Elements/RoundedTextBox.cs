@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -17,19 +17,25 @@ public class RoundedTextBox : UserControl
     private bool isMouseOver = false;
     private bool isFocused = false;
     private bool onlyNumbers = false;
-
     public new event EventHandler TextChanged
     {
-        add { innerTextBox.TextChanged += value; }
-        remove { innerTextBox.TextChanged -= value; }
+        add
+        {
+            innerTextBox.TextChanged += value;
+        }
+
+        remove
+        {
+            innerTextBox.TextChanged -= value;
+        }
     }
 
     public RoundedTextBox()
     {
+        TabStop = true;
         this.DoubleBuffered = true;
         this.BackColor = Color.White;
         currentBackColor = this.BackColor;
-
         innerTextBox = new TextBox
         {
             BorderStyle = BorderStyle.None,
@@ -39,7 +45,6 @@ public class RoundedTextBox : UserControl
             Width = this.Width - 20,
             UseSystemPasswordChar = useSystemPasswordChar
         };
-
         innerTextBox.TextChanged += (s, e) =>
         {
             RemoverCaracteresNaoNumericos();
@@ -49,16 +54,31 @@ public class RoundedTextBox : UserControl
         {
             if (onlyNumbers && !char.IsControl(e.KeyChar) && (e.KeyChar < '0' || e.KeyChar > '9'))
                 e.Handled = true;
-
             OnKeyPress(e);
         };
-        innerTextBox.GotFocus += (s, e) => { isFocused = true; UpdatePlaceholder(); this.Invalidate(); };
-        innerTextBox.LostFocus += (s, e) => { isFocused = false; UpdatePlaceholder(); this.Invalidate(); };
-
+        innerTextBox.GotFocus += (s, e) =>
+        {
+            isFocused = true;
+            UpdatePlaceholder();
+            this.Invalidate();
+        };
+        innerTextBox.LostFocus += (s, e) =>
+        {
+            isFocused = false;
+            UpdatePlaceholder();
+            this.Invalidate();
+        };
         // Redirecionar eventos de hover para o textbox
-        innerTextBox.MouseEnter += (s, e) => { isMouseOver = true; this.Invalidate(); };
-        innerTextBox.MouseLeave += (s, e) => { isMouseOver = false; this.Invalidate(); };
-
+        innerTextBox.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            this.Invalidate();
+        };
+        innerTextBox.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            this.Invalidate();
+        };
         placeholderLabel = new Label
         {
             Text = "Placeholder",
@@ -68,22 +88,33 @@ public class RoundedTextBox : UserControl
             Font = new Font("Segoe UI", 9F, FontStyle.Italic),
             TextAlign = ContentAlignment.MiddleLeft
         };
-
         // Também propagar hover no label
-        placeholderLabel.MouseEnter += (s, e) => { isMouseOver = true; this.Invalidate(); };
-        placeholderLabel.MouseLeave += (s, e) => { isMouseOver = false; this.Invalidate(); };
+        placeholderLabel.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            this.Invalidate();
+        };
+        placeholderLabel.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            this.Invalidate();
+        };
         placeholderLabel.Click += (s, e) => innerTextBox.Focus();
-
         this.Controls.Add(innerTextBox);
         this.Controls.Add(placeholderLabel);
         this.Size = new Size(200, 35);
-
         // Hover geral do controle
-        this.MouseEnter += (s, e) => { isMouseOver = true; this.Invalidate(); };
-        this.MouseLeave += (s, e) => { isMouseOver = false; this.Invalidate(); };
-
+        this.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            this.Invalidate();
+        };
+        this.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            this.Invalidate();
+        };
         this.Resize += (s, e) => AdjustLayout();
-
         AdjustLayout();
         UpdatePlaceholder();
     }
@@ -93,7 +124,6 @@ public class RoundedTextBox : UserControl
         innerTextBox.Location = new Point(10, (this.Height - innerTextBox.Font.Height) / 2 - 1);
         innerTextBox.Width = this.Width - 20;
         innerTextBox.Height = innerTextBox.Font.Height + 4;
-
         placeholderLabel.Location = new Point(_placeholderMarginLeft, innerTextBox.Top);
         placeholderLabel.Size = new Size(this.Width - _placeholderMarginLeft - 8, innerTextBox.Height + 2);
         placeholderLabel.BringToFront();
@@ -108,25 +138,59 @@ public class RoundedTextBox : UserControl
     {
         if (!onlyNumbers || string.IsNullOrEmpty(innerTextBox.Text))
             return;
-
         string textoOriginal = innerTextBox.Text;
-        string somenteDigitos = new string(textoOriginal.Where(c => c >= '0' && c <= '9').ToArray());
+        string somenteDigitos = new string (textoOriginal.Where(c => c >= '0' && c <= '9').ToArray());
         if (textoOriginal == somenteDigitos)
             return;
-
         int posicaoOriginal = Math.Min(innerTextBox.SelectionStart, textoOriginal.Length);
         int novaPosicao = textoOriginal.Take(posicaoOriginal).Count(c => c >= '0' && c <= '9');
         innerTextBox.Text = somenteDigitos;
         innerTextBox.SelectionStart = Math.Min(novaPosicao, somenteDigitos.Length);
     }
 
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
+    }
+
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
+            base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
+    }
+
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
         Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
-
         using (GraphicsPath path = GetRoundedRectanglePath(rect, BorderRadius))
         {
             Color backColorToUse = isMouseOver ? HoverBackColor : this.BackColor;
@@ -148,19 +212,17 @@ public class RoundedTextBox : UserControl
     private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
     {
         GraphicsPath path = new GraphicsPath();
-        int diameter = radius * 2;
-
+        int diameter = Math.Min(Math.Max(0, radius * 2), Math.Min(rect.Width, rect.Height));
+        if (diameter == 0) { path.AddRectangle(rect); return path; }
         path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
         path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
         path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
         path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
         path.CloseFigure();
-
         return path;
     }
 
     // ----------- MÉTODOS PÚBLICOS -----------
-
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Seleciona todo o texto no controle.")]
@@ -177,10 +239,7 @@ public class RoundedTextBox : UserControl
         innerTextBox.Focus();
     }
 
-
-
     // ----------- PROPRIEDADES EXPONÍVEIS NO DESIGNER -----------
-
     [Category("Aparência")]
     [Browsable(true)]
     [Description("Cor da borda quando o controle não está em foco.")]
@@ -209,11 +268,7 @@ public class RoundedTextBox : UserControl
     [Category("Aparência")]
     [Browsable(true)]
     [Description("Texto exibido como placeholder.")]
-    public string PlaceholderText
-    {
-        get => placeholderLabel.Text;
-        set => placeholderLabel.Text = value;
-    }
+    public string PlaceholderText { get => placeholderLabel.Text; set => placeholderLabel.Text = value; }
 
     [Category("Aparência")]
     [Browsable(true)]
@@ -258,20 +313,12 @@ public class RoundedTextBox : UserControl
     [Category("Aparência")]
     [Browsable(true)]
     [Description("Cor do texto digitado.")]
-    public Color TextColor
-    {
-        get => innerTextBox.ForeColor;
-        set => innerTextBox.ForeColor = value;
-    }
+    public Color TextColor { get => innerTextBox.ForeColor; set => innerTextBox.ForeColor = value; }
 
     [Category("Aparência")]
     [Browsable(true)]
     [Description("Texto digitado no controle.")]
-    public override string Text
-    {
-        get => innerTextBox.Text;
-        set => innerTextBox.Text = value;
-    }
+    public override string Text { get => innerTextBox.Text; set => innerTextBox.Text = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
@@ -318,57 +365,33 @@ public class RoundedTextBox : UserControl
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Fonte de dados usada para completar automaticamente a digitação.")]
-    public AutoCompleteSource AutoCompleteSource
-    {
-        get => innerTextBox.AutoCompleteSource;
-        set => innerTextBox.AutoCompleteSource = value;
-    }
+    public AutoCompleteSource AutoCompleteSource { get => innerTextBox.AutoCompleteSource; set => innerTextBox.AutoCompleteSource = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Modo de autocompletar usado para sugerir e anexar texto.")]
-    public AutoCompleteMode AutoCompleteMode
-    {
-        get => innerTextBox.AutoCompleteMode;
-        set => innerTextBox.AutoCompleteMode = value;
-    }
+    public AutoCompleteMode AutoCompleteMode { get => innerTextBox.AutoCompleteMode; set => innerTextBox.AutoCompleteMode = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     [Description("Lista personalizada de sugestões de autocompletar.")]
-    public AutoCompleteStringCollection AutoCompleteCustomSource
-    {
-        get => innerTextBox.AutoCompleteCustomSource;
-        set => innerTextBox.AutoCompleteCustomSource = value;
-    }
+    public AutoCompleteStringCollection AutoCompleteCustomSource { get => innerTextBox.AutoCompleteCustomSource; set => innerTextBox.AutoCompleteCustomSource = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Posição do cursor no texto.")]
-    public int SelectionStart
-    {
-        get => innerTextBox.SelectionStart;
-        set => innerTextBox.SelectionStart = value;
-    }
+    public int SelectionStart { get => innerTextBox.SelectionStart; set => innerTextBox.SelectionStart = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Comprimento do texto selecionado.")]
-    public int SelectionLength
-    {
-        get => innerTextBox.SelectionLength;
-        set => innerTextBox.SelectionLength = value;
-    }
+    public int SelectionLength { get => innerTextBox.SelectionLength; set => innerTextBox.SelectionLength = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]
     [Description("Texto selecionado no controle.")]
-    public string SelectedText
-    {
-        get => innerTextBox.SelectedText;
-        set => innerTextBox.SelectedText = value;
-    }
+    public string SelectedText { get => innerTextBox.SelectedText; set => innerTextBox.SelectedText = value; }
 
     [Category("Comportamento")]
     [Browsable(true)]

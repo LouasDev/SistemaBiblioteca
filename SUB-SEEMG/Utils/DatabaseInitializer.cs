@@ -11,7 +11,6 @@ namespace SUB.Utils
             string directory = Path.GetDirectoryName(Conexao.CaminhoBanco);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-
             if (!File.Exists(Conexao.CaminhoBanco))
             {
                 var engine = new SqlCeEngine(Conexao.Conectar);
@@ -88,7 +87,6 @@ namespace SUB.Utils
             AddColumnIfMissing(connection, "LogProrrogacoes", "DataDaAcao", "datetime NULL");
             AddColumnIfMissing(connection, "LogProrrogacoes", "NovaDataDevolucao", "datetime NULL");
             AddColumnIfMissing(connection, "LogProrrogacoes", "BibliotecariaNome", "nvarchar(200) NULL");
-
             Execute(connection, "UPDATE LogProrrogacoes SET DataDaAcao = DataHora WHERE DataDaAcao IS NULL AND DataHora IS NOT NULL", null);
             Execute(connection, "UPDATE LogProrrogacoes SET DataHora = DataDaAcao WHERE DataHora IS NULL AND DataDaAcao IS NOT NULL", null);
         }
@@ -97,10 +95,8 @@ namespace SUB.Utils
         {
             if (!TableExists(connection, "Emprestimo"))
                 return;
-
             AddColumnIfMissing(connection, "Emprestimo", "Responsavel", "int NULL");
             AddColumnIfMissing(connection, "Emprestimo", "LivroId", "int NULL");
-
             if (ColumnExists(connection, "Emprestimo", "Livro"))
             {
                 Execute(connection, "UPDATE Emprestimo SET LivroId = Livro WHERE LivroId IS NULL AND Livro IS NOT NULL", null);
@@ -111,7 +107,6 @@ namespace SUB.Utils
         {
             if (!TableExists(connection, "EmprestimoRapido"))
                 return;
-
             // Versões anteriores guardavam somente UsuarioId e DataDevolucao.
             // O fluxo de empréstimo rápido usa estes campos adicionais desde então.
             AddColumnIfMissing(connection, "EmprestimoRapido", "ProfessorId", "int NULL");
@@ -120,22 +115,17 @@ namespace SUB.Utils
             AddColumnIfMissing(connection, "EmprestimoRapido", "Quantidade", "int NULL");
             AddColumnIfMissing(connection, "EmprestimoRapido", "DataHoraDevolucaoReal", "datetime NULL");
             AddColumnIfMissing(connection, "EmprestimoRapido", "Bibliotecaria", "nvarchar(200) NULL");
-
             if (ColumnExists(connection, "EmprestimoRapido", "UsuarioId"))
                 Execute(connection, "UPDATE EmprestimoRapido SET ProfessorId = UsuarioId WHERE ProfessorId IS NULL AND UsuarioId IS NOT NULL", null);
-
             if (ColumnExists(connection, "EmprestimoRapido", "DataDevolucao"))
                 Execute(connection, "UPDATE EmprestimoRapido SET DataHoraDevolucaoReal = DataDevolucao WHERE DataHoraDevolucaoReal IS NULL AND DataDevolucao IS NOT NULL", null);
-
             Execute(connection, "UPDATE EmprestimoRapido SET Quantidade = 1 WHERE Quantidade IS NULL", null);
         }
 
         private static void MigrarTurmasDosUsuariosExistentes(SqlCeConnection connection)
         {
-            if (!TableExists(connection, "Turmas") || !TableExists(connection, "usuarios") ||
-                !ColumnExists(connection, "usuarios", "Turma"))
+            if (!TableExists(connection, "Turmas") || !TableExists(connection, "usuarios") || !ColumnExists(connection, "usuarios", "Turma"))
                 return;
-
             var conhecidas = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
             using (var consulta = new SqlCeCommand("SELECT Nome FROM Turmas", connection))
             using (var leitor = consulta.ExecuteReader())
@@ -164,7 +154,6 @@ namespace SUB.Utils
             {
                 if (!conhecidas.Add(turma))
                     continue;
-
                 using (var inserir = new SqlCeCommand("INSERT INTO Turmas (Nome) VALUES (@nome)", connection))
                 {
                     inserir.Parameters.AddWithValue("@nome", turma);
@@ -181,8 +170,7 @@ namespace SUB.Utils
 
         private static bool ColumnExists(SqlCeConnection connection, string tableName, string columnName)
         {
-            using (var command = new SqlCeCommand(
-                "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table AND COLUMN_NAME = @column", connection))
+            using (var command = new SqlCeCommand("SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table AND COLUMN_NAME = @column", connection))
             {
                 command.Parameters.AddWithValue("@table", tableName);
                 command.Parameters.AddWithValue("@column", columnName);
@@ -224,4 +212,3 @@ namespace SUB.Utils
         }
     }
 }
-

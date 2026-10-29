@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SUB.Utils;
 using static Usuarios;
@@ -20,6 +13,7 @@ namespace SUB.Forms.Livros
             LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
         }
+
         public void PreencherAluno(Aluno aluno)
         {
             txtNomeAluno.Text = aluno.Nome;
@@ -36,4 +30,3 @@ namespace SUB.Forms.Livros
         }
     }
 }
-

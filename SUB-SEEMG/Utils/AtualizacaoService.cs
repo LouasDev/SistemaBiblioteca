@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-using SUB.Models;
 using System;
 using System.Configuration;
 using System.Diagnostics;
@@ -11,6 +9,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using SUB.Models;
 
 namespace SUB.Utils
 {
@@ -18,7 +18,6 @@ namespace SUB.Utils
     {
         public const long MaxTamanhoPacoteBytes = 300L * 1024 * 1024;
         private const long MargemEspacoLivreBytes = 20L * 1024 * 1024;
-
         private static readonly string[] hostsPermitidos =
         {
             "github.com",
@@ -26,20 +25,15 @@ namespace SUB.Utils
             "release-assets.githubusercontent.com",
             "raw.githubusercontent.com"
         };
-
-        private const string ChavePublicaAssinaturaXml =
-            "<RSAKeyValue><Modulus>sRFREn6nY1ybpGJgg6uSw1w1/SDxlX4ffVlte1AyLIo4WQvTbLjqaFOCJM4lut9AHRrfnJ4GL+4jXacX4dObBAXFGdt8aUfvQc2JzlxhRMwr7Y4aupSGWo1bfagVMSkbVP5dgiARoM64lY5Bkeckf47+srP+j28PSha+aZnk8UE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
-
+        private const string ChavePublicaAssinaturaXml = "<RSAKeyValue><Modulus>sRFREn6nY1ybpGJgg6uSw1w1/SDxlX4ffVlte1AyLIo4WQvTbLjqaFOCJM4lut9AHRrfnJ4GL+4jXacX4dObBAXFGdt8aUfvQc2JzlxhRMwr7Y4aupSGWo1bfagVMSkbVP5dgiARoM64lY5Bkeckf47+srP+j28PSha+aZnk8UE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>";
         // Uso exclusivo de testes automatizados (harness da Etapa D): quando preenchido,
         // VerificarAsync consulta esta URL em vez do App.config. Nulo em produção.
 #pragma warning disable 0649
         internal static string UrlManifestoOverrideParaTestes;
         internal static bool PermitirLoopbackParaTestes;
 #pragma warning restore 0649
-
         private static readonly HttpClient http;
         private static readonly HttpClient httpDownload;
-
         static AtualizacaoService()
         {
             ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
@@ -48,8 +42,7 @@ namespace SUB.Utils
             httpDownload.Timeout = Timeout.InfiniteTimeSpan;
         }
 
-        public static string UrlManifestoConfigurada =>
-            (ConfigurationManager.AppSettings["ManifestoAtualizacaoUrl"] ?? string.Empty).Trim();
+        public static string UrlManifestoConfigurada => (ConfigurationManager.AppSettings["ManifestoAtualizacaoUrl"] ?? string.Empty).Trim();
 
         public static string VersaoAtual()
         {
@@ -64,12 +57,9 @@ namespace SUB.Utils
                 VersaoAtual = VersaoAtual(),
                 Mensagem = string.Empty
             };
-
             if (string.IsNullOrWhiteSpace(urlManifesto) && !string.IsNullOrWhiteSpace(UrlManifestoOverrideParaTestes))
                 urlManifesto = UrlManifestoOverrideParaTestes.Trim();
-
             urlManifesto = string.IsNullOrWhiteSpace(urlManifesto) ? UrlManifestoConfigurada : urlManifesto.Trim();
-
             if (string.IsNullOrEmpty(urlManifesto))
             {
                 resultado.Mensagem = "Endereço do manifesto de atualização não configurado.";
@@ -89,22 +79,17 @@ namespace SUB.Utils
                             int codigo = (int)resposta.StatusCode;
                             if (codigo == 404)
                             {
-                                resultado.Mensagem =
-                                    "O servidor de atualizações não possui uma versão publicada no momento " +
-                                    "(HTTP 404). Tente novamente mais tarde.";
+                                resultado.Mensagem = "O servidor de atualizações não possui uma versão publicada no momento " + "(HTTP 404). Tente novamente mais tarde.";
                             }
                             else if (codigo == 403)
                             {
-                                resultado.Mensagem =
-                                    "O servidor de atualizações recusou a consulta (HTTP 403). " +
-                                    "Tente novamente mais tarde.";
+                                resultado.Mensagem = "O servidor de atualizações recusou a consulta (HTTP 403). " + "Tente novamente mais tarde.";
                             }
                             else
                             {
-                                resultado.Mensagem = string.Format(
-                                    "Não foi possível obter o manifesto de atualização (HTTP {0}).",
-                                    codigo);
+                                resultado.Mensagem = string.Format("Não foi possível obter o manifesto de atualização (HTTP {0}).", codigo);
                             }
+
                             return resultado;
                         }
 
@@ -166,8 +151,7 @@ namespace SUB.Utils
 
             Version atual;
             Version nova;
-            if (!Version.TryParse(NormalizarVersao(resultado.VersaoAtual), out atual) ||
-                !Version.TryParse(NormalizarVersao(manifesto.Versao), out nova))
+            if (!Version.TryParse(NormalizarVersao(resultado.VersaoAtual), out atual) || !Version.TryParse(NormalizarVersao(manifesto.Versao), out nova))
             {
                 resultado.ManifestoInvalido = true;
                 resultado.Mensagem = "Versão informada no manifesto é inválida.";
@@ -178,20 +162,16 @@ namespace SUB.Utils
             resultado.VersaoNova = manifesto.Versao;
             resultado.AtualizacaoDisponivel = nova > atual;
             resultado.Sucesso = true;
-            resultado.Mensagem = resultado.AtualizacaoDisponivel
-                ? string.Empty
-                : string.Format("Você já está usando a versão mais recente ({0}).", resultado.VersaoAtual);
+            resultado.Mensagem = resultado.AtualizacaoDisponivel ? string.Empty : string.Format("Você já está usando a versão mais recente ({0}).", resultado.VersaoAtual);
             return resultado;
         }
 
-        public static async Task<ResultadoDownloadPacote> BaixarPacoteAsync(
-            AtualizacaoManifesto manifesto,
-            IProgress<ProgressoDownload> progresso,
-            CancellationToken cancelamento,
-            int timeoutSegundos)
+        public static async Task<ResultadoDownloadPacote> BaixarPacoteAsync(AtualizacaoManifesto manifesto, IProgress<ProgressoDownload> progresso, CancellationToken cancelamento, int timeoutSegundos)
         {
-            var resultado = new ResultadoDownloadPacote { Mensagem = string.Empty };
-
+            var resultado = new ResultadoDownloadPacote
+            {
+                Mensagem = string.Empty
+            };
             if (manifesto == null || string.IsNullOrWhiteSpace(manifesto.Url))
             {
                 resultado.Mensagem = "Pacote de atualização não informado.";
@@ -214,10 +194,8 @@ namespace SUB.Utils
 
             var pastaUpdate = Path.Combine(AppPaths.AppDataFolder, "update");
             Directory.CreateDirectory(pastaUpdate);
-
             var caminhoFinal = Path.Combine(pastaUpdate, "SUB-" + NormalizarVersao(manifesto.Versao) + ".zip");
             var caminhoParcial = caminhoFinal + ".part";
-
             if (!EspacoSuficiente(pastaUpdate, manifesto.Tamanho))
             {
                 resultado.EspacoInsuficiente = true;
@@ -227,22 +205,18 @@ namespace SUB.Utils
 
             if (File.Exists(caminhoParcial))
                 File.Delete(caminhoParcial);
-
             try
             {
                 using (var cts = CancellationTokenSource.CreateLinkedTokenSource(cancelamento))
                 {
                     cts.CancelAfter(TimeSpan.FromSeconds(timeoutSegundos));
-
                     try
                     {
                         using (var resposta = await httpDownload.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait(false))
                         {
                             if (!resposta.IsSuccessStatusCode)
                             {
-                                resultado.Mensagem = string.Format(
-                                    "Falha no download da atualização (HTTP {0}).",
-                                    (int)resposta.StatusCode);
+                                resultado.Mensagem = string.Format("Falha no download da atualização (HTTP {0}).", (int)resposta.StatusCode);
                                 return resultado;
                             }
 
@@ -252,7 +226,6 @@ namespace SUB.Utils
                                 var buffer = new byte[81920];
                                 long total = 0;
                                 int lidos;
-
                                 while ((lidos = await fonte.ReadAsync(buffer, 0, buffer.Length, cts.Token).ConfigureAwait(false)) > 0)
                                 {
                                     total += lidos;
@@ -263,14 +236,9 @@ namespace SUB.Utils
                                     }
 
                                     await destino.WriteAsync(buffer, 0, lidos, cts.Token).ConfigureAwait(false);
-
                                     if (progresso != null)
                                     {
-                                        progresso.Report(new ProgressoDownload
-                                        {
-                                            BytesBaixados = total,
-                                            TotalBytes = manifesto.Tamanho
-                                        });
+                                        progresso.Report(new ProgressoDownload { BytesBaixados = total, TotalBytes = manifesto.Tamanho });
                                     }
                                 }
 
@@ -293,6 +261,7 @@ namespace SUB.Utils
                         {
                             resultado.Mensagem = "Tempo esgotado durante o download da atualização.";
                         }
+
                         return resultado;
                     }
                     catch (HttpRequestException)
@@ -318,7 +287,6 @@ namespace SUB.Utils
                 if (File.Exists(caminhoFinal))
                     File.Delete(caminhoFinal);
                 File.Move(caminhoParcial, caminhoFinal);
-
                 resultado.Sucesso = true;
                 resultado.CaminhoArquivo = caminhoFinal;
                 resultado.Tamanho = manifesto.Tamanho;
@@ -328,7 +296,13 @@ namespace SUB.Utils
             {
                 if (!resultado.Sucesso && File.Exists(caminhoParcial))
                 {
-                    try { File.Delete(caminhoParcial); } catch (IOException) { }
+                    try
+                    {
+                        File.Delete(caminhoParcial);
+                    }
+                    catch (IOException)
+                    {
+                    }
                 }
             }
         }
@@ -337,20 +311,13 @@ namespace SUB.Utils
         {
             if (uri == null)
                 return false;
-
-            var ehLoopback = uri.Host.Equals("127.0.0.1", StringComparison.Ordinal) ||
-                             uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase);
+            var ehLoopback = uri.Host.Equals("127.0.0.1", StringComparison.Ordinal) || uri.Host.Equals("localhost", StringComparison.OrdinalIgnoreCase);
             if (PermitirLoopbackParaTestes && ehLoopback && uri.Scheme == Uri.UriSchemeHttp)
                 return true;
-
-            if (uri.Scheme != Uri.UriSchemeHttps ||
-                !Array.Exists(hostsPermitidos, h => string.Equals(uri.Host, h, StringComparison.OrdinalIgnoreCase)))
+            if (uri.Scheme != Uri.UriSchemeHttps || !Array.Exists(hostsPermitidos, h => string.Equals(uri.Host, h, StringComparison.OrdinalIgnoreCase)))
                 return false;
-
-            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase) &&
-                !uri.AbsolutePath.StartsWith("/LouasDev/SistemaBiblioteca/releases/", StringComparison.OrdinalIgnoreCase))
+            if (uri.Host.Equals("github.com", StringComparison.OrdinalIgnoreCase) && !uri.AbsolutePath.StartsWith("/LouasDev/SistemaBiblioteca/releases/", StringComparison.OrdinalIgnoreCase))
                 return false;
-
             return true;
         }
 
@@ -361,7 +328,6 @@ namespace SUB.Utils
                 var raiz = Path.GetPathRoot(Path.GetFullPath(caminhoDiretorio));
                 if (string.IsNullOrEmpty(raiz))
                     return true;
-
                 var disco = new DriveInfo(raiz);
                 return disco.AvailableFreeSpace >= tamanhoNecessario + MargemEspacoLivreBytes;
             }
@@ -398,7 +364,6 @@ namespace SUB.Utils
             {
                 var base64 = Encoding.ASCII.GetString(assinatura).Trim();
                 var bytesAssinatura = Convert.FromBase64String(base64);
-
                 using (var rsa = RSA.Create())
                 {
                     rsa.FromXmlString(ChavePublicaAssinaturaXml);
@@ -419,7 +384,6 @@ namespace SUB.Utils
         {
             if (bytes != null && bytes.Length >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF)
                 return Encoding.UTF8.GetString(bytes, 3, bytes.Length - 3);
-
             return Encoding.UTF8.GetString(bytes ?? new byte[0]);
         }
 
@@ -427,22 +391,16 @@ namespace SUB.Utils
         {
             if (manifesto == null || string.IsNullOrWhiteSpace(manifesto.Versao))
                 return "Manifesto de atualização sem a versão.";
-
             if (!VersaoAplicativo.FormatoValido(manifesto.Versao))
                 return "Versão do manifesto inválida. Use o formato 0.0.0 (ex.: 1.0.2).";
-
             var url = (manifesto.Url ?? string.Empty).Trim();
-            if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) &&
-                !url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+            if (!url.StartsWith("https://", StringComparison.OrdinalIgnoreCase) && !url.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
                 return "Manifesto sem endereço de download válido.";
-
             var sha = (manifesto.Sha256 ?? string.Empty).Trim();
             if (sha.Length != 64 || !EhHexadecimal(sha))
                 return "Manifesto sem hash SHA-256 válido.";
-
             if (manifesto.Tamanho <= 0 || manifesto.Tamanho > MaxTamanhoPacoteBytes)
                 return "Manifesto sem tamanho válido do pacote.";
-
             return null;
         }
 

@@ -1,8 +1,8 @@
-using SUB.Models;
 using System;
 using System.Data.SqlServerCe;
 using System.Diagnostics;
 using System.Windows.Forms;
+using SUB.Models;
 
 namespace SUB.Utils
 {
@@ -16,7 +16,6 @@ namespace SUB.Utils
 
         private static int falhas;
         private static DateTime bloqueadoAteUtc;
-
         internal static ResumoReset ObterResumo()
         {
             if (!Sessao.UsuarioAutenticado || Sessao.Perfil != "Bibliotecário(a)")
@@ -47,10 +46,16 @@ namespace SUB.Utils
                 throw new InvalidOperationException("Limite de tentativas atingido. Aguarde cinco minutos antes de tentar novamente.");
             if (!Sessao.UsuarioAutenticado || Sessao.Perfil != "Bibliotecário(a)")
                 throw new InvalidOperationException("Entre com uma conta de bibliotecário para solicitar o reset.");
-
             string codigo;
-            try { codigo = CodigoMestreArquivo.Ler(caminho); }
-            catch (FormatException ex) { throw new FormatException(RegistrarFalha(ex.Message)); }
+            try
+            {
+                codigo = CodigoMestreArquivo.Ler(caminho);
+            }
+            catch (FormatException ex)
+            {
+                throw new FormatException(RegistrarFalha(ex.Message));
+            }
+
             if (!ValidarCodigoMestre(InstituicaoConfiguracaoStore.Carregar(), codigo))
                 throw new InvalidOperationException(RegistrarFalha("Este TXT não corresponde ao código mestre desta instalação."));
             return codigo;
@@ -67,13 +72,20 @@ namespace SUB.Utils
 
         internal static bool ValidarCodigoMestre(InstituicaoConfiguracao configuracao, string codigo)
         {
-            if (configuracao == null || string.IsNullOrWhiteSpace(codigo) ||
-                string.IsNullOrWhiteSpace(configuracao.CodigoMestreHash) ||
-                string.IsNullOrWhiteSpace(configuracao.CodigoMestreSalt))
+            if (configuracao == null || string.IsNullOrWhiteSpace(codigo) || string.IsNullOrWhiteSpace(configuracao.CodigoMestreHash) || string.IsNullOrWhiteSpace(configuracao.CodigoMestreSalt))
                 return false;
-            try { return CriptografiaSenha.VerificarSenha(codigo.Trim(), configuracao.CodigoMestreHash, configuracao.CodigoMestreSalt); }
-            catch (FormatException) { return false; }
-            catch (ArgumentException) { return false; }
+            try
+            {
+                return CriptografiaSenha.VerificarSenha(codigo.Trim(), configuracao.CodigoMestreHash, configuracao.CodigoMestreSalt);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
 
         internal static bool TentarAutorizar(string codigo, string senha, out Autorizacao autorizacao, out string erro)
@@ -85,6 +97,7 @@ namespace SUB.Utils
                 erro = "Limite de tentativas atingido. Aguarde cinco minutos antes de tentar novamente.";
                 return false;
             }
+
             if (!Sessao.UsuarioAutenticado)
             {
                 erro = "Entre com uma conta de bibliotecário para solicitar o reset.";
@@ -93,34 +106,32 @@ namespace SUB.Utils
 
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
             using (var conexao = Conexao.ObterConexao())
-            using (var comando = new SqlCeCommand(
-                "SELECT TipoUsuario, Ativo, Senha_Hash, Senha_Salt FROM usuarios WHERE Id = @id", conexao))
+            using (var comando = new SqlCeCommand("SELECT TipoUsuario, Ativo, Senha_Hash, Senha_Salt FROM usuarios WHERE Id = @id", conexao))
             {
                 comando.Parameters.AddWithValue("@id", Sessao.UsuarioId.Value);
                 conexao.Open();
                 using (var leitor = comando.ExecuteReader())
                 {
-                    if (leitor.Read() && ValidarCredenciais(configuracao, leitor["TipoUsuario"].ToString(),
-                        leitor["Ativo"] == DBNull.Value || Convert.ToBoolean(leitor["Ativo"]),
-                        leitor["Senha_Hash"].ToString(), leitor["Senha_Salt"].ToString(), codigo, senha))
+                    if (leitor.Read() && ValidarCredenciais(configuracao, leitor["TipoUsuario"].ToString(), leitor["Ativo"] == DBNull.Value || Convert.ToBoolean(leitor["Ativo"]), leitor["Senha_Hash"].ToString(), leitor["Senha_Salt"].ToString(), codigo, senha))
                     {
                         falhas = 0;
-                        autorizacao = new Autorizacao { UsuarioId = Sessao.UsuarioId.Value, CriadaEmUtc = DateTime.UtcNow };
+                        autorizacao = new Autorizacao
+                        {
+                            UsuarioId = Sessao.UsuarioId.Value,
+                            CriadaEmUtc = DateTime.UtcNow
+                        };
                         return true;
                     }
                 }
             }
+
             erro = RegistrarFalha(erro);
             return false;
         }
 
-        internal static bool ValidarCredenciais(InstituicaoConfiguracao configuracao, string perfil, bool ativo,
-            string hash, string salt, string codigo, string senha)
+        internal static bool ValidarCredenciais(InstituicaoConfiguracao configuracao, string perfil, bool ativo, string hash, string salt, string codigo, string senha)
         {
-            if (!ativo || perfil != "Bibliotecário(a)" || configuracao == null ||
-                string.IsNullOrWhiteSpace(configuracao.CodigoMestreHash) ||
-                string.IsNullOrWhiteSpace(configuracao.CodigoMestreSalt) ||
-                string.IsNullOrWhiteSpace(codigo) || string.IsNullOrEmpty(senha))
+            if (!ativo || perfil != "Bibliotecário(a)" || configuracao == null || string.IsNullOrWhiteSpace(configuracao.CodigoMestreHash) || string.IsNullOrWhiteSpace(configuracao.CodigoMestreSalt) || string.IsNullOrWhiteSpace(codigo) || string.IsNullOrEmpty(senha))
                 return false;
             try
             {
@@ -128,27 +139,31 @@ namespace SUB.Utils
                 bool bibliotecario = CriptografiaSenha.VerificarSenha(senha, hash, salt);
                 return mestre && bibliotecario;
             }
-            catch (FormatException) { return false; }
-            catch (ArgumentException) { return false; }
+            catch (FormatException)
+            {
+                return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
         }
 
         internal static void Iniciar(Autorizacao autorizacao)
         {
-            if (autorizacao == null || !Sessao.UsuarioAutenticado || autorizacao.UsuarioId != Sessao.UsuarioId.Value ||
-                DateTime.UtcNow - autorizacao.CriadaEmUtc > TimeSpan.FromMinutes(2))
+            if (autorizacao == null || !Sessao.UsuarioAutenticado || autorizacao.UsuarioId != Sessao.UsuarioId.Value || DateTime.UtcNow - autorizacao.CriadaEmUtc > TimeSpan.FromMinutes(2))
                 throw new InvalidOperationException("Confirme novamente o código mestre e a senha para resetar.");
-
             var store = new ResetLocalStore(AppPaths.AppDataFolder);
-            var pedido = new PedidoReset { Id = Guid.NewGuid().ToString("N"), UsuarioId = autorizacao.UsuarioId, CriadoEmUtc = DateTime.UtcNow };
+            var pedido = new PedidoReset
+            {
+                Id = Guid.NewGuid().ToString("N"),
+                UsuarioId = autorizacao.UsuarioId,
+                CriadoEmUtc = DateTime.UtcNow
+            };
             store.Preparar(pedido);
             try
             {
-                var processo = Process.Start(new ProcessStartInfo(Application.ExecutablePath,
-                    "--aguardar-reset " + Process.GetCurrentProcess().Id)
-                {
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                });
+                var processo = Process.Start(new ProcessStartInfo(Application.ExecutablePath, "--aguardar-reset " + Process.GetCurrentProcess().Id) { UseShellExecute = false, CreateNoWindow = true });
                 if (processo == null)
                     throw new InvalidOperationException("Não foi possível reiniciar o SUB.");
                 processo.Dispose();
@@ -165,20 +180,21 @@ namespace SUB.Utils
             if (args.Length == 0)
                 return true;
             int pid;
-            if (args.Length != 2 || args[0] != "--aguardar-reset" || !int.TryParse(args[1], out pid) || pid <= 0 ||
-                pid == Process.GetCurrentProcess().Id)
+            if (args.Length != 2 || args[0] != "--aguardar-reset" || !int.TryParse(args[1], out pid) || pid <= 0 || pid == Process.GetCurrentProcess().Id)
                 return false;
             try
             {
                 using (var processo = Process.GetProcessById(pid))
                     if (!processo.WaitForExit(30000))
                     {
-                        MessageBox.Show("Feche o SUB e abra novamente para concluir o reset já autorizado.", "Reset pendente",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Feche o SUB e abra novamente para concluir o reset já autorizado.", "Reset pendente", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return false;
                     }
             }
-            catch (ArgumentException) { }
+            catch (ArgumentException)
+            {
+            }
+
             return true;
         }
     }

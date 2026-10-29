@@ -1,4 +1,4 @@
-namespace SUB.Forms.Usuario
+﻿namespace SUB.Forms.Usuario
 {
     partial class GerenciarTurmasForm
     {
@@ -120,7 +120,7 @@ namespace SUB.Forms.Usuario
             this.txtNovaTurma.SelectionLength = 0;
             this.txtNovaTurma.SelectionStart = 0;
             this.txtNovaTurma.Size = new System.Drawing.Size(375, 34);
-            this.txtNovaTurma.TabIndex = 0;
+            this.txtNovaTurma.TabIndex = 4;
             this.txtNovaTurma.TextColor = System.Drawing.Color.Black;
             this.txtNovaTurma.UseSystemPasswordChar = false;
             this.txtNovaTurma.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNovaTurma_KeyDown);
@@ -132,7 +132,7 @@ namespace SUB.Forms.Usuario
             this.btnAdicionar.Location = new System.Drawing.Point(432, 165);
             this.btnAdicionar.Name = "btnAdicionar";
             this.btnAdicionar.Size = new System.Drawing.Size(170, 38);
-            this.btnAdicionar.TabIndex = 1;
+            this.btnAdicionar.TabIndex = 5;
             this.btnAdicionar.Text = "Adicionar turma";
             this.btnAdicionar.UseVisualStyleBackColor = false;
             this.btnAdicionar.Click += new System.EventHandler(this.btnAdicionar_Click);
@@ -145,7 +145,7 @@ namespace SUB.Forms.Usuario
             this.btnEditar.Location = new System.Drawing.Point(284, 398);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(140, 38);
-            this.btnEditar.TabIndex = 3;
+            this.btnEditar.TabIndex = 8;
             this.btnEditar.Text = "Editar selecionada";
             this.btnEditar.UseVisualStyleBackColor = false;
             this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
@@ -159,7 +159,7 @@ namespace SUB.Forms.Usuario
             this.lstTurmas.Location = new System.Drawing.Point(42, 216);
             this.lstTurmas.Name = "lstTurmas";
             this.lstTurmas.Size = new System.Drawing.Size(560, 162);
-            this.lstTurmas.TabIndex = 2;
+            this.lstTurmas.TabIndex = 6;
             this.lstTurmas.SelectedIndexChanged += new System.EventHandler(this.lstTurmas_SelectedIndexChanged);
             // 
             // lblContagem
@@ -169,7 +169,7 @@ namespace SUB.Forms.Usuario
             this.lblContagem.Location = new System.Drawing.Point(42, 404);
             this.lblContagem.Name = "lblContagem";
             this.lblContagem.Size = new System.Drawing.Size(0, 17);
-            this.lblContagem.TabIndex = 4;
+            this.lblContagem.TabIndex = 7;
             // 
             // btnRemover
             // 
@@ -179,7 +179,7 @@ namespace SUB.Forms.Usuario
             this.btnRemover.Location = new System.Drawing.Point(432, 398);
             this.btnRemover.Name = "btnRemover";
             this.btnRemover.Size = new System.Drawing.Size(170, 38);
-            this.btnRemover.TabIndex = 3;
+            this.btnRemover.TabIndex = 9;
             this.btnRemover.Text = "Remover selecionada";
             this.btnRemover.UseVisualStyleBackColor = false;
             this.btnRemover.Click += new System.EventHandler(this.btnRemover_Click);
@@ -191,7 +191,7 @@ namespace SUB.Forms.Usuario
             this.btnSalvar.Location = new System.Drawing.Point(432, 440);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(170, 38);
-            this.btnSalvar.TabIndex = 4;
+            this.btnSalvar.TabIndex = 11;
             this.btnSalvar.Text = "Salvar alterações";
             this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -202,7 +202,7 @@ namespace SUB.Forms.Usuario
             this.lblStatus.Location = new System.Drawing.Point(42, 438);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(395, 40);
-            this.lblStatus.TabIndex = 5;
+            this.lblStatus.TabIndex = 10;
             // 
             // GerenciarTurmasForm
             // 

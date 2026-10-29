@@ -83,7 +83,7 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1280, 905);
-            this.panel2.TabIndex = 132;
+            this.panel2.TabIndex = 0;
             // 
             // lstSugestoesUsuario
             // 
@@ -96,7 +96,8 @@
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
             this.lstSugestoesUsuario.Size = new System.Drawing.Size(840, 104);
-            this.lstSugestoesUsuario.TabIndex = 2;
+            this.lstSugestoesUsuario.TabStop = false;
+            this.lstSugestoesUsuario.TabIndex = 5;
             this.lstSugestoesUsuario.Visible = false;
             this.lstSugestoesUsuario.SelectedIndexChanged += new System.EventHandler(this.lstSugestoesUsuario_SelectedIndexChanged);
             this.lstSugestoesUsuario.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtNomeUsuario_KeyDown);
@@ -112,7 +113,8 @@
             this.lstSugestoesTurma.Name = "lstSugestoesTurma";
             this.lstSugestoesTurma.ScrollAlwaysVisible = true;
             this.lstSugestoesTurma.Size = new System.Drawing.Size(400, 104);
-            this.lstSugestoesTurma.TabIndex = 132;
+            this.lstSugestoesTurma.TabStop = false;
+            this.lstSugestoesTurma.TabIndex = 14;
             this.lstSugestoesTurma.Visible = false;
             // 
             // lblTipoUsuario
@@ -124,7 +126,7 @@
             this.lblTipoUsuario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTipoUsuario.Name = "lblTipoUsuario";
             this.lblTipoUsuario.Size = new System.Drawing.Size(50, 19);
-            this.lblTipoUsuario.TabIndex = 131;
+            this.lblTipoUsuario.TabIndex = 6;
             this.lblTipoUsuario.Text = "label3";
             this.lblTipoUsuario.Visible = false;
             // 
@@ -134,7 +136,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 134;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -144,7 +146,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(316, 17);
-            this.lblSubtitulo.TabIndex = 133;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Atualize os dados cadastrais da pessoa selecionada.";
             // 
             // label2
@@ -156,7 +158,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(187, 38);
-            this.label2.TabIndex = 129;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Editar pessoa";
             // 
             // btnCancelar
@@ -172,7 +174,7 @@
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(160, 48);
-            this.btnCancelar.TabIndex = 9;
+            this.btnCancelar.TabIndex = 16;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -190,7 +192,7 @@
             this.btnExcluir.Margin = new System.Windows.Forms.Padding(5);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
-            this.btnExcluir.TabIndex = 127;
+            this.btnExcluir.TabIndex = 15;
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.UseVisualStyleBackColor = false;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
@@ -208,7 +210,7 @@
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(5);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(160, 48);
-            this.btnSalvar.TabIndex = 8;
+            this.btnSalvar.TabIndex = 17;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -239,7 +241,7 @@
             this.txtNomeUsuario.SelectionLength = 0;
             this.txtNomeUsuario.SelectionStart = 0;
             this.txtNomeUsuario.Size = new System.Drawing.Size(840, 40);
-            this.txtNomeUsuario.TabIndex = 1;
+            this.txtNomeUsuario.TabIndex = 4;
             this.txtNomeUsuario.TextColor = System.Drawing.Color.Black;
             this.txtNomeUsuario.UseSystemPasswordChar = false;
             this.txtNomeUsuario.TextChanged += new System.EventHandler(this.txtNomeUsuario_TextChanged);
@@ -254,7 +256,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(179, 25);
-            this.label1.TabIndex = 107;
+            this.label1.TabIndex = 3;
             this.label1.Text = "Pessoa selecionada:";
             // 
             // txtNome
@@ -284,7 +286,7 @@
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(840, 40);
-            this.txtNome.TabIndex = 3;
+            this.txtNome.TabIndex = 8;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 
@@ -298,7 +300,7 @@
             this.lblTurma.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTurma.Name = "lblTurma";
             this.lblTurma.Size = new System.Drawing.Size(71, 25);
-            this.lblTurma.TabIndex = 99;
+            this.lblTurma.TabIndex = 10;
             this.lblTurma.Text = "Turma:";
             // 
             // lblEmail
@@ -311,7 +313,7 @@
             this.lblEmail.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblEmail.Name = "lblEmail";
             this.lblEmail.Size = new System.Drawing.Size(64, 25);
-            this.lblEmail.TabIndex = 93;
+            this.lblEmail.TabIndex = 9;
             this.lblEmail.Text = "E-mail:";
             // 
             // txtEmail
@@ -341,7 +343,7 @@
             this.txtEmail.SelectionLength = 0;
             this.txtEmail.SelectionStart = 0;
             this.txtEmail.Size = new System.Drawing.Size(400, 40);
-            this.txtEmail.TabIndex = 3;
+            this.txtEmail.TabIndex = 11;
             this.txtEmail.TextColor = System.Drawing.Color.Black;
             this.txtEmail.UseSystemPasswordChar = false;
             // 
@@ -372,7 +374,7 @@
             this.txtTurma.SelectionLength = 0;
             this.txtTurma.SelectionStart = 0;
             this.txtTurma.Size = new System.Drawing.Size(400, 40);
-            this.txtTurma.TabIndex = 4;
+            this.txtTurma.TabIndex = 12;
             this.txtTurma.TextColor = System.Drawing.Color.Black;
             this.txtTurma.UseSystemPasswordChar = false;
             this.txtTurma.TextChanged += new System.EventHandler(this.txtTurma_TextChanged);
@@ -388,7 +390,7 @@
             this.lblNome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(159, 25);
-            this.lblNome.TabIndex = 90;
+            this.lblNome.TabIndex = 7;
             this.lblNome.Text = "Nome completo:";
             // 
             // panel1
@@ -404,7 +406,7 @@
             this.panel1.Location = new System.Drawing.Point(220, 442);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(840, 110);
-            this.panel1.TabIndex = 133;
+            this.panel1.TabIndex = 13;
             // 
             // dtpDataNasc
             // 
@@ -429,8 +431,8 @@
             this.dtpDataNasc.PlaceholderText = "";
             this.dtpDataNasc.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpDataNasc.Size = new System.Drawing.Size(260, 40);
-            this.dtpDataNasc.TabIndex = 7;
-            this.dtpDataNasc.TabStop = false;
+            this.dtpDataNasc.TabIndex = 5;
+            this.dtpDataNasc.TabStop = true;
             this.dtpDataNasc.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // mtxCPF
@@ -454,7 +456,7 @@
             this.mtxCPF.Name = "mtxCPF";
             this.mtxCPF.Padding = new System.Windows.Forms.Padding(18, 6, 6, 6);
             this.mtxCPF.Size = new System.Drawing.Size(260, 40);
-            this.mtxCPF.TabIndex = 6;
+            this.mtxCPF.TabIndex = 4;
             // 
             // mtxTelefone
             // 
@@ -477,7 +479,7 @@
             this.mtxTelefone.Name = "mtxTelefone";
             this.mtxTelefone.Padding = new System.Windows.Forms.Padding(15, 6, 6, 6);
             this.mtxTelefone.Size = new System.Drawing.Size(260, 40);
-            this.mtxTelefone.TabIndex = 5;
+            this.mtxTelefone.TabIndex = 3;
             // 
             // lblTelefone
             // 
@@ -489,7 +491,7 @@
             this.lblTelefone.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTelefone.Name = "lblTelefone";
             this.lblTelefone.Size = new System.Drawing.Size(89, 25);
-            this.lblTelefone.TabIndex = 100;
+            this.lblTelefone.TabIndex = 0;
             this.lblTelefone.Text = "Telefone:";
             // 
             // lblCPF
@@ -502,7 +504,7 @@
             this.lblCPF.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCPF.Name = "lblCPF";
             this.lblCPF.Size = new System.Drawing.Size(50, 25);
-            this.lblCPF.TabIndex = 97;
+            this.lblCPF.TabIndex = 1;
             this.lblCPF.Text = "CPF:";
             // 
             // lblDataNasc
@@ -515,7 +517,7 @@
             this.lblDataNasc.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblDataNasc.Name = "lblDataNasc";
             this.lblDataNasc.Size = new System.Drawing.Size(192, 25);
-            this.lblDataNasc.TabIndex = 98;
+            this.lblDataNasc.TabIndex = 2;
             this.lblDataNasc.Text = "Data de nascimento:";
             // 
             // EditarUsuarioForm

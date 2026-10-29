@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using SUB.Utils;
 
@@ -37,13 +36,10 @@ namespace SUB.Forms.Usuario
             {
                 if (IsDisposed)
                     return;
-
                 ActiveControl = txtSenha;
                 txtSenha.Focus();
             }));
         }
-
-        
 
         private void btnConfirmar_Click(object sender, EventArgs e)
         {
@@ -79,7 +75,5 @@ namespace SUB.Forms.Usuario
                 e.SuppressKeyPress = true;
             }
         }
-
-        
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-//classe provisoria totalmente sujeita a alteraçoes (DESCONSIDERE)
-
+﻿//classe provisoria totalmente sujeita a alteraçoes (DESCONSIDERE)
 namespace SUB
 {
     public class Livro
@@ -19,11 +11,10 @@ namespace SUB
         public int Quantidade { get; set; }
         public string CodigoDeBarras { get; set; }
 
-        
+        public Livro()
+        {
+        }
 
-        public Livro() { }
-
-       
         public Livro(string nome, string autor, string genero, bool disponivel, int quantidade, string codigoDeBarras)
         {
             Nome = nome;
@@ -35,4 +26,3 @@ namespace SUB
         }
     }
 }
-

@@ -60,25 +60,7 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap _8d7e22bfe4da9ba08eb4b469ea8c532f_quadrado_quadrado_arredondado {
-            get {
-                object obj = ResourceManager.GetObject("8d7e22bfe4da9ba08eb4b469ea8c532f-quadrado-quadrado-arredondado", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap botão_redondo {
-            get {
-                object obj = ResourceManager.GetObject("botão redondo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -90,65 +72,11 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_adicionar_usuário_masculino_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-adicionar-usuário-masculino-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_cardápio_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-cardápio-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_cardápio_25 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-cardápio-25", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_cardápio_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-cardápio-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_cardápio_30_black {
-            get {
-                object obj = ResourceManager.GetObject("icons8-cardápio-30-black", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_chamada_em_conferência_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-chamada-em-conferência-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -160,35 +88,8 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_export_excel_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-export-excel-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_export_excel_25 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-export-excel-25", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_fuga_de_equipes_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-fuga-de-equipes-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -200,35 +101,8 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_github_50 {
-            get {
-                object obj = ResourceManager.GetObject("icons8_github_50", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_grupo_de_usuário_homem_homem_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-grupo-de-usuário-homem-homem-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_grupo_de_usuário_homem_homem_301 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-grupo-de-usuário-homem-homem-301", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -240,35 +114,8 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_livros_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-livros-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_livros_25 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-livros-25", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_livros_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-livros-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -280,25 +127,7 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_não_perturbe_2_25 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-não-perturbe-2-25", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_página_inicial_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-página-inicial-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -310,25 +139,7 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_página_inicial_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-página-inicial-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_página_inicial_30_white {
-            get {
-                object obj = ResourceManager.GetObject("icons8-página-inicial-30-white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -360,15 +171,6 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_relatório_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-relatório-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -380,25 +182,7 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_relatório_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-relatório-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_sair_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-sair-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -420,15 +204,6 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_sair_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-sair-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -440,85 +215,13 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_símbolo_da_lua_20 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-símbolo-da-lua-20", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_símbolo_da_lua_22 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-símbolo-da-lua-22", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_sol_25 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-sol-25", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_usuário_100 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-usuário-100", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_usuário_1001 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-usuário-1001", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_usuário_30 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-usuário-30", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_usuário_50 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-usuário-50", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_usuário_501 {
-            get {
-                object obj = ResourceManager.GetObject("icons8-usuário-501", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
@@ -550,35 +253,8 @@ namespace SUB.Properties {
             }
         }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap material_symbols___tab_search_rounded {
-            get {
-                object obj = ResourceManager.GetObject("material-symbols - tab-search-rounded", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap material_symbols___tab_search_rounded__1_ {
-            get {
-                object obj = ResourceManager.GetObject("material-symbols - tab-search-rounded (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap material_symbols___tab_search_rounded_25px {
-            get {
-                object obj = ResourceManager.GetObject("material-symbols - tab-search-rounded 25px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
         
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.

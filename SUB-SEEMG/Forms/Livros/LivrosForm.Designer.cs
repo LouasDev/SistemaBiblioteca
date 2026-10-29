@@ -29,11 +29,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlResultados = new System.Windows.Forms.Panel();
             this.dgvLivros = new System.Windows.Forms.DataGridView();
-            this.pnlFiltros = new System.Windows.Forms.Panel();
+            this.pnlFiltros = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.lblUnidades = new System.Windows.Forms.Label();
             this.lblTitulos = new System.Windows.Forms.Label();
             this.mtxCodigoBarras = new RoundedTextBox();
@@ -68,7 +68,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 16;
+            this.panel1.TabIndex = 0;
             // 
             // pnlResultados
             // 
@@ -81,7 +81,7 @@
             this.pnlResultados.Name = "pnlResultados";
             this.pnlResultados.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultados.Size = new System.Drawing.Size(1088, 486);
-            this.pnlResultados.TabIndex = 137;
+            this.pnlResultados.TabIndex = 4;
             // 
             // dgvLivros
             // 
@@ -89,25 +89,26 @@
             this.dgvLivros.AllowUserToDeleteRows = false;
             this.dgvLivros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLivros.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvLivros.ColumnHeadersHeight = 42;
             this.dgvLivros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLivros.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvLivros.Location = new System.Drawing.Point(1, 1);
             this.dgvLivros.Name = "dgvLivros";
             this.dgvLivros.ReadOnly = true;
+            this.dgvLivros.StandardTab = true;
             this.dgvLivros.RowHeadersWidth = 51;
             this.dgvLivros.RowTemplate.Height = 40;
             this.dgvLivros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLivros.Size = new System.Drawing.Size(1086, 484);
-            this.dgvLivros.TabIndex = 3;
+            this.dgvLivros.TabIndex = 0;
             this.dgvLivros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLivros_CellContentClick);
             this.dgvLivros.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Lista_CellFormatting);
             this.dgvLivros.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvLivros_CellPainting);
@@ -128,8 +129,9 @@
             this.pnlFiltros.Controls.Add(this.label1);
             this.pnlFiltros.Location = new System.Drawing.Point(96, 112);
             this.pnlFiltros.Name = "pnlFiltros";
+            this.pnlFiltros.BorderRadius = 20;
             this.pnlFiltros.Size = new System.Drawing.Size(1088, 172);
-            this.pnlFiltros.TabIndex = 136;
+            this.pnlFiltros.TabIndex = 3;
             // 
             // lblUnidades
             // 
@@ -139,7 +141,7 @@
             this.lblUnidades.Location = new System.Drawing.Point(875, 34);
             this.lblUnidades.Name = "lblUnidades";
             this.lblUnidades.Size = new System.Drawing.Size(74, 20);
-            this.lblUnidades.TabIndex = 135;
+            this.lblUnidades.TabIndex = 4;
             this.lblUnidades.Text = "Unidades";
             // 
             // lblTitulos
@@ -150,7 +152,7 @@
             this.lblTitulos.Location = new System.Drawing.Point(875, 59);
             this.lblTitulos.Name = "lblTitulos";
             this.lblTitulos.Size = new System.Drawing.Size(57, 20);
-            this.lblTitulos.TabIndex = 11;
+            this.lblTitulos.TabIndex = 5;
             this.lblTitulos.Text = "Titulos";
             // 
             // mtxCodigoBarras
@@ -179,7 +181,7 @@
             this.mtxCodigoBarras.SelectionLength = 0;
             this.mtxCodigoBarras.SelectionStart = 0;
             this.mtxCodigoBarras.Size = new System.Drawing.Size(452, 40);
-            this.mtxCodigoBarras.TabIndex = 2;
+            this.mtxCodigoBarras.TabIndex = 8;
             this.mtxCodigoBarras.TextColor = System.Drawing.Color.Black;
             this.mtxCodigoBarras.UseSystemPasswordChar = false;
             // 
@@ -192,7 +194,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(162, 25);
-            this.label3.TabIndex = 134;
+            this.label3.TabIndex = 6;
             this.label3.Text = "Código de barras:";
             // 
             // label2
@@ -204,7 +206,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 25);
-            this.label2.TabIndex = 132;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Pesquisa:";
             // 
             // label6
@@ -216,7 +218,7 @@
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 25);
-            this.label6.TabIndex = 126;
+            this.label6.TabIndex = 7;
             this.label6.Text = "Disponibilidade:";
             // 
             // txtNome
@@ -243,12 +245,13 @@
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(452, 40);
-            this.txtNome.TabIndex = 1;
+            this.txtNome.TabIndex = 2;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 
             // cbDisponibilidade
             // 
+            this.cbDisponibilidade.ArrowColor = System.Drawing.Color.Empty;
             this.cbDisponibilidade.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbDisponibilidade.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbDisponibilidade.BorderRadius = 8;
@@ -259,6 +262,8 @@
             this.cbDisponibilidade.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbDisponibilidade.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbDisponibilidade.FormattingEnabled = true;
+            this.cbDisponibilidade.HighlightColor = System.Drawing.Color.Empty;
+            this.cbDisponibilidade.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbDisponibilidade.Items.AddRange(new object[] {
             "Todos",
             "Disponíveis",
@@ -266,11 +271,12 @@
             this.cbDisponibilidade.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbDisponibilidade.Location = new System.Drawing.Point(521, 116);
             this.cbDisponibilidade.Name = "cbDisponibilidade";
+            this.cbDisponibilidade.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbDisponibilidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbDisponibilidade.PlaceholderMargin = 10;
             this.cbDisponibilidade.PlaceholderText = "Filtre por disponibilidade...";
             this.cbDisponibilidade.Size = new System.Drawing.Size(272, 34);
-            this.cbDisponibilidade.TabIndex = 4;
+            this.cbDisponibilidade.TabIndex = 9;
             // 
             // btnProcurar
             // 
@@ -283,13 +289,14 @@
             this.btnProcurar.Location = new System.Drawing.Point(875, 110);
             this.btnProcurar.Name = "btnProcurar";
             this.btnProcurar.Size = new System.Drawing.Size(160, 40);
-            this.btnProcurar.TabIndex = 5;
+            this.btnProcurar.TabIndex = 10;
             this.btnProcurar.Text = "Procurar";
             this.btnProcurar.UseVisualStyleBackColor = false;
             this.btnProcurar.Click += new System.EventHandler(this.btnProcurar_Click);
             // 
             // cbFiltro
             // 
+            this.cbFiltro.ArrowColor = System.Drawing.Color.Empty;
             this.cbFiltro.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbFiltro.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbFiltro.BorderRadius = 8;
@@ -300,6 +307,8 @@
             this.cbFiltro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbFiltro.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbFiltro.FormattingEnabled = true;
+            this.cbFiltro.HighlightColor = System.Drawing.Color.Empty;
+            this.cbFiltro.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbFiltro.Items.AddRange(new object[] {
             "Nome",
             "Autor",
@@ -307,6 +316,7 @@
             this.cbFiltro.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbFiltro.Location = new System.Drawing.Point(521, 42);
             this.cbFiltro.Name = "cbFiltro";
+            this.cbFiltro.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbFiltro.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbFiltro.PlaceholderMargin = 10;
             this.cbFiltro.PlaceholderText = "Escolha um tipo de busca...";
@@ -322,7 +332,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 25);
-            this.label1.TabIndex = 128;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Busque por:";
             // 
             // pnlLinhaCabecalho
@@ -331,7 +341,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 123;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -341,7 +351,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(359, 17);
-            this.lblSubtitulo.TabIndex = 122;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Pesquise e acompanhe a disponibilidade do acervo escolar.";
             // 
             // Titulo
@@ -352,7 +362,7 @@
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(106, 38);
-            this.Titulo.TabIndex = 107;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Acervo";
             // 
             // lblTeste
@@ -361,7 +371,7 @@
             this.lblTeste.Location = new System.Drawing.Point(129, 9);
             this.lblTeste.Name = "lblTeste";
             this.lblTeste.Size = new System.Drawing.Size(0, 15);
-            this.lblTeste.TabIndex = 17;
+            this.lblTeste.TabIndex = 1;
             // 
             // LivrosForm
             // 
@@ -406,7 +416,7 @@
         private System.Windows.Forms.Label lblTitulos;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
-        private System.Windows.Forms.Panel pnlFiltros;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltros;
         private System.Windows.Forms.Panel pnlResultados;
     }
 }

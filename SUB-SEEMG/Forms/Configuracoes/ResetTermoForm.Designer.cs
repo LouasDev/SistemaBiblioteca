@@ -1,4 +1,4 @@
-namespace SUB.Forms.Configuracoes
+﻿namespace SUB.Forms.Configuracoes
 {
     partial class ResetTermoForm
     {
@@ -251,7 +251,7 @@ namespace SUB.Forms.Configuracoes
             this.btnCancelar.Location = new System.Drawing.Point(404, 20);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(110, 38);
-            this.btnCancelar.TabIndex = 1;
+            this.btnCancelar.TabIndex = 0;
             this.btnCancelar.Text = "Cancelar";
             // btnContinuar
             this.btnContinuar.Enabled = false;
@@ -260,7 +260,7 @@ namespace SUB.Forms.Configuracoes
             this.btnContinuar.Location = new System.Drawing.Point(526, 20);
             this.btnContinuar.Name = "btnContinuar";
             this.btnContinuar.Size = new System.Drawing.Size(170, 38);
-            this.btnContinuar.TabIndex = 0;
+            this.btnContinuar.TabIndex = 1;
             this.btnContinuar.Text = "Validar e continuar";
             this.btnContinuar.Click += new System.EventHandler(this.btnContinuar_Click);
             // dlgCodigoMestre

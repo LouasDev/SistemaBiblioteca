@@ -18,7 +18,6 @@ namespace SUB.Utils
         internal const string Faltando = "Faltando";
         internal const string ErroPrazo = "A data de devolução não pode ser anterior à data de empréstimo.";
         internal const string ErroQuantidadeDevolvida = "Informe uma quantidade entre zero e o saldo pendente.";
-
         internal static DateTime PrazoPadrao(DateTime dataEmprestimo)
         {
             return dataEmprestimo.AddDays(PrazoPadraoDias);
@@ -98,7 +97,8 @@ namespace SUB.Utils
         internal static DateTime CalcularProrrogacao(DateTime prazoAtual, int dias)
         {
             string erro = ErroProrrogacao(prazoAtual, dias);
-            if (erro != null) throw new InvalidOperationException(erro);
+            if (erro != null)
+                throw new InvalidOperationException(erro);
             return prazoAtual.AddDays(dias);
         }
     }

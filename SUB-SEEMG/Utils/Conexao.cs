@@ -2,9 +2,7 @@
 using System.Configuration;
 using System.Data.SqlServerCe;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
 
 namespace SUB.Utils
 {
@@ -19,11 +17,9 @@ namespace SUB.Utils
                 var connStrTemplate = ConfigurationManager.ConnectionStrings["SUBDB"]?.ConnectionString;
                 if (string.IsNullOrWhiteSpace(connStrTemplate))
                     throw new InvalidOperationException("ConnectionString 'SUBDB' não encontrada em App.config.");
-
                 var senha = GetDatabasePasswordProtected();
                 if (string.IsNullOrEmpty(senha))
                     throw new InvalidOperationException("Senha do banco não encontrada em AppSettings['DBPasswordProtected'].");
-
                 var connStr = connStrTemplate.Replace("CAMINHO", CaminhoBanco).Replace("{PASSWORD}", senha);
                 return connStr;
             }
@@ -40,11 +36,7 @@ namespace SUB.Utils
             var base64 = ConfigurationManager.AppSettings["DBPasswordProtected"];
             if (string.IsNullOrWhiteSpace(base64))
                 return null;
-
             return Encoding.UTF8.GetString(Convert.FromBase64String(base64));
         }
     }
 }
-
-
-

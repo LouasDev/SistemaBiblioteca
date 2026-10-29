@@ -19,7 +19,6 @@ namespace SUB.Utils
     {
         private const int Margem = 16;
         private const int AlturaMinimaGrade = 160;
-
         private sealed class Item
         {
             public Control Controle;
@@ -36,9 +35,7 @@ namespace SUB.Utils
             public bool Dispondo;
         }
 
-        private static readonly ConditionalWeakTable<Control, Disposicao> Disposicoes =
-            new ConditionalWeakTable<Control, Disposicao>();
-
+        private static readonly ConditionalWeakTable<Control, Disposicao> Disposicoes = new ConditionalWeakTable<Control, Disposicao>();
         // Chamar logo após InitializeComponent, com a tela ainda no tamanho do designer.
         public static void Aplicar(Form tela)
         {
@@ -48,20 +45,25 @@ namespace SUB.Utils
             Disposicao existente;
             if (Disposicoes.TryGetValue(painel, out existente))
                 return;
-
-            var disposicao = new Disposicao { Desenho = painel.ClientSize };
+            var disposicao = new Disposicao
+            {
+                Desenho = painel.ClientSize
+            };
             foreach (Control controle in painel.Controls)
             {
                 if (controle.Dock != DockStyle.None)
                     continue;
-                var item = new Item { Controle = controle, Desenho = controle.Bounds, Ancora = controle.Anchor };
+                var item = new Item
+                {
+                    Controle = controle,
+                    Desenho = controle.Bounds,
+                    Ancora = controle.Anchor
+                };
                 if (controle is Panel || controle is GroupBox)
                 {
-                    item.Filhos = controle.Controls.Cast<Control>()
-                        .Where(f => f.Dock == DockStyle.None)
-                        .Select(f => new KeyValuePair<Control, Rectangle>(f, f.Bounds))
-                        .ToList();
+                    item.Filhos = controle.Controls.Cast<Control>().Where(f => f.Dock == DockStyle.None).Select(f => new KeyValuePair<Control, Rectangle>(f, f.Bounds)).ToList();
                 }
+
                 disposicao.Itens.Add(item);
                 controle.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             }
@@ -74,21 +76,18 @@ namespace SUB.Utils
         {
             if (d.Dispondo || d.Itens.Count == 0 || painel.Width <= 0 || painel.Height <= 0)
                 return;
-
             d.Dispondo = true;
             painel.SuspendLayout();
             try
             {
                 int dH = painel.Height - d.Desenho.Height;
                 var posicoes = d.Itens.ToDictionary(i => i, i => Vertical(i, dH));
-
                 // As listas de sugestão são flutuantes e ficam fora das contas de espaço.
                 var solidos = d.Itens.Where(i => !(i.Controle is ListBox)).ToList();
                 int fundo = solidos.Max(i => posicoes[i].Bottom) + Margem;
                 bool rolagem = fundo > painel.Height;
                 int largura = painel.Width - (rolagem ? SystemInformation.VerticalScrollBarWidth : 0);
                 int dW = largura - d.Desenho.Width;
-
                 foreach (var item in d.Itens)
                 {
                     var horizontal = Horizontal(item, dW);
@@ -98,7 +97,6 @@ namespace SUB.Utils
                 float fator = 1f;
                 if (dW < 0 && Conflita(d, solidos, posicoes, largura))
                     fator = Comprimir(d, solidos, posicoes, largura);
-
                 foreach (var item in d.Itens)
                 {
                     var r = posicoes[item];
@@ -114,8 +112,8 @@ namespace SUB.Utils
                         }
                     }
                 }
-                d.Comprimida = fator < 1f;
 
+                d.Comprimida = fator < 1f;
                 painel.AutoScrollMinSize = rolagem ? new Size(0, fundo) : Size.Empty;
                 painel.AutoScroll = rolagem;
             }
@@ -144,7 +142,6 @@ namespace SUB.Utils
             bool base_ = (item.Ancora & AnchorStyles.Bottom) != 0;
             if (topo && base_)
                 return new Rectangle(r.X, r.Y, r.Width, Math.Max(Math.Min(r.Height, AlturaMinimaGrade), r.Height + dH));
-
             int sobra = Math.Max(0, dH);
             if (base_)
                 return new Rectangle(r.X, r.Y + sobra, r.Width, r.Height);
@@ -181,11 +178,11 @@ namespace SUB.Utils
             {
                 for (int b = a + 1; b < solidos.Count; b++)
                 {
-                    if (posicoes[solidos[a]].IntersectsWith(posicoes[solidos[b]]) &&
-                        !solidos[a].Desenho.IntersectsWith(solidos[b].Desenho))
+                    if (posicoes[solidos[a]].IntersectsWith(posicoes[solidos[b]]) && !solidos[a].Desenho.IntersectsWith(solidos[b].Desenho))
                         return true;
                 }
             }
+
             return false;
         }
 
@@ -196,17 +193,16 @@ namespace SUB.Utils
             var fixos = solidos.Where(i => !Estica(i)).ToList();
             if (fixos.Count == 0)
                 return 1f;
-
             int esquerda = fixos.Min(i => i.Desenho.Left);
             int direita = fixos.Max(i => i.Desenho.Right);
             float fator = Math.Min(1f, (largura - Margem - esquerda) / (float)Math.Max(1, direita - esquerda));
-
             foreach (var item in d.Itens.Where(i => !Estica(i)))
             {
                 int x = esquerda + (int)Math.Round((item.Desenho.Left - esquerda) * fator);
                 int w = Math.Max(1, (int)Math.Round(item.Desenho.Width * fator));
                 posicoes[item] = new Rectangle(x, posicoes[item].Y, w, posicoes[item].Height);
             }
+
             return fator;
         }
     }

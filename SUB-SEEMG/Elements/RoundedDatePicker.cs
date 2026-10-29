@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -22,15 +22,12 @@ public class RoundedDatePicker : UserControl
     private Color _placeholderColor = Color.Gray;
     private DateTime? previousValidDate = null;
     private Form parentFormCached = null;
-
     // novos campos para customização do ícone/área
     private Color _iconColor;
     private Color _iconHoverColor;
     private Color _iconHoverAreaColor;
-
     // formatação em tempo real
     private bool isFormattingText = false;
-
     public RoundedDatePicker()
     {
         // ---------- DEFAULTS MÍNIMOS (não chamam AdjustLayout imediatamente) ----------
@@ -38,13 +35,11 @@ public class RoundedDatePicker : UserControl
         base.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
         this.ForeColor = Color.FromArgb(20, 42, 60);
         this.Size = new Size(199, 35);
-        this.TabStop = false;
-
+        this.TabStop = true;
         // defaults do ícone (guardados em campos simples)
         _iconColor = Color.FromArgb(80, 80, 80);
         _iconHoverColor = Color.FromArgb(30, 61, 88);
         _iconHoverAreaColor = Color.FromArgb(220, 220, 220);
-
         // ---------- CRIA CONTROLES INTERNOS PRIMEIRO ----------
         innerTextBox = new TextBox
         {
@@ -57,14 +52,16 @@ public class RoundedDatePicker : UserControl
             TabStop = true,
             Font = base.Font
         };
-
-        innerTextBox.GotFocus += (s, e) => { isFocused = true; Invalidate(); };
+        innerTextBox.GotFocus += (s, e) =>
+        {
+            isFocused = true;
+            Invalidate();
+        };
         innerTextBox.LostFocus += (s, e) =>
         {
             isFocused = false;
             ValidateAndApplyTextDate();
             Invalidate();
-
             // fechar calendário se o foco saiu do controle e não foi pro calendário
             this.BeginInvoke((Action)(() =>
             {
@@ -74,7 +71,6 @@ public class RoundedDatePicker : UserControl
                     HideCalendar();
             }));
         };
-
         innerTextBox.KeyDown += (s, e) =>
         {
             if (e.KeyCode == Keys.Enter)
@@ -83,9 +79,7 @@ public class RoundedDatePicker : UserControl
                 e.SuppressKeyPress = true;
             }
         };
-
         innerTextBox.TextChanged += InnerTextBox_TextChanged;
-
         placeholderLabel = new Label
         {
             Text = "Selecione uma data...",
@@ -96,7 +90,6 @@ public class RoundedDatePicker : UserControl
             TextAlign = ContentAlignment.MiddleLeft
         };
         placeholderLabel.Click += (s, e) => ToggleCalendar();
-
         calendarIcon = new PictureBox
         {
             Size = new Size(24, 24),
@@ -105,14 +98,20 @@ public class RoundedDatePicker : UserControl
             BackColor = Color.Transparent
         };
         calendarIcon.Paint += DrawCalendarIcon;
-        calendarIcon.MouseEnter += (s, e) => { isIconHover = true; Invalidate(); };
-        calendarIcon.MouseLeave += (s, e) => { isIconHover = false; Invalidate(); };
-
+        calendarIcon.MouseEnter += (s, e) =>
+        {
+            isIconHover = true;
+            Invalidate();
+        };
+        calendarIcon.MouseLeave += (s, e) =>
+        {
+            isIconHover = false;
+            Invalidate();
+        };
         calendarIcon.Click += (s, e) =>
         {
             // solicita foco para o TextBox
             innerTextBox.Focus();
-
             // executa depois da troca de foco para abrir o calendário sem roubar o foco
             this.BeginInvoke((Action)(() =>
             {
@@ -122,7 +121,7 @@ public class RoundedDatePicker : UserControl
                     {
                         ToggleCalendar(); // abre o calendário
                     }
-                    // NÃO traze o foco para o calendarPopup (assim o innerTextBox mantém o foco)
+                // NÃO traze o foco para o calendarPopup (assim o innerTextBox mantém o foco)
                 }
                 else
                 {
@@ -136,11 +135,11 @@ public class RoundedDatePicker : UserControl
                     innerTextBox.SelectionLength = 0;
                     innerTextBox.Focus(); // reforça o foco no TextBox
                 }
-                catch { /* ignore */ }
+                catch
+                { /* ignore */
+                }
             }));
         };
-
-
         calendarPopup = new MonthCalendar
         {
             Visible = false,
@@ -156,12 +155,10 @@ public class RoundedDatePicker : UserControl
             SelectedDate = e.Start;
             HideCalendar();
         };
-
         // adiciona controles à coleção do UserControl
         Controls.Add(innerTextBox);
         Controls.Add(placeholderLabel);
         Controls.Add(calendarIcon);
-
         // ---------- AGORA DEFINIMOS AS PROPRIEDADES QUE PODEM CHAMAR AdjustLayout/Invalidate ----------
         this.BorderColor = Color.FromArgb(204, 204, 204);
         this.BorderFocusColor = Color.FromArgb(30, 61, 88);
@@ -171,18 +168,24 @@ public class RoundedDatePicker : UserControl
         this.PlaceholderColor = Color.Gray;
         this.PlaceholderText = "Selecione uma data...";
         this.PlaceholderFont = new Font("Segoe UI", 12.2F, FontStyle.Regular);
-
         // eventos gerais (após controles)
-        this.MouseEnter += (s, e) => { isMouseOver = true; Invalidate(); };
-        this.MouseLeave += (s, e) => { isMouseOver = false; isIconHover = false; Invalidate(); };
+        this.MouseEnter += (s, e) =>
+        {
+            isMouseOver = true;
+            Invalidate();
+        };
+        this.MouseLeave += (s, e) =>
+        {
+            isMouseOver = false;
+            isIconHover = false;
+            Invalidate();
+        };
         this.MouseMove += RoundedDatePicker_MouseMove;
         this.Resize += (s, e) => AdjustLayout();
-
         // layout inicial
         AdjustLayout();
         UpdatePlaceholderVisibility();
     }
-
 
     private void RoundedDatePicker_MouseMove(object sender, MouseEventArgs e)
     {
@@ -199,14 +202,11 @@ public class RoundedDatePicker : UserControl
     {
         if (innerTextBox == null || placeholderLabel == null || calendarIcon == null)
             return;
-
         innerTextBox.Location = new Point(10, (Height - innerTextBox.Font.Height) / 2 - 1);
         innerTextBox.Width = Math.Max(40, Width - 54);
         innerTextBox.Height = innerTextBox.Font.Height + 4;
-
         placeholderLabel.Location = new Point(_placeholderMarginLeft, innerTextBox.Top);
         placeholderLabel.Size = new Size(Width - _placeholderMarginLeft - 54, innerTextBox.Height + 2);
-
         calendarIcon.Location = new Point(Width - calendarIcon.Width - 8, (Height - calendarIcon.Height) / 2);
         placeholderLabel.BringToFront();
     }
@@ -222,8 +222,8 @@ public class RoundedDatePicker : UserControl
     private void ShowCalendar()
     {
         var parentForm = this.FindForm();
-        if (parentForm == null) return;
-
+        if (parentForm == null)
+            return;
         if (parentFormCached != parentForm)
         {
             if (parentFormCached != null)
@@ -243,23 +243,21 @@ public class RoundedDatePicker : UserControl
 
         if (!parentForm.Controls.Contains(calendarPopup))
             parentForm.Controls.Add(calendarPopup);
-
         Point screenBelow = this.PointToScreen(new Point(0, this.Height));
         Point clientBelow = parentForm.PointToClient(screenBelow);
-
         int x = clientBelow.X;
         int y = clientBelow.Y;
-
         if (y + calendarPopup.Height > parentForm.ClientSize.Height)
         {
             int aboveY = parentForm.PointToClient(this.PointToScreen(new Point(0, 0))).Y - calendarPopup.Height - 2;
-            if (aboveY >= 0) y = aboveY;
-            else y = Math.Max(0, parentForm.ClientSize.Height - calendarPopup.Height);
+            if (aboveY >= 0)
+                y = aboveY;
+            else
+                y = Math.Max(0, parentForm.ClientSize.Height - calendarPopup.Height);
         }
 
         if (x + calendarPopup.Width > parentForm.ClientSize.Width)
             x = Math.Max(0, parentForm.ClientSize.Width - calendarPopup.Width);
-
         calendarPopup.Location = new Point(x, y);
         calendarPopup.Visible = true;
         calendarPopup.BringToFront();
@@ -267,17 +265,15 @@ public class RoundedDatePicker : UserControl
 
     private void ParentForm_Deactivate(object sender, EventArgs e) => HideCalendar();
     private void ParentForm_LocationOrSizeChanged(object sender, EventArgs e) => HideCalendar();
-
     private void ParentForm_MouseDown(object sender, MouseEventArgs e)
     {
         var parent = sender as Form;
-        if (parent == null) return;
-
+        if (parent == null)
+            return;
         Point clicked = e.Location;
         Rectangle calRect = calendarPopup.Visible ? calendarPopup.Bounds : Rectangle.Empty;
         Point ctrlTopLeft = parent.PointToClient(this.PointToScreen(Point.Empty));
         Rectangle ctrlRect = new Rectangle(ctrlTopLeft, this.Size);
-
         if (!calRect.Contains(clicked) && !ctrlRect.Contains(clicked))
             HideCalendar();
     }
@@ -290,10 +286,8 @@ public class RoundedDatePicker : UserControl
             parentFormCached.LocationChanged -= ParentForm_LocationOrSizeChanged;
             parentFormCached.SizeChanged -= ParentForm_LocationOrSizeChanged;
             parentFormCached.Deactivate -= ParentForm_Deactivate;
-
             if (parentFormCached.Controls.Contains(calendarPopup))
                 parentFormCached.Controls.Remove(calendarPopup);
-
             parentFormCached = null;
         }
 
@@ -304,9 +298,7 @@ public class RoundedDatePicker : UserControl
     {
         Graphics g = e.Graphics;
         g.SmoothingMode = SmoothingMode.AntiAlias;
-
         Color baseColor = isIconHover ? IconHoverColor : IconColor;
-
         // Hover do ícone (círculo atrás)
         if (isIconHover)
         {
@@ -325,32 +317,62 @@ public class RoundedDatePicker : UserControl
             int h = calendarIcon.Height - pad;
             int x = pad / 2;
             int y = pad / 2;
-
             g.DrawRectangle(pen, x, y + 4, w - 1, h - 6);
             g.DrawLine(pen, x, y + 8, x + w - 1, y + 8);
             g.DrawLine(pen, x + 5, y, x + 5, y + 4);
             g.DrawLine(pen, x + w - 6, y, x + w - 6, y + 4);
         }
-
-        // Linha separadora entre a data e o ícone (desenhada no controle principal OnPaint para melhor alinhamento)
+    // Linha separadora entre a data e o ícone (desenhada no controle principal OnPaint para melhor alinhamento)
     }
 
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
+    }
 
-
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
+            base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
+    }
 
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
         Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
-
         using (GraphicsPath path = GetRoundedRectanglePath(rect, BorderRadius))
         {
             Color backColorToUse = isMouseOver ? HoverBackColor : this.BackColor;
             using (SolidBrush brush = new SolidBrush(backColorToUse))
                 e.Graphics.FillPath(brush, path);
-
             Color borderToUse = isFocused ? BorderFocusColor : BorderColor;
             using (Pen pen = new Pen(borderToUse, BorderThickness))
                 e.Graphics.DrawPath(pen, path);
@@ -360,8 +382,17 @@ public class RoundedDatePicker : UserControl
         if (isIconHover)
         {
             Rectangle iconArea = new Rectangle(this.Width - calendarIcon.Width - 16, 0, calendarIcon.Width + 16, this.Height);
+            using (GraphicsPath contour = GetRoundedRectanglePath(rect, BorderRadius))
             using (SolidBrush b = new SolidBrush(IconHoverAreaColor))
-                e.Graphics.FillRectangle(b, iconArea);
+            {
+                GraphicsState state = e.Graphics.Save();
+                try
+                {
+                    e.Graphics.SetClip(iconArea, CombineMode.Intersect);
+                    e.Graphics.FillPath(b, contour);
+                }
+                finally { e.Graphics.Restore(state); }
+            }
         }
 
         // desenhar linha separadora
@@ -375,15 +406,14 @@ public class RoundedDatePicker : UserControl
 
         if (innerTextBox != null)
             innerTextBox.BackColor = isMouseOver ? HoverBackColor : this.BackColor;
-
         UpdatePlaceholderVisibility();
     }
-
 
     private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
     {
         GraphicsPath path = new GraphicsPath();
-        int diameter = radius * 2;
+        int diameter = Math.Min(Math.Max(0, radius * 2), Math.Min(rect.Width, rect.Height));
+        if (diameter == 0) { path.AddRectangle(rect); return path; }
         path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
         path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
         path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
@@ -394,14 +424,15 @@ public class RoundedDatePicker : UserControl
 
     private void UpdatePlaceholderVisibility()
     {
-        if (placeholderLabel == null || innerTextBox == null) return;
+        if (placeholderLabel == null || innerTextBox == null)
+            return;
         placeholderLabel.Visible = string.IsNullOrEmpty(innerTextBox.Text) && !innerTextBox.Focused;
     }
 
     private void ValidateAndApplyTextDate()
     {
-        if (innerTextBox == null) return;
-
+        if (innerTextBox == null)
+            return;
         string txt = innerTextBox.Text?.Trim();
         if (string.IsNullOrEmpty(txt))
         {
@@ -412,12 +443,17 @@ public class RoundedDatePicker : UserControl
 
         DateTime parsed = DateTime.MinValue;
         bool ok = false;
-        string[] formats = new[] { "d", "dd/MM/yyyy", "d/M/yyyy", "yyyy-MM-dd", "M/d/yyyy" };
-
+        string[] formats = new[]
+        {
+            "d",
+            "dd/MM/yyyy",
+            "d/M/yyyy",
+            "yyyy-MM-dd",
+            "M/d/yyyy"
+        };
         foreach (var fmt in formats)
         {
-            if (DateTime.TryParseExact(txt, fmt, CultureInfo.CurrentCulture,
-                DateTimeStyles.None, out parsed))
+            if (DateTime.TryParseExact(txt, fmt, CultureInfo.CurrentCulture, DateTimeStyles.None, out parsed))
             {
                 ok = true;
                 break;
@@ -426,20 +462,16 @@ public class RoundedDatePicker : UserControl
 
         if (!ok)
             ok = DateTime.TryParse(txt, CultureInfo.CurrentCulture, DateTimeStyles.None, out parsed);
-
         if (ok)
         {
-           
-            SelectedDate = parsed; 
+            SelectedDate = parsed;
         }
         else
         {
-            
             if (previousValidDate.HasValue)
-                SelectedDate = previousValidDate.Value; 
+                SelectedDate = previousValidDate.Value;
             else
                 SelectedDate = null;
-
             FlashBorder(Color.FromArgb(200, 60, 60));
         }
     }
@@ -455,7 +487,6 @@ public class RoundedDatePicker : UserControl
     }
 
     // ----------------- PROPRIEDADES EXPONÍVEIS -----------------
-
     [Category("Aparência")]
     public Color BorderColor { get; set; }
 
@@ -477,7 +508,8 @@ public class RoundedDatePicker : UserControl
         get => placeholderLabel?.Text ?? "";
         set
         {
-            if (placeholderLabel != null) placeholderLabel.Text = value;
+            if (placeholderLabel != null)
+                placeholderLabel.Text = value;
             Invalidate();
         }
     }
@@ -488,7 +520,8 @@ public class RoundedDatePicker : UserControl
         get => placeholderLabel?.Font;
         set
         {
-            if (placeholderLabel != null) placeholderLabel.Font = value;
+            if (placeholderLabel != null)
+                placeholderLabel.Font = value;
             AdjustLayout();
             Invalidate();
         }
@@ -501,7 +534,8 @@ public class RoundedDatePicker : UserControl
         set
         {
             _placeholderColor = value;
-            if (placeholderLabel != null) placeholderLabel.ForeColor = value;
+            if (placeholderLabel != null)
+                placeholderLabel.ForeColor = value;
             Invalidate();
         }
     }
@@ -515,10 +549,11 @@ public class RoundedDatePicker : UserControl
                 return dt;
             return null;
         }
+
         set
         {
-            if (innerTextBox == null) return;
-
+            if (innerTextBox == null)
+                return;
             if (value.HasValue)
             {
                 previousValidDate = value;
@@ -537,7 +572,6 @@ public class RoundedDatePicker : UserControl
             }
 
             Invalidate();
-
             // Dispara ValueChanged para compatibilidade com DateTimePicker
             OnValueChanged(EventArgs.Empty);
         }
@@ -546,7 +580,6 @@ public class RoundedDatePicker : UserControl
     // limites compatíveis com DateTimePicker
     private DateTime _minDate = new DateTime(1753, 1, 1);
     private DateTime _maxDate = new DateTime(9998, 12, 31);
-
     [Category("Comportamento")]
     public DateTime MinDate
     {
@@ -554,7 +587,8 @@ public class RoundedDatePicker : UserControl
         set
         {
             _minDate = value;
-            if (calendarPopup != null) calendarPopup.MinDate = _minDate;
+            if (calendarPopup != null)
+                calendarPopup.MinDate = _minDate;
             // se seleção atual estiver abaixo, corrige
             if (SelectedDate.HasValue && SelectedDate.Value < _minDate)
                 SelectedDate = _minDate;
@@ -568,32 +602,31 @@ public class RoundedDatePicker : UserControl
         set
         {
             _maxDate = value;
-            if (calendarPopup != null) calendarPopup.MaxDate = _maxDate;
+            if (calendarPopup != null)
+                calendarPopup.MaxDate = _maxDate;
             // se seleção atual estiver acima, corrige
             if (SelectedDate.HasValue && SelectedDate.Value > _maxDate)
                 SelectedDate = _maxDate;
         }
     }
 
-
     public override string Text
     {
         get => innerTextBox?.Text ?? "";
         set
         {
-            if (innerTextBox != null) innerTextBox.Text = value;
+            if (innerTextBox != null)
+                innerTextBox.Text = value;
             UpdatePlaceholderVisibility();
             Invalidate();
         }
     }
-
 
     /// <summary>
     /// Evento compatível com DateTimePicker.ValueChanged do WinForms.
     /// </summary>
     [Category("Comportamento")]
     public event EventHandler ValueChanged;
-
     protected virtual void OnValueChanged(EventArgs e)
     {
         ValueChanged?.Invoke(this, e);
@@ -605,13 +638,7 @@ public class RoundedDatePicker : UserControl
     /// </summary>
     [Browsable(true)]
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
-    public DateTime Value
-    {
-        get => SelectedDate ?? DateTime.Today;
-        set => SelectedDate = value;
-    }
-
-
+    public DateTime Value { get => SelectedDate ?? DateTime.Today; set => SelectedDate = value; }
 
     public override Font Font
     {
@@ -638,61 +665,72 @@ public class RoundedDatePicker : UserControl
     }
 
     // ----------------- PROPRIEDADES DO ÍCONE (NOVAS) -----------------
-
     [Category("Ícone")]
     public Color IconColor
     {
         get => _iconColor;
-        set { _iconColor = value; calendarIcon?.Invalidate(); Invalidate(); }
+        set
+        {
+            _iconColor = value;
+            calendarIcon?.Invalidate();
+            Invalidate();
+        }
     }
 
     [Category("Ícone")]
     public Color IconHoverColor
     {
         get => _iconHoverColor;
-        set { _iconHoverColor = value; calendarIcon?.Invalidate(); Invalidate(); }
+        set
+        {
+            _iconHoverColor = value;
+            calendarIcon?.Invalidate();
+            Invalidate();
+        }
     }
 
     [Category("Ícone")]
     public Color IconHoverAreaColor
     {
         get => _iconHoverAreaColor;
-        set { _iconHoverAreaColor = value; Invalidate(); }
+        set
+        {
+            _iconHoverAreaColor = value;
+            Invalidate();
+        }
     }
 
     private Color _separatorColor = Color.FromArgb(200, 200, 200);
-
     [Category("Aparência")]
     public Color SeparatorColor
     {
         get => _separatorColor;
-        set { _separatorColor = value; Invalidate(); }
+        set
+        {
+            _separatorColor = value;
+            Invalidate();
+        }
     }
 
     // ----------------- FORMATAÇÃO AO DIGITAR -----------------
     private void InnerTextBox_TextChanged(object sender, EventArgs e)
     {
-        if (isFormattingText) return;
-
+        if (isFormattingText)
+            return;
         try
         {
             isFormattingText = true;
-
             string original = innerTextBox.Text ?? "";
             int selStart = innerTextBox.SelectionStart;
-
             // quantidade de dígitos antes do cursor no texto original
             int digitsBeforeCursor = CountDigits(original.Substring(0, Math.Max(0, Math.Min(selStart, original.Length))));
-
             // extrai apenas dígitos
             string digits = Regex.Replace(original, @"\D", "");
-            if (digits.Length > 8) digits = digits.Substring(0, 8); // ddMMyyyy máximo
-
+            if (digits.Length > 8)
+                digits = digits.Substring(0, 8); // ddMMyyyy máximo
             string formatted = FormatDigitsToDate(digits);
-
             // calcula nova posição do cursor com base em dígitosBeforeCursor
             int newPos = MapDigitsToFormattedPosition(digitsBeforeCursor, formatted);
-
             innerTextBox.Text = formatted;
             innerTextBox.SelectionStart = Math.Max(0, Math.Min(newPos, innerTextBox.Text.Length));
         }
@@ -705,16 +743,20 @@ public class RoundedDatePicker : UserControl
     private static int CountDigits(string s)
     {
         int c = 0;
-        foreach (char ch in s) if (char.IsDigit(ch)) c++;
+        foreach (char ch in s)
+            if (char.IsDigit(ch))
+                c++;
         return c;
     }
 
     private static string FormatDigitsToDate(string digits)
     {
-        if (string.IsNullOrEmpty(digits)) return "";
-
-        if (digits.Length <= 2) return digits;
-        if (digits.Length <= 4) return digits.Insert(2, "/");
+        if (string.IsNullOrEmpty(digits))
+            return "";
+        if (digits.Length <= 2)
+            return digits;
+        if (digits.Length <= 4)
+            return digits.Insert(2, "/");
         // >4
         if (digits.Length <= 8)
         {
@@ -726,13 +768,16 @@ public class RoundedDatePicker : UserControl
             else
                 return $"{part1}/{part2}";
         }
+
         return digits;
     }
 
     private static int MapDigitsToFormattedPosition(int digitsBeforeCursor, string formatted)
     {
-        if (digitsBeforeCursor <= 2) return digitsBeforeCursor;
-        if (digitsBeforeCursor <= 4) return digitsBeforeCursor + 1; // uma barra
+        if (digitsBeforeCursor <= 2)
+            return digitsBeforeCursor;
+        if (digitsBeforeCursor <= 4)
+            return digitsBeforeCursor + 1; // uma barra
         return digitsBeforeCursor + 2; // duas barras
     }
 }

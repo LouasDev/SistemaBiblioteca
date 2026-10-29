@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import html
 import subprocess
+from urllib.request import Request, urlopen
 from collections import defaultdict
 from pathlib import Path
 
@@ -22,10 +24,24 @@ CONTRIBUTORS = {
 }
 
 AVATAR_URLS = {
-    "renato0x": "https://avatars.githubusercontent.com/u/199422215?v=4",
-    "LouasDev": "https://avatars.githubusercontent.com/u/269842284?v=4",
-    "Ithaloluzdepanela": "https://avatars.githubusercontent.com/u/163846279?v=4",
+    "renato0x": "https://avatars.githubusercontent.com/u/199422215?v=4&s=80",
+    "LouasDev": "https://avatars.githubusercontent.com/u/269842284?v=4&s=80",
+    "Ithaloluzdepanela": "https://avatars.githubusercontent.com/u/163846279?v=4&s=80",
 }
+
+
+def load_avatar_data_uri(handle: str) -> str:
+    """Baixa o avatar para que o SVG não dependa de imagens externas."""
+    request = Request(AVATAR_URLS[handle], headers={"User-Agent": "SistemaBiblioteca-cards"})
+    with urlopen(request, timeout=20) as response:
+        content_type = response.headers.get_content_type()
+        content = response.read()
+
+    if not content_type.startswith("image/"):
+        raise ValueError(f"O avatar de {handle} não retornou uma imagem.")
+
+    encoded = base64.b64encode(content).decode("ascii")
+    return f"data:{content_type};base64,{encoded}"
 
 
 def collect_statistics(repository: Path) -> dict[str, dict[str, int]]:
@@ -57,12 +73,11 @@ def display_number(value: int, prefix: str = "") -> str:
     return f"{prefix}{value:,}".replace(",", ".")
 
 
-def render_card(handle: str, stats: dict[str, int]) -> str:
+def render_card(handle: str, stats: dict[str, int], avatar_data_uri: str) -> str:
     safe_handle = html.escape(handle)
     commits = display_number(stats["commits"])
     added = display_number(stats["added"], "+")
     removed = display_number(stats["removed"], "−")
-    avatar_url = AVATAR_URLS[handle]
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="480" height="180" viewBox="0 0 480 180" role="img" aria-labelledby="title desc">
   <title id="title">Contribuições de {safe_handle} no SUB</title>
   <desc id="desc">{commits} commits, {added} linhas adicionadas e {removed} linhas removidas no repositório SistemaBiblioteca.</desc>
@@ -74,7 +89,7 @@ def render_card(handle: str, stats: dict[str, int]) -> str:
   <defs><clipPath id="avatar"><circle cx="45" cy="33" r="20"/></clipPath></defs>
   <rect width="480" height="180" rx="16" fill="#eef4fa"/>
   <path d="M0 16Q0 0 16 0H464Q480 0 480 16V66H0Z" fill="#1f487e"/>
-  <image href="{avatar_url}" x="25" y="13" width="40" height="40" clip-path="url(#avatar)" preserveAspectRatio="xMidYMid slice"/>
+  <image href="{avatar_data_uri}" x="25" y="13" width="40" height="40" clip-path="url(#avatar)" preserveAspectRatio="xMidYMid slice"/>
   <text x="78" y="42" class="handle">{safe_handle}</text>
   <rect x="18" y="86" width="136" height="68" rx="11" fill="#ffffff"/>
   <rect x="172" y="86" width="136" height="68" rx="11" fill="#ffffff"/>
@@ -98,7 +113,10 @@ def main() -> None:
     destination = args.repository / args.output
     destination.mkdir(parents=True, exist_ok=True)
     for handle, statistics in collect_statistics(args.repository).items():
-        (destination / f"{handle}.svg").write_text(render_card(handle, statistics), encoding="utf-8")
+        avatar_data_uri = load_avatar_data_uri(handle)
+        (destination / f"{handle}.svg").write_text(
+            render_card(handle, statistics, avatar_data_uri), encoding="utf-8"
+        )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -325,9 +325,35 @@ public class RoundedDatePicker : UserControl
     // Linha separadora entre a data e o ícone (desenhada no controle principal OnPaint para melhor alinhamento)
     }
 
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
+            base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
+    }
+
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
         using (GraphicsPath path = GetRoundedRectanglePath(rect, BorderRadius))
@@ -344,8 +370,17 @@ public class RoundedDatePicker : UserControl
         if (isIconHover)
         {
             Rectangle iconArea = new Rectangle(this.Width - calendarIcon.Width - 16, 0, calendarIcon.Width + 16, this.Height);
+            using (GraphicsPath contour = GetRoundedRectanglePath(rect, BorderRadius))
             using (SolidBrush b = new SolidBrush(IconHoverAreaColor))
-                e.Graphics.FillRectangle(b, iconArea);
+            {
+                GraphicsState state = e.Graphics.Save();
+                try
+                {
+                    e.Graphics.SetClip(iconArea, CombineMode.Intersect);
+                    e.Graphics.FillPath(b, contour);
+                }
+                finally { e.Graphics.Restore(state); }
+            }
         }
 
         // desenhar linha separadora
@@ -365,7 +400,8 @@ public class RoundedDatePicker : UserControl
     private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
     {
         GraphicsPath path = new GraphicsPath();
-        int diameter = radius * 2;
+        int diameter = Math.Min(Math.Max(0, radius * 2), Math.Min(rect.Width, rect.Height));
+        if (diameter == 0) { path.AddRectangle(rect); return path; }
         path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
         path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
         path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);

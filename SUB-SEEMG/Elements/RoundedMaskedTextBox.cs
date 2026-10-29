@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -194,15 +194,33 @@ public class RoundedMaskedTextBox : UserControl
 
     protected override void OnPaintBackground(PaintEventArgs e)
     {
-        if (Parent != null)
-            ButtonRenderer.DrawParentBackground(e.Graphics, ClientRectangle, this);
-        else
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
             base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
     }
 
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = ClientRectangle;
         rect.Width -= 1;
@@ -224,7 +242,7 @@ public class RoundedMaskedTextBox : UserControl
     private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
     {
         GraphicsPath path = new GraphicsPath();
-        int r = radius * 2;
+        int r = Math.Min(Math.Max(0, radius * 2), Math.Min(rect.Width, rect.Height));
         if (radius <= 0)
         {
             path.AddRectangle(rect);

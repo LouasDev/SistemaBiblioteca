@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -132,14 +132,42 @@ public class RoundedComboBox : ComboBox
         this.SetStyle(ControlStyles.UserPaint, true);
     }
 
+    protected override void OnPaintBackground(PaintEventArgs e)
+    {
+        // Os cantos mostram o container; BackColor preenche somente a curva.
+        if (Parent == null)
+        {
+            base.OnPaintBackground(e);
+            return;
+        }
+        GraphicsState state = e.Graphics.Save();
+        try
+        {
+            e.Graphics.TranslateTransform(-Left, -Top);
+            using (var parentPaint = new PaintEventArgs(e.Graphics, Bounds))
+            {
+                InvokePaintBackground(Parent, parentPaint);
+                InvokePaint(Parent, parentPaint);
+            }
+        }
+        finally
+        {
+            e.Graphics.Restore(state);
+        }
+    }
+
     protected override void OnPaint(PaintEventArgs e)
     {
         base.OnPaint(e);
+        if (Width < 2 || Height < 2)
+            return;
         e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = new Rectangle(0, 0, this.Width - 1, this.Height - 1);
         using (GraphicsPath path = GetRoundedPath(rect, BorderRadius))
         using (Pen pen = new Pen(BorderColor, BorderThickness))
         {
+            using (var fill = new SolidBrush(BackColor))
+                e.Graphics.FillPath(fill, path);
             e.Graphics.DrawPath(pen, path);
         }
 
@@ -157,16 +185,10 @@ public class RoundedComboBox : ComboBox
             e.Graphics.DrawString(textToDraw, textFont, textBrush, textRect, format);
         }
 
-        if (ArrowColor.IsEmpty)
-        {
-            // Desenha a seta nativa
-            ComboBoxRenderer.DrawDropDownButton(e.Graphics, new Rectangle(this.Width - 20, 0, 20, this.Height), System.Windows.Forms.VisualStyles.ComboBoxState.Normal);
-        }
-        else
         {
             float centroX = this.Width - 14f;
             float centroY = this.Height / 2f;
-            using (Pen seta = new Pen(ArrowColor, 1.6f)
+            using (Pen seta = new Pen(ArrowColor.IsEmpty ? ForeColor : ArrowColor, 1.6f)
             {
                 StartCap = LineCap.Round,
                 EndCap = LineCap.Round
@@ -183,7 +205,8 @@ public class RoundedComboBox : ComboBox
     private GraphicsPath GetRoundedPath(Rectangle bounds, int radius)
     {
         GraphicsPath path = new GraphicsPath();
-        int diameter = radius * 2;
+        int diameter = Math.Min(Math.Max(0, radius * 2), Math.Min(bounds.Width, bounds.Height));
+        if (diameter == 0) { path.AddRectangle(bounds); return path; }
         path.AddArc(bounds.X, bounds.Y, diameter, diameter, 180, 90);
         path.AddArc(bounds.Right - diameter, bounds.Y, diameter, diameter, 270, 90);
         path.AddArc(bounds.Right - diameter, bounds.Bottom - diameter, diameter, diameter, 0, 90);

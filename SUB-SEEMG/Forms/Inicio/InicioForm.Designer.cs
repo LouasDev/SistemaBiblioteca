@@ -47,7 +47,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Padding = new System.Windows.Forms.Padding(18);
             this.panel1.Size = new System.Drawing.Size(1040, 574);
-            this.panel1.TabIndex = 3;
+            this.panel1.TabIndex = 1;
             // 
             // topPanelInside
             // 
@@ -80,7 +80,7 @@
             this.lblRelogio.Location = new System.Drawing.Point(333, 28);
             this.lblRelogio.Name = "lblRelogio";
             this.lblRelogio.Size = new System.Drawing.Size(481, 32);
-            this.lblRelogio.TabIndex = 2;
+            this.lblRelogio.TabIndex = 1;
             this.lblRelogio.Text = "Quarta, 01 de Janeiro de 0000 - 00:00:00";
             // 
             // lblOla
@@ -91,7 +91,7 @@
             this.lblOla.Location = new System.Drawing.Point(19, 26);
             this.lblOla.Name = "lblOla";
             this.lblOla.Size = new System.Drawing.Size(249, 37);
-            this.lblOla.TabIndex = 1;
+            this.lblOla.TabIndex = 0;
             this.lblOla.Text = "Olá, NomeUsuário!";
             // 
             // timerRelogio
@@ -108,7 +108,7 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Padding = new System.Windows.Forms.Padding(16, 12, 16, 12);
             this.panelTop.Size = new System.Drawing.Size(1040, 86);
-            this.panelTop.TabIndex = 4;
+            this.panelTop.TabIndex = 0;
             // 
             // InicioForm
             // 

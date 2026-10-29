@@ -1,4 +1,4 @@
-namespace SUB.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class DevoluçãoForm
     {
@@ -70,7 +70,7 @@ namespace SUB.Forms.Livros
             this.btnConfirmarDevolucao.Location = new System.Drawing.Point(16, 46);
             this.btnConfirmarDevolucao.Name = "btnConfirmarDevolucao";
             this.btnConfirmarDevolucao.Size = new System.Drawing.Size(220, 44);
-            this.btnConfirmarDevolucao.TabIndex = 118;
+            this.btnConfirmarDevolucao.TabIndex = 1;
             this.btnConfirmarDevolucao.Text = "Devolver";
             this.btnConfirmarDevolucao.UseVisualStyleBackColor = false;
             this.btnConfirmarDevolucao.Click += new System.EventHandler(this.btnConfirmarDevolucao_Click);
@@ -87,7 +87,7 @@ namespace SUB.Forms.Livros
             this.btnProrrogar.Location = new System.Drawing.Point(16, 100);
             this.btnProrrogar.Name = "btnProrrogar";
             this.btnProrrogar.Size = new System.Drawing.Size(220, 44);
-            this.btnProrrogar.TabIndex = 117;
+            this.btnProrrogar.TabIndex = 2;
             this.btnProrrogar.Text = "Prorrogar prazo";
             this.btnProrrogar.UseVisualStyleBackColor = false;
             this.btnProrrogar.Click += new System.EventHandler(this.btnProrrogar_Click);
@@ -100,7 +100,7 @@ namespace SUB.Forms.Livros
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(163, 38);
-            this.Titulo.TabIndex = 106;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Devoluções";
             // 
             // lblSubtitulo
@@ -111,7 +111,7 @@ namespace SUB.Forms.Livros
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(362, 17);
-            this.lblSubtitulo.TabIndex = 157;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Localize o empréstimo e confirme a devolução do exemplar.";
             // 
             // pnlLinhaCabecalho
@@ -120,7 +120,7 @@ namespace SUB.Forms.Livros
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 158;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // pnlResultadosEmprestimos
             // 
@@ -133,7 +133,7 @@ namespace SUB.Forms.Livros
             this.pnlResultadosEmprestimos.Name = "pnlResultadosEmprestimos";
             this.pnlResultadosEmprestimos.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultadosEmprestimos.Size = new System.Drawing.Size(1088, 425);
-            this.pnlResultadosEmprestimos.TabIndex = 122;
+            this.pnlResultadosEmprestimos.TabIndex = 6;
             // 
             // dgvEmprestimos
             // 
@@ -153,11 +153,12 @@ namespace SUB.Forms.Livros
             this.dgvEmprestimos.Location = new System.Drawing.Point(1, 1);
             this.dgvEmprestimos.Name = "dgvEmprestimos";
             this.dgvEmprestimos.ReadOnly = true;
+            this.dgvEmprestimos.StandardTab = true;
             this.dgvEmprestimos.RowHeadersWidth = 51;
             this.dgvEmprestimos.RowTemplate.Height = 40;
             this.dgvEmprestimos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEmprestimos.Size = new System.Drawing.Size(1086, 423);
-            this.dgvEmprestimos.TabIndex = 119;
+            this.dgvEmprestimos.TabIndex = 0;
             this.dgvEmprestimos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellClick);
             this.dgvEmprestimos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEmprestimos_CellContentClick);
             this.dgvEmprestimos.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvEmprestimos_CellFormatting);
@@ -170,7 +171,7 @@ namespace SUB.Forms.Livros
             this.lblDadosLivro.Location = new System.Drawing.Point(22, 321);
             this.lblDadosLivro.Name = "lblDadosLivro";
             this.lblDadosLivro.Size = new System.Drawing.Size(0, 19);
-            this.lblDadosLivro.TabIndex = 121;
+            this.lblDadosLivro.TabIndex = 1;
             // 
             // panel1
             // 
@@ -197,7 +198,7 @@ namespace SUB.Forms.Livros
             this.pnlFiltrosDevolucao.Location = new System.Drawing.Point(96, 136);
             this.pnlFiltrosDevolucao.Name = "pnlFiltrosDevolucao";
             this.pnlFiltrosDevolucao.Size = new System.Drawing.Size(820, 168);
-            this.pnlFiltrosDevolucao.TabIndex = 1;
+            this.pnlFiltrosDevolucao.TabIndex = 3;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -231,7 +232,7 @@ namespace SUB.Forms.Livros
             this.mtxCodigoBarras.SelectionLength = 0;
             this.mtxCodigoBarras.SelectionStart = 0;
             this.mtxCodigoBarras.Size = new System.Drawing.Size(243, 34);
-            this.mtxCodigoBarras.TabIndex = 156;
+            this.mtxCodigoBarras.TabIndex = 5;
             this.mtxCodigoBarras.TextColor = System.Drawing.Color.Black;
             this.mtxCodigoBarras.UseSystemPasswordChar = false;
             // 
@@ -244,7 +245,7 @@ namespace SUB.Forms.Livros
             this.label1.Location = new System.Drawing.Point(9, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(159, 25);
-            this.label1.TabIndex = 154;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Nome da pessoa:";
             // 
             // txtUsuario
@@ -271,7 +272,7 @@ namespace SUB.Forms.Livros
             this.txtUsuario.SelectionLength = 0;
             this.txtUsuario.SelectionStart = 0;
             this.txtUsuario.Size = new System.Drawing.Size(258, 34);
-            this.txtUsuario.TabIndex = 147;
+            this.txtUsuario.TabIndex = 3;
             this.txtUsuario.TextColor = System.Drawing.Color.Black;
             this.txtUsuario.UseSystemPasswordChar = false;
             // 
@@ -298,7 +299,7 @@ namespace SUB.Forms.Livros
             this.cbFiltroEmprestimo.PlaceholderMargin = 10;
             this.cbFiltroEmprestimo.PlaceholderText = "Selecione uma situação...";
             this.cbFiltroEmprestimo.Size = new System.Drawing.Size(258, 34);
-            this.cbFiltroEmprestimo.TabIndex = 153;
+            this.cbFiltroEmprestimo.TabIndex = 7;
             // 
             // label6
             // 
@@ -309,7 +310,7 @@ namespace SUB.Forms.Livros
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 25);
-            this.label6.TabIndex = 152;
+            this.label6.TabIndex = 6;
             this.label6.Text = "Situação:";
             // 
             // btnBuscarEmprestimo
@@ -323,7 +324,7 @@ namespace SUB.Forms.Livros
             this.btnBuscarEmprestimo.Location = new System.Drawing.Point(599, 109);
             this.btnBuscarEmprestimo.Name = "btnBuscarEmprestimo";
             this.btnBuscarEmprestimo.Size = new System.Drawing.Size(168, 41);
-            this.btnBuscarEmprestimo.TabIndex = 151;
+            this.btnBuscarEmprestimo.TabIndex = 8;
             this.btnBuscarEmprestimo.Text = "Procurar";
             this.btnBuscarEmprestimo.UseVisualStyleBackColor = false;
             // 
@@ -336,7 +337,7 @@ namespace SUB.Forms.Livros
             this.lblNome.Location = new System.Drawing.Point(293, 19);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(140, 25);
-            this.lblNome.TabIndex = 149;
+            this.lblNome.TabIndex = 1;
             this.lblNome.Text = "Nome do livro:";
             // 
             // txtLivro
@@ -363,7 +364,7 @@ namespace SUB.Forms.Livros
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
             this.txtLivro.Size = new System.Drawing.Size(238, 34);
-            this.txtLivro.TabIndex = 148;
+            this.txtLivro.TabIndex = 4;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
             // 
@@ -376,7 +377,7 @@ namespace SUB.Forms.Livros
             this.label4.Location = new System.Drawing.Point(558, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
-            this.label4.TabIndex = 150;
+            this.label4.TabIndex = 2;
             this.label4.Text = "Código de barras:";
             // 
             // lstSugestoesUsuario
@@ -390,7 +391,8 @@ namespace SUB.Forms.Livros
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
             this.lstSugestoesUsuario.Size = new System.Drawing.Size(258, 102);
-            this.lstSugestoesUsuario.TabIndex = 155;
+            this.lstSugestoesUsuario.TabStop = false;
+            this.lstSugestoesUsuario.TabIndex = 5;
             this.lstSugestoesUsuario.Visible = false;
             // 
             // pnlAcoesDev
@@ -406,7 +408,7 @@ namespace SUB.Forms.Livros
             this.pnlAcoesDev.Location = new System.Drawing.Point(934, 136);
             this.pnlAcoesDev.Name = "pnlAcoesDev";
             this.pnlAcoesDev.Size = new System.Drawing.Size(252, 168);
-            this.pnlAcoesDev.TabIndex = 159;
+            this.pnlAcoesDev.TabIndex = 4;
             this.pnlAcoesDev.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel1_Paint);
             // 
             // label2
@@ -418,7 +420,7 @@ namespace SUB.Forms.Livros
             this.label2.Location = new System.Drawing.Point(13, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 25);
-            this.label2.TabIndex = 151;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Ações:";
             // 
             // DevoluçãoForm

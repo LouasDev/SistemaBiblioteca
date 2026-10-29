@@ -61,7 +61,7 @@
             this.btnMenos.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenos.Name = "btnMenos";
             this.btnMenos.Size = new System.Drawing.Size(18, 21);
-            this.btnMenos.TabIndex = 105;
+            this.btnMenos.TabIndex = 19;
             this.btnMenos.Text = "▼";
             this.btnMenos.UseVisualStyleBackColor = true;
             this.btnMenos.Click += new System.EventHandler(this.btnMenos_Click);
@@ -92,7 +92,7 @@
             this.numQuantidadeDevolvidos.SelectionLength = 0;
             this.numQuantidadeDevolvidos.SelectionStart = 0;
             this.numQuantidadeDevolvidos.Size = new System.Drawing.Size(75, 40);
-            this.numQuantidadeDevolvidos.TabIndex = 103;
+            this.numQuantidadeDevolvidos.TabIndex = 16;
             this.numQuantidadeDevolvidos.TextColor = System.Drawing.Color.Black;
             this.numQuantidadeDevolvidos.UseSystemPasswordChar = false;
             // 
@@ -105,7 +105,7 @@
             this.btnMais.Name = "btnMais";
             this.btnMais.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.btnMais.Size = new System.Drawing.Size(18, 21);
-            this.btnMais.TabIndex = 104;
+            this.btnMais.TabIndex = 17;
             this.btnMais.Text = "▲";
             this.btnMais.UseVisualStyleBackColor = true;
             this.btnMais.Click += new System.EventHandler(this.btnMais_Click);
@@ -136,7 +136,7 @@
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
             this.txtLivro.Size = new System.Drawing.Size(496, 39);
-            this.txtLivro.TabIndex = 107;
+            this.txtLivro.TabIndex = 4;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
             // 
@@ -150,7 +150,7 @@
             this.lblNome.Location = new System.Drawing.Point(28, 148);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(130, 23);
-            this.lblNome.TabIndex = 106;
+            this.lblNome.TabIndex = 3;
             this.lblNome.Text = "Nome do livro:";
             // 
             // panelHeader
@@ -161,7 +161,7 @@
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
             this.panelHeader.Size = new System.Drawing.Size(560, 50);
-            this.panelHeader.TabIndex = 108;
+            this.panelHeader.TabIndex = 0;
             // 
             // lblTitulo
             // 
@@ -195,7 +195,7 @@
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(13, 7, 0, 0);
             this.mtxCodigoBarras.Size = new System.Drawing.Size(300, 40);
-            this.mtxCodigoBarras.TabIndex = 117;
+            this.mtxCodigoBarras.TabIndex = 7;
             // 
             // label4
             // 
@@ -207,7 +207,7 @@
             this.label4.Location = new System.Drawing.Point(28, 224);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(145, 23);
-            this.label4.TabIndex = 118;
+            this.label4.TabIndex = 5;
             this.label4.Text = "Código de barras:";
             // 
             // lblTurma
@@ -220,7 +220,7 @@
             this.lblTurma.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblTurma.Name = "lblTurma";
             this.lblTurma.Size = new System.Drawing.Size(62, 23);
-            this.lblTurma.TabIndex = 120;
+            this.lblTurma.TabIndex = 9;
             this.lblTurma.Text = "Turma:";
             // 
             // txtTurma
@@ -250,7 +250,7 @@
             this.txtTurma.SelectionLength = 0;
             this.txtTurma.SelectionStart = 0;
             this.txtTurma.Size = new System.Drawing.Size(496, 40);
-            this.txtTurma.TabIndex = 119;
+            this.txtTurma.TabIndex = 10;
             this.txtTurma.TextColor = System.Drawing.Color.Black;
             this.txtTurma.UseSystemPasswordChar = false;
             // 
@@ -281,7 +281,7 @@
             this.numQuantidadeEmprestado.SelectionLength = 0;
             this.numQuantidadeEmprestado.SelectionStart = 0;
             this.numQuantidadeEmprestado.Size = new System.Drawing.Size(75, 40);
-            this.numQuantidadeEmprestado.TabIndex = 121;
+            this.numQuantidadeEmprestado.TabIndex = 8;
             this.numQuantidadeEmprestado.TextColor = System.Drawing.Color.Black;
             this.numQuantidadeEmprestado.UseSystemPasswordChar = false;
             // 
@@ -295,7 +295,7 @@
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(138, 23);
-            this.label1.TabIndex = 122;
+            this.label1.TabIndex = 6;
             this.label1.Text = "Qtd Emprestada:";
             // 
             // label2
@@ -308,7 +308,7 @@
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(143, 25);
-            this.label2.TabIndex = 123;
+            this.label2.TabIndex = 15;
             this.label2.Text = "Qtd Devolvida:";
             // 
             // btnConfirmarDevolucao
@@ -323,7 +323,7 @@
             this.btnConfirmarDevolucao.Location = new System.Drawing.Point(368, 486);
             this.btnConfirmarDevolucao.Name = "btnConfirmarDevolucao";
             this.btnConfirmarDevolucao.Size = new System.Drawing.Size(160, 52);
-            this.btnConfirmarDevolucao.TabIndex = 124;
+            this.btnConfirmarDevolucao.TabIndex = 18;
             this.btnConfirmarDevolucao.Text = "Devolver";
             this.btnConfirmarDevolucao.UseVisualStyleBackColor = false;
             // 
@@ -337,7 +337,7 @@
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(173, 23);
-            this.label3.TabIndex = 126;
+            this.label3.TabIndex = 11;
             this.label3.Text = "Hora do empréstimo:";
             // 
             // roundedTextBox2
@@ -366,7 +366,7 @@
             this.roundedTextBox2.SelectionLength = 0;
             this.roundedTextBox2.SelectionStart = 0;
             this.roundedTextBox2.Size = new System.Drawing.Size(232, 40);
-            this.roundedTextBox2.TabIndex = 125;
+            this.roundedTextBox2.TabIndex = 13;
             this.roundedTextBox2.TextColor = System.Drawing.Color.Black;
             this.roundedTextBox2.UseSystemPasswordChar = false;
             // 
@@ -380,7 +380,7 @@
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(162, 23);
-            this.label5.TabIndex = 128;
+            this.label5.TabIndex = 12;
             this.label5.Text = "Hora da devolução:";
             // 
             // roundedTextBox3
@@ -409,7 +409,7 @@
             this.roundedTextBox3.SelectionLength = 0;
             this.roundedTextBox3.SelectionStart = 0;
             this.roundedTextBox3.Size = new System.Drawing.Size(232, 40);
-            this.roundedTextBox3.TabIndex = 127;
+            this.roundedTextBox3.TabIndex = 14;
             this.roundedTextBox3.TextColor = System.Drawing.Color.Black;
             this.roundedTextBox3.UseSystemPasswordChar = false;
             // 
@@ -439,7 +439,7 @@
             this.txtProfessor.SelectionLength = 0;
             this.txtProfessor.SelectionStart = 0;
             this.txtProfessor.Size = new System.Drawing.Size(496, 39);
-            this.txtProfessor.TabIndex = 130;
+            this.txtProfessor.TabIndex = 2;
             this.txtProfessor.TextColor = System.Drawing.Color.Black;
             this.txtProfessor.UseSystemPasswordChar = false;
             // 
@@ -453,7 +453,7 @@
             this.lblProfessor.Location = new System.Drawing.Point(28, 72);
             this.lblProfessor.Name = "lblProfessor";
             this.lblProfessor.Size = new System.Drawing.Size(86, 23);
-            this.lblProfessor.TabIndex = 129;
+            this.lblProfessor.TabIndex = 1;
             this.lblProfessor.Text = "Professor:";
             // 
             // DevoluçãoRapidaForm

@@ -100,6 +100,7 @@ public class RoundedMaskedTextBox : UserControl
     // ==== CONSTRUTOR ====
     public RoundedMaskedTextBox()
     {
+        TabStop = true;
         SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer, true);
         this.Padding = new Padding(5);
         maskedTextBox.BorderStyle = BorderStyle.None;
@@ -190,6 +191,18 @@ public class RoundedMaskedTextBox : UserControl
             area.Width = Math.Max(0, area.Width - extra);
             return area;
         }
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
     }
 
     protected override void OnPaintBackground(PaintEventArgs e)

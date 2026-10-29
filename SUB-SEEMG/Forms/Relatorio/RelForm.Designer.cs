@@ -1,4 +1,4 @@
-namespace SUB.Forms.Relatorio
+﻿namespace SUB.Forms.Relatorio
 {
     partial class RelForm
     {
@@ -69,9 +69,10 @@ namespace SUB.Forms.Relatorio
             this.dgvHistorico.Location = new System.Drawing.Point(1, 1);
             this.dgvHistorico.Name = "dgvHistorico";
             this.dgvHistorico.ReadOnly = true;
+            this.dgvHistorico.StandardTab = true;
             this.dgvHistorico.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvHistorico.Size = new System.Drawing.Size(1086, 483);
-            this.dgvHistorico.TabIndex = 23;
+            this.dgvHistorico.TabIndex = 0;
             // 
             // lblUsuario
             // 
@@ -82,7 +83,7 @@ namespace SUB.Forms.Relatorio
             this.lblUsuario.Location = new System.Drawing.Point(7, 16);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(159, 25);
-            this.lblUsuario.TabIndex = 116;
+            this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "Nome da pessoa:";
             // 
             // lblLivro
@@ -94,7 +95,7 @@ namespace SUB.Forms.Relatorio
             this.lblLivro.Location = new System.Drawing.Point(435, 16);
             this.lblLivro.Name = "lblLivro";
             this.lblLivro.Size = new System.Drawing.Size(140, 25);
-            this.lblLivro.TabIndex = 117;
+            this.lblLivro.TabIndex = 1;
             this.lblLivro.Text = "Nome do livro:";
             // 
             // label2
@@ -106,7 +107,7 @@ namespace SUB.Forms.Relatorio
             this.label2.Location = new System.Drawing.Point(864, 16);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(128, 25);
-            this.label2.TabIndex = 119;
+            this.label2.TabIndex = 2;
             this.label2.Text = "Tipo de ação:";
             // 
             // label3
@@ -118,7 +119,7 @@ namespace SUB.Forms.Relatorio
             this.label3.Location = new System.Drawing.Point(7, 94);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(162, 25);
-            this.label3.TabIndex = 120;
+            this.label3.TabIndex = 7;
             this.label3.Text = "Início do período:";
             // 
             // label5
@@ -130,7 +131,7 @@ namespace SUB.Forms.Relatorio
             this.label5.Location = new System.Drawing.Point(208, 94);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(147, 25);
-            this.label5.TabIndex = 122;
+            this.label5.TabIndex = 8;
             this.label5.Text = "Fim do período:";
             // 
             // panel1
@@ -145,7 +146,7 @@ namespace SUB.Forms.Relatorio
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 123;
+            this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // pnlResultadosRelatorio
@@ -159,7 +160,7 @@ namespace SUB.Forms.Relatorio
             this.pnlResultadosRelatorio.Name = "pnlResultadosRelatorio";
             this.pnlResultadosRelatorio.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultadosRelatorio.Size = new System.Drawing.Size(1088, 485);
-            this.pnlResultadosRelatorio.TabIndex = 135;
+            this.pnlResultadosRelatorio.TabIndex = 4;
             // 
             // pnlFiltrosRelatorio
             // 
@@ -184,7 +185,7 @@ namespace SUB.Forms.Relatorio
             this.pnlFiltrosRelatorio.Name = "pnlFiltrosRelatorio";
             this.pnlFiltrosRelatorio.BorderRadius = 20;
             this.pnlFiltrosRelatorio.Size = new System.Drawing.Size(1164, 200);
-            this.pnlFiltrosRelatorio.TabIndex = 134;
+            this.pnlFiltrosRelatorio.TabIndex = 3;
             // 
             // lstSugestoesUsuario
             // 
@@ -197,7 +198,8 @@ namespace SUB.Forms.Relatorio
             this.lstSugestoesUsuario.Name = "lstSugestoesUsuario";
             this.lstSugestoesUsuario.ScrollAlwaysVisible = true;
             this.lstSugestoesUsuario.Size = new System.Drawing.Size(387, 77);
-            this.lstSugestoesUsuario.TabIndex = 126;
+            this.lstSugestoesUsuario.TabStop = false;
+            this.lstSugestoesUsuario.TabIndex = 6;
             this.lstSugestoesUsuario.Visible = false;
             // 
             // lstLivros
@@ -211,7 +213,8 @@ namespace SUB.Forms.Relatorio
             this.lstLivros.Name = "lstLivros";
             this.lstLivros.ScrollAlwaysVisible = true;
             this.lstLivros.Size = new System.Drawing.Size(387, 77);
-            this.lstLivros.TabIndex = 127;
+            this.lstLivros.TabStop = false;
+            this.lstLivros.TabIndex = 9;
             this.lstLivros.Visible = false;
             // 
             // btnExportar
@@ -225,7 +228,7 @@ namespace SUB.Forms.Relatorio
             this.btnExportar.Location = new System.Drawing.Point(896, 146);
             this.btnExportar.Name = "btnExportar";
             this.btnExportar.Size = new System.Drawing.Size(160, 40);
-            this.btnExportar.TabIndex = 129;
+            this.btnExportar.TabIndex = 15;
             this.btnExportar.Text = "Exportar";
             this.btnExportar.UseVisualStyleBackColor = false;
             this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
@@ -239,7 +242,7 @@ namespace SUB.Forms.Relatorio
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(229, 25);
-            this.label6.TabIndex = 124;
+            this.label6.TabIndex = 10;
             this.label6.Text = "Bibliotecária responsável:";
             // 
             // btnFiltrar
@@ -254,7 +257,7 @@ namespace SUB.Forms.Relatorio
             this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnFiltrar.Name = "btnFiltrar";
             this.btnFiltrar.Size = new System.Drawing.Size(160, 40);
-            this.btnFiltrar.TabIndex = 111;
+            this.btnFiltrar.TabIndex = 11;
             this.btnFiltrar.Text = "Filtrar";
             this.btnFiltrar.UseVisualStyleBackColor = false;
             this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);
@@ -265,7 +268,7 @@ namespace SUB.Forms.Relatorio
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 133;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -275,7 +278,7 @@ namespace SUB.Forms.Relatorio
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(320, 17);
-            this.lblSubtitulo.TabIndex = 132;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Filtre o histórico e exporte informações da operação.";
             // 
             // label1
@@ -287,7 +290,7 @@ namespace SUB.Forms.Relatorio
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(143, 38);
-            this.label1.TabIndex = 128;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Relatórios";
             // 
             // dtpFim
@@ -312,8 +315,8 @@ namespace SUB.Forms.Relatorio
             this.dtpFim.PlaceholderText = "";
             this.dtpFim.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpFim.Size = new System.Drawing.Size(162, 40);
-            this.dtpFim.TabIndex = 131;
-            this.dtpFim.TabStop = false;
+            this.dtpFim.TabIndex = 13;
+            this.dtpFim.TabStop = true;
             this.dtpFim.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // dtpInicio
@@ -338,8 +341,8 @@ namespace SUB.Forms.Relatorio
             this.dtpInicio.PlaceholderText = "";
             this.dtpInicio.SelectedDate = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             this.dtpInicio.Size = new System.Drawing.Size(162, 40);
-            this.dtpInicio.TabIndex = 130;
-            this.dtpInicio.TabStop = false;
+            this.dtpInicio.TabIndex = 12;
+            this.dtpInicio.TabStop = true;
             this.dtpInicio.Value = new System.DateTime(2025, 11, 1, 0, 0, 0, 0);
             // 
             // cbBibliotecaria
@@ -360,7 +363,7 @@ namespace SUB.Forms.Relatorio
             this.cbBibliotecaria.PlaceholderMargin = 10;
             this.cbBibliotecaria.PlaceholderText = "Selecione a bibliotecária...";
             this.cbBibliotecaria.Size = new System.Drawing.Size(387, 34);
-            this.cbBibliotecaria.TabIndex = 125;
+            this.cbBibliotecaria.TabIndex = 14;
             // 
             // txtLivro
             // 
@@ -386,7 +389,7 @@ namespace SUB.Forms.Relatorio
             this.txtLivro.SelectionLength = 0;
             this.txtLivro.SelectionStart = 0;
             this.txtLivro.Size = new System.Drawing.Size(387, 40);
-            this.txtLivro.TabIndex = 91;
+            this.txtLivro.TabIndex = 4;
             this.txtLivro.TextColor = System.Drawing.Color.Black;
             this.txtLivro.UseSystemPasswordChar = false;
             // 
@@ -414,7 +417,7 @@ namespace SUB.Forms.Relatorio
             this.cmbAcao.PlaceholderMargin = 10;
             this.cmbAcao.PlaceholderText = "Filtre o tipo da ação...";
             this.cmbAcao.Size = new System.Drawing.Size(246, 34);
-            this.cmbAcao.TabIndex = 90;
+            this.cmbAcao.TabIndex = 5;
             // 
             // txtUsuario
             // 
@@ -440,7 +443,7 @@ namespace SUB.Forms.Relatorio
             this.txtUsuario.SelectionLength = 0;
             this.txtUsuario.SelectionStart = 0;
             this.txtUsuario.Size = new System.Drawing.Size(387, 40);
-            this.txtUsuario.TabIndex = 1;
+            this.txtUsuario.TabIndex = 3;
             this.txtUsuario.TextColor = System.Drawing.Color.Black;
             this.txtUsuario.UseSystemPasswordChar = false;
             this.txtUsuario.Load += new System.EventHandler(this.txtUsuario_Load);

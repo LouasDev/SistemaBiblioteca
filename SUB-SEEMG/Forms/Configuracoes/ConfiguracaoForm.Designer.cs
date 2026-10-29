@@ -78,7 +78,7 @@
             this.grpInstituicao.Name = "grpInstituicao";
             this.grpInstituicao.Padding = new System.Windows.Forms.Padding(12, 8, 12, 12);
             this.grpInstituicao.Size = new System.Drawing.Size(1240, 176);
-            this.grpInstituicao.TabIndex = 1;
+            this.grpInstituicao.TabIndex = 3;
             this.grpInstituicao.TabStop = false;
             this.grpInstituicao.Text = "Instituição e aparência";
             // 
@@ -106,7 +106,7 @@
             this.cbTemas.PlaceholderMargin = 10;
             this.cbTemas.PlaceholderText = "Escolha a cor";
             this.cbTemas.Size = new System.Drawing.Size(510, 34);
-            this.cbTemas.TabIndex = 6;
+            this.cbTemas.TabIndex = 4;
             this.cbTemas.SelectedIndexChanged += new System.EventHandler(this.cbTemas_SelectedIndexChanged);
             // 
             // c
@@ -130,7 +130,7 @@
             this.c.SelectionLength = 0;
             this.c.SelectionStart = 0;
             this.c.Size = new System.Drawing.Size(590, 34);
-            this.c.TabIndex = 5;
+            this.c.TabIndex = 3;
             this.c.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
             this.c.UseSystemPasswordChar = false;
             // 
@@ -153,7 +153,7 @@
             this.lblCor.Location = new System.Drawing.Point(622, 31);
             this.lblCor.Name = "lblCor";
             this.lblCor.Size = new System.Drawing.Size(101, 20);
-            this.lblCor.TabIndex = 2;
+            this.lblCor.TabIndex = 1;
             this.lblCor.Text = "Cor principal:";
             // 
             // lblAparencia
@@ -164,7 +164,7 @@
             this.lblAparencia.Location = new System.Drawing.Point(15, 105);
             this.lblAparencia.Name = "lblAparencia";
             this.lblAparencia.Size = new System.Drawing.Size(82, 20);
-            this.lblAparencia.TabIndex = 7;
+            this.lblAparencia.TabIndex = 5;
             this.lblAparencia.Text = "Aparência:";
             // 
             // cbAparencia
@@ -191,7 +191,7 @@
             this.cbAparencia.PlaceholderMargin = 10;
             this.cbAparencia.PlaceholderText = "Escolha a aparência";
             this.cbAparencia.Size = new System.Drawing.Size(590, 34);
-            this.cbAparencia.TabIndex = 8;
+            this.cbAparencia.TabIndex = 6;
             // 
             // grpAtualizacao
             // 
@@ -209,7 +209,7 @@
             this.grpAtualizacao.Name = "grpAtualizacao";
             this.grpAtualizacao.Padding = new System.Windows.Forms.Padding(12, 8, 12, 12);
             this.grpAtualizacao.Size = new System.Drawing.Size(1240, 184);
-            this.grpAtualizacao.TabIndex = 2;
+            this.grpAtualizacao.TabIndex = 4;
             this.grpAtualizacao.TabStop = false;
             this.grpAtualizacao.Text = "Atualização";
             // 
@@ -233,7 +233,7 @@
             this.btnCancelarDownload.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnCancelarDownload.ShowBorder = false;
             this.btnCancelarDownload.Size = new System.Drawing.Size(160, 34);
-            this.btnCancelarDownload.TabIndex = 19;
+            this.btnCancelarDownload.TabIndex = 4;
             this.btnCancelarDownload.Text = "Cancelar download";
             this.btnCancelarDownload.UseVisualStyleBackColor = false;
             this.btnCancelarDownload.Visible = false;
@@ -259,7 +259,7 @@
             this.btnAtualizar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnAtualizar.ShowBorder = false;
             this.btnAtualizar.Size = new System.Drawing.Size(160, 34);
-            this.btnAtualizar.TabIndex = 18;
+            this.btnAtualizar.TabIndex = 5;
             this.btnAtualizar.Text = "Atualizar agora";
             this.btnAtualizar.UseVisualStyleBackColor = false;
             this.btnAtualizar.Visible = false;
@@ -285,7 +285,7 @@
             this.btnVerificar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnVerificar.ShowBorder = false;
             this.btnVerificar.Size = new System.Drawing.Size(190, 34);
-            this.btnVerificar.TabIndex = 15;
+            this.btnVerificar.TabIndex = 2;
             this.btnVerificar.Text = "Verificar atualizações";
             this.btnVerificar.UseVisualStyleBackColor = false;
             this.btnVerificar.Click += new System.EventHandler(this.btnVerificar_Click);
@@ -311,7 +311,7 @@
             this.btnNovidades.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.btnNovidades.ShowBorder = false;
             this.btnNovidades.Size = new System.Drawing.Size(144, 34);
-            this.btnNovidades.TabIndex = 16;
+            this.btnNovidades.TabIndex = 3;
             this.btnNovidades.Text = "Ver novidades";
             this.btnNovidades.UseVisualStyleBackColor = false;
             this.btnNovidades.Click += new System.EventHandler(this.btnNovidades_Click);
@@ -324,7 +324,7 @@
             this.lblVersaoAtual.Location = new System.Drawing.Point(16, 23);
             this.lblVersaoAtual.Name = "lblVersaoAtual";
             this.lblVersaoAtual.Size = new System.Drawing.Size(116, 20);
-            this.lblVersaoAtual.TabIndex = 11;
+            this.lblVersaoAtual.TabIndex = 0;
             this.lblVersaoAtual.Text = "Versão atual: —";
             // 
             // lblStatusAtualizacao
@@ -334,7 +334,7 @@
             this.lblStatusAtualizacao.Location = new System.Drawing.Point(16, 50);
             this.lblStatusAtualizacao.Name = "lblStatusAtualizacao";
             this.lblStatusAtualizacao.Size = new System.Drawing.Size(1208, 38);
-            this.lblStatusAtualizacao.TabIndex = 12;
+            this.lblStatusAtualizacao.TabIndex = 1;
             this.lblStatusAtualizacao.Text = "Clique em Verificar atualizações para consultar uma nova versão.";
             // 
             // pbVerificando
@@ -343,7 +343,7 @@
             this.pbVerificando.Name = "pbVerificando";
             this.pbVerificando.Size = new System.Drawing.Size(1208, 24);
             this.pbVerificando.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.pbVerificando.TabIndex = 13;
+            this.pbVerificando.TabIndex = 6;
             this.pbVerificando.Visible = false;
             // 
             // pbDownload
@@ -351,7 +351,7 @@
             this.pbDownload.Location = new System.Drawing.Point(16, 142);
             this.pbDownload.Name = "pbDownload";
             this.pbDownload.Size = new System.Drawing.Size(1208, 24);
-            this.pbDownload.TabIndex = 17;
+            this.pbDownload.TabIndex = 7;
             this.pbDownload.Visible = false;
             // 
             // btnSalvar
@@ -365,7 +365,7 @@
             this.btnSalvar.Location = new System.Drawing.Point(1091, 785);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(169, 44);
-            this.btnSalvar.TabIndex = 4;
+            this.btnSalvar.TabIndex = 6;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -435,7 +435,7 @@
             this.grpManutencao.Location = new System.Drawing.Point(20, 426);
             this.grpManutencao.Name = "grpManutencao";
             this.grpManutencao.Size = new System.Drawing.Size(1240, 76);
-            this.grpManutencao.TabIndex = 3;
+            this.grpManutencao.TabIndex = 5;
             this.grpManutencao.TabStop = false;
             this.grpManutencao.Text = "Manutenção";
             // 
@@ -445,7 +445,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 126;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -455,7 +455,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(316, 17);
-            this.lblSubtitulo.TabIndex = 125;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Configure e mantenha os dados do SUB atualizados.";
             // 
             // Titulo
@@ -466,7 +466,7 @@
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(377, 38);
-            this.Titulo.TabIndex = 124;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Configurações da instituição";
             // 
             // pnlCorPreview
@@ -474,7 +474,7 @@
             this.pnlCorPreview.Location = new System.Drawing.Point(1159, 41);
             this.pnlCorPreview.Name = "pnlCorPreview";
             this.pnlCorPreview.Size = new System.Drawing.Size(60, 60);
-            this.pnlCorPreview.TabIndex = 4;
+            this.pnlCorPreview.TabIndex = 2;
             // 
             // ConfiguracaoForm
             // 

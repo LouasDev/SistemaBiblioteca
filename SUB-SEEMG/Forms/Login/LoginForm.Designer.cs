@@ -1,4 +1,4 @@
-namespace SUB.Forms.Login
+﻿namespace SUB.Forms.Login
 {
     partial class LoginForm
     {
@@ -174,7 +174,7 @@ namespace SUB.Forms.Login
             this.txtEmail.SelectionLength = 0;
             this.txtEmail.SelectionStart = 0;
             this.txtEmail.Size = new System.Drawing.Size(420, 42);
-            this.txtEmail.TabIndex = 0;
+            this.txtEmail.TabIndex = 5;
             this.txtEmail.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
             this.txtEmail.UseSystemPasswordChar = false;
             // 
@@ -223,7 +223,7 @@ namespace SUB.Forms.Login
             this.txtSenha.SelectionLength = 0;
             this.txtSenha.SelectionStart = 0;
             this.txtSenha.Size = new System.Drawing.Size(420, 42);
-            this.txtSenha.TabIndex = 1;
+            this.txtSenha.TabIndex = 8;
             this.txtSenha.TextColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(36)))), ((int)(((byte)(52)))));
             this.txtSenha.UseSystemPasswordChar = true;
             // 
@@ -249,7 +249,7 @@ namespace SUB.Forms.Login
             this.cbMostrarSenha.Location = new System.Drawing.Point(90, 387);
             this.cbMostrarSenha.Name = "cbMostrarSenha";
             this.cbMostrarSenha.Size = new System.Drawing.Size(101, 19);
-            this.cbMostrarSenha.TabIndex = 2;
+            this.cbMostrarSenha.TabIndex = 10;
             this.cbMostrarSenha.Text = "Mostrar senha";
             this.cbMostrarSenha.UseVisualStyleBackColor = false;
             this.cbMostrarSenha.CheckedChanged += new System.EventHandler(this.cbMostrarSenha_CheckedChanged);
@@ -266,7 +266,7 @@ namespace SUB.Forms.Login
             this.lblEsqueceuSenha.Location = new System.Drawing.Point(377, 387);
             this.lblEsqueceuSenha.Name = "lblEsqueceuSenha";
             this.lblEsqueceuSenha.Size = new System.Drawing.Size(125, 15);
-            this.lblEsqueceuSenha.TabIndex = 3;
+            this.lblEsqueceuSenha.TabIndex = 11;
             this.lblEsqueceuSenha.TabStop = true;
             this.lblEsqueceuSenha.Text = "Recuperar meu acesso";
             this.lblEsqueceuSenha.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
@@ -306,7 +306,7 @@ namespace SUB.Forms.Login
             this.BtnEntrar.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(47)))), ((int)(((byte)(82)))));
             this.BtnEntrar.ShowBorder = false;
             this.BtnEntrar.Size = new System.Drawing.Size(420, 46);
-            this.BtnEntrar.TabIndex = 4;
+            this.BtnEntrar.TabIndex = 13;
             this.BtnEntrar.Text = "Entrar";
             this.BtnEntrar.UseVisualStyleBackColor = false;
             this.BtnEntrar.Click += new System.EventHandler(this.BtnEntrar_Click);
@@ -350,7 +350,7 @@ namespace SUB.Forms.Login
             this.lblSub.Location = new System.Drawing.Point(146, 43);
             this.lblSub.Name = "lblSub";
             this.lblSub.Size = new System.Drawing.Size(83, 42);
-            this.lblSub.TabIndex = 0;
+            this.lblSub.TabIndex = 2;
             this.lblSub.Text = "SUB";
             this.lblSub.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -362,7 +362,7 @@ namespace SUB.Forms.Login
             this.lblBiblioteca.Location = new System.Drawing.Point(149, 82);
             this.lblBiblioteca.Name = "lblBiblioteca";
             this.lblBiblioteca.Size = new System.Drawing.Size(100, 42);
-            this.lblBiblioteca.TabIndex = 1;
+            this.lblBiblioteca.TabIndex = 3;
             this.lblBiblioteca.Text = "Sistema Único Bibliotecário";
             // 
             // pnlLogo
@@ -372,7 +372,7 @@ namespace SUB.Forms.Login
             this.pnlLogo.Location = new System.Drawing.Point(44, 43);
             this.pnlLogo.Name = "pnlLogo";
             this.pnlLogo.Size = new System.Drawing.Size(84, 84);
-            this.pnlLogo.TabIndex = 2;
+            this.pnlLogo.TabIndex = 1;
             // 
             // picLogoLogin
             // 
@@ -395,7 +395,7 @@ namespace SUB.Forms.Login
             this.lblContextoLogin.Location = new System.Drawing.Point(40, 188);
             this.lblContextoLogin.Name = "lblContextoLogin";
             this.lblContextoLogin.Size = new System.Drawing.Size(155, 15);
-            this.lblContextoLogin.TabIndex = 3;
+            this.lblContextoLogin.TabIndex = 4;
             this.lblContextoLogin.Text = "BIBLIOTECA EM OPERAÇÃO";
             // 
             // lblNomeEscola
@@ -407,7 +407,7 @@ namespace SUB.Forms.Login
             this.lblNomeEscola.Location = new System.Drawing.Point(40, 216);
             this.lblNomeEscola.Name = "lblNomeEscola";
             this.lblNomeEscola.Size = new System.Drawing.Size(280, 114);
-            this.lblNomeEscola.TabIndex = 3;
+            this.lblNomeEscola.TabIndex = 5;
             this.lblNomeEscola.Text = "Biblioteca da instituição";
             this.lblNomeEscola.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -419,7 +419,7 @@ namespace SUB.Forms.Login
             this.lblMarcaTexto.Location = new System.Drawing.Point(40, 352);
             this.lblMarcaTexto.Name = "lblMarcaTexto";
             this.lblMarcaTexto.Size = new System.Drawing.Size(274, 64);
-            this.lblMarcaTexto.TabIndex = 4;
+            this.lblMarcaTexto.TabIndex = 6;
             this.lblMarcaTexto.Text = "Continue de onde parou: acompanhe o acervo, os leitores e a circulação da sua ins" +
     "tituição.";
             // 
@@ -429,7 +429,7 @@ namespace SUB.Forms.Login
             this.linhaMarca.Location = new System.Drawing.Point(40, 470);
             this.linhaMarca.Name = "linhaMarca";
             this.linhaMarca.Size = new System.Drawing.Size(280, 1);
-            this.linhaMarca.TabIndex = 5;
+            this.linhaMarca.TabIndex = 7;
             // 
             // lblIniciativa
             // 
@@ -439,7 +439,7 @@ namespace SUB.Forms.Login
             this.lblIniciativa.Location = new System.Drawing.Point(40, 486);
             this.lblIniciativa.Name = "lblIniciativa";
             this.lblIniciativa.Size = new System.Drawing.Size(280, 23);
-            this.lblIniciativa.TabIndex = 6;
+            this.lblIniciativa.TabIndex = 8;
             this.lblIniciativa.Text = "Uma iniciativa da SEE/MG";
             this.lblIniciativa.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -455,7 +455,7 @@ namespace SUB.Forms.Login
             this.lblVersion.Location = new System.Drawing.Point(40, 588);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(142, 15);
-            this.lblVersion.TabIndex = 7;
+            this.lblVersion.TabIndex = 9;
             this.lblVersion.TabStop = true;
             this.lblVersion.Text = "Sobre o SUB e sua equipe";
             this.lblVersion.VisitedLinkColor = System.Drawing.Color.White;
@@ -475,7 +475,7 @@ namespace SUB.Forms.Login
             this.lblSuporteLogin.Location = new System.Drawing.Point(40, 611);
             this.lblSuporteLogin.Name = "lblSuporteLogin";
             this.lblSuporteLogin.Size = new System.Drawing.Size(185, 14);
-            this.lblSuporteLogin.TabIndex = 8;
+            this.lblSuporteLogin.TabIndex = 10;
             this.lblSuporteLogin.TabStop = true;
             this.lblSuporteLogin.Text = "Suporte: subgvsuporte@gmail.com";
             this.lblSuporteLogin.VisitedLinkColor = System.Drawing.Color.White;
@@ -490,7 +490,7 @@ namespace SUB.Forms.Login
             this.gradientPanel1.Location = new System.Drawing.Point(41, 40);
             this.gradientPanel1.Name = "gradientPanel1";
             this.gradientPanel1.Size = new System.Drawing.Size(90, 90);
-            this.gradientPanel1.TabIndex = 12;
+            this.gradientPanel1.TabIndex = 0;
             this.gradientPanel1.Visible = false;
             // 
             // LoginForm

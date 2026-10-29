@@ -1,4 +1,4 @@
-namespace SUB.Forms.Livros
+﻿namespace SUB.Forms.Livros
 {
     partial class LivrosForm
     {
@@ -68,7 +68,7 @@ namespace SUB.Forms.Livros
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 16;
+            this.panel1.TabIndex = 0;
             // 
             // pnlResultados
             // 
@@ -81,7 +81,7 @@ namespace SUB.Forms.Livros
             this.pnlResultados.Name = "pnlResultados";
             this.pnlResultados.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultados.Size = new System.Drawing.Size(1088, 486);
-            this.pnlResultados.TabIndex = 137;
+            this.pnlResultados.TabIndex = 4;
             // 
             // dgvLivros
             // 
@@ -103,11 +103,12 @@ namespace SUB.Forms.Livros
             this.dgvLivros.Location = new System.Drawing.Point(1, 1);
             this.dgvLivros.Name = "dgvLivros";
             this.dgvLivros.ReadOnly = true;
+            this.dgvLivros.StandardTab = true;
             this.dgvLivros.RowHeadersWidth = 51;
             this.dgvLivros.RowTemplate.Height = 40;
             this.dgvLivros.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLivros.Size = new System.Drawing.Size(1086, 484);
-            this.dgvLivros.TabIndex = 3;
+            this.dgvLivros.TabIndex = 0;
             this.dgvLivros.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLivros_CellContentClick);
             this.dgvLivros.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.Lista_CellFormatting);
             this.dgvLivros.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvLivros_CellPainting);
@@ -130,7 +131,7 @@ namespace SUB.Forms.Livros
             this.pnlFiltros.Name = "pnlFiltros";
             this.pnlFiltros.BorderRadius = 20;
             this.pnlFiltros.Size = new System.Drawing.Size(1088, 172);
-            this.pnlFiltros.TabIndex = 136;
+            this.pnlFiltros.TabIndex = 3;
             // 
             // lblUnidades
             // 
@@ -140,7 +141,7 @@ namespace SUB.Forms.Livros
             this.lblUnidades.Location = new System.Drawing.Point(875, 34);
             this.lblUnidades.Name = "lblUnidades";
             this.lblUnidades.Size = new System.Drawing.Size(74, 20);
-            this.lblUnidades.TabIndex = 135;
+            this.lblUnidades.TabIndex = 4;
             this.lblUnidades.Text = "Unidades";
             // 
             // lblTitulos
@@ -151,7 +152,7 @@ namespace SUB.Forms.Livros
             this.lblTitulos.Location = new System.Drawing.Point(875, 59);
             this.lblTitulos.Name = "lblTitulos";
             this.lblTitulos.Size = new System.Drawing.Size(57, 20);
-            this.lblTitulos.TabIndex = 11;
+            this.lblTitulos.TabIndex = 5;
             this.lblTitulos.Text = "Titulos";
             // 
             // mtxCodigoBarras
@@ -180,7 +181,7 @@ namespace SUB.Forms.Livros
             this.mtxCodigoBarras.SelectionLength = 0;
             this.mtxCodigoBarras.SelectionStart = 0;
             this.mtxCodigoBarras.Size = new System.Drawing.Size(452, 40);
-            this.mtxCodigoBarras.TabIndex = 2;
+            this.mtxCodigoBarras.TabIndex = 8;
             this.mtxCodigoBarras.TextColor = System.Drawing.Color.Black;
             this.mtxCodigoBarras.UseSystemPasswordChar = false;
             // 
@@ -193,7 +194,7 @@ namespace SUB.Forms.Livros
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(162, 25);
-            this.label3.TabIndex = 134;
+            this.label3.TabIndex = 6;
             this.label3.Text = "Código de barras:";
             // 
             // label2
@@ -205,7 +206,7 @@ namespace SUB.Forms.Livros
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 25);
-            this.label2.TabIndex = 132;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Pesquisa:";
             // 
             // label6
@@ -217,7 +218,7 @@ namespace SUB.Forms.Livros
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(150, 25);
-            this.label6.TabIndex = 126;
+            this.label6.TabIndex = 7;
             this.label6.Text = "Disponibilidade:";
             // 
             // txtNome
@@ -244,7 +245,7 @@ namespace SUB.Forms.Livros
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(452, 40);
-            this.txtNome.TabIndex = 1;
+            this.txtNome.TabIndex = 2;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 
@@ -275,7 +276,7 @@ namespace SUB.Forms.Livros
             this.cbDisponibilidade.PlaceholderMargin = 10;
             this.cbDisponibilidade.PlaceholderText = "Filtre por disponibilidade...";
             this.cbDisponibilidade.Size = new System.Drawing.Size(272, 34);
-            this.cbDisponibilidade.TabIndex = 4;
+            this.cbDisponibilidade.TabIndex = 9;
             // 
             // btnProcurar
             // 
@@ -288,7 +289,7 @@ namespace SUB.Forms.Livros
             this.btnProcurar.Location = new System.Drawing.Point(875, 110);
             this.btnProcurar.Name = "btnProcurar";
             this.btnProcurar.Size = new System.Drawing.Size(160, 40);
-            this.btnProcurar.TabIndex = 5;
+            this.btnProcurar.TabIndex = 10;
             this.btnProcurar.Text = "Procurar";
             this.btnProcurar.UseVisualStyleBackColor = false;
             this.btnProcurar.Click += new System.EventHandler(this.btnProcurar_Click);
@@ -331,7 +332,7 @@ namespace SUB.Forms.Livros
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 25);
-            this.label1.TabIndex = 128;
+            this.label1.TabIndex = 1;
             this.label1.Text = "Busque por:";
             // 
             // pnlLinhaCabecalho
@@ -340,7 +341,7 @@ namespace SUB.Forms.Livros
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 123;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -350,7 +351,7 @@ namespace SUB.Forms.Livros
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(359, 17);
-            this.lblSubtitulo.TabIndex = 122;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Pesquise e acompanhe a disponibilidade do acervo escolar.";
             // 
             // Titulo
@@ -361,7 +362,7 @@ namespace SUB.Forms.Livros
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(106, 38);
-            this.Titulo.TabIndex = 107;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Acervo";
             // 
             // lblTeste
@@ -370,7 +371,7 @@ namespace SUB.Forms.Livros
             this.lblTeste.Location = new System.Drawing.Point(129, 9);
             this.lblTeste.Name = "lblTeste";
             this.lblTeste.Size = new System.Drawing.Size(0, 15);
-            this.lblTeste.TabIndex = 17;
+            this.lblTeste.TabIndex = 1;
             // 
             // LivrosForm
             // 

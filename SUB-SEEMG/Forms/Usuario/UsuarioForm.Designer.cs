@@ -1,4 +1,4 @@
-namespace SUB.Forms.Usuario
+﻿namespace SUB.Forms.Usuario
 {
     partial class UsuarioForm
     {
@@ -63,7 +63,7 @@ namespace SUB.Forms.Usuario
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 6;
+            this.panel1.TabIndex = 0;
             // 
             // pnlResultadosUsuarios
             // 
@@ -76,7 +76,7 @@ namespace SUB.Forms.Usuario
             this.pnlResultadosUsuarios.Name = "pnlResultadosUsuarios";
             this.pnlResultadosUsuarios.Padding = new System.Windows.Forms.Padding(1);
             this.pnlResultadosUsuarios.Size = new System.Drawing.Size(1088, 573);
-            this.pnlResultadosUsuarios.TabIndex = 117;
+            this.pnlResultadosUsuarios.TabIndex = 5;
             // 
             // dgvUsuarios
             // 
@@ -88,9 +88,10 @@ namespace SUB.Forms.Usuario
             this.dgvUsuarios.Location = new System.Drawing.Point(1, 1);
             this.dgvUsuarios.Name = "dgvUsuarios";
             this.dgvUsuarios.ReadOnly = true;
+            this.dgvUsuarios.StandardTab = true;
             this.dgvUsuarios.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.dgvUsuarios.Size = new System.Drawing.Size(1086, 571);
-            this.dgvUsuarios.TabIndex = 5;
+            this.dgvUsuarios.TabIndex = 0;
             this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
             // 
             // pnlFiltrosUsuarios
@@ -107,7 +108,7 @@ namespace SUB.Forms.Usuario
             this.pnlFiltrosUsuarios.Name = "pnlFiltrosUsuarios";
             this.pnlFiltrosUsuarios.BorderRadius = 20;
             this.pnlFiltrosUsuarios.Size = new System.Drawing.Size(1175, 112);
-            this.pnlFiltrosUsuarios.TabIndex = 116;
+            this.pnlFiltrosUsuarios.TabIndex = 4;
             // 
             // lblEmprestimo
             // 
@@ -118,7 +119,7 @@ namespace SUB.Forms.Usuario
             this.lblEmprestimo.Location = new System.Drawing.Point(699, 16);
             this.lblEmprestimo.Name = "lblEmprestimo";
             this.lblEmprestimo.Size = new System.Drawing.Size(225, 25);
-            this.lblEmprestimo.TabIndex = 112;
+            this.lblEmprestimo.TabIndex = 2;
             this.lblEmprestimo.Text = "Situação do empréstimo:";
             // 
             // btnFiltrar
@@ -133,7 +134,7 @@ namespace SUB.Forms.Usuario
             this.btnFiltrar.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.btnFiltrar.Name = "btnFiltrar";
             this.btnFiltrar.Size = new System.Drawing.Size(160, 40);
-            this.btnFiltrar.TabIndex = 4;
+            this.btnFiltrar.TabIndex = 6;
             this.btnFiltrar.Text = "Filtrar";
             this.btnFiltrar.UseVisualStyleBackColor = false;
             this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);
@@ -147,7 +148,7 @@ namespace SUB.Forms.Usuario
             this.label3.Location = new System.Drawing.Point(400, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(122, 25);
-            this.label3.TabIndex = 89;
+            this.label3.TabIndex = 1;
             this.label3.Text = "Tipo de usuário:";
             // 
             // label1
@@ -159,7 +160,7 @@ namespace SUB.Forms.Usuario
             this.label1.Location = new System.Drawing.Point(20, 16);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(70, 25);
-            this.label1.TabIndex = 87;
+            this.label1.TabIndex = 0;
             this.label1.Text = "Nome:";
             // 
             // pnlLinhaCabecalho
@@ -168,7 +169,7 @@ namespace SUB.Forms.Usuario
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 115;
+            this.pnlLinhaCabecalho.TabIndex = 3;
             // 
             // lblSubtitulo
             // 
@@ -178,7 +179,7 @@ namespace SUB.Forms.Usuario
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(328, 17);
-            this.lblSubtitulo.TabIndex = 114;
+            this.lblSubtitulo.TabIndex = 2;
             this.lblSubtitulo.Text = "Consulte e filtre os usuários cadastrados na biblioteca.";
             // 
             // Titulo
@@ -189,7 +190,7 @@ namespace SUB.Forms.Usuario
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(115, 38);
-            this.Titulo.TabIndex = 86;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Pessoas";
             // 
             // btnGerenciarTurmas
@@ -200,7 +201,7 @@ namespace SUB.Forms.Usuario
             this.btnGerenciarTurmas.Location = new System.Drawing.Point(1010, 35);
             this.btnGerenciarTurmas.Name = "btnGerenciarTurmas";
             this.btnGerenciarTurmas.Size = new System.Drawing.Size(174, 38);
-            this.btnGerenciarTurmas.TabIndex = 118;
+            this.btnGerenciarTurmas.TabIndex = 1;
             this.btnGerenciarTurmas.Text = "Gerenciar turmas";
             this.btnGerenciarTurmas.UseVisualStyleBackColor = false;
             this.btnGerenciarTurmas.Click += new System.EventHandler(this.btnGerenciarTurmas_Click);
@@ -229,7 +230,7 @@ namespace SUB.Forms.Usuario
             this.cmbEmprestimo.PlaceholderMargin = 10;
             this.cmbEmprestimo.PlaceholderText = "Filtre por situação...";
             this.cmbEmprestimo.Size = new System.Drawing.Size(250, 34);
-            this.cmbEmprestimo.TabIndex = 2;
+            this.cmbEmprestimo.TabIndex = 5;
             // 
             // cmbTipoUsuario
             // 
@@ -256,7 +257,7 @@ namespace SUB.Forms.Usuario
             this.cmbTipoUsuario.PlaceholderMargin = 10;
             this.cmbTipoUsuario.PlaceholderText = "Filtre por tipo de usuário...";
             this.cmbTipoUsuario.Size = new System.Drawing.Size(270, 34);
-            this.cmbTipoUsuario.TabIndex = 3;
+            this.cmbTipoUsuario.TabIndex = 4;
             // 
             // txtNome
             // 
@@ -282,7 +283,7 @@ namespace SUB.Forms.Usuario
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(350, 40);
-            this.txtNome.TabIndex = 1;
+            this.txtNome.TabIndex = 3;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 

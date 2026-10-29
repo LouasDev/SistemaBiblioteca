@@ -32,6 +32,7 @@ public class RoundedTextBox : UserControl
 
     public RoundedTextBox()
     {
+        TabStop = true;
         this.DoubleBuffered = true;
         this.BackColor = Color.White;
         currentBackColor = this.BackColor;
@@ -145,6 +146,18 @@ public class RoundedTextBox : UserControl
         int novaPosicao = textoOriginal.Take(posicaoOriginal).Count(c => c >= '0' && c <= '9');
         innerTextBox.Text = somenteDigitos;
         innerTextBox.SelectionStart = Math.Min(novaPosicao, somenteDigitos.Length);
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
     }
 
     protected override void OnPaintBackground(PaintEventArgs e)

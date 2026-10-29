@@ -57,7 +57,7 @@
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(201, 38);
-            this.Titulo.TabIndex = 93;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Cadastrar livro";
             // 
             // lblSubtitulo
@@ -68,7 +68,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(271, 17);
-            this.lblSubtitulo.TabIndex = 105;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Inclua um novo livro no acervo da instituição.";
             // 
             // pnlLinhaCabecalho
@@ -77,7 +77,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 106;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblNome
             // 
@@ -89,7 +89,7 @@
             this.lblNome.Location = new System.Drawing.Point(218, 250);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(140, 25);
-            this.lblNome.TabIndex = 94;
+            this.lblNome.TabIndex = 6;
             this.lblNome.Text = "Nome do livro:";
             // 
             // label1
@@ -102,7 +102,7 @@
             this.label1.Location = new System.Drawing.Point(218, 340);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 25);
-            this.label1.TabIndex = 96;
+            this.label1.TabIndex = 8;
             this.label1.Text = "Gênero:";
             // 
             // label2
@@ -115,7 +115,7 @@
             this.label2.Location = new System.Drawing.Point(648, 340);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(117, 25);
-            this.label2.TabIndex = 98;
+            this.label2.TabIndex = 9;
             this.label2.Text = "Quantidade:";
             // 
             // label3
@@ -128,7 +128,7 @@
             this.label3.Location = new System.Drawing.Point(218, 430);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(67, 25);
-            this.label3.TabIndex = 100;
+            this.label3.TabIndex = 13;
             this.label3.Text = "Autor:";
             // 
             // label4
@@ -141,7 +141,7 @@
             this.label4.Location = new System.Drawing.Point(218, 160);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
-            this.label4.TabIndex = 103;
+            this.label4.TabIndex = 3;
             this.label4.Text = "Código de barras:";
             // 
             // btnLimpar
@@ -156,7 +156,7 @@
             this.btnLimpar.Location = new System.Drawing.Point(704, 550);
             this.btnLimpar.Name = "btnLimpar";
             this.btnLimpar.Size = new System.Drawing.Size(160, 48);
-            this.btnLimpar.TabIndex = 104;
+            this.btnLimpar.TabIndex = 15;
             this.btnLimpar.Text = "Limpar";
             this.btnLimpar.UseVisualStyleBackColor = false;
             this.btnLimpar.Click += new System.EventHandler(this.btnLimpar_Click);
@@ -173,7 +173,7 @@
             this.btnCadastrar.Location = new System.Drawing.Point(880, 550);
             this.btnCadastrar.Name = "btnCadastrar";
             this.btnCadastrar.Size = new System.Drawing.Size(180, 48);
-            this.btnCadastrar.TabIndex = 6;
+            this.btnCadastrar.TabIndex = 16;
             this.btnCadastrar.Text = "Cadastrar livro";
             this.btnCadastrar.UseVisualStyleBackColor = false;
             this.btnCadastrar.Click += new System.EventHandler(this.btnCadastrar_Click);
@@ -205,7 +205,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 845);
-            this.panel1.TabIndex = 6;
+            this.panel1.TabIndex = 0;
             // 
             // btnBuscar
             // 
@@ -222,7 +222,7 @@
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Padding = new System.Windows.Forms.Padding(8, 6, 0, 10);
             this.btnBuscar.Size = new System.Drawing.Size(164, 40);
-            this.btnBuscar.TabIndex = 2;
+            this.btnBuscar.TabIndex = 5;
             this.btnBuscar.Text = "     Busca online";
             this.btnBuscar.UseVisualStyleBackColor = false;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
@@ -235,7 +235,8 @@
             this.lstSugestoesGenero.Location = new System.Drawing.Point(222, 408);
             this.lstSugestoesGenero.Name = "lstSugestoesGenero";
             this.lstSugestoesGenero.Size = new System.Drawing.Size(402, 64);
-            this.lstSugestoesGenero.TabIndex = 106;
+            this.lstSugestoesGenero.TabStop = false;
+            this.lstSugestoesGenero.TabIndex = 12;
             this.lstSugestoesGenero.Visible = false;
             // 
             // mtxCodigoBarras
@@ -258,7 +259,7 @@
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(14, 8, 8, 14);
             this.mtxCodigoBarras.Size = new System.Drawing.Size(606, 40);
-            this.mtxCodigoBarras.TabIndex = 1;
+            this.mtxCodigoBarras.TabIndex = 4;
             this.mtxCodigoBarras.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mtxCodigoBarras_KeyDown);
             // 
             // txtAutor
@@ -286,7 +287,7 @@
             this.txtAutor.SelectionLength = 0;
             this.txtAutor.SelectionStart = 0;
             this.txtAutor.Size = new System.Drawing.Size(838, 40);
-            this.txtAutor.TabIndex = 5;
+            this.txtAutor.TabIndex = 14;
             this.txtAutor.TextColor = System.Drawing.Color.Black;
             this.txtAutor.UseSystemPasswordChar = false;
             // 
@@ -316,7 +317,7 @@
             this.txtQuantidade.SelectionLength = 0;
             this.txtQuantidade.SelectionStart = 0;
             this.txtQuantidade.Size = new System.Drawing.Size(408, 40);
-            this.txtQuantidade.TabIndex = 5;
+            this.txtQuantidade.TabIndex = 11;
             this.txtQuantidade.TextColor = System.Drawing.Color.Black;
             this.txtQuantidade.UseSystemPasswordChar = false;
             // 
@@ -345,7 +346,7 @@
             this.txtGenero.SelectionLength = 0;
             this.txtGenero.SelectionStart = 0;
             this.txtGenero.Size = new System.Drawing.Size(402, 40);
-            this.txtGenero.TabIndex = 4;
+            this.txtGenero.TabIndex = 10;
             this.txtGenero.TextColor = System.Drawing.Color.Black;
             this.txtGenero.UseSystemPasswordChar = false;
             // 
@@ -374,7 +375,7 @@
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(838, 40);
-            this.txtNome.TabIndex = 3;
+            this.txtNome.TabIndex = 7;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 

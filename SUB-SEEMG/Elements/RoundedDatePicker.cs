@@ -35,7 +35,7 @@ public class RoundedDatePicker : UserControl
         base.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold);
         this.ForeColor = Color.FromArgb(20, 42, 60);
         this.Size = new Size(199, 35);
-        this.TabStop = false;
+        this.TabStop = true;
         // defaults do ícone (guardados em campos simples)
         _iconColor = Color.FromArgb(80, 80, 80);
         _iconHoverColor = Color.FromArgb(30, 61, 88);
@@ -323,6 +323,18 @@ public class RoundedDatePicker : UserControl
             g.DrawLine(pen, x + w - 6, y, x + w - 6, y + 4);
         }
     // Linha separadora entre a data e o ícone (desenhada no controle principal OnPaint para melhor alinhamento)
+    }
+
+    protected override bool ProcessDialogKey(Keys keyData)
+    {
+        // Ao voltar, sai do editor composto em vez de parar outra vez no container.
+        if (keyData == (Keys.Tab | Keys.Shift))
+        {
+            Form form = FindForm();
+            if (form != null && form.SelectNextControl(this, false, true, true, true))
+                return true;
+        }
+        return base.ProcessDialogKey(keyData);
     }
 
     protected override void OnPaintBackground(PaintEventArgs e)

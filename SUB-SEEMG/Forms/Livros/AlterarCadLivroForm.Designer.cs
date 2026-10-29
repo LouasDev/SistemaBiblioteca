@@ -77,7 +77,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1280, 905);
-            this.panel1.TabIndex = 94;
+            this.panel1.TabIndex = 0;
             // 
             // btnGerarEtiqueta
             // 
@@ -94,7 +94,7 @@
             this.btnGerarEtiqueta.Name = "btnGerarEtiqueta";
             this.btnGerarEtiqueta.Padding = new System.Windows.Forms.Padding(10, 10, 0, 10);
             this.btnGerarEtiqueta.Size = new System.Drawing.Size(174, 55);
-            this.btnGerarEtiqueta.TabIndex = 133;
+            this.btnGerarEtiqueta.TabIndex = 3;
             this.btnGerarEtiqueta.Text = "     Etiqueta";
             this.btnGerarEtiqueta.UseVisualStyleBackColor = false;
             this.btnGerarEtiqueta.Click += new System.EventHandler(this.btnGerarEtiqueta_Click);
@@ -107,7 +107,8 @@
             this.lstSugestoesGenero.Location = new System.Drawing.Point(222, 355);
             this.lstSugestoesGenero.Name = "lstSugestoesGenero";
             this.lstSugestoesGenero.Size = new System.Drawing.Size(402, 64);
-            this.lstSugestoesGenero.TabIndex = 132;
+            this.lstSugestoesGenero.TabStop = false;
+            this.lstSugestoesGenero.TabIndex = 10;
             this.lstSugestoesGenero.Visible = false;
             // 
             // btnCancelar
@@ -123,7 +124,7 @@
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(160, 48);
-            this.btnCancelar.TabIndex = 131;
+            this.btnCancelar.TabIndex = 16;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
@@ -141,7 +142,7 @@
             this.btnExcluir.Margin = new System.Windows.Forms.Padding(5);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(160, 48);
-            this.btnExcluir.TabIndex = 130;
+            this.btnExcluir.TabIndex = 15;
             this.btnExcluir.Text = "Excluir";
             this.btnExcluir.UseVisualStyleBackColor = false;
             this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
@@ -159,7 +160,7 @@
             this.btnSalvar.Margin = new System.Windows.Forms.Padding(5);
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(174, 48);
-            this.btnSalvar.TabIndex = 129;
+            this.btnSalvar.TabIndex = 17;
             this.btnSalvar.Text = "Salvar";
             this.btnSalvar.UseVisualStyleBackColor = false;
             this.btnSalvar.Click += new System.EventHandler(this.btnSalvar_Click);
@@ -174,7 +175,7 @@
             this.label4.Location = new System.Drawing.Point(648, 380);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
-            this.label4.TabIndex = 103;
+            this.label4.TabIndex = 12;
             this.label4.Text = "Código de barras:";
             // 
             // mtxCodigoBarras
@@ -196,7 +197,7 @@
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.Padding = new System.Windows.Forms.Padding(13, 7, 0, 0);
             this.mtxCodigoBarras.Size = new System.Drawing.Size(408, 40);
-            this.mtxCodigoBarras.TabIndex = 102;
+            this.mtxCodigoBarras.TabIndex = 14;
             // 
             // txtAutor
             // 
@@ -223,7 +224,7 @@
             this.txtAutor.SelectionLength = 0;
             this.txtAutor.SelectionStart = 0;
             this.txtAutor.Size = new System.Drawing.Size(402, 40);
-            this.txtAutor.TabIndex = 101;
+            this.txtAutor.TabIndex = 13;
             this.txtAutor.TextColor = System.Drawing.Color.Black;
             this.txtAutor.UseSystemPasswordChar = false;
             // 
@@ -237,7 +238,7 @@
             this.label3.Location = new System.Drawing.Point(218, 380);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 25);
-            this.label3.TabIndex = 100;
+            this.label3.TabIndex = 11;
             this.label3.Text = "Autor:";
             // 
             // txtQuantidade
@@ -266,7 +267,7 @@
             this.txtQuantidade.SelectionLength = 0;
             this.txtQuantidade.SelectionStart = 0;
             this.txtQuantidade.Size = new System.Drawing.Size(408, 40);
-            this.txtQuantidade.TabIndex = 99;
+            this.txtQuantidade.TabIndex = 9;
             this.txtQuantidade.TextColor = System.Drawing.Color.Black;
             this.txtQuantidade.UseSystemPasswordChar = false;
             // 
@@ -280,7 +281,7 @@
             this.label2.Location = new System.Drawing.Point(648, 287);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(112, 25);
-            this.label2.TabIndex = 98;
+            this.label2.TabIndex = 7;
             this.label2.Text = "Quantidade:";
             // 
             // txtGenero
@@ -308,7 +309,7 @@
             this.txtGenero.SelectionLength = 0;
             this.txtGenero.SelectionStart = 0;
             this.txtGenero.Size = new System.Drawing.Size(402, 40);
-            this.txtGenero.TabIndex = 97;
+            this.txtGenero.TabIndex = 8;
             this.txtGenero.TextColor = System.Drawing.Color.Black;
             this.txtGenero.UseSystemPasswordChar = false;
             // 
@@ -322,7 +323,7 @@
             this.label1.Location = new System.Drawing.Point(218, 287);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 25);
-            this.label1.TabIndex = 96;
+            this.label1.TabIndex = 6;
             this.label1.Text = "Gênero:";
             // 
             // txtNome
@@ -350,7 +351,7 @@
             this.txtNome.SelectionLength = 0;
             this.txtNome.SelectionStart = 0;
             this.txtNome.Size = new System.Drawing.Size(838, 40);
-            this.txtNome.TabIndex = 95;
+            this.txtNome.TabIndex = 5;
             this.txtNome.TextColor = System.Drawing.Color.Black;
             this.txtNome.UseSystemPasswordChar = false;
             // 
@@ -364,7 +365,7 @@
             this.lblNome.Location = new System.Drawing.Point(218, 202);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(140, 25);
-            this.lblNome.TabIndex = 94;
+            this.lblNome.TabIndex = 4;
             this.lblNome.Text = "Nome do livro:";
             // 
             // pnlLinhaCabecalho
@@ -373,7 +374,7 @@
             this.pnlLinhaCabecalho.Location = new System.Drawing.Point(36, 88);
             this.pnlLinhaCabecalho.Name = "pnlLinhaCabecalho";
             this.pnlLinhaCabecalho.Size = new System.Drawing.Size(48, 3);
-            this.pnlLinhaCabecalho.TabIndex = 96;
+            this.pnlLinhaCabecalho.TabIndex = 2;
             // 
             // lblSubtitulo
             // 
@@ -383,7 +384,7 @@
             this.lblSubtitulo.Location = new System.Drawing.Point(36, 62);
             this.lblSubtitulo.Name = "lblSubtitulo";
             this.lblSubtitulo.Size = new System.Drawing.Size(330, 17);
-            this.lblSubtitulo.TabIndex = 95;
+            this.lblSubtitulo.TabIndex = 1;
             this.lblSubtitulo.Text = "Atualize as informações e a disponibilidade deste livro.";
             // 
             // Titulo
@@ -394,7 +395,7 @@
             this.Titulo.Location = new System.Drawing.Point(34, 20);
             this.Titulo.Name = "Titulo";
             this.Titulo.Size = new System.Drawing.Size(154, 38);
-            this.Titulo.TabIndex = 93;
+            this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Editar livro";
             // 
             // AlterarCadLivroForm

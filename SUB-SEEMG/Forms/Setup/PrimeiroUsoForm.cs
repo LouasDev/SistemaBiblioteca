@@ -1,6 +1,3 @@
-﻿using SeuProjeto;
-using SUB.Models;
-using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,6 +9,8 @@ using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using SUB.Models;
+using SUB.Utils;
 
 namespace SUB.Forms.Setup
 {
@@ -29,24 +28,15 @@ namespace SUB.Forms.Setup
         private readonly bool _modoEscuroAnterior = ThemeManager.Escuro;
         private readonly Dictionary<Label, Color> _coresRotulosClaros = new Dictionary<Label, Color>();
         private Color _corStatusCodigo = Color.FromArgb(105, 114, 126);
-
-
-
         public PrimeiroUsoForm()
         {
-
             //aredondar cantos e desenhar borda cinza
-
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
-
-
             InitializeComponent();
-
             if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
                 return;
-
             GuardarCoresRotulos(pnlConteudo);
             Disposed += (s, e) =>
             {
@@ -58,7 +48,6 @@ namespace SUB.Forms.Setup
             txtNovaTurma.KeyPress += TxtNovaTurma_KeyPress;
             foreach (var preset in ThemeManager.Presets)
                 _tema.Items.Add(preset);
-
             _codigoMestre.Text = _codigoMestreGerado;
             ConectarValidacaoProgressiva();
             _aparencia.SelectedIndex = 0;
@@ -69,7 +58,10 @@ namespace SUB.Forms.Setup
 
         private ThemePreset TemaSelecionado
         {
-            get { return _tema.SelectedItem as ThemePreset ?? ThemeManager.Presets[0]; }
+            get
+            {
+                return _tema.SelectedItem as ThemePreset ?? ThemeManager.Presets[0];
+            }
         }
 
         private void ConectarValidacaoProgressiva()
@@ -90,7 +82,6 @@ namespace SUB.Forms.Setup
         {
             if (!label.Visible)
                 return;
-
             ExibirErro(label, validar());
             if (!TemErrosVisiveis())
                 OcultarErroGeral();
@@ -114,7 +105,6 @@ namespace SUB.Forms.Setup
             Color hover = escuro ? ThemeManager.Dark.EntradaHover : ThemeManager.Lighten(primaria, 0.94f);
             Color entrada = escuro ? ThemeManager.Dark.Entrada : Color.White;
             Color texto = escuro ? ThemeManager.Dark.Texto : Color.FromArgb(29, 39, 53);
-
             BackColor = escuro ? ThemeManager.Dark.Fundo : tema.AccentColor;
             pnlConteudo.BackColor = escuro ? ThemeManager.Dark.Fundo : Color.White;
             pnlEtapa1.BackColor = Color.Transparent;
@@ -152,15 +142,22 @@ namespace SUB.Forms.Setup
             btnRemoverTurma.BackColor = entrada;
             btnRemoverTurma.ForeColor = CorTextoSetup(ThemeManager.GetLabelColor(primaria));
             btnRemoverTurma.FlatAppearance.BorderColor = borda;
-            foreach (Button botao in new[] { btnVoltar, btnVoltarEtapa3, exportarCodigo, btnRemoverTurma })
+            foreach (Button botao in new[]
+            {
+                btnVoltar,
+                btnVoltarEtapa3,
+                exportarCodigo,
+                btnRemoverTurma
+            }
+
+            )
             {
                 botao.FlatAppearance.MouseOverBackColor = hover;
-                botao.FlatAppearance.MouseDownBackColor = escuro
-                    ? ThemeManager.Dark.Selecao : ThemeManager.Lighten(primaria, 0.86f);
+                botao.FlatAppearance.MouseDownBackColor = escuro ? ThemeManager.Dark.Selecao : ThemeManager.Lighten(primaria, 0.86f);
             }
+
             lstTurmasIniciais.BackColor = entrada;
             lstTurmasIniciais.ForeColor = texto;
-
             RoundedTextBox[] campos =
             {
                 _nomeInstituicao,
@@ -170,7 +167,6 @@ namespace SUB.Forms.Setup
                 _confirmarSenhaBibliotecaria,
                 txtNovaTurma
             };
-
             foreach (RoundedTextBox campo in campos)
             {
                 campo.BackColor = entrada;
@@ -190,8 +186,13 @@ namespace SUB.Forms.Setup
             _telefoneBibliotecaria.HoverBackColor = hover;
             _telefoneBibliotecaria.HoverBorderColor = primaria;
             _telefoneBibliotecaria.Invalidate();
+            foreach (RoundedComboBox combo in new[]
+            {
+                _tema,
+                _aparencia
+            }
 
-            foreach (RoundedComboBox combo in new[] { _tema, _aparencia })
+            )
             {
                 combo.BackColor = entrada;
                 combo.ForeColor = texto;
@@ -202,6 +203,7 @@ namespace SUB.Forms.Setup
                 combo.HighlightTextColor = escuro ? texto : ThemeManager.Darken(primaria, 0.55f);
                 combo.Invalidate();
             }
+
             AtualizarIndicadorEtapa();
             AtualizarEstadoConclusao();
             SubLogoManager.SetImage(picLogo, SubLogoVariant.Square, primaria, pnlLogo.BackColor);
@@ -234,17 +236,16 @@ namespace SUB.Forms.Setup
             pnlEtapa1.Visible = etapa == 1;
             pnlEtapa2.Visible = etapa == 2;
             pnlEtapa3.Visible = etapa == 3;
-
-            if (etapa == 1) pnlEtapa1.BringToFront();
-            else if (etapa == 2) pnlEtapa2.BringToFront();
-            else pnlEtapa3.BringToFront();
-
+            if (etapa == 1)
+                pnlEtapa1.BringToFront();
+            else if (etapa == 2)
+                pnlEtapa2.BringToFront();
+            else
+                pnlEtapa3.BringToFront();
             lblEtapaAtual.Text = "Etapa " + etapa + " de 3";
-            AcceptButton = etapa == 1 ? (IButtonControl)btnAvancar :
-                etapa == 2 ? (IButtonControl)btnAvancarEtapa2 : salvar;
+            AcceptButton = etapa == 1 ? (IButtonControl)btnAvancar : etapa == 2 ? (IButtonControl)btnAvancarEtapa2 : salvar;
             AtualizarIndicadorEtapa();
             OcultarErroGeral();
-
             if (etapa == 1)
                 _nomeInstituicao.Focus();
             else if (etapa == 2)
@@ -257,7 +258,6 @@ namespace SUB.Forms.Setup
         {
             if (keyData != Keys.Enter)
                 return base.ProcessCmdKey(ref msg, keyData);
-
             if (_etapaAtual == 1)
             {
                 if (_nomeInstituicao.ContainsFocus)
@@ -325,7 +325,6 @@ namespace SUB.Forms.Setup
             indicadorEtapa1.BackColor = primaria;
             indicadorEtapa2.BackColor = _etapaAtual >= 2 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
             indicadorEtapa3.BackColor = _etapaAtual >= 3 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
-
             bool primeiraEtapa = _etapaAtual == 1;
             bool segundaEtapa = _etapaAtual == 2;
             bool terceiraEtapa = _etapaAtual == 3;
@@ -335,12 +334,9 @@ namespace SUB.Forms.Setup
             lblPasso1Numero.ForeColor = primeiraEtapa ? primaria : Color.White;
             lblPasso2Numero.ForeColor = segundaEtapa ? primaria : Color.White;
             lblPasso3Numero.ForeColor = terceiraEtapa ? primaria : Color.White;
-            lblPasso1Texto.Font = new Font("Segoe UI", 10F,
-                primeiraEtapa ? FontStyle.Bold : FontStyle.Regular);
-            lblPasso2Texto.Font = new Font("Segoe UI", 10F,
-                segundaEtapa ? FontStyle.Bold : FontStyle.Regular);
-            lblPasso3Texto.Font = new Font("Segoe UI", 10F,
-                terceiraEtapa ? FontStyle.Bold : FontStyle.Regular);
+            lblPasso1Texto.Font = new Font("Segoe UI", 10F, primeiraEtapa ? FontStyle.Bold : FontStyle.Regular);
+            lblPasso2Texto.Font = new Font("Segoe UI", 10F, segundaEtapa ? FontStyle.Bold : FontStyle.Regular);
+            lblPasso3Texto.Font = new Font("Segoe UI", 10F, terceiraEtapa ? FontStyle.Bold : FontStyle.Regular);
             linhaRoteiro.BackColor = ThemeManager.Lighten(primaria, 0.42f);
             linhaRoteiro2.BackColor = ThemeManager.Lighten(primaria, 0.42f);
         }
@@ -349,7 +345,6 @@ namespace SUB.Forms.Setup
         {
             if (!ValidarEtapa1())
                 return;
-
             MostrarEtapa(2);
         }
 
@@ -357,7 +352,6 @@ namespace SUB.Forms.Setup
         {
             if (!ValidarEtapa2())
                 return;
-
             MostrarEtapa(3);
         }
 
@@ -402,7 +396,6 @@ namespace SUB.Forms.Setup
             string turma = lstTurmasIniciais.SelectedItem as string;
             if (string.IsNullOrWhiteSpace(turma))
                 return;
-
             _turmasIniciais.RemoveAll(item => string.Equals(item, turma, StringComparison.OrdinalIgnoreCase));
             AtualizarListaTurmasIniciais();
             AtualizarEstadoConclusao();
@@ -457,7 +450,6 @@ namespace SUB.Forms.Setup
             string erroTema = ValidarTema();
             ExibirErro(lblErroNomeInstituicao, erroNome);
             ExibirErro(lblErroTema, erroTema);
-
             if (erroNome == null && erroTema == null)
             {
                 OcultarErroGeral();
@@ -480,13 +472,11 @@ namespace SUB.Forms.Setup
             string erroSenha = ValidarSenha();
             string erroConfirmacao = ValidarConfirmacaoSenha();
             bool codigoSalvo = !string.IsNullOrWhiteSpace(_caminhoCodigoMestre) && File.Exists(_caminhoCodigoMestre);
-
             ExibirErro(lblErroNomeBibliotecaria, erroNome);
             ExibirErro(lblErroEmailBibliotecaria, erroEmail);
             ExibirErro(lblErroTelefoneBibliotecaria, erroTelefone);
             ExibirErro(lblErroSenhaBibliotecaria, erroSenha);
             ExibirErro(lblErroConfirmarSenhaBibliotecaria, erroConfirmacao);
-
             if (erroNome == null && erroEmail == null && erroTelefone == null && erroSenha == null && erroConfirmacao == null && codigoSalvo)
             {
                 OcultarErroGeral();
@@ -499,28 +489,28 @@ namespace SUB.Forms.Setup
                 AtualizarCorStatusCodigo(_corErro);
             }
 
-            ExibirErroGeral(!codigoSalvo
-                ? "Salve o código de recuperação antes de avançar."
-                : "Revise os campos destacados antes de avançar.");
-            if (erroNome != null) _nomeBibliotecaria.Focus();
-            else if (erroEmail != null) _emailBibliotecaria.Focus();
-            else if (erroTelefone != null) _telefoneBibliotecaria.Focus();
-            else if (erroSenha != null) _senhaBibliotecaria.Focus();
-            else if (erroConfirmacao != null) _confirmarSenhaBibliotecaria.Focus();
-            else exportarCodigo.Focus();
+            ExibirErroGeral(!codigoSalvo ? "Salve o código de recuperação antes de avançar." : "Revise os campos destacados antes de avançar.");
+            if (erroNome != null)
+                _nomeBibliotecaria.Focus();
+            else if (erroEmail != null)
+                _emailBibliotecaria.Focus();
+            else if (erroTelefone != null)
+                _telefoneBibliotecaria.Focus();
+            else if (erroSenha != null)
+                _senhaBibliotecaria.Focus();
+            else if (erroConfirmacao != null)
+                _confirmarSenhaBibliotecaria.Focus();
+            else
+                exportarCodigo.Focus();
             return false;
         }
 
         private bool ValidarEtapa3()
         {
-            string erro = _turmasIniciais.Count == 0
-                ? "Adicione ao menos uma turma para concluir a configuração."
-                : null;
+            string erro = _turmasIniciais.Count == 0 ? "Adicione ao menos uma turma para concluir a configuração." : null;
             ExibirErro(lblErroTurmas, erro);
-
             if (erro == null)
                 return true;
-
             ExibirErroGeral("Cadastre pelo menos uma turma da instituição antes de concluir.");
             txtNovaTurma.Focus();
             return false;
@@ -541,14 +531,8 @@ namespace SUB.Forms.Setup
             string nome = (_nomeBibliotecaria.Text ?? string.Empty).Trim();
             if (nome.Length == 0)
                 return "Informe o nome completo da bibliotecária.";
-
-            string[] partes = nome.Split(
-                new[] { ' ', '\t', '\r', '\n' },
-                StringSplitOptions.RemoveEmptyEntries);
-
-            return partes.Length >= 2
-                ? null
-                : "Digite o nome e o sobrenome da bibliotecária.";
+            string[] partes = nome.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            return partes.Length >= 2 ? null : "Digite o nome e o sobrenome da bibliotecária.";
         }
 
         private string ValidarEmail()
@@ -584,7 +568,7 @@ namespace SUB.Forms.Setup
 
         private static string ApenasDigitos(string valor)
         {
-            return new string((valor ?? string.Empty).Where(char.IsDigit).ToArray());
+            return new string ((valor ?? string.Empty).Where(char.IsDigit).ToArray());
         }
 
         private void ExibirErro(Label label, string mensagem)
@@ -595,9 +579,7 @@ namespace SUB.Forms.Setup
 
         private bool TemErrosVisiveis()
         {
-            return lblErroNomeInstituicao.Visible || lblErroTema.Visible || lblErroNomeBibliotecaria.Visible ||
-                   lblErroEmailBibliotecaria.Visible || lblErroTelefoneBibliotecaria.Visible ||
-                   lblErroSenhaBibliotecaria.Visible || lblErroConfirmarSenhaBibliotecaria.Visible;
+            return lblErroNomeInstituicao.Visible || lblErroTema.Visible || lblErroNomeBibliotecaria.Visible || lblErroEmailBibliotecaria.Visible || lblErroTelefoneBibliotecaria.Visible || lblErroSenhaBibliotecaria.Visible || lblErroConfirmarSenhaBibliotecaria.Visible;
         }
 
         private void ExibirErroGeral(string mensagem)
@@ -621,19 +603,15 @@ namespace SUB.Forms.Setup
                 AddExtension = true,
                 FileName = "codigo-recuperacao-SUB.txt",
                 Title = "Salvar código de recuperação do SUB"
-            })
+            }
+
+            )
             {
                 if (dialogo.ShowDialog(this) != DialogResult.OK)
                     return;
-
                 try
                 {
-                    string conteudo =
-                        "Código de recuperação do SUB" + Environment.NewLine +
-                        "Instituição: " + (_nomeInstituicao.Text.Trim().Length == 0 ? "Não informada" : _nomeInstituicao.Text.Trim()) + Environment.NewLine +
-                        "Código: " + _codigoMestreGerado + Environment.NewLine + Environment.NewLine +
-                        "Guarde este arquivo em local seguro. O código permite recuperar o acesso administrativo.";
-
+                    string conteudo = "Código de recuperação do SUB" + Environment.NewLine + "Instituição: " + (_nomeInstituicao.Text.Trim().Length == 0 ? "Não informada" : _nomeInstituicao.Text.Trim()) + Environment.NewLine + "Código: " + _codigoMestreGerado + Environment.NewLine + Environment.NewLine + "Guarde este arquivo em local seguro. O código permite recuperar o acesso administrativo.";
                     File.WriteAllText(dialogo.FileName, conteudo, new UTF8Encoding(true));
                     _caminhoCodigoMestre = dialogo.FileName;
                     statusCodigo.Text = "Salvo em: " + _caminhoCodigoMestre;
@@ -670,7 +648,6 @@ namespace SUB.Forms.Setup
         {
             if (_concluindo)
                 return;
-
             if (string.IsNullOrWhiteSpace(_caminhoCodigoMestre) || !File.Exists(_caminhoCodigoMestre))
             {
                 _caminhoCodigoMestre = null;
@@ -682,10 +659,8 @@ namespace SUB.Forms.Setup
 
             if (!ValidarEtapa2())
                 return;
-
             if (!ValidarEtapa3())
                 return;
-
             ConcluirConfiguracao();
         }
 
@@ -695,7 +670,6 @@ namespace SUB.Forms.Setup
             string pastaBanco = Path.GetDirectoryName(caminhoBanco);
             string caminhoConfiguracao = Path.Combine(AppPaths.AppDataFolder, "instituicao.json");
             string caminhoConfiguracaoTemporaria = caminhoConfiguracao + ".tmp";
-
             bool bancoExistia = File.Exists(caminhoBanco);
             bool pastaBancoExistia = Directory.Exists(pastaBanco);
             bool pastaAppExistia = Directory.Exists(AppPaths.AppDataFolder);
@@ -703,23 +677,19 @@ namespace SUB.Forms.Setup
             bool pastaRelatoriosExistia = Directory.Exists(AppPaths.ReportsFolder);
             bool configuracaoExistia = File.Exists(caminhoConfiguracao);
             bool temporarioExistia = File.Exists(caminhoConfiguracaoTemporaria);
-
             SqlCeTransaction transacao = null;
             SqlCeConnection conexao = null;
             DefinirEstadoOcupado(true);
-
             try
             {
                 string email = _emailBibliotecaria.Text.Trim().ToLowerInvariant();
                 ThemePreset tema = TemaSelecionado;
                 CriptografiaSenha.CriarHash(_senhaBibliotecaria.Text, out string senhaHash, out string senhaSalt);
                 CriptografiaSenha.CriarHash(_codigoMestreGerado, out string codigoHash, out string codigoSalt);
-
                 DatabaseInitializer.EnsureCreated();
                 conexao = Conexao.ObterConexao();
                 conexao.Open();
                 transacao = conexao.BeginTransaction();
-
                 using (SqlCeCommand verificarEmail = conexao.CreateCommand())
                 {
                     verificarEmail.Transaction = transacao;
@@ -788,33 +758,32 @@ VALUES
             {
                 if (transacao != null)
                 {
-                    try { transacao.Rollback(); } catch { }
+                    try
+                    {
+                        transacao.Rollback();
+                    }
+                    catch
+                    {
+                    }
                 }
 
                 if (conexao != null)
                 {
-                    try { conexao.Close(); } catch { }
+                    try
+                    {
+                        conexao.Close();
+                    }
+                    catch
+                    {
+                    }
                 }
 
-                string falhasLimpeza = DesfazerInstalacaoParcial(
-                    caminhoBanco,
-                    pastaBanco,
-                    caminhoConfiguracao,
-                    caminhoConfiguracaoTemporaria,
-                    bancoExistia,
-                    pastaBancoExistia,
-                    pastaAppExistia,
-                    pastaMapeamentoExistia,
-                    pastaRelatoriosExistia,
-                    configuracaoExistia,
-                    temporarioExistia);
-
+                string falhasLimpeza = DesfazerInstalacaoParcial(caminhoBanco, pastaBanco, caminhoConfiguracao, caminhoConfiguracaoTemporaria, bancoExistia, pastaBancoExistia, pastaAppExistia, pastaMapeamentoExistia, pastaRelatoriosExistia, configuracaoExistia, temporarioExistia);
                 string mensagem = "Não foi possível concluir. As alterações da instalação foram desfeitas. Tente novamente.";
                 if (!string.IsNullOrEmpty(falhasLimpeza))
                     mensagem = "Não foi possível concluir. Feche o SUB e verifique: " + falhasLimpeza;
                 else if (!string.IsNullOrWhiteSpace(ex.Message))
                     mensagem += " Motivo: " + ex.Message;
-
                 ExibirErroGeral(mensagem);
             }
             finally
@@ -827,30 +796,16 @@ VALUES
             }
         }
 
-        private string DesfazerInstalacaoParcial(
-            string caminhoBanco,
-            string pastaBanco,
-            string caminhoConfiguracao,
-            string caminhoConfiguracaoTemporaria,
-            bool bancoExistia,
-            bool pastaBancoExistia,
-            bool pastaAppExistia,
-            bool pastaMapeamentoExistia,
-            bool pastaRelatoriosExistia,
-            bool configuracaoExistia,
-            bool temporarioExistia)
+        private string DesfazerInstalacaoParcial(string caminhoBanco, string pastaBanco, string caminhoConfiguracao, string caminhoConfiguracaoTemporaria, bool bancoExistia, bool pastaBancoExistia, bool pastaAppExistia, bool pastaMapeamentoExistia, bool pastaRelatoriosExistia, bool configuracaoExistia, bool temporarioExistia)
         {
             var falhas = new System.Collections.Generic.List<string>();
-
             ExcluirArquivoCriado(caminhoConfiguracao, configuracaoExistia, falhas);
             ExcluirArquivoCriado(caminhoConfiguracaoTemporaria, temporarioExistia, falhas);
             ExcluirArquivoCriado(caminhoBanco, bancoExistia, falhas);
-
             ExcluirDiretorioVazio(AppPaths.MappingFolder, pastaMapeamentoExistia, falhas);
             ExcluirDiretorioVazio(AppPaths.ReportsFolder, pastaRelatoriosExistia, falhas);
             ExcluirDiretorioVazio(pastaBanco, pastaBancoExistia, falhas);
             ExcluirDiretorioVazio(AppPaths.AppDataFolder, pastaAppExistia, falhas);
-
             return string.Join("; ", falhas);
         }
 
@@ -858,7 +813,6 @@ VALUES
         {
             if (existiaAntes || string.IsNullOrWhiteSpace(caminho) || !File.Exists(caminho))
                 return;
-
             try
             {
                 File.Delete(caminho);
@@ -873,7 +827,6 @@ VALUES
         {
             if (existiaAntes || string.IsNullOrWhiteSpace(caminho) || !Directory.Exists(caminho))
                 return;
-
             try
             {
                 if (!Directory.EnumerateFileSystemEntries(caminho).Any())
@@ -920,12 +873,10 @@ VALUES
 
         private void pnlInstitucional_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void lblTituloEtapa2_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

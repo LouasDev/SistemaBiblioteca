@@ -1,6 +1,4 @@
-﻿using SUB.Models;
-using SUB.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlServerCe;
@@ -9,18 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using SUB.Utils;
 
-namespace SUB.Froms.Usuario
+namespace SUB.Forms.Usuario
 {
     public partial class CadUsuario : Form
     {
-        #region Construtores e Variáveis
+#region Construtores e Variáveis
         private List<string> turmasCadastradas = new List<string>();
-
-
         public event EventHandler UsuarioCriado;
-
-
         public CadUsuario(List<Usuarios> usuarios)
         {
             InitializeComponent();
@@ -31,14 +26,12 @@ namespace SUB.Froms.Usuario
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
-
             this.SizeChanged += CadUsuario_SizeChanged;
             this.Shown += (s, e) => PosicionarPanel2();
-
         }
-        #endregion
 
-        #region Eventos do Formulário
+#endregion
+#region Eventos do Formulário
         private void CadUsuario_Load(object sender, EventArgs e)
         {
             // Configuração inicial do formulário
@@ -50,23 +43,16 @@ namespace SUB.Froms.Usuario
             chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             SetAsteriscoVisibility(false);
             CarregarTurmasDoBanco();
-           
-
-
-
             // Eventos para o autocomplete de Turma
             txtTurma.KeyDown += txtTurma_KeyDown;
             txtTurma.Leave += txtTurma_Leave;
             txtTurma.Validating += txtTurma_Validating; // <- validação de turma
-
             lstSugestoesTurma.Click += lstSugestoesTurma_Click;
             lstSugestoesTurma.KeyDown += lstSugestoesTurma_KeyDown;
             lstSugestoesTurma.Leave += lstSugestoesTurma_Leave;
-
             // Estilo do ListBox e z-order
             EstilizarListBoxSugestao(lstSugestoesTurma);
             lstSugestoesTurma.BringToFront();
-
             // CORREÇÃO: não dispare validação ao ir para a lista; esconda inicialmente
             lstSugestoesTurma.CausesValidation = false;
             lstSugestoesTurma.Visible = false;
@@ -74,30 +60,30 @@ namespace SUB.Froms.Usuario
 
         private void CadUsuario_SizeChanged(object sender, EventArgs e)
         {
-            if (!IsHandleCreated) return;
+            if (!IsHandleCreated)
+                return;
             BeginInvoke(new Action(PosicionarPanel2));
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-
+            if (e.KeyCode != Keys.Enter)
+                return;
             // Se a lista de turmas estiver visível, confirma antes de avançar
             if (lstSugestoesTurma.Visible)
             {
                 e.SuppressKeyPress = true;
-                if (ConfirmarSugestaoTurma()) return;
+                if (ConfirmarSugestaoTurma())
+                    return;
             }
 
             // Fluxo padrão
             e.SuppressKeyPress = true;
             this.SelectNextControl(this.ActiveControl, true, true, true, true);
         }
-        #endregion
 
-        
-
-        #region Métodos Públicos
+#endregion
+#region Métodos Públicos
         public void LimparCampos()
         {
             cbUsuario.SelectedIndex = -1;
@@ -114,41 +100,54 @@ namespace SUB.Froms.Usuario
 
         public bool ValidarCPF(string cpf)
         {
-            cpf = new string(cpf.Where(char.IsDigit).ToArray());
-
+            cpf = new string (cpf.Where(char.IsDigit).ToArray());
             if (cpf.Length != 11 || cpf.Distinct().Count() == 1)
                 return false;
-
-            int[] multiplicador1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicador2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-
+            int[] multiplicador1 =
+            {
+                10,
+                9,
+                8,
+                7,
+                6,
+                5,
+                4,
+                3,
+                2
+            };
+            int[] multiplicador2 =
+            {
+                11,
+                10,
+                9,
+                8,
+                7,
+                6,
+                5,
+                4,
+                3,
+                2
+            };
             string tempCpf = cpf.Substring(0, 9);
             int soma = 0;
-
             for (int i = 0; i < 9; i++)
                 soma += int.Parse(tempCpf[i].ToString()) * multiplicador1[i];
-
             int resto = soma % 11;
             resto = resto < 2 ? 0 : 11 - resto;
-
             string digito = resto.ToString();
             tempCpf += digito;
             soma = 0;
-
             for (int i = 0; i < 10; i++)
                 soma += int.Parse(tempCpf[i].ToString()) * multiplicador2[i];
-
             resto = soma % 11;
             resto = resto < 2 ? 0 : 11 - resto;
-
             digito += resto.ToString();
-
             return cpf.EndsWith(digito);
         }
 
         public bool ValidarTelefone(string telefone)
         {
-            string apenasNumeros = new string(telefone.Where(char.IsDigit).ToArray());
+            string apenasNumeros = new string (telefone.Where(char.IsDigit).ToArray());
             return apenasNumeros.Length >= 11 && apenasNumeros.Length <= 12;
         }
 
@@ -157,13 +156,12 @@ namespace SUB.Froms.Usuario
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return Regex.IsMatch(email, pattern);
         }
-        #endregion
 
-        #region Eventos de Controles
+#endregion
+#region Eventos de Controles
         private void cbUsuario_SelectedIndexChanged(object sender, EventArgs e)
         {
             string funcaoSelecionada = cbUsuario.SelectedItem?.ToString();
-
             if (string.IsNullOrWhiteSpace(funcaoSelecionada))
             {
                 ConfigurarCamposGenericos();
@@ -176,15 +174,12 @@ namespace SUB.Froms.Usuario
                 case "Bibliotecário(a)":
                     ConfigurarParaBibliotecario();
                     break;
-
                 case "Professor(a)":
                     ConfigurarParaProfessor();
                     break;
-
                 case "Outros":
                     ConfigurarParaOutros();
                     break;
-
                 default:
                     ConfigurarParaAluno();
                     break;
@@ -207,7 +202,6 @@ namespace SUB.Froms.Usuario
             {
                 if (c.HasChildren)
                     LimparCamposOcultosRecursivo(c);
-
                 if (!c.Visible || !c.Enabled)
                 {
                     // Campos de texto, masked e combos
@@ -228,11 +222,8 @@ namespace SUB.Froms.Usuario
         {
             if (!ValidarCamposObrigatorios())
                 return;
-
             if (!ValidarDadosUsuario())
                 return;
-
-
             CadastrarNovoUsuario();
         }
 
@@ -244,13 +235,7 @@ namespace SUB.Froms.Usuario
 
         private void btnLimpar_Click(object sender, EventArgs e)
         {
-            var confirmar = MessageBox.Show(
-                "Tem certeza de que deseja limpar tudo?",
-                "Confirmação",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
+            var confirmar = MessageBox.Show("Tem certeza de que deseja limpar tudo?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmar == DialogResult.Yes)
             {
                 LimparCampos();
@@ -265,27 +250,26 @@ namespace SUB.Froms.Usuario
                 e.KeyChar = char.ToLowerInvariant(e.KeyChar);
             }
         }
+
         private void txtEmail_Leave(object sender, EventArgs e)
         {
             // trim + normalização final
             txtEmail.Text = txtEmail.Text.Trim().ToLowerInvariant();
         }
+
         private void txtEmail_TextChanged(object sender, EventArgs e)
         {
             AtualizarAvisoEmail();
-
-            if (_suppressEmailTextChanged) return;
-
-          
+            if (_suppressEmailTextChanged)
+                return;
             var tb = sender as TextBox;
-            if (tb == null) return;
-
+            if (tb == null)
+                return;
             string lower = tb.Text.ToLowerInvariant();
             if (tb.Text != lower)
             {
                 int selStart = tb.SelectionStart;
                 int selLen = tb.SelectionLength;
-
                 _suppressEmailTextChanged = true;
                 tb.Text = lower;
                 // restaura a posição do cursor de forma segura
@@ -297,50 +281,36 @@ namespace SUB.Froms.Usuario
 
         private void AtualizarAvisoEmail()
         {
-            bool bibliotecaria = string.Equals(
-                cbUsuario.SelectedItem?.ToString(),
-                "Bibliotecário(a)",
-                StringComparison.OrdinalIgnoreCase);
-
-            lblAvisoEmail.Text = bibliotecaria
-                ? "Será usado para entrar no SUB."
-                : "*Caso não cadastrar um e-mail, não receberá notificações...";
+            bool bibliotecaria = string.Equals(cbUsuario.SelectedItem?.ToString(), "Bibliotecário(a)", StringComparison.OrdinalIgnoreCase);
+            lblAvisoEmail.Text = bibliotecaria ? "Será usado para entrar no SUB." : "*Caso não cadastrar um e-mail, não receberá notificações...";
             lblAvisoEmail.Visible = bibliotecaria || string.IsNullOrWhiteSpace(txtEmail.Text);
         }
 
         private void txtTurma_Validating(object sender, CancelEventArgs e)
         {
-            if (!txtTurma.Enabled || !txtTurma.Visible) return;
-
+            if (!txtTurma.Enabled || !txtTurma.Visible)
+                return;
             var turma = txtTurma.Text.Trim();
-            if (string.IsNullOrEmpty(turma)) return; // obrigatoriedade tratada no botão Cadastrar
-
+            if (string.IsNullOrEmpty(turma))
+                return; // obrigatoriedade tratada no botão Cadastrar
             if (!SUB.Utils.TurmasUtil.TurmasPermitidas.Contains(turma))
             {
                 e.Cancel = true; // impede perder o foco neste momento
-                MessageBox.Show(
-                    "Selecione uma turma válida da lista de turmas permitidas.",
-                    "Turma inválida",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
+                MessageBox.Show("Selecione uma turma válida da lista de turmas permitidas.", "Turma inválida", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 // Limpa o campo e fecha a lista de sugestões
                 txtTurma.Text = string.Empty;
                 lstSugestoesTurma.Visible = false;
-
                 BeginInvoke(new Action(() =>
                 {
                     txtTurma.Focus();
                 }));
             }
         }
-        #endregion
 
-        #region Métodos Privados
+#endregion
+#region Métodos Privados
         private void HabilitarCampos(bool ativo)
         {
-            
-            
             txtNome.Enabled = ativo;
             txtEmail.Enabled = ativo;
             txtTurma.Enabled = ativo;
@@ -355,9 +325,9 @@ namespace SUB.Froms.Usuario
         {
             return string.Concat(texto.Where(c => char.IsDigit(c)));
         }
-        #endregion
 
-        #region Métodos de Configuração de Interface
+#endregion
+#region Métodos de Configuração de Interface
         private void ConfigurarCamposGenericos()
         {
             HabilitarCampos(true);
@@ -366,18 +336,15 @@ namespace SUB.Froms.Usuario
             chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
         }
 
-
         private bool modoAluno = true;
         private int topoBotoesDesenho;
         private int alturaPanel2Desenho;
-
         private void PosicionarPanel2()
         {
-            if (this.WindowState == FormWindowState.Minimized) return;
-
+            if (this.WindowState == FormWindowState.Minimized)
+                return;
             panel2.Left = Math.Max(0, (this.ClientSize.Width - panel2.Width) / 2);
             panel2.Top = modoAluno ? 408 : 325;
-
             // Em telas baixas (1366×768) os botões ficavam abaixo da área visível. Sem os campos
             // de senha, eles sobem para logo abaixo da data de nascimento.
             if (alturaPanel2Desenho == 0)
@@ -385,6 +352,7 @@ namespace SUB.Froms.Usuario
                 topoBotoesDesenho = btnCadastrar.Top;
                 alturaPanel2Desenho = panel2.Height;
             }
+
             bool compacto = !txtSenha.Visible && panel2.Top + alturaPanel2Desenho + 16 > ClientSize.Height;
             int topoBotoes = compacto ? dtpDataNasc.Bottom + 24 : topoBotoesDesenho;
             panel2.Height = alturaPanel2Desenho - topoBotoesDesenho + topoBotoes;
@@ -410,26 +378,14 @@ namespace SUB.Froms.Usuario
             lblConfirmSenha.Visible = true;
             chkMostrarSenha.Visible = true;
             SetLabelColors(enabled: true);
-           
-
             SetAsteriscoVisibility(true);
             TurmaAst.ForeColor = Color.Transparent;
-            
-
-         
-
-           
-
             txtSenha.PlaceholderText = "Digite aqui uma senha...";
             txtConfirmSenha.PlaceholderText = "Confirme a senha...";
             txtEmail.PlaceholderText = "Digite aqui o e-mail...";
-
             chkMostrarSenha.Enabled = true;
             chkMostrarSenha.ForeColor = Color.FromArgb(20, 41, 60);
         }
-      
-
-       
 
         private void ConfigurarParaProfessor()
         {
@@ -442,27 +398,20 @@ namespace SUB.Froms.Usuario
             txtTurma.Visible = false;
             TurmaAst.Visible = false;
             lblTurma.Visible = false;
-            lblTurma.Enabled=false;
+            lblTurma.Enabled = false;
             txtSenha.Visible = false;
             txtConfirmSenha.Visible = false;
             lblSenha.Visible = false;
             lblConfirmSenha.Visible = false;
             chkMostrarSenha.Visible = false;
             SetLabelColors(enabled: true);
-
-            
-
             SetAsteriscoVisibility(true);
             TurmaAst.ForeColor = Color.Transparent;
             SenhaAst.ForeColor = Color.Transparent;
             ConfirmSenhaAst.ForeColor = Color.Transparent;
             EmailAst.ForeColor = Color.Transparent;
-          
             txtSenha.Text = "";
             txtConfirmSenha.Text = "";
-
-            
-
             txtEmail.PlaceholderText = "Digite aqui o e-mail...";
             chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
@@ -480,31 +429,22 @@ namespace SUB.Froms.Usuario
             TurmaAst.Visible = false;
             txtSenha.Enabled = false;
             txtConfirmSenha.Enabled = false;
-
             txtSenha.Visible = false;
             txtConfirmSenha.Visible = false;
             lblSenha.Visible = false;
             lblConfirmSenha.Visible = false;
             chkMostrarSenha.Visible = false;
             SetLabelColors(enabled: true);
-           
-
             lblTurma.Visible = false;
-
             txtTurma.Text = "";
             txtSenha.Text = "";
             txtConfirmSenha.Text = "";
             txtEmail.Text = "";
-
             SetAsteriscoVisibility(true);
             TurmaAst.ForeColor = Color.Transparent;
             SenhaAst.ForeColor = Color.Transparent;
             ConfirmSenhaAst.ForeColor = Color.Transparent;
             EmailAst.ForeColor = Color.Transparent;
-          
-
-           
-
             chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
             chkMostrarSenha.Checked = false;
@@ -522,14 +462,13 @@ namespace SUB.Froms.Usuario
             txtTurma.Visible = true;
             txtTurma.Enabled = true;
             lblTurma.Enabled = true;
-            lblTurma.Visible=true;
+            lblTurma.Visible = true;
             TurmaAst.Visible = true;
             SetLabelColors(enabled: true);
             lblSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             lblConfirmSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             txtSenha.Text = "";
             txtConfirmSenha.Text = "";
-
             txtSenha.Visible = false;
             txtConfirmSenha.Visible = false;
             lblSenha.Visible = false;
@@ -539,17 +478,12 @@ namespace SUB.Froms.Usuario
             SenhaAst.ForeColor = Color.Transparent;
             ConfirmSenhaAst.ForeColor = Color.Transparent;
             EmailAst.ForeColor = Color.Transparent;
-
-           
-
             txtTurma.PlaceholderText = "Digite aqui a turma...";
             txtEmail.PlaceholderText = "Digite aqui o e-mail...";
-
             chkMostrarSenha.ForeColor = ThemeManager.CorRotuloDesabilitado;
             chkMostrarSenha.Enabled = false;
         }
 
-       
         private void SetLabelColors(bool enabled)
         {
             Color color = enabled ? Color.FromArgb(20, 41, 60) : ThemeManager.CorRotuloDesabilitado;
@@ -574,13 +508,11 @@ namespace SUB.Froms.Usuario
             SenhaAst.ForeColor = color;
             ConfirmSenhaAst.ForeColor = color;
         }
-        #endregion
 
-        #region Métodos de Validação
+#endregion
+#region Métodos de Validação
         private bool ValidarCamposObrigatorios()
         {
-            
-
             string nome = txtNome.Text.Trim();
             string tipoUsuario = cbUsuario.SelectedItem?.ToString() ?? string.Empty;
             string telefone = RemoverMascara(mtxTelefone.Text);
@@ -588,15 +520,7 @@ namespace SUB.Froms.Usuario
             string email = txtEmail.Text.Trim();
             string senha = txtSenha.Text.Trim();
             string confirmar = txtConfirmSenha.Text.Trim();
-
-
-            if (string.IsNullOrWhiteSpace(nome) ||
-                string.IsNullOrWhiteSpace(tipoUsuario) ||
-                string.IsNullOrWhiteSpace(telefone) ||
-                (tipoUsuario == "Bibliotecário(a)" && string.IsNullOrWhiteSpace(email)) ||
-                (txtTurma.Enabled && string.IsNullOrWhiteSpace(turma)) ||
-                (txtSenha.Visible && string.IsNullOrWhiteSpace(senha)) ||
-                (txtConfirmSenha.Visible && string.IsNullOrWhiteSpace(confirmar)))
+            if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(tipoUsuario) || string.IsNullOrWhiteSpace(telefone) || (tipoUsuario == "Bibliotecário(a)" && string.IsNullOrWhiteSpace(email)) || (txtTurma.Enabled && string.IsNullOrWhiteSpace(turma)) || (txtSenha.Visible && string.IsNullOrWhiteSpace(senha)) || (txtConfirmSenha.Visible && string.IsNullOrWhiteSpace(confirmar)))
             {
                 MessageBox.Show("Preencha todos os campos obrigatórios.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -618,7 +542,6 @@ namespace SUB.Froms.Usuario
             string email = txtEmail.Text.Trim().ToLowerInvariant();
             string senha = txtSenha.Text.Trim();
             string confirmar = txtConfirmSenha.Text.Trim();
-
             if (!string.IsNullOrWhiteSpace(cpf) && !ValidarCPF(cpf))
             {
                 MessageBox.Show("CPF inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -689,7 +612,6 @@ namespace SUB.Froms.Usuario
             string email = txtEmail.Text.Trim().ToLowerInvariant();
             string hash = null;
             string salt = null;
-
             // Gera hash/salt somente se for Bibliotecário(a) e os campos estiverem ativos e preenchidos
             if (tipoUsuario == "Bibliotecário(a)" && txtSenha.Visible && txtSenha.Enabled && !string.IsNullOrWhiteSpace(txtSenha.Text))
             {
@@ -701,14 +623,12 @@ namespace SUB.Froms.Usuario
                 try
                 {
                     conexao.Open();
-
                     using (SqlCeCommand comando = conexao.CreateCommand())
                     {
                         comando.CommandText = @"INSERT INTO usuarios
 (Nome, Email, Senha_Hash, Senha_Salt, CPF, DataNascimento, Turma, Telefone, TipoUsuario) 
 VALUES 
 (@Nome, @Email, @Senha_hash, @Senha_salt, @CPF, @DataNascimento, @Turma, @Telefone, @TipoUsuario)";
-
                         comando.Parameters.AddWithValue("@Nome", (object)(txtNome.Text ?? string.Empty).ToString().Trim());
                         comando.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
                         comando.Parameters.AddWithValue("@Senha_hash", string.IsNullOrEmpty(hash) ? (object)DBNull.Value : hash);
@@ -718,7 +638,6 @@ VALUES
                         comando.Parameters.AddWithValue("@Turma", DbValue(txtTurma));
                         comando.Parameters.AddWithValue("@Telefone", DbValue(mtxTelefone));
                         comando.Parameters.AddWithValue("@TipoUsuario", tipoUsuario);
-
                         comando.ExecuteNonQuery();
                         LimparCampos();
                     }
@@ -736,12 +655,10 @@ VALUES
 
             MessageBox.Show("Cadastro concluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             UsuarioCriado?.Invoke(this, EventArgs.Empty);
-
             if (cbUsuario.Text == "Bibliotecário(a)")
                 SUB.Utils.EventosGlobais.OnBibliotecariaCadastrada();
             if (cbUsuario.Text == "Professor(a)")
                 SUB.Utils.EventosGlobais.OnProfessorCadastrado();
-
             this.DialogResult = DialogResult.OK;
             LimparCampos();
         }
@@ -750,33 +667,27 @@ VALUES
         // caso contrário, retorna o texto trimmed.
         private object DbValue(Control c)
         {
-            if (c == null) return DBNull.Value;
-            if (!c.Visible || !c.Enabled) return DBNull.Value;
-
+            if (c == null)
+                return DBNull.Value;
+            if (!c.Visible || !c.Enabled)
+                return DBNull.Value;
             var txt = (c.Text ?? string.Empty).Trim();
             return string.IsNullOrEmpty(txt) ? (object)DBNull.Value : txt;
         }
-        #endregion
 
-        #region Métodos de Turma
-       
-
+#endregion
+#region Métodos de Turma
         private string NormalizarTexto(string texto)
         {
             if (string.IsNullOrWhiteSpace(texto))
                 return texto;
-
             texto = texto.ToLower().Trim();
-
             // Remover acentos
             texto = Regex.Replace(texto.Normalize(NormalizationForm.FormD), @"[\p{Mn}]", "");
-
             // Remover caracteres especiais, exceto números, letras e °
             texto = Regex.Replace(texto, @"[^a-z0-9°\s]", "");
-
             // Remover espaços extras
             texto = Regex.Replace(texto, @"\s+", " ");
-
             return texto;
         }
 
@@ -784,7 +695,6 @@ VALUES
         {
             if (string.IsNullOrWhiteSpace(turmaDigitada))
                 return turmaDigitada;
-
             // Adicionar ° automaticamente se não tiver
             if (!turmaDigitada.Contains("°") && Regex.IsMatch(turmaDigitada, @"^\d+"))
             {
@@ -795,7 +705,6 @@ VALUES
             string numeroStr = "";
             string tipo = "";
             string numeroTurma = "";
-
             // Extrair o número principal (antes do °)
             Match matchNumero = Regex.Match(turmaDigitada, @"^(\d+)°");
             if (matchNumero.Success)
@@ -848,14 +757,18 @@ VALUES
                     if (tipo == "Ano")
                     {
                         // Para turmas de Ano: 6° a 9°
-                        if (numero < 6) numero = 6;
-                        else if (numero > 9) numero = 9;
+                        if (numero < 6)
+                            numero = 6;
+                        else if (numero > 9)
+                            numero = 9;
                     }
                     else if (!string.IsNullOrEmpty(tipo))
                     {
                         // Para outras turmas: 1° a 3°
-                        if (numero < 1) numero = 1;
-                        else if (numero > 3) numero = 3;
+                        if (numero < 1)
+                            numero = 1;
+                        else if (numero > 3)
+                            numero = 3;
                     }
 
                     numeroStr = numero.ToString();
@@ -868,7 +781,8 @@ VALUES
                 int numero;
                 if (int.TryParse(numeroTurma, out numero))
                 {
-                    if (numero < 1) numero = 1;
+                    if (numero < 1)
+                        numero = 1;
                     // Não há limite máximo para o número da turma
                     numeroTurma = numero.ToString();
                 }
@@ -883,7 +797,6 @@ VALUES
 
             // Montar turma corrigida
             string turmaCorrigida = !string.IsNullOrEmpty(numeroStr) ? numeroStr + "°" : "";
-
             if (!string.IsNullOrEmpty(tipo))
             {
                 turmaCorrigida += " " + tipo;
@@ -900,7 +813,6 @@ VALUES
         private void CarregarTurmasDoBanco()
         {
             turmasCadastradas.Clear();
-
             using (var conexao = Conexao.ObterConexao())
             {
                 try
@@ -909,7 +821,6 @@ VALUES
                     using (var comando = conexao.CreateCommand())
                     {
                         comando.CommandText = "SELECT DISTINCT Turma FROM usuarios WHERE Turma IS NOT NULL AND Turma <> ''";
-
                         using (var leitor = comando.ExecuteReader())
                         {
                             while (leitor.Read())
@@ -933,7 +844,6 @@ VALUES
         private void txtTurma_TextChanged(object sender, EventArgs e)
         {
             string texto = txtTurma.Text.Trim();
-
             if (string.IsNullOrEmpty(texto))
             {
                 lstSugestoesTurma.Visible = false;
@@ -942,26 +852,20 @@ VALUES
 
             // Buscar sugestões apenas nas turmas permitidas
             var sugestoes = SUB.Utils.TurmasUtil.BuscarSugestoes(texto);
-
             lstSugestoesTurma.Items.Clear();
-
             if (sugestoes.Count > 0)
             {
                 foreach (var s in sugestoes)
                     lstSugestoesTurma.Items.Add(s);
-
                 int visibleItems = Math.Min(5, sugestoes.Count);
                 int extraPadding = 8;
                 lstSugestoesTurma.Height = visibleItems * lstSugestoesTurma.ItemHeight + extraPadding;
                 lstSugestoesTurma.Width = txtTurma.Width;
-
                 // POSICIONAMENTO REVERTIDO (como era antes)
                 lstSugestoesTurma.Left = txtTurma.Left;
                 lstSugestoesTurma.Top = txtTurma.Bottom;
-
                 lstSugestoesTurma.BringToFront();
                 lstSugestoesTurma.Visible = true;
-
                 // Seleciona o primeiro item por padrão
                 lstSugestoesTurma.SelectedIndex = 0;
             }
@@ -973,18 +877,15 @@ VALUES
 
         private void txtTurma_Leave(object sender, EventArgs e)
         {
-
             BeginInvoke(new Action(() =>
             {
                 if (!lstSugestoesTurma.Focused)
                 {
                     lstSugestoesTurma.Visible = false;
-                    // Não valida aqui para evitar mensagens duplicadas
+                // Não valida aqui para evitar mensagens duplicadas
                 }
             }));
         }
-
-        
 
         private void lstSugestoesTurma_Click(object sender, EventArgs e)
         {
@@ -994,7 +895,6 @@ VALUES
                 txtTurma.Text = turmaSelecionada;
                 lstSugestoesTurma.Visible = false;
                 txtTurma.Focus();
-
                 // Opcional: avançar para o próximo controle, igual ao EmprestimoRapidoForm
                 this.SelectNextControl(txtTurma, true, true, true, true);
             }
@@ -1009,6 +909,7 @@ VALUES
                     e.SuppressKeyPress = true;
                     this.SelectNextControl((Control)sender, true, true, true, true);
                 }
+
                 return;
             }
 
@@ -1036,11 +937,9 @@ VALUES
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-
-                // NOVO: garante selecionar a primeira opção se nada estiver selecionado
+                // garante selecionar a primeira opção se nada estiver selecionado
                 if (lstSugestoesTurma.SelectedIndex < 0 && lstSugestoesTurma.Items.Count > 0)
                     lstSugestoesTurma.SelectedIndex = 0;
-
                 ConfirmarSugestaoTurma();
             }
             else if (e.KeyCode == Keys.Escape)
@@ -1060,24 +959,21 @@ VALUES
         {
             if (!lstSugestoesTurma.Visible || lstSugestoesTurma.Items.Count == 0)
                 return false;
-
             if (lstSugestoesTurma.SelectedIndex < 0)
                 lstSugestoesTurma.SelectedIndex = 0;
-
             var valor = lstSugestoesTurma.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(valor)) return false;
-
+            if (string.IsNullOrEmpty(valor))
+                return false;
             txtTurma.Text = valor;
             lstSugestoesTurma.Visible = false;
             txtTurma.Focus();
             this.SelectNextControl(txtTurma, true, true, true, true);
             return true;
         }
-        #endregion
 
-        #region Estilizacao do ListBox de Sugestões
+#endregion
+#region Estilizacao do ListBox de Sugestões
         private int hoveredIndex = -1;
-
         private void EstilizarListBoxSugestao(ListBox listBox)
         {
             listBox.DrawMode = DrawMode.OwnerDrawFixed;
@@ -1087,7 +983,6 @@ VALUES
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
-
             listBox.DrawItem -= ListBoxSugestao_DrawItem;
             listBox.DrawItem += ListBoxSugestao_DrawItem;
             listBox.MouseMove -= ListBoxSugestao_MouseMove;
@@ -1099,22 +994,17 @@ VALUES
         private void ListBoxSugestao_DrawItem(object sender, DrawItemEventArgs e)
         {
             var listBox = sender as ListBox;
-            if (e.Index < 0) return;
-
+            if (e.Index < 0)
+                return;
             bool hovered = (e.Index == hoveredIndex);
-
             Color backColor = ThemeManager.FundoDaSugestao(hovered);
             Color textColor = ThemeManager.TextoDaSugestao;
-
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
-
             string text = listBox.Items[e.Index].ToString();
             Font font = listBox.Font;
-
             Rectangle textRect = new Rectangle(e.Bounds.Left + 12, e.Bounds.Top, e.Bounds.Width - 24, e.Bounds.Height);
             TextRenderer.DrawText(e.Graphics, text, font, textRect, textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
-
             if (e.Index < listBox.Items.Count - 1)
             {
                 using (Pen p = new Pen(ThemeManager.DivisoriaDaSugestao))
@@ -1138,15 +1028,6 @@ VALUES
             hoveredIndex = -1;
             (sender as ListBox).Invalidate();
         }
-
-
-
-
-
-
-
-        #endregion
-
-        
+#endregion
     }
 }

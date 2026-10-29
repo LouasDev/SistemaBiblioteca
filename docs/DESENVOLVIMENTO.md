@@ -1,4 +1,4 @@
-# Guia de desenvolvimento do SUB
+﻿# Guia de desenvolvimento do SUB
 
 [Voltar ao README](../README.md)
 
@@ -37,7 +37,7 @@ Para distribuição, o projeto principal utiliza a configuração **`1.0`**, com
 | Componente | Tecnologia |
 | --- | --- |
 | Linguagem e plataforma | C# · .NET Framework 4.8 |
-| Interface | Windows Forms · controles personalizados · MaterialSkin |
+| Interface | Windows Forms · controles personalizados |
 | Persistência | SQL Server Compact 4.0 · ADO.NET |
 | Planilhas | ClosedXML |
 | Documentos PDF | iTextSharp · PDFsharp |

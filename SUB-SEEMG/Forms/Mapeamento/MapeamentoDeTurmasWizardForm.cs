@@ -1,48 +1,39 @@
-﻿using SUB.Forms.Usuario;
-using SUB.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data.SqlServerCe;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using SUB.Models;
 using SUB.Utils;
-using SeuProjeto;
 
 namespace SUB.Forms.Usuario
 {
     public partial class MapeamentoDeTurmasWizardForm : Form
     {
-        #region Campos e Variáveis
+#region Campos e Variáveis
         private MapeamentoAnualModel _model;
         private int _etapaAtual = 1;
         private Dictionary<string, string> _padroesTurma = new Dictionary<string, string>();
         private List<MapeamentoRegistro> _registrosOriginais = new List<MapeamentoRegistro>();
         private RegrasMapeamentoTurmas _regrasTurmas;
         private bool _preenchendoEtapa2;
-        #endregion
-
-        #region Construtor e Inicialização
+#endregion
+#region Construtor e Inicialização
         public MapeamentoDeTurmasWizardForm()
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
             Load += (s, e) => this.CaberNaTela();
             AppPaths.EnsureFolders();
-
             // IMPORTANTE: garantir que os handlers não sejam adicionados duplicadamente
             // (muitos problemas surgem porque o designer também pode ter ligado os eventos).
             btnProximo.Click -= BtnProximo_Click;
             btnProximo.Click += BtnProximo_Click;
-
             btnAnterior.Click -= BtnAnterior_Click;
             btnAnterior.Click += BtnAnterior_Click;
-
             btnCancelar.Click -= BtnCancelar_Click;
             btnCancelar.Click += BtnCancelar_Click;
-
             this.Load -= MapeamentoDeTurmasWizardForm_Load;
             this.Load += MapeamentoDeTurmasWizardForm_Load;
         }
@@ -50,12 +41,15 @@ namespace SUB.Forms.Usuario
         private void MapeamentoDeTurmasWizardForm_Load(object sender, EventArgs e)
         {
             MostrarTutorialEtapa(1);
-
             try
             {
                 int ano = DateTime.Now.Year;
-                _model = new MapeamentoAnualModel { Ano = ano, GeradoEm = DateTime.Now, Status = "pendente" };
-
+                _model = new MapeamentoAnualModel
+                {
+                    Ano = ano,
+                    GeradoEm = DateTime.Now,
+                    Status = "pendente"
+                };
                 CarregarDadosIniciais();
                 MostrarEtapa(1);
             }
@@ -64,15 +58,14 @@ namespace SUB.Forms.Usuario
                 MessageBox.Show("Erro ao carregar o wizard: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        #endregion
 
-        #region Carregamento de Dados
+#endregion
+#region Carregamento de Dados
         private void CarregarDadosIniciais()
         {
             _registrosOriginais.Clear();
             _padroesTurma.Clear();
             _regrasTurmas = new RegrasMapeamentoTurmas(TurmasUtil.Carregar());
-
             using (var cn = Conexao.ObterConexao())
             {
                 cn.Open();
@@ -83,28 +76,13 @@ namespace SUB.Forms.Usuario
                     {
                         var turmaAtual = r["Turma"]?.ToString() ?? "";
                         var sugestao = SugerirProximaTurmaInteligente(turmaAtual);
-
-                        _registrosOriginais.Add(new MapeamentoRegistro
-                        {
-                            UsuarioId = Convert.ToInt32(r["Id"]),
-                            Nome = r["Nome"]?.ToString() ?? "",
-                            TurmaAtual = turmaAtual,
-                            Sugestao = sugestao,
-                            NovaTurma = sugestao,
-                            Observacao = ""
-                        });
+                        _registrosOriginais.Add(new MapeamentoRegistro { UsuarioId = Convert.ToInt32(r["Id"]), Nome = r["Nome"]?.ToString() ?? "", TurmaAtual = turmaAtual, Sugestao = sugestao, NovaTurma = sugestao, Observacao = "" });
                     }
                 }
             }
 
             // Agrupar por turma para definir padrões
-            var turmasDistintas = _registrosOriginais
-                .Where(r => !string.IsNullOrWhiteSpace(r.TurmaAtual))
-                .GroupBy(r => r.TurmaAtual)
-                .Select(g => g.Key)
-                .OrderBy(t => t)
-                .ToList();
-
+            var turmasDistintas = _registrosOriginais.Where(r => !string.IsNullOrWhiteSpace(r.TurmaAtual)).GroupBy(r => r.TurmaAtual).Select(g => g.Key).OrderBy(t => t).ToList();
             foreach (var turma in turmasDistintas)
             {
                 _padroesTurma[turma] = SugerirProximaTurmaInteligente(turma);
@@ -337,19 +315,16 @@ namespace SUB.Forms.Usuario
 
 
 
-        #endif
-        #endregion
-
-        #region Controle do Wizard
+#endif
+#endregion
+#region Controle do Wizard
         private void MostrarEtapa(int etapa)
         {
             _etapaAtual = etapa;
-
             // Esconder todos os painéis
             panelEtapa1.Visible = false;
             panelEtapa2.Visible = false;
             panelEtapa3.Visible = false;
-
             // Mostrar painel da etapa atual
             switch (etapa)
             {
@@ -410,20 +385,15 @@ namespace SUB.Forms.Usuario
             {
                 case 1:
                     lblTutorialTitulo.Text = "Mapeamento de turmas";
-                    lblTutorialTexto.Text =
-                        "Defina o padrão de progressão de cada turma. O sistema sugere o próximo ano ou curso e você ajusta somente o necessário.";
+                    lblTutorialTexto.Text = "Defina o padrão de progressão de cada turma. O sistema sugere o próximo ano ou curso e você ajusta somente o necessário.";
                     break;
-
                 case 2:
                     lblTutorialTitulo.Text = "Mapeamento de turmas";
-                    lblTutorialTexto.Text =
-                        "Ajuste apenas os alunos que precisem de exceção. Use os filtros para revisar os casos especiais com mais rapidez.";
+                    lblTutorialTexto.Text = "Ajuste apenas os alunos que precisem de exceção. Use os filtros para revisar os casos especiais com mais rapidez.";
                     break;
-
                 case 3:
                     lblTutorialTitulo.Text = "Mapeamento de turmas";
-                    lblTutorialTexto.Text =
-                        "Revise o resumo antes de aplicar. A confirmação registra o mapeamento no histórico e atualiza as turmas com segurança.";
+                    lblTutorialTexto.Text = "Revise o resumo antes de aplicar. A confirmação registra o mapeamento no histórico e atualiza as turmas com segurança.";
                     break;
             }
         }
@@ -440,18 +410,16 @@ namespace SUB.Forms.Usuario
 
         private void BtnCancelar_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Deseja realmente cancelar o mapeamento? Todas as alterações serão perdidas.",
-                                       "Confirmar Cancelamento", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
+            var result = MessageBox.Show("Deseja realmente cancelar o mapeamento? Todas as alterações serão perdidas.", "Confirmar Cancelamento", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
         }
-        #endregion
 
-        #region Etapa 1: Definir Padrões
+#endregion
+#region Etapa 1: Definir Padrões
         // Etapa 1: definir padrões – garantir ordenação estável por turma
         private void ConfigurarEtapa1()
         {
@@ -460,14 +428,11 @@ namespace SUB.Forms.Usuario
             dgvPadroes.CurrentCellDirtyStateChanged -= DgvPadroes_CurrentCellDirtyStateChanged;
             dgvPadroes.CellEndEdit -= DgvPadroes_CellEndEdit;
             dgvPadroes.DataError -= DgvPadroes_DataError;
-
             dgvPadroes.Rows.Clear();
             dgvPadroes.Columns.Clear();
-
             dgvPadroes.Columns.Add("TurmaAtual", "Turma Atual");
             dgvPadroes.Columns.Add("QtdAlunos", "Qtd Alunos");
             dgvPadroes.Columns.Add("SugestaoSistema", "Sugestão do Sistema");
-
             var colNovoPadrao = new DataGridViewComboBoxColumn
             {
                 Name = "NovoPadrao",
@@ -475,15 +440,12 @@ namespace SUB.Forms.Usuario
                 FlatStyle = FlatStyle.Flat
             };
             dgvPadroes.Columns.Add(colNovoPadrao);
-
             dgvPadroes.DataError += DgvPadroes_DataError;
-
-            // NOVO: ordem alfabética por TurmaAtual para UX consistente
+            // ordem alfabética por TurmaAtual para UX consistente
             foreach (var kvp in _padroesTurma.OrderBy(p => p.Key, StringComparer.OrdinalIgnoreCase))
             {
                 var qtdAlunos = _registrosOriginais.Count(r => r.TurmaAtual == kvp.Key);
                 var rowIndex = dgvPadroes.Rows.Add(kvp.Key, qtdAlunos, kvp.Value);
-
                 ConfigurarOpcoesValidasPorTurma(rowIndex, kvp.Key);
                 dgvPadroes.Rows[rowIndex].Cells["NovoPadrao"].Value = kvp.Value;
             }
@@ -493,7 +455,6 @@ namespace SUB.Forms.Usuario
             dgvPadroes.CellValueChanged += DgvPadroes_CellValueChanged;
             dgvPadroes.CurrentCellDirtyStateChanged += DgvPadroes_CurrentCellDirtyStateChanged;
             dgvPadroes.CellEndEdit += DgvPadroes_CellEndEdit;
-
             EstilizarDataGrid(dgvPadroes);
             GarantirApenasComboEditavel(dgvPadroes, new[] { "NovoPadrao" }, alturaLinhaFixa: 35);
         }
@@ -505,7 +466,6 @@ namespace SUB.Forms.Usuario
             {
                 var turmaAtual = dgvPadroes.Rows[e.RowIndex].Cells["TurmaAtual"].Value?.ToString();
                 var combo = dgvPadroes.Rows[e.RowIndex].Cells["NovoPadrao"] as DataGridViewComboBoxCell;
-
                 // Tenta aplicar o padrão salvo, caso ele exista na lista; senão, usa a primeira opção válida
                 if (!string.IsNullOrEmpty(turmaAtual) && _padroesTurma.ContainsKey(turmaAtual))
                 {
@@ -531,15 +491,9 @@ namespace SUB.Forms.Usuario
         {
             var cell = (DataGridViewComboBoxCell)dgvPadroes.Rows[rowIndex].Cells["NovoPadrao"];
             var opcoesValidas = ObterOpcoesValidasParaTurmaInteligente(turmaAtual);
-
             // Remover status que não devem ser padrão de uma turma inteira (apenas Etapa 1)
-            opcoesValidas = opcoesValidas
-                .Where(o => !string.Equals(o, "TRANSFERIDO", StringComparison.OrdinalIgnoreCase)
-                         && !string.Equals(o, "DESISTENTE", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
+            opcoesValidas = opcoesValidas.Where(o => !string.Equals(o, "TRANSFERIDO", StringComparison.OrdinalIgnoreCase) && !string.Equals(o, "DESISTENTE", StringComparison.OrdinalIgnoreCase)).ToList();
             cell.Items.Clear();
-
             var itensUnicos = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var opcao in opcoesValidas)
             {
@@ -548,7 +502,6 @@ namespace SUB.Forms.Usuario
             }
 
             var valorAtual = _padroesTurma.ContainsKey(turmaAtual) ? _padroesTurma[turmaAtual] : "";
-
             // Garante que o valor atual só é aplicado se existir na lista filtrada
             if (!string.IsNullOrEmpty(valorAtual) && cell.Items.Contains(valorAtual))
                 cell.Value = valorAtual;
@@ -558,13 +511,9 @@ namespace SUB.Forms.Usuario
                 cell.Value = null;
         }
 
-        
-
         private List<string> ObterOpcoesValidasParaTurmaInteligente(string turmaAtual)
         {
-            return _regrasTurmas == null
-                ? new List<string>()
-                : _regrasTurmas.OpcoesDeProgressao(turmaAtual);
+            return _regrasTurmas == null ? new List<string>() : _regrasTurmas.OpcoesDeProgressao(turmaAtual);
         }
 
         private bool IsProgressaoInvalida(string turmaAtual, string novaTurma)
@@ -589,12 +538,9 @@ namespace SUB.Forms.Usuario
             {
                 var turmaAtual = dgvPadroes.Rows[e.RowIndex].Cells["TurmaAtual"].Value?.ToString();
                 var novaEscolha = dgvPadroes.Rows[e.RowIndex].Cells["NovoPadrao"].Value?.ToString();
-
-                if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) &&
-                    IsEscolhaInvalidaParaPadrao(turmaAtual, novaEscolha))
+                if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) && IsEscolhaInvalidaParaPadrao(turmaAtual, novaEscolha))
                 {
-                    MessageBox.Show($"Escolha inválida: {turmaAtual} não pode ir para {novaEscolha}",
-                                  "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Escolha inválida: {turmaAtual} não pode ir para {novaEscolha}", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dgvPadroes.Rows[e.RowIndex].Cells["NovoPadrao"].Value = _padroesTurma[turmaAtual];
                 }
             }
@@ -619,90 +565,70 @@ namespace SUB.Forms.Usuario
 
         private bool IsEscolhaInvalidaParaPadrao(string turmaAtual, string novaEscolha)
         {
-            if ((turmaAtual == "EGRESSO" || turmaAtual == "TRANSFERIDO" || turmaAtual == "DESISTENTE") &&
-                novaEscolha != turmaAtual)
+            if ((turmaAtual == "EGRESSO" || turmaAtual == "TRANSFERIDO" || turmaAtual == "DESISTENTE") && novaEscolha != turmaAtual)
                 return true;
-
-            if ((novaEscolha == "DESISTENTE" || novaEscolha == "TRANSFERIDO") &&
-                !(turmaAtual == "DESISTENTE" || turmaAtual == "TRANSFERIDO"))
+            if ((novaEscolha == "DESISTENTE" || novaEscolha == "TRANSFERIDO") && !(turmaAtual == "DESISTENTE" || turmaAtual == "TRANSFERIDO"))
                 return true;
-
             return IsProgressaoInvalida(turmaAtual, novaEscolha);
         }
-        #endregion
 
-        #region Etapa 2: Ajustes Individuais
+#endregion
+#region Etapa 2: Ajustes Individuais
         private void ConfigurarEtapa2()
         {
             cmbFiltroTurmaEtapa2.SelectedIndexChanged -= CmbFiltroTurmaEtapa2_SelectedIndexChanged;
-
             cmbFiltroTurmaEtapa2.Items.Clear();
             cmbFiltroTurmaEtapa2.Items.Add("(Todas as Turmas)");
-
-            var turmasComAlunos = _registrosOriginais
-                .Where(r => !string.IsNullOrWhiteSpace(r.TurmaAtual))
-                .GroupBy(r => r.TurmaAtual)
-                .Select(g => g.Key)
-                .OrderBy(t => t);
-
+            var turmasComAlunos = _registrosOriginais.Where(r => !string.IsNullOrWhiteSpace(r.TurmaAtual)).GroupBy(r => r.TurmaAtual).Select(g => g.Key).OrderBy(t => t);
             foreach (var turma in turmasComAlunos)
                 cmbFiltroTurmaEtapa2.Items.Add(turma);
-
             cmbFiltroTurmaEtapa2.SelectedIndex = 0;
             cmbFiltroTurmaEtapa2.SelectedIndexChanged += CmbFiltroTurmaEtapa2_SelectedIndexChanged;
-
             txtBuscaAlunoEtapa2.TextChanged -= TxtBuscaAlunoEtapa2_TextChanged;
             txtBuscaAlunoEtapa2.TextChanged += TxtBuscaAlunoEtapa2_TextChanged;
-
-
             ConfigurarDataGridEtapa2();
             AtualizarGridEtapa2();
             GarantirApenasComboEditavel(dgvAjustesIndividuais, new[] { "NovaEscolha", "Observacao" }, alturaLinhaFixa: 35);
         }
 
-        // --- ADICIONE ESTE NOVO MÉTODO ---
         private void TxtBuscaAlunoEtapa2_TextChanged(object sender, EventArgs e)
         {
             // Apenas chama o método de atualização, que agora lerá ambos os campos
             AtualizarGridEtapa2();
-
             // É importante chamar isso de novo para manter o estilo/comportamento da grade
             GarantirApenasComboEditavel(dgvAjustesIndividuais, new[] { "NovaEscolha", "Observacao" }, alturaLinhaFixa: 35);
         }
-        // --- FIM DO NOVO MÉTODO ---
 
         private void ConfigurarDataGridEtapa2()
         {
             dgvAjustesIndividuais.Columns.Clear();
-
-            var colUsuarioId = new DataGridViewTextBoxColumn { Name = "UsuarioId", Visible = false };
+            var colUsuarioId = new DataGridViewTextBoxColumn
+            {
+                Name = "UsuarioId",
+                Visible = false
+            };
             dgvAjustesIndividuais.Columns.Add(colUsuarioId);
             dgvAjustesIndividuais.Columns.Add("Nome", "Nome do Aluno");
             dgvAjustesIndividuais.Columns.Add("TurmaAtual", "Turma Atual");
             dgvAjustesIndividuais.Columns.Add("PadraoDefinido", "Padrão Definido");
-
             var colNovaEscolha = new DataGridViewComboBoxColumn
             {
                 Name = "NovaEscolha",
                 HeaderText = "Nova Escolha",
                 FlatStyle = FlatStyle.Flat
             };
-
             dgvAjustesIndividuais.Columns.Add(colNovaEscolha);
             dgvAjustesIndividuais.Columns.Add("Observacao", "Observação");
-
             // Voltar e avançar entre etapas chama este método de novo; sem remover,
             // cada aviso de validação passava a aparecer repetido.
             dgvAjustesIndividuais.CellValueChanged -= DgvAjustesIndividuais_CellValueChanged;
             dgvAjustesIndividuais.CurrentCellDirtyStateChanged -= DgvAjustesIndividuais_CurrentCellDirtyStateChanged;
             dgvAjustesIndividuais.CellEndEdit -= DgvAjustesIndividuais_CellEndEdit;
             dgvAjustesIndividuais.DataError -= DgvAjustesIndividuais_DataError;
-
             dgvAjustesIndividuais.CellValueChanged += DgvAjustesIndividuais_CellValueChanged;
             dgvAjustesIndividuais.CurrentCellDirtyStateChanged += DgvAjustesIndividuais_CurrentCellDirtyStateChanged;
             dgvAjustesIndividuais.CellEndEdit += DgvAjustesIndividuais_CellEndEdit;
             dgvAjustesIndividuais.DataError += DgvAjustesIndividuais_DataError;
-
             EstilizarDataGrid(dgvAjustesIndividuais);
         }
 
@@ -715,6 +641,7 @@ namespace SUB.Forms.Usuario
                 {
                     dgvAjustesIndividuais.Rows[e.RowIndex].Cells["NovaEscolha"].Value = padraoDefinido;
                 }
+
                 e.ThrowException = false;
             }
         }
@@ -727,22 +654,17 @@ namespace SUB.Forms.Usuario
 
         private void DgvAjustesIndividuais_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (_preenchendoEtapa2 || e.RowIndex < 0 || e.ColumnIndex < 0 ||
-                dgvAjustesIndividuais.Columns[e.ColumnIndex].Name != "NovaEscolha")
+            if (_preenchendoEtapa2 || e.RowIndex < 0 || e.ColumnIndex < 0 || dgvAjustesIndividuais.Columns[e.ColumnIndex].Name != "NovaEscolha")
                 return;
-
             var linha = dgvAjustesIndividuais.Rows[e.RowIndex];
             var turmaAtual = linha.Cells["TurmaAtual"].Value?.ToString();
             var novaEscolha = linha.Cells["NovaEscolha"].Value?.ToString();
             var nome = linha.Cells["Nome"].Value?.ToString();
             int usuarioId = Convert.ToInt32(linha.Cells["UsuarioId"].Value);
             var registro = _registrosOriginais.FirstOrDefault(r => r.UsuarioId == usuarioId);
-
-            if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) &&
-                IsAjusteIndividualInvalido(turmaAtual, novaEscolha))
+            if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novaEscolha) && IsAjusteIndividualInvalido(turmaAtual, novaEscolha))
             {
-                MessageBox.Show($"Progressão inválida detectada para {nome}: {turmaAtual} → {novaEscolha}",
-                              "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Progressão inválida detectada para {nome}: {turmaAtual} → {novaEscolha}", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 linha.Cells["NovaEscolha"].Value = registro?.NovaTurma;
                 return;
             }
@@ -774,41 +696,26 @@ namespace SUB.Forms.Usuario
             try
             {
                 dgvAjustesIndividuais.Rows.Clear();
+                // 1. Obter o filtro da turma (ComboBox)
+                var filtroTurma = cmbFiltroTurmaEtapa2.SelectedItem?.ToString();
+                // 2. Obter o termo de busca (TextBox) - flexível e case-insensitive
+                var termoBusca = txtBuscaAlunoEtapa2.Text.Trim();
+                // 3. Começar com a lista completa
+                var registrosFiltrados = _registrosOriginais.AsEnumerable();
+                // 4. Aplicar o filtro de TURMA
+                if (!string.IsNullOrEmpty(filtroTurma) && filtroTurma != "(Todas as Turmas)")
+                    registrosFiltrados = registrosFiltrados.Where(r => r.TurmaAtual == filtroTurma);
+                // 5. Aplicar o filtro de BUSCA (Nome)
+                if (!string.IsNullOrEmpty(termoBusca))
+                {
+                    registrosFiltrados = registrosFiltrados.Where(r => // StringComparison.OrdinalIgnoreCase torna a busca "flexível" (ignora maiúsculas/minúsculas)
+ r.Nome != null && r.Nome.IndexOf(termoBusca, StringComparison.OrdinalIgnoreCase) >= 0);
+                }
 
-            // 1. Obter o filtro da turma (ComboBox)
-            var filtroTurma = cmbFiltroTurmaEtapa2.SelectedItem?.ToString();
-
-            // 2. Obter o termo de busca (TextBox) - flexível e case-insensitive
-            var termoBusca = txtBuscaAlunoEtapa2.Text.Trim();
-
-            // 3. Começar com a lista completa
-            var registrosFiltrados = _registrosOriginais.AsEnumerable();
-
-            // 4. Aplicar o filtro de TURMA
-            if (!string.IsNullOrEmpty(filtroTurma) && filtroTurma != "(Todas as Turmas)")
-                registrosFiltrados = registrosFiltrados.Where(r => r.TurmaAtual == filtroTurma);
-
-            // 5. Aplicar o filtro de BUSCA (Nome)
-            if (!string.IsNullOrEmpty(termoBusca))
-            {
-                registrosFiltrados = registrosFiltrados.Where(r =>
-                    // StringComparison.OrdinalIgnoreCase torna a busca "flexível" (ignora maiúsculas/minúsculas)
-                    r.Nome != null && r.Nome.IndexOf(termoBusca, StringComparison.OrdinalIgnoreCase) >= 0
-                );
-            }
-
-            // 6. Popular a grade com os dados filtrados
+                // 6. Popular a grade com os dados filtrados
                 foreach (var registro in registrosFiltrados.OrderBy(r => r.Nome))
                 {
-                    var rowIndex = dgvAjustesIndividuais.Rows.Add(
-                        registro.UsuarioId,
-                        registro.Nome,
-                        registro.TurmaAtual,
-                        registro.NovaTurma,
-                        registro.NovaTurma,
-                        registro.Observacao
-                    );
-
+                    var rowIndex = dgvAjustesIndividuais.Rows.Add(registro.UsuarioId, registro.Nome, registro.TurmaAtual, registro.NovaTurma, registro.NovaTurma, registro.Observacao);
                     ConfigurarOpcoesValidasParaAlunoInteligente(rowIndex, registro.TurmaAtual);
                 }
             }
@@ -821,10 +728,7 @@ namespace SUB.Forms.Usuario
         private void ConfigurarOpcoesValidasParaAlunoInteligente(int rowIndex, string turmaAtual)
         {
             var cell = (DataGridViewComboBoxCell)dgvAjustesIndividuais.Rows[rowIndex].Cells["NovaEscolha"];
-            var opcoesValidas = _regrasTurmas == null
-                ? new List<string>()
-                : _regrasTurmas.OpcoesDeAjusteIndividual(turmaAtual);
-
+            var opcoesValidas = _regrasTurmas == null ? new List<string>() : _regrasTurmas.OpcoesDeAjusteIndividual(turmaAtual);
             cell.Items.Clear();
             foreach (var opcao in opcoesValidas.OrderBy(o => o, StringComparer.OrdinalIgnoreCase))
                 cell.Items.Add(opcao);
@@ -838,8 +742,8 @@ namespace SUB.Forms.Usuario
 
         private void GarantirApenasComboEditavel(DataGridView dgv, string[] colunasComboEditaveis, int alturaLinhaFixa = 35)
         {
-            if (dgv == null) return;
-
+            if (dgv == null)
+                return;
             dgv.AllowUserToResizeColumns = false;
             dgv.AllowUserToResizeRows = false;
             dgv.AllowUserToOrderColumns = false;
@@ -847,9 +751,7 @@ namespace SUB.Forms.Usuario
             dgv.AllowUserToDeleteRows = false;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             dgv.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-
             var setEditaveis = new HashSet<string>(colunasComboEditaveis ?? new string[0], StringComparer.OrdinalIgnoreCase);
-
             foreach (DataGridViewColumn col in dgv.Columns)
             {
                 col.SortMode = DataGridViewColumnSortMode.NotSortable;
@@ -860,10 +762,8 @@ namespace SUB.Forms.Usuario
             dgv.ReadOnly = false;
             dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(231, 238, 247);
             dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
-
             if (alturaLinhaFixa > 0)
                 dgv.RowTemplate.Height = alturaLinhaFixa;
-
             foreach (DataGridViewRow row in dgv.Rows)
             {
                 row.Resizable = DataGridViewTriState.False;
@@ -873,61 +773,53 @@ namespace SUB.Forms.Usuario
             dgv.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dgv.CellBeginEdit -= Dgv_CellBeginEdit_BlockNonCombo;
             dgv.CellBeginEdit += Dgv_CellBeginEdit_BlockNonCombo;
-
             void Dgv_CellBeginEdit_BlockNonCombo(object sender, DataGridViewCellCancelEventArgs ev)
             {
                 try
                 {
                     var dv = sender as DataGridView;
-                    if (dv == null) return;
+                    if (dv == null)
+                        return;
                     var colName = dv.Columns[ev.ColumnIndex].Name;
                     if (!setEditaveis.Contains(colName))
                         ev.Cancel = true;
                 }
                 catch
                 {
-                    // Não propagar erro
+                // Não propagar erro
                 }
             }
         }
-        #endregion
 
-        #region Etapa 3: Confirmação
+#endregion
+#region Etapa 3: Confirmação
         private void ConfigurarEtapa3()
         {
             var alteracoes = _registrosOriginais.Where(r => r.TurmaAtual != r.NovaTurma).ToList();
             var egressos = _registrosOriginais.Where(r => r.NovaTurma == "EGRESSO" || r.NovaTurma == "TRANSFERIDO").ToList();
-
             txtResumoFinal.Text = $"RESUMO DO MAPEAMENTO:\n\n";
             txtResumoFinal.Text += $"• Total de alunos: {_registrosOriginais.Count}\n";
             txtResumoFinal.Text += $"• Alterações de turma: {alteracoes.Count}\n";
             txtResumoFinal.Text += $"• Egressos/Transferidos: {egressos.Count}\n\n";
-
             txtResumoFinal.Text += "ALTERAÇÕES DETALHADAS:\n";
             foreach (var alt in alteracoes.Take(20))
                 txtResumoFinal.Text += $"• {alt.Nome}: {alt.TurmaAtual} → {alt.NovaTurma}\n";
-
             if (alteracoes.Count > 20)
                 txtResumoFinal.Text += $"... e mais {alteracoes.Count - 20} alterações.\n";
         }
 
         private void AplicarMapeamento()
         {
-            var result = MessageBox.Show("Confirma a aplicação do mapeamento ao banco de dados? Esta ação não pode ser desfeita.",
-                                       "Confirmar Aplicação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
+            var result = MessageBox.Show("Confirma a aplicação do mapeamento ao banco de dados? Esta ação não pode ser desfeita.", "Confirmar Aplicação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result != DialogResult.Yes)
                 return;
-
             if (!SolicitarConfirmacaoSenha())
                 return;
-
             try
             {
                 _model.Registros = _registrosOriginais;
                 new MapeamentoAnualStore().Aplicar(_model.Ano, _registrosOriginais, Sessao.NomeBibliotecariaLogada);
                 _model.Status = "concluido";
-
                 MessageBox.Show("Mapeamento aplicado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -943,14 +835,12 @@ namespace SUB.Forms.Usuario
             for (int tentativas = 0; tentativas < 3; tentativas++)
             {
                 string primeiraSenha, segundaSenha;
-
                 using (var pf = new PasswordForm())
                 {
                     pf.Titulo = "Confirmação de aplicação";
                     pf.Mensagem = $"Digite sua senha (tentativa {tentativas + 1}/3):";
                     if (pf.ShowDialog(this) != DialogResult.OK)
                         return false;
-
                     primeiraSenha = pf.SenhaDigitada;
                 }
 
@@ -960,7 +850,6 @@ namespace SUB.Forms.Usuario
                     pf.Mensagem = $"Confirme sua senha (tentativa {tentativas + 1}/3):";
                     if (pf.ShowDialog(this) != DialogResult.OK)
                         return false;
-
                     segundaSenha = pf.SenhaDigitada;
                 }
 
@@ -972,7 +861,6 @@ namespace SUB.Forms.Usuario
 
                 if (VerificarSenha(primeiraSenha))
                     return true;
-
                 MessageBox.Show("Senha incorreta.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
@@ -985,7 +873,6 @@ namespace SUB.Forms.Usuario
             var nome = Sessao.NomeBibliotecariaLogada;
             if (string.IsNullOrWhiteSpace(nome))
                 return false;
-
             try
             {
                 using (var cn = Conexao.ObterConexao())
@@ -1013,9 +900,9 @@ namespace SUB.Forms.Usuario
 
             return false;
         }
-        #endregion
 
-        #region Utilitários e Métodos Auxiliares
+#endregion
+#region Utilitários e Métodos Auxiliares
         private void EstilizarDataGrid(DataGridView dgv)
         {
             dgv.AutoGenerateColumns = false;
@@ -1026,20 +913,17 @@ namespace SUB.Forms.Usuario
             dgv.MultiSelect = false;
             dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             dgv.DefaultCellStyle.BackColor = Color.White;
             dgv.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
             dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(231, 238, 247);
             dgv.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgv.RowTemplate.Height = 35;
-
             dgv.EnableHeadersVisualStyles = false;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 61, 88);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI Semibold", 10.5f, FontStyle.Bold);
             dgv.ColumnHeadersHeight = 40;
-
             dgv.GridColor = Color.FromArgb(235, 239, 244);
             dgv.BackgroundColor = Color.White;
             dgv.BorderStyle = BorderStyle.None;
@@ -1051,21 +935,19 @@ namespace SUB.Forms.Usuario
             foreach (DataGridViewRow row in dgvPadroes.Rows)
             {
                 var valor = row.Cells["NovoPadrao"].Value?.ToString();
-
                 if (row.Cells["NovoPadrao"].Value == null || string.IsNullOrWhiteSpace(valor))
                 {
                     MessageBox.Show("Todos os padrões devem ser definidos antes de prosseguir.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
-                if (string.Equals(valor, "TRANSFERIDO", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(valor, "DESISTENTE", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(valor, "TRANSFERIDO", StringComparison.OrdinalIgnoreCase) || string.Equals(valor, "DESISTENTE", StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageBox.Show("Na Etapa 1 não é permitido definir 'TRANSFERIDO' ou 'DESISTENTE' como padrão de uma turma inteira.",
-                                    "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Na Etapa 1 não é permitido definir 'TRANSFERIDO' ou 'DESISTENTE' como padrão de uma turma inteira.", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -1075,11 +957,11 @@ namespace SUB.Forms.Usuario
             {
                 if (IsAjusteIndividualInvalido(registro.TurmaAtual, registro.NovaTurma))
                 {
-                    MessageBox.Show($"Progressão inválida detectada para {registro.Nome}: {registro.TurmaAtual} → {registro.NovaTurma}",
-                                  "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Progressão inválida detectada para {registro.Nome}: {registro.TurmaAtual} → {registro.NovaTurma}", "Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -1089,23 +971,19 @@ namespace SUB.Forms.Usuario
             {
                 var turmaAtual = row.Cells["TurmaAtual"].Value?.ToString();
                 var novoPadrao = row.Cells["NovoPadrao"].Value?.ToString();
-
                 if (!string.IsNullOrEmpty(turmaAtual) && !string.IsNullOrEmpty(novoPadrao))
                 {
                     foreach (var registro in _registrosOriginais.Where(r => r.TurmaAtual == turmaAtual))
                         registro.NovaTurma = novoPadrao;
-
                     _padroesTurma[turmaAtual] = novoPadrao;
                 }
             }
         }
-        #endregion
 
+#endregion
         private void picExit_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Deseja realmente cancelar o mapeamento? Todas as alterações serão perdidas.",
-                                       "Confirmar Cancelamento", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
+            var result = MessageBox.Show("Deseja realmente cancelar o mapeamento? Todas as alterações serão perdidas.", "Confirmar Cancelamento", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 this.DialogResult = DialogResult.Cancel;
@@ -1114,4 +992,3 @@ namespace SUB.Forms.Usuario
         }
     }
 }
-

@@ -1,11 +1,11 @@
-using SUB.Models;
-using SUB.Utils;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
+using SUB.Models;
+using SUB.Utils;
 
 namespace SUB.Forms.Configuracoes
 {
@@ -13,10 +13,8 @@ namespace SUB.Forms.Configuracoes
     {
         private string arquivoSelecionado;
         internal Func<string, string> ValidarArquivo;
-
         [Browsable(false)]
         public ResumoReset Resumo { get; set; }
-
         internal string CodigoMestre { get; private set; }
 
         public ResetTermoForm()
@@ -73,8 +71,7 @@ namespace SUB.Forms.Configuracoes
                 AtualizarContinuar();
                 return true;
             }
-            catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException ||
-                ex is FormatException || ex is InvalidOperationException || ex is ArgumentException)
+            catch (Exception ex)when (ex is IOException || ex is UnauthorizedAccessException || ex is FormatException || ex is InvalidOperationException || ex is ArgumentException)
             {
                 lblStatusArquivo.Text = ex.Message;
                 lblStatusArquivo.ForeColor = Color.FromArgb(178, 34, 34);

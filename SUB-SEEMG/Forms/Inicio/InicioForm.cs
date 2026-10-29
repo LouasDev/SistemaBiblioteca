@@ -1,32 +1,17 @@
-﻿using SUB.Forms.Livros;
-using SUB.Forms.Relatorio;
-using SUB.Models;
-using SUB.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlServerCe;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System.Diagnostics;
-using System.Drawing.Imaging;
+using SUB.Models;
+using SUB.Utils;
 
 namespace SUB.Forms.Inicio
 {
     public partial class InicioForm : Form
     {
         private Color dashboardThemeColor = ThemeManager.DefaultColor;
-
         public void AplicarTema(Color corPrimaria)
         {
             Color cor = ThemeManager.Normalize(corPrimaria);
@@ -36,130 +21,23 @@ namespace SUB.Forms.Inicio
             AplicarTemaNoDashboard();
         }
 
-        // TabControl pintado por inteiro: com OwnerDrawFixed o Windows ainda desenhava
-        // a moldura 3D clássica, com bordas escuras em volta das abas.
-        private sealed class AbasPlanas : TabControl
-        {
-            private readonly Func<Color> corDoTema;
-            private readonly System.Drawing.Font fonteSelecionada = new System.Drawing.Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-
-            public AbasPlanas(Func<Color> corDoTema)
-            {
-                this.corDoTema = corDoTema;
-                SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint |
-                         ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
-            }
-
-            protected override void OnSelectedIndexChanged(EventArgs e)
-            {
-                base.OnSelectedIndexChanged(e);
-                Invalidate();
-            }
-
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                Color tema = ThemeManager.Normalize(corDoTema());
-                bool escuro = ThemeManager.Escuro;
-                Color linha = escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(tema, 0.72F);
-                Color fundoAtiva = escuro ? ThemeManager.Dark.Superficie : Color.White;
-                Color fundoInativa = escuro ? ThemeManager.Dark.Fundo : ThemeManager.Lighten(tema, 0.93F);
-                Color textoInativa = escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(92, 100, 112);
-                Color destaqueAtiva = escuro ? ThemeManager.Lighten(tema, 0.35F) : tema;
-                e.Graphics.Clear(Parent != null ? Parent.BackColor : fundoAtiva);
-
-                if (TabCount == 0)
-                    return;
-
-                int topoPagina = GetTabRect(0).Bottom;
-                using (var caneta = new Pen(linha))
-                    e.Graphics.DrawRectangle(caneta, 0, topoPagina, Width - 1, Height - topoPagina - 1);
-
-                for (int i = 0; i < TabCount; i++)
-                {
-                    System.Drawing.Rectangle aba = GetTabRect(i);
-                    aba = new System.Drawing.Rectangle(aba.X + 1, aba.Y + 2, aba.Width - 2, topoPagina - aba.Y - 2);
-                    bool selecionada = i == SelectedIndex;
-
-                    using (var pincel = new SolidBrush(selecionada ? fundoAtiva : fundoInativa))
-                        e.Graphics.FillRectangle(pincel, aba);
-
-                    if (selecionada)
-                    {
-                        using (var destaque = new SolidBrush(destaqueAtiva))
-                            e.Graphics.FillRectangle(destaque, aba.X, aba.Y, aba.Width, 3);
-                        using (var caneta = new Pen(linha))
-                        {
-                            e.Graphics.DrawLine(caneta, aba.Left, aba.Top, aba.Left, aba.Bottom);
-                            e.Graphics.DrawLine(caneta, aba.Right - 1, aba.Top, aba.Right - 1, aba.Bottom);
-                        }
-                        using (var apagaLinha = new Pen(fundoAtiva))
-                            e.Graphics.DrawLine(apagaLinha, aba.Left + 1, topoPagina, aba.Right - 2, topoPagina);
-                    }
-
-                    TextRenderer.DrawText(e.Graphics, TabPages[i].Text,
-                        selecionada ? fonteSelecionada : Font,
-                        new System.Drawing.Rectangle(aba.X, aba.Y + 2, aba.Width, aba.Height - 2),
-                        selecionada ? ThemeManager.GetLabelColor(tema) : textoInativa,
-                        TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
-                }
-            }
-
-            protected override void Dispose(bool disposing)
-            {
-                if (disposing)
-                    fonteSelecionada.Dispose();
-                base.Dispose(disposing);
-            }
-        }
-
-        private class EmprestimoAtrasadoInfo
-        {
-            public int Id { get; set; }
-            public int UsuarioId { get; set; }    // <-- novo: id do usuário (PK)
-            public string Nome { get; set; }
-            public string Turma { get; set; }
-            public string Livro { get; set; }
-            public DateTime DataDevolucao { get; set; }
-            public int DiasAtraso { get; set; }
-        }
-
-        private class ItemComunicadoAtraso
-        {
-            public int EmprestimoId { get; set; }
-            public int LivroId { get; set; }
-            public string Titulo { get; set; }
-            public string Autor { get; set; }
-            public DateTime DataDevolucaoPrevista { get; set; }
-            public int DiasAtraso { get; set; }
-        }
-
-      
-
         private (int Id, string Nome, string Turma, int Qtd) topUsuarioMaisEmprestimos = (0, "-", "", 0);
-
-
-
-
         // controls dinâmicos
-        private Panel actionsPanel;           // painel no canto superior direito com botão de Empréstimo Rápido
-        private Button btnEmprestimoRapido;   // botão principal no topo-direito, bem visível (maior)
+        private Panel actionsPanel; // painel no canto superior direito com botão de Empréstimo Rápido
+        private Button btnEmprestimoRapido; // botão principal no topo-direito, bem visível (maior)
         private Label lblStatusSmall;
         private int alturaCardsDesenho;
         private ToolTip formToolTip;
-
         // auto-refresh timer
         private System.Windows.Forms.Timer timerAutoRefresh;
-
         private Dictionary<string, bool> mainButtonsOriginalState = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<DataGridView, Label> emptyGridLabels = new Dictionary<DataGridView, Label>();
-
         public InicioForm()
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
             this.KeyPreview = true;
             this.KeyDown += InicioForm_KeyDown;
-
             SUB.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => _ = CarregarEstatisticasAsync();
             SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => _ = CarregarEstatisticasAsync();
             SUB.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => _ = CarregarEstatisticasAsync();
@@ -167,886 +45,52 @@ namespace SUB.Forms.Inicio
             SUB.Utils.EventosGlobais.LivroDevolvido += (s, e) => _ = CarregarEstatisticasAsync();
             SUB.Utils.EventosGlobais.EmprestimoProrrogado += (s, e) => _ = CarregarEstatisticasAsync();
             SUB.Utils.EventosGlobais.EmprestimoRealizado += (s, e) => SafeInvoke(() => _ = CarregarEstatisticasAsync());
-
-
             this.Activated += (s, e) => _ = CarregarEstatisticasAsync();
-
-            // timerAutoRefresh pode ser mantido ou removido conforme sua preferência
+        // timerAutoRefresh pode ser mantido ou removido conforme sua preferência
         }
-
 
         private void SafeInvoke(Action action)
         {
             if (this.IsHandleCreated && !this.IsDisposed && !this.Disposing)
             {
-                try { this.BeginInvoke(action); }
-                catch { /* nada — evita crash se o form estiver sendo fechado */ }
+                try
+                {
+                    this.BeginInvoke(action);
+                }
+                catch
+                { /* nada — evita crash se o form estiver sendo fechado */
+                }
             }
         }
 
         private void InicioForm_Load(object sender, EventArgs e)
         {
             AppPaths.EnsureFolders();
-
             // relógio
             timerRelogio.Interval = 1000; // 1 segundo
             timerRelogio.Tick += timerRelogio_Tick;
             timerRelogio.Start();
             AtualizarRelogio();
-
             // tooltip
-            formToolTip = new ToolTip { AutoPopDelay = 6000, InitialDelay = 300, ReshowDelay = 150, IsBalloon = false };
-
+            formToolTip = new ToolTip
+            {
+                AutoPopDelay = 6000,
+                InitialDelay = 300,
+                ReshowDelay = 150,
+                IsBalloon = false
+            };
             // auto-refresh:
             timerAutoRefresh = new System.Windows.Forms.Timer();
-            timerAutoRefresh.Interval = 20000; // 
-            timerAutoRefresh.Tick += (s, ev) => { _ = CarregarEstatisticasAsync(); };
+            timerAutoRefresh.Interval = 20000; //
+            timerAutoRefresh.Tick += (s, ev) =>
+            {
+                _ = CarregarEstatisticasAsync();
+            };
             timerAutoRefresh.Start();
-
             // construir UI dinâmica (cards, tabs, botão de empréstimo rápido no topo direito)
             ConstruirDashboardUI();
-
             // primeira carga
             _ = CarregarEstatisticasAsync();
-        }
-
-        private void ConstruirDashboardUI()
-        {
-            // remover controles dinâmicos antigos do panel1 (se houver)
-            foreach (Control c in panel1.Controls.OfType<Control>().ToArray())
-            {
-                if (c != topPanelInside && !(c is TabControl && c.Name == "tabEstatisticas"))
-                {
-                    panel1.Controls.Remove(c);
-                    c.Dispose();
-                }
-            }
-
-            foreach (Control card in flowCards.Controls.OfType<Control>().ToArray())
-            {
-                flowCards.Controls.Remove(card);
-                card.Dispose();
-            }
-
-            var cardsInfo = new[]
-            {
-                new { Key = "Usuarios", Title = "Usuários", Sub = "Total de usuários", Color = Color.FromArgb(30, 61, 88) },
-                new { Key = "Livros", Title = "Acervo", Sub = "Total de livros", Color = Color.FromArgb(9, 74, 158) },
-                new { Key = "EmpAtivos", Title = "Empréstimos ativos", Sub = "Empréstimos não devolvidos", Color = Color.FromArgb(34, 139, 34) },
-                new { Key = "Atrasados", Title = "Atrasados", Sub = "Empréstimos em atraso", Color = Color.FromArgb(178,34,34) },
-                new { Key = "RapidosHoje", Title = "Rápidos hoje", Sub = "Empréstimos rápidos hoje", Color = Color.FromArgb(92, 92, 205) },
-                new { Key = "MediaMes", Title = "Média mensal", Sub = "Média de empréstimos deste mês", Color = Color.FromArgb(255, 140, 0) },
-                new { Key = "TopUsuario", Title = "Leitor mais ativo", Sub = "Usuário que mais emprestou", Color = Color.FromArgb(0, 123, 167) }
-            };
-
-            // Calcula o tamanho ideal para os cards
-            int cardWidth = 210;
-            int cardHeight = 110;
-
-            foreach (var c in cardsInfo) flowCards.Controls.Add(CriarCard(c.Key, c.Title, c.Sub, c.Color, cardWidth, cardHeight));
-            flowCards.AutoScroll = false;
-            flowCards.WrapContents = true;
-            topPanelInside.Resize -= TopPanelInside_Resize;
-            topPanelInside.Resize += TopPanelInside_Resize;
-
-            // === ACTIONS PANEL (topo direito) com botão visível e maior ===
-            if (actionsPanel != null) { panelTop.Controls.Remove(actionsPanel); actionsPanel.Dispose(); }
-            actionsPanel = new Panel
-            {
-                Name = "actionsPanel",
-                Size = new Size(260, 64),
-                Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Location = new Point(panelTop.Width - 280, 12),
-                BackColor = Color.Transparent
-            };
-            panelTop.Controls.Add(actionsPanel);
-            actionsPanel.BringToFront();
-
-            var btnFlow = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                AutoSize = false,
-                Padding = new Padding(8),
-                Margin = new Padding(0)
-            };
-            actionsPanel.Controls.Add(btnFlow);
-
-            // Botão de Empréstimo Rápido (maior, topo direito, com leve arredondamento)
-            btnEmprestimoRapido = new Button
-            {
-                Text = "Empréstimo Rápido",
-                AutoSize = false,
-                Size = new Size(220, 44), // Aumentado
-                BackColor = Color.FromArgb(9, 74, 158),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Font = new System.Drawing.Font("Segoe UI Semibold", 11F, FontStyle.Bold),
-                AccessibleName = "Empréstimo Rápido",
-                Cursor = Cursors.Hand
-            };
-            btnEmprestimoRapido.FlatAppearance.BorderSize = 0;
-            btnEmprestimoRapido.Click += BtnEmprestimoRapido_Click;
-
-            // aplicar cantos arredondados (suave)
-            btnEmprestimoRapido.Paint += (s, e) =>
-            {
-                var btn = s as Button;
-                if (btn == null) return;
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                using (var path = RoundedRect(new System.Drawing.Rectangle(0, 0, btn.Width, btn.Height), 8))
-                using (var brush = new SolidBrush(btn.BackColor))
-                {
-                    e.Graphics.FillPath(brush, path);
-                }
-                // desenhar texto manualmente para garantir centralização
-                TextRenderer.DrawText(e.Graphics, btn.Text, btn.Font, new System.Drawing.Rectangle(0, 0, btn.Width, btn.Height), btn.ForeColor, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            };
-            // esconder border padrão para evitar sobreposição
-            btnEmprestimoRapido.FlatAppearance.BorderSize = 0;
-            btnFlow.Controls.Add(btnEmprestimoRapido);
-            formToolTip.SetToolTip(btnEmprestimoRapido, "Abrir Empréstimo Rápido (atalho: Ctrl+R)");
-
-            // reajusta posição quando redimensionar o panelTop
-            panelTop.Resize += (s, e) =>
-            {
-                actionsPanel.Location = new Point(Math.Max(12, panelTop.Width - actionsPanel.Width - 20), actionsPanel.Location.Y);
-                CenterClock(); // reposicionar relógio para centro
-            };
-
-            // lblStatusSmall (texto de status) – posicionado logo abaixo dos cards
-            if (lblStatusSmall != null) { panel1.Controls.Remove(lblStatusSmall); lblStatusSmall.Dispose(); }
-            lblStatusSmall = new Label
-            {
-                Name = "lblStatusSmall",
-                Text = "",
-                AutoSize = true,
-                Location = new Point(18, topPanelInside.Bottom + 6),
-                ForeColor = Color.Gray,
-                Font = new System.Drawing.Font("Segoe UI", 9F),
-                Anchor = AnchorStyles.Top | AnchorStyles.Left
-            };
-            panel1.Controls.Add(lblStatusSmall);
-            AjustarCards();
-
-            // === TabControl moderno ===
-            var tabEstatisticas = new AbasPlanas(() => dashboardThemeColor)
-            {
-                Name = "tabEstatisticas",
-                Dock = DockStyle.Fill,
-                ItemSize = new Size(150, 36),
-                SizeMode = TabSizeMode.Fixed,
-                Font = new System.Drawing.Font("Segoe UI", 9.75F)
-            };
-
-            var tabDevedores = new TabPage("Devedores") { BackColor = Color.White, Padding = new Padding(12) };
-            var tabEstEmp = new TabPage("Empréstimos") { BackColor = Color.White, Padding = new Padding(12) };
-            var tabLivros = new TabPage("Livros Populares") { BackColor = Color.White, Padding = new Padding(12) };
-
-            tabEstatisticas.TabPages.Add(tabDevedores);
-            tabEstatisticas.TabPages.Add(tabEstEmp);
-            tabEstatisticas.TabPages.Add(tabLivros);
-
-            // DataGrids com margin top aumentado para dar 'respiração'
-            int topMarginDataGrid = 36; // já aumentado conforme seu pedido
-            var dgvDevedores = CriarDataGridBasico("dgvDevedores");
-            dgvDevedores.Margin = new Padding(12, topMarginDataGrid, 12, 12);
-            dgvDevedores.Columns.Clear();
-            dgvDevedores.Columns.AddRange(new DataGridViewColumn[] {
-    new DataGridViewTextBoxColumn { Name = "Nome", HeaderText = "Nome", DataPropertyName = "Nome", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
-    new DataGridViewTextBoxColumn { Name = "Turma", HeaderText = "Turma", DataPropertyName = "Turma", Width = 250 },
-    new DataGridViewTextBoxColumn { Name = "Livro", HeaderText = "Livro", DataPropertyName = "Livro", Width = 250 },
-    new DataGridViewTextBoxColumn { Name = "DataDevolucao", HeaderText = "Data Devolução", DataPropertyName = "DataDevolucao", Width = 150, DefaultCellStyle = new DataGridViewCellStyle { Format = "dd/MM/yyyy" } },
-    new DataGridViewTextBoxColumn { Name = "DiasAtraso", HeaderText = "Dias em Atraso", DataPropertyName = "DiasAtraso", Width = 130 }
-});
-            dgvDevedores.Columns.Add(new DataGridViewButtonColumn
-            {
-                Name = "btnComunicado",
-                HeaderText = "",
-                Text = "Gerar comunicado",
-                UseColumnTextForButtonValue = true,
-                Width = 145,
-                FlatStyle = FlatStyle.Flat
-            });
-            dgvDevedores.CellContentClick += dgvDevedores_CellContentClick;
-            dgvDevedores.CellPainting += dgvDevedores_CellPainting;
-
-
-
-            tabDevedores.Controls.Add(dgvDevedores);
-
-
-
-            var dgvEstatEmp = CriarDataGridBasico("dgvEstatisticasEmprestimos");
-            dgvEstatEmp.Margin = new Padding(12, topMarginDataGrid, 12, 12);
-            dgvEstatEmp.Columns.AddRange(new DataGridViewColumn[] {
-                new DataGridViewTextBoxColumn { Name = "Categoria", HeaderText = "Categoria", DataPropertyName = "Categoria", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill },
-                new DataGridViewTextBoxColumn { Name = "Valor", HeaderText = "Valor", DataPropertyName = "Valor", Width = 100 },
-                new DataGridViewTextBoxColumn { Name = "Detalhes", HeaderText = "Detalhes", DataPropertyName = "Detalhes", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill }
-            });
-            dgvEstatEmp.CellFormatting += DgvEstatisticasEmprestimos_CellFormatting;
-
-            tabEstEmp.Controls.Add(dgvEstatEmp);
-
-
-
-            // === Livros Populares: ajustar colunas para evitar truncamento do título ===
-            var dgvLivrosPop = CriarDataGridBasico("dgvLivrosPopulares");
-            dgvLivrosPop.Margin = new Padding(12, topMarginDataGrid, 12, 12);
-
-
-
-            // Fazemos colunas com sizing misto:
-            dgvLivrosPop.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // gerenciamos larguras manualmente
-            var colRanking = new DataGridViewTextBoxColumn { Name = "Ranking", HeaderText = "Ranking", DataPropertyName = "Posicao", Width = 100 };
-            var colTitulo = new DataGridViewTextBoxColumn { Name = "Titulo", HeaderText = "Título", DataPropertyName = "Titulo", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill, MinimumWidth = 260 };
-            var colAutor = new DataGridViewTextBoxColumn { Name = "Autor", HeaderText = "Autor", DataPropertyName = "Autor", Width = 200 };
-            var colEmp = new DataGridViewTextBoxColumn { Name = "Emprestimos", HeaderText = "Empréstimos", DataPropertyName = "Emprestimos", Width = 100 };
-            var colDisp = new DataGridViewTextBoxColumn { Name = "Disponibilidade", HeaderText = "Status", DataPropertyName = "Disponibilidade", Width = 220 };
-
-            dgvLivrosPop.CellFormatting += (s, e) =>
-            {
-                var grid = (DataGridView)s;
-                if (grid.Columns[e.ColumnIndex].Name == "Ranking" && e.Value != null)
-                {
-                    int pos;
-                    if (int.TryParse(e.Value.ToString(), out pos))
-                    {
-                        if (pos == 1)
-                        {
-                            e.CellStyle.ForeColor = Color.Gold; // dourado
-                            e.CellStyle.Font = new System.Drawing.Font(grid.Font, FontStyle.Bold);
-                            e.Value = "🏆 #1"; // troféu e #1
-                        }
-                        else
-                        {
-                            e.Value = $"#{pos}";
-                            e.CellStyle.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.Texto : Color.Black;
-                            e.CellStyle.Font = grid.Font;
-                        }
-                        e.FormattingApplied = true;
-                    }
-                }
-            };
-
-            // adiciona na ordem
-            dgvLivrosPop.Columns.AddRange(new DataGridViewColumn[] { colRanking, colTitulo, colAutor, colEmp, colDisp });
-
-            // Depois que o controle estiver em tela, definimos colTitulo como Fill para aproveitar espaço restante.
-            // (Aplicamos FillWeight para priorizar bastante espaço ao título)
-            colTitulo.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            colTitulo.FillWeight = 150; // maior proporção de espaço
-            colAutor.FillWeight = 40;
-            colEmp.FillWeight = 20;
-            colDisp.FillWeight = 30;
-
-            // Ajustes visuais
-            colRanking.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colTitulo.DefaultCellStyle.WrapMode = DataGridViewTriState.False;
-            colTitulo.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            colAutor.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            colEmp.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            colDisp.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-
-
-
-            tabLivros.Controls.Add(dgvLivrosPop);
-
-            panel1.Controls.Add(tabEstatisticas);
-            tabEstatisticas.BringToFront();
-
-            // status inicial
-            SetStatus("Pronto.");
-
-            // aumentar e centralizar visual das labels do header: saudação e relógio
-            try
-            {
-                lblOla.Font = new System.Drawing.Font("Segoe UI", 20F, FontStyle.Bold);   // aumentada
-                lblOla.ForeColor = ThemeManager.GetLabelColor(dashboardThemeColor);
-
-                lblRelogio.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Regular); // já aumentado anteriormente
-                lblRelogio.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(60, 60, 60);
-
-                // garantir que o relógio seja centralizado no panelTop
-                CenterClock();
-            }
-            catch { /* ignore se labels não existirem no designer */ }
-
-            AplicarTemaNoDashboard();
-        }
-
-        private void AplicarTemaNoDashboard()
-        {
-            Color text = ThemeManager.GetLabelColor(dashboardThemeColor);
-
-            if (btnEmprestimoRapido != null)
-            {
-                btnEmprestimoRapido.BackColor = Color.FromArgb(9, 74, 158);
-                btnEmprestimoRapido.ForeColor = Color.White;
-                btnEmprestimoRapido.FlatAppearance.MouseOverBackColor = Color.FromArgb(7, 62, 132);
-            }
-
-            if (flowCards == null)
-                return;
-
-            foreach (Panel card in flowCards.Controls.OfType<Panel>())
-            {
-                card.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Superficie : Color.White;
-                if (ThemeManager.Escuro)
-                    PintarInternosDoCard(card, card.BackColor);
-                card.Invalidate();
-                Panel header = card.Controls.OfType<Panel>().FirstOrDefault(p => p.Dock == DockStyle.Top);
-                string key = card.Tag as string;
-                if (header != null)
-                {
-                    if (string.Equals(key, "Usuarios", StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(key, "Livros", StringComparison.OrdinalIgnoreCase))
-                    {
-                        header.BackColor = dashboardThemeColor;
-                    }
-
-                    Label headerLabel = header.Controls.OfType<Label>().FirstOrDefault();
-                    if (headerLabel != null)
-                        headerLabel.ForeColor = ThemeManager.GetContrastColor(header.BackColor);
-                }
-                var value = card.Controls.Find("val_" + key, true).FirstOrDefault() as Label;
-                if (value != null)
-                    value.ForeColor = text;
-            }
-        }
-
-        // Painéis internos (corpo do card do "Leitor mais ativo") nascem brancos; o cabeçalho colorido fica.
-        private void PintarInternosDoCard(Control raiz, Color fundo)
-        {
-            foreach (Control filho in raiz.Controls)
-            {
-                var painel = filho as Panel;
-                if (painel != null && painel.Dock != DockStyle.Top)
-                    painel.BackColor = fundo;
-                PintarInternosDoCard(filho, fundo);
-            }
-        }
-
-        // Mesmo botão arredondado na cor do tema usado nas grades de Acervo, Pessoas e Devoluções.
-        private void dgvDevedores_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            var grid = sender as DataGridView;
-            if (grid == null || e.RowIndex < 0 || e.ColumnIndex < 0 || grid.Columns[e.ColumnIndex].Name != "btnImprimir")
-                return;
-
-            e.PaintBackground(e.CellBounds, true);
-            var rect = new System.Drawing.Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 5, e.CellBounds.Width - 12, e.CellBounds.Height - 10);
-            var suavizacaoAnterior = e.Graphics.SmoothingMode;
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            using (var path = RoundedRect(rect, 8))
-            using (var brush = new SolidBrush(grid.ColumnHeadersDefaultCellStyle.BackColor))
-                e.Graphics.FillPath(brush, path);
-            e.Graphics.SmoothingMode = suavizacaoAnterior;
-
-            using (var fonte = new System.Drawing.Font("Segoe UI Semibold", 8.5F))
-                TextRenderer.DrawText(e.Graphics, "Imprimir carta", fonte, rect,
-                    grid.ColumnHeadersDefaultCellStyle.ForeColor,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-            e.Handled = true;
-        }
-
-        private void dgvDevedores_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            var dgv = sender as DataGridView;
-            if (dgv == null || e.RowIndex < 0) return;
-
-            if (dgv.Columns[e.ColumnIndex].Name == "btnComunicado")
-            {
-                var emprestimo = dgv.Rows[e.RowIndex].DataBoundItem as EmprestimoAtrasadoInfo;
-                if (emprestimo == null)
-                {
-                    MessageBox.Show("Não foi possível obter os dados do empréstimo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                // Busca todos os livros atrasados do aluno
-                var livros = ObterItensAtrasadosPorUsuario(emprestimo.UsuarioId);
-                GerarComunicadoAtrasoPdf(emprestimo, livros);
-            }
-        }
-
-        // Helper para desenhar retângulo arredondado
-        private GraphicsPath RoundedRect(System.Drawing.Rectangle bounds, int radius)
-        {
-            var gp = new GraphicsPath();
-            int d = radius * 2;
-            gp.AddArc(bounds.Left, bounds.Top, d, d, 180, 90);
-            gp.AddArc(bounds.Right - d, bounds.Top, d, d, 270, 90);
-            gp.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
-            gp.AddArc(bounds.Left, bounds.Bottom - d, d, d, 90, 90);
-            gp.CloseFigure();
-            return gp;
-        }
-
-        // Ouve o painel de cima (e não o de cartões): mudar a altura do pai durante o layout do
-        // filho não é reaplicado aos controles encaixados, e a segunda linha ficava cortada.
-        private void TopPanelInside_Resize(object sender, EventArgs e)
-        {
-            AjustarCards();
-        }
-
-        // Os sete cartões preenchem a linha inteira; quando não cabem com uma largura legível
-        // (telas de 1366 px), passam para duas linhas em vez de exigir rolagem lateral.
-        private void AjustarCards()
-        {
-            var cards = flowCards.Controls.OfType<Panel>().ToList();
-            if (cards.Count == 0 || topPanelInside.ClientSize.Width <= 0)
-                return;
-
-            const int larguraMinima = 180;
-            int espaco = cards[0].Margin.Horizontal;
-            int disponivel = topPanelInside.ClientSize.Width - topPanelInside.Padding.Horizontal - flowCards.Padding.Horizontal;
-            int porLinha = cards.Count;
-            while (porLinha > 1 && disponivel / porLinha - espaco < larguraMinima)
-                porLinha = (porLinha + 1) / 2;
-
-            int largura = disponivel / porLinha - espaco;
-            int linhas = (cards.Count + porLinha - 1) / porLinha;
-            if (alturaCardsDesenho == 0)
-                alturaCardsDesenho = topPanelInside.Height;
-
-            flowCards.SuspendLayout();
-            foreach (var card in cards)
-            {
-                card.Width = largura;
-                foreach (var valor in card.Controls.Find("val_" + card.Tag, true).OfType<Label>())
-                    valor.Width = largura - 24;
-                foreach (var nome in card.Controls.Find("lblTopName", true).Concat(card.Controls.Find("lblTopTurma", true)).OfType<Label>())
-                    nome.MaximumSize = new Size(largura - 40, 0);
-            }
-            flowCards.ResumeLayout();
-
-            int altura = alturaCardsDesenho + (linhas - 1) * (cards[0].Height + cards[0].Margin.Vertical);
-            if (topPanelInside.Height != altura)
-                topPanelInside.Height = altura;
-            if (lblStatusSmall != null)
-                lblStatusSmall.Top = topPanelInside.Bottom + 6;
-        }
-
-        private Panel CriarCard(string key, string title, string subtitle, Color headerColor, int cardWidth, int cardHeight)
-        {
-            var card = new Panel
-            {
-                Width = cardWidth,
-                Height = cardHeight,
-                Margin = new Padding(8),
-                BackColor = Color.White,
-                BorderStyle = BorderStyle.None,
-                Padding = new Padding(1), // reserva 1px para a borda
-                Tag = key
-            };
-            card.Paint += (s, e) =>
-            {
-                using (var p = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(235, 239, 244)))
-                    e.Graphics.DrawRectangle(p, 0, 0, card.Width - 1, card.Height - 1);
-            };
-
-            var header = new Panel { BackColor = headerColor, Height = 36, Dock = DockStyle.Top, Margin = new Padding(0) };
-            card.Controls.Add(header);
-
-            var lblTitle = new Label
-            {
-                Text = title,
-                ForeColor = Color.White,
-                Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, FontStyle.Bold),
-                Location = new Point(10, 6),
-                AutoSize = true
-            };
-            header.Controls.Add(lblTitle);
-
-            // ---------- Card padrão ----------
-            if (!string.Equals(key, "TopUsuario", StringComparison.OrdinalIgnoreCase))
-            {
-                var lblValue = new Label
-                {
-                    Name = "val_" + key,
-                    Text = "0",
-                    ForeColor = Color.FromArgb(20, 42, 60),
-                    Font = new System.Drawing.Font("Segoe UI", 20F, FontStyle.Bold),
-                    Location = new Point(12, header.Bottom + 6),
-                    AutoSize = false,
-                    Size = new Size(card.Width - 24, 36)
-                };
-                card.Controls.Add(lblValue);
-
-                var lblSub = new Label
-                {
-                    Text = subtitle,
-                    ForeColor = Color.Gray,
-                    Font = new System.Drawing.Font("Segoe UI", 8.5F),
-                    Location = new Point(12, lblValue.Bottom + 2),
-                    AutoSize = true
-                };
-                card.Controls.Add(lblSub);
-            }
-            else
-            {
-                // ---------- Card Top Usuário com TableLayoutPanel para vertical centering ----------
-                var container = new Panel
-                {
-                    Dock = DockStyle.Fill,
-                    BackColor = Color.White,
-                    Margin = new Padding(0),
-                    Padding = new Padding(8, 43, 8, 0) // leve padding interno
-                };
-
-                var table = new TableLayoutPanel
-                {
-                    Dock = DockStyle.Fill,
-                    BackColor = Color.White,
-                    ColumnCount = 1,
-                    RowCount = 4
-                };
-                // linhas: flex (30%), nome (Auto), turma (Auto), flex (30%)
-                table.RowStyles.Clear();
-                table.RowStyles.Add(new RowStyle(SizeType.Percent, 30f));
-                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-                table.RowStyles.Add(new RowStyle(SizeType.Percent, 30f));
-
-                // Label do nome: dois primeiros nomes (maior)
-                var lblName = new Label
-                {
-                    Name = "lblTopName",
-                    AutoSize = true,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Font = new System.Drawing.Font("Segoe UI Semibold", 12F, FontStyle.Bold),
-                    ForeColor = Color.FromArgb(20, 42, 60),
-                    Text = "-",
-                    MaximumSize = new Size(cardWidth - 40, 0) // evita overflow horizontal
-                };
-                // centralizar horizontalmente na célula
-                lblName.Anchor = AnchorStyles.None;
-
-                // Label da turma: menor e logo abaixo do nome (mais próximo)
-                var lblTurma = new Label
-                {
-                    Name = "lblTopTurma",
-                    AutoSize = true,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    Font = new System.Drawing.Font("Segoe UI", 9F, FontStyle.Regular),
-                    ForeColor = Color.Gray,
-                    Text = "",
-                    MaximumSize = new Size(cardWidth - 40, 0),
-                    
-                };
-                lblTurma.Anchor = AnchorStyles.None;
-
-                // Subtítulo embaixo (quem mais emprestou)
-                var lblSub = new Label
-                {
-                    Text = subtitle,
-                    Dock = DockStyle.Bottom,
-                    Height = 35,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = Color.Gray,
-                    Font = new System.Drawing.Font("Segoe UI", 8.5F)
-                };
-
-                // adicionar aos lugares corretos: row 1 = nome, row 2 = turma
-                table.Controls.Add(lblName, 0, 1);
-                table.Controls.Add(lblTurma, 0, 2);
-
-                container.Controls.Add(table);
-                container.Controls.Add(lblSub); // ficará embaixo do container (Dock = Bottom do lblSub)
-
-                card.Controls.Add(container);
-            }
-
-            return card;
-        }
-
-
-
-
-
-
-
-        private void DgvEstatisticasEmprestimos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            var grid = sender as DataGridView;
-            if (grid == null || e.RowIndex < 0 || e.ColumnIndex < 0 ||
-                grid.Columns[e.ColumnIndex].Name != "Valor")
-            {
-                return;
-            }
-
-            string categoria = grid.Rows[e.RowIndex].Cells["Categoria"].Value as string;
-            if (!string.Equals(categoria, "Devolução no Prazo", StringComparison.Ordinal) || e.Value == null)
-                return;
-
-            if (double.TryParse(e.Value.ToString(), out double taxa))
-            {
-                e.Value = taxa.ToString("0.#") + "%";
-                e.FormattingApplied = true;
-            }
-        }
-
-        private DataGridView CriarDataGridBasico(string name)
-        {
-            var dgv = new DataGridView
-            {
-                Name = name,
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                AllowUserToAddRows = false,
-                AllowUserToResizeRows = false,
-                RowTemplate = { Height = 36 },
-                BackgroundColor = Color.White,
-                BorderStyle = BorderStyle.None,
-                ColumnHeadersHeight = 40,
-                EnableHeadersVisualStyles = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                MultiSelect = false,
-                RowHeadersVisible = false,
-                AutoGenerateColumns = false,
-                GridColor = Color.FromArgb(245, 245, 245),
-                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
-                Margin = new Padding(12)
-            };
-
-            AplicarEstiloDataGridView(dgv);
-            dgv.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E7EEF7");
-            dgv.DefaultCellStyle.SelectionForeColor = Color.FromArgb(20, 42, 60);
-
-
-            dgv.CellMouseEnter += DataGrid_CellMouseEnter;
-            dgv.CellMouseLeave += DataGrid_CellMouseLeave;
-
-            // Grade de aba oculta seleciona a primeira linha ao aparecer pela primeira vez,
-            // escondendo a cor de status dela; no painel não há seleção a manter.
-            dgv.HandleCreated += (s, e) => dgv.BeginInvoke(new Action(dgv.ClearSelection));
-            dgv.VisibleChanged += (s, e) =>
-            {
-                if (dgv.Visible && dgv.IsHandleCreated)
-                    dgv.BeginInvoke(new Action(dgv.ClearSelection));
-            };
-
-            return dgv;
-        }
-
-        private void AplicarEstiloDataGridView(DataGridView dgv)
-        {
-            dgv.BorderStyle = BorderStyle.None;
-            dgv.BackgroundColor = Color.White;
-            dgv.GridColor = Color.FromArgb(245, 245, 245);
-
-            dgv.DefaultCellStyle.BackColor = Color.White;
-            dgv.DefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
-            dgv.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 9f);
-            dgv.DefaultCellStyle.SelectionBackColor = ColorTranslator.FromHtml("#E7EEF7");
-            dgv.DefaultCellStyle.SelectionForeColor = ColorTranslator.FromHtml("#123A5D");
-            dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.DefaultCellStyle.Padding = new Padding(8, 6, 8, 6);
-
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(250, 250, 250);
-            dgv.AlternatingRowsDefaultCellStyle.ForeColor = Color.FromArgb(60, 60, 60);
-
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(70, 70, 70);
-            dgv.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI Semibold", 10f, FontStyle.Bold);
-            dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 8, 0);
-            dgv.ColumnHeadersHeight = 36;
-            dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-
-
-
-            dgv.ColumnHeadersDefaultCellStyle.SelectionBackColor = dgv.ColumnHeadersDefaultCellStyle.BackColor;
-            dgv.ColumnHeadersDefaultCellStyle.SelectionForeColor = dgv.ColumnHeadersDefaultCellStyle.ForeColor;
-
-            dgv.RowHeadersVisible = false;
-            dgv.AllowUserToResizeColumns = false;
-            dgv.AllowUserToResizeRows = false;
-
-            try
-            {
-                typeof(DataGridView).InvokeMember("DoubleBuffered",
-                    BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
-                    null, dgv, new object[] { true });
-            }
-            catch { }
-
-            dgv.CellFormatting += (s, e) =>
-            {
-                try
-                {
-                    var grid = (DataGridView)s;
-                    if (grid.Columns[e.ColumnIndex].Name == "Disponibilidade")
-                    {
-                        string v = e.Value?.ToString() ?? "";
-                        bool escuro = ThemeManager.Escuro;
-                        if (v == "Disponível")
-                        {
-                            e.CellStyle.BackColor = escuro ? Color.FromArgb(27, 62, 43) : Color.FromArgb(220, 245, 225);
-                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(134, 214, 156) : Color.FromArgb(20, 120, 40);
-                            e.Value = "●  " + v;
-                        }
-                        else if (v == "Poucas unidades")
-                        {
-                            e.CellStyle.BackColor = escuro ? Color.FromArgb(68, 58, 24) : Color.FromArgb(255, 250, 220);
-                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(232, 192, 104) : Color.FromArgb(150, 110, 20);
-                            e.Value = "●  " + v;
-                        }
-                        else
-                        {
-                            e.CellStyle.BackColor = escuro ? Color.FromArgb(74, 36, 38) : Color.FromArgb(255, 235, 235);
-                            e.CellStyle.ForeColor = escuro ? Color.FromArgb(240, 142, 142) : Color.FromArgb(160, 30, 30);
-                            e.Value = "●  " + v;
-                        }
-                        e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                    }
-                }
-                catch { }
-            };
-        }
-
-        private void DataGrid_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (e.RowIndex < 0) return;
-                var dgv = sender as DataGridView;
-                if (dgv == null) return;
-                var hoverColor = ThemeManager.Escuro ? ThemeManager.Dark.EntradaHover : Color.FromArgb(245, 248, 251);
-                dgv.Rows[e.RowIndex].DefaultCellStyle.BackColor = hoverColor;
-            }
-            catch { }
-        }
-
-        private void DataGrid_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
-        {
-            try
-            {
-                if (e.RowIndex < 0) return;
-                var dgv = sender as DataGridView;
-                if (dgv == null) return;
-                var row = dgv.Rows[e.RowIndex];
-                if (ThemeManager.Escuro)
-                    row.DefaultCellStyle.BackColor = (e.RowIndex % 2 == 0) ? ThemeManager.Dark.Superficie : ThemeManager.Dark.SuperficieAlt;
-                else
-                    row.DefaultCellStyle.BackColor = (e.RowIndex % 2 == 0) ? Color.White : Color.FromArgb(250, 250, 250);
-            }
-            catch { }
-        }
-
-        private void EnsureEmptyOverlay(DataGridView dgv, string message)
-        {
-            var name = "emptyOverlay_" + dgv.Name;
-            var parent = dgv.Parent ?? panel1;
-
-            Label emptyLabel;
-            if (!emptyGridLabels.TryGetValue(dgv, out emptyLabel) || emptyLabel.IsDisposed)
-            {
-                var legacyOverlay = parent.Controls[name] as Label;
-                if (legacyOverlay != null)
-                {
-                    parent.Controls.Remove(legacyOverlay);
-                    legacyOverlay.Dispose();
-                }
-
-                emptyLabel = new Label
-                {
-                    Name = name,
-                    AutoSize = false,
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.Gray,
-                    BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Superficie : Color.White,
-                    Font = new System.Drawing.Font("Segoe UI", 10F, FontStyle.Regular),
-                    Visible = false
-                };
-
-                parent.Controls.Add(emptyLabel);
-                emptyGridLabels[dgv] = emptyLabel;
-
-                dgv.DataBindingComplete += (s, e) => AtualizarEmptyLabel(dgv);
-            }
-
-            emptyLabel.Text = message;
-            AtualizarEmptyLabel(dgv);
-        }
-
-        private void AtualizarEmptyLabel(DataGridView dgv)
-        {
-            Label emptyLabel;
-            if (dgv == null || dgv.IsDisposed ||
-                !emptyGridLabels.TryGetValue(dgv, out emptyLabel) || emptyLabel.IsDisposed)
-                return;
-
-            bool vazio = dgv.Rows.Count == 0;
-            dgv.Visible = !vazio;
-            emptyLabel.Visible = vazio;
-
-            if (vazio)
-                emptyLabel.BringToFront();
-            else
-                dgv.BringToFront();
-        }
-
-        private List<EmprestimoAtrasadoInfo> ObterEmprestimosAtrasados()
-        {
-            var lista = new List<EmprestimoAtrasadoInfo>();
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-                    // agora trazemos também u.Id (UsuarioId)
-                    string sql = @"
-SELECT 
-    e.Id,
-    u.Id AS UsuarioId,
-    u.Nome,
-    u.Turma,
-    l.Nome AS Livro,
-    COALESCE(e.DataProrrogacao, e.DataDevolucao) AS DataLimite,
-    DATEDIFF(day, COALESCE(e.DataProrrogacao, e.DataDevolucao), GETDATE()) AS DiasAtraso
-FROM Emprestimo e
-INNER JOIN Usuarios u ON e.Alocador = u.Id
-INNER JOIN Livros l ON e.LivroId = l.Id
-WHERE e.Status <> 'Devolvido'
-  AND COALESCE(e.DataProrrogacao, e.DataDevolucao) < GETDATE()
-ORDER BY DiasAtraso DESC, DataLimite ASC";
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            lista.Add(new EmprestimoAtrasadoInfo
-                            {
-                                Id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
-                                UsuarioId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
-                                Nome = reader.IsDBNull(2) ? "" : reader.GetString(2),
-                                Turma = reader.IsDBNull(3) ? "" : reader.GetString(3),
-                                Livro = reader.IsDBNull(4) ? "" : reader.GetString(4),
-                                DataDevolucao = reader.IsDBNull(5) ? DateTime.MinValue : reader.GetDateTime(5),
-                                DiasAtraso = reader.IsDBNull(6) ? 0 : reader.GetInt32(6)
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    var logDir = Path.Combine(Application.StartupPath, "logs");
-                    Directory.CreateDirectory(logDir);
-                    File.AppendAllText(Path.Combine(logDir, "inicio_obter_devedores.log"),
-                        DateTime.Now + " - " + ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine);
-                }
-                catch { }
-            }
-            return lista;
         }
 
         private void AtualizarRelogio()
@@ -1061,16 +105,16 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
                 lblOla.Font = new System.Drawing.Font("Segoe UI", 20F, FontStyle.Bold);
                 lblOla.ForeColor = ThemeManager.GetLabelColor(dashboardThemeColor);
             }
-            catch { }
+            catch
+            {
+            }
 
             string diaSemana = agora.ToString("dddd");
             string data = agora.ToString("dd 'de' MMMM 'de' yyyy");
             string hora = agora.ToString("HH:mm:ss");
-
             lblRelogio.Text = $"{diaSemana}, {data} - {hora}";
             lblRelogio.Font = new System.Drawing.Font("Segoe UI", 16F, FontStyle.Regular);
             lblRelogio.ForeColor = ThemeManager.Escuro ? ThemeManager.Dark.TextoSuave : Color.FromArgb(60, 60, 60);
-
             // centralizar relógio após atualizar o texto
             CenterClock();
         }
@@ -1080,7 +124,8 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
         {
             try
             {
-                if (lblRelogio == null || panelTop == null) return;
+                if (lblRelogio == null || panelTop == null)
+                    return;
                 // força medida atualizada
                 lblRelogio.AutoSize = true;
                 lblRelogio.Refresh();
@@ -1089,430 +134,42 @@ ORDER BY DiasAtraso DESC, DataLimite ASC";
                 int y = lblRelogio.Location.Y;
                 lblRelogio.Location = new Point(centerX, y);
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private string ObterSaudacao(DateTime now)
         {
             int hora = now.Hour;
-            if (hora >= 5 && hora < 12) return "Bom dia";
-            if (hora >= 12 && hora < 18) return "Boa tarde";
+            if (hora >= 5 && hora < 12)
+                return "Bom dia";
+            if (hora >= 12 && hora < 18)
+                return "Boa tarde";
             return "Boa noite";
         }
 
         private void timerRelogio_Tick(object sender, EventArgs e) => AtualizarRelogio();
-
-        #region Carregamento de dados
-        private async Task CarregarEstatisticasAsync()
-        {
-            try
-            {
-                SetStatus("Carregando estatísticas...");
-                var stats = await Task.Run(() => ObterEstatisticas());
-
-                var topUser = await Task.Run(() => ObterTopUsuarioMaisEmprestimos());
-                topUsuarioMaisEmprestimos = topUser;
-
-                if (this.IsHandleCreated && !this.IsDisposed)
-                {
-                    BeginInvoke(new Action(() =>
-                    {
-                        AtualizarCards(stats);
-
-                        // Atualiza o card do Top Usuário
-                        // Atualiza o card do Top Usuário
-                        // Atualiza o card do Top Usuário
-                        var card = flowCards.Controls.OfType<Panel>().FirstOrDefault(p => (string)p.Tag == "TopUsuario");
-                        if (card != null)
-                        {
-                            var lblName = card.Controls.Find("lblTopName", true).FirstOrDefault() as Label;
-                            var lblTurma = card.Controls.Find("lblTopTurma", true).FirstOrDefault() as Label;
-
-                            if (lblName != null && lblTurma != null)
-                            {
-                                if (!string.IsNullOrWhiteSpace(topUsuarioMaisEmprestimos.Nome))
-                                {
-                                    // Pega os dois primeiros nomes
-                                    var matches = System.Text.RegularExpressions.Regex.Matches(topUsuarioMaisEmprestimos.Nome.Trim(), @"\S+");
-                                    var primeiros = matches.Cast<System.Text.RegularExpressions.Match>().Select(m => m.Value).Take(2).ToArray();
-                                    var doisNomes = string.Join(" ", primeiros);
-
-                                    // Normaliza a turma: remove quebras de linha e espaços duplicados
-                                    string turmaDisplay = topUsuarioMaisEmprestimos.Turma?.Trim() ?? "";
-                                    turmaDisplay = turmaDisplay.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ");
-                                    turmaDisplay = System.Text.RegularExpressions.Regex.Replace(turmaDisplay, @"\s+", " ");
-
-                                    // Trunca visualmente se muito longa
-                                    if (turmaDisplay.Length > 25)
-                                        turmaDisplay = turmaDisplay.Substring(0, 25) + "...";
-
-                                    // Exibe os valores
-                                    lblName.Text = doisNomes;
-                                    lblTurma.Text = string.IsNullOrWhiteSpace(turmaDisplay) ? "" : turmaDisplay;
-                                    lblTurma.Visible = !string.IsNullOrWhiteSpace(turmaDisplay);
-
-                                    // Tooltip detalhado (nome completo + turma + qtd)
-                                    try
-                                    {
-                                        if (formToolTip == null) formToolTip = new ToolTip();
-                                        string tip = $"{topUsuarioMaisEmprestimos.Nome}";
-                                        if (!string.IsNullOrWhiteSpace(topUsuarioMaisEmprestimos.Turma))
-                                            tip += $" • Turma: {topUsuarioMaisEmprestimos.Turma}";
-                                        tip += $" • {topUsuarioMaisEmprestimos.Qtd} empréstimos";
-                                        formToolTip.SetToolTip(lblName, tip);
-                                        formToolTip.SetToolTip(lblTurma, tip);
-                                    }
-                                    catch { }
-                                }
-                                else
-                                {
-                                    lblName.Text = "-";
-                                    lblTurma.Text = "";
-                                    lblTurma.Visible = false;
-                                }
-                            }
-                        }
-
-
-
-                    }));
-                }
-
-
-                var estatisticasEmprestimos = await Task.Run(() => ObterEstatisticasEmprestimos());
-                var livrosPopulares = await Task.Run(() => ObterLivrosPopulares(10));
-
-                if (this.IsHandleCreated && !this.IsDisposed)
-                {
-                    BeginInvoke(new Action(() =>
-                    {
-                        TabControl tabControl = panel1.Controls.Find("tabEstatisticas", true).FirstOrDefault() as TabControl;
-                        if (tabControl != null && tabControl.TabPages.Count >= 3)
-                        {
-                            DataGridView dgvDevedores = tabControl.TabPages[0].Controls.Find("dgvDevedores", true).FirstOrDefault() as DataGridView;
-                            DataGridView dgvEstatisticas = tabControl.TabPages[1].Controls.Find("dgvEstatisticasEmprestimos", true).FirstOrDefault() as DataGridView;
-                            DataGridView dgvLivros = tabControl.TabPages[2].Controls.Find("dgvLivrosPopulares", true).FirstOrDefault() as DataGridView;
-
-                            if (dgvDevedores != null)
-                            {
-                                var emprestimosAtrasados = ObterEmprestimosAtrasados();
-                                dgvDevedores.DataSource = null;
-                                dgvDevedores.DataSource = emprestimosAtrasados;
-                                dgvDevedores.ClearSelection();
-                                dgvDevedores.Refresh();
-                                EnsureEmptyOverlay(dgvDevedores, "Nenhum empréstimo atrasado no momento.");
-                            }
-                            if (dgvEstatisticas != null)
-                            {
-                                dgvEstatisticas.DataSource = null;
-                                dgvEstatisticas.DataSource = estatisticasEmprestimos;
-                                dgvEstatisticas.ClearSelection();
-                                dgvEstatisticas.Refresh();
-                            }
-                            if (dgvLivros != null)
-                            {
-                                // Uma consulta vazia transitória não deve apagar uma
-                                // lista válida que já esteja visível durante a atualização.
-                                if (livrosPopulares.Count > 0 || dgvLivros.Rows.Count == 0)
-                                {
-                                    dgvLivros.DataSource = null;
-                                    dgvLivros.DataSource = livrosPopulares;
-                                }
-                                dgvLivros.ClearSelection();
-                                dgvLivros.Refresh();
-                                EnsureEmptyOverlay(dgvLivros, "Nenhum livro encontrado por enquanto.");
-                            }
-                        }
-
-                        SetStatus($"Última atualização: {DateTime.Now:dd/MM/yyyy HH:mm:ss}");
-                    }));
-                }
-            }
-            catch (Exception ex)
-            {
-                BeginInvoke(new Action(() => SetStatus($"Erro ao carregar: {ex.Message}")));
-            }
-        }
-        /// <summary>
-        /// Retorna o usuário (exceto professores) que mais realizou empréstimos (apenas tabela Emprestimo).
-        /// </summary>
-        private (int Id, string Nome, string Turma, int Qtd) ObterTopUsuarioMaisEmprestimos()
-        {
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-
-                    string sql = @"
-SELECT TOP 1 
-    u.Id, 
-    u.Nome, 
-    COALESCE(u.Turma, '') AS Turma, 
-    COUNT(e.Id) AS Qtd,
-    MAX(e.DataEmprestimo) AS UltimoEmprestimo
-FROM Emprestimo e
-INNER JOIN Usuarios u ON e.Alocador = u.Id
-WHERE (u.TipoUsuario IS NULL OR UPPER(u.TipoUsuario) NOT LIKE 'PROFESSOR%')
-GROUP BY u.Id, u.Nome, u.Turma
-ORDER BY Qtd DESC, UltimoEmprestimo DESC;
-";
-
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            int id = reader.IsDBNull(0) ? 0 : reader.GetInt32(0);
-                            string nome = reader.IsDBNull(1) ? "-" : reader.GetString(1);
-                            string turma = reader.IsDBNull(2) ? "" : reader.GetString(2);
-                            int qtd = reader.IsDBNull(3) ? 0 : Convert.ToInt32(reader.GetValue(3));
-                            return (id, nome, turma, qtd);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    var logDir = Path.Combine(Application.StartupPath, "logs");
-                    Directory.CreateDirectory(logDir);
-                    File.AppendAllText(Path.Combine(logDir, "inicio_obter_top_usuario.log"),
-                        DateTime.Now + " - " + ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine);
-                }
-                catch { }
-            }
-            return (0, "-", "", 0);
-        }
-
-
-
-
-
-        #region Métodos de obtenção (mantidos do seu código original)
-        private List<EstatisticaEmprestimo> ObterEstatisticasEmprestimos()
-        {
-            var lista = new List<EstatisticaEmprestimo>();
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo", conexao))
-                        lista.Add(new EstatisticaEmprestimo { Categoria = "Empréstimos Totais", Valor = Convert.ToInt32(cmd.ExecuteScalar() ?? 0), Detalhes = "Desde o início do sistema" });
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status <> 'Devolvido'", conexao))
-                        lista.Add(new EstatisticaEmprestimo { Categoria = "Empréstimos Ativos", Valor = Convert.ToInt32(cmd.ExecuteScalar() ?? 0), Detalhes = "Aguardando devolução" });
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status = 'Atrasado'", conexao))
-                        lista.Add(new EstatisticaEmprestimo { Categoria = "Empréstimos Atrasados", Valor = Convert.ToInt32(cmd.ExecuteScalar() ?? 0), Detalhes = "Fora do prazo de devolução" });
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status = 'Devolvido' AND DataRealDevolucao <= DataDevolucao", conexao))
-                    {
-                        int noPrazo = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-                        int totalDevolvidos = 0;
-                        using (var cmd2 = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status = 'Devolvido'", conexao))
-                        {
-                            totalDevolvidos = Convert.ToInt32(cmd2.ExecuteScalar() ?? 0);
-                        }
-                        double taxa = totalDevolvidos > 0 ? (noPrazo * 100.0 / totalDevolvidos) : 0;
-                        lista.Add(new EstatisticaEmprestimo { Categoria = "Devolução no Prazo", Valor = Math.Round(taxa, 1), Detalhes = $"{noPrazo} de {totalDevolvidos} empréstimos devolvidos" });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                try { var logDir = Path.Combine(Application.StartupPath, "logs"); Directory.CreateDirectory(logDir); File.AppendAllText(Path.Combine(logDir, "inicio_obter_estatisticas.log"), DateTime.Now + " - " + ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine); } catch { }
-            }
-            return lista;
-        }
-
-        private List<LivroPopular> ObterLivrosPopulares(int topN)
-        {
-            var lista = new List<LivroPopular>();
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-
-                    // Janela de popularidade (ajuste se quiser outro período)
-                    DateTime inicioJanela = DateTime.Now.AddMonths(-12);
-
-                    string sql = $@"
-SELECT TOP {topN}
-    l.Nome,
-    l.Autor,
-    COUNT(e.Id) AS TotalEmprestimos,
-    l.Quantidade
-FROM Livros l
-INNER JOIN Emprestimo e 
-    ON l.Id = e.LivroId
-    AND e.DataEmprestimo >= @inicio
-WHERE 
-    (l.Genero IS NULL OR (l.Genero NOT LIKE 'Didático%' AND l.Genero NOT LIKE 'Didatico%'))
-GROUP BY l.Id, l.Nome, l.Autor, l.Quantidade
-ORDER BY TotalEmprestimos DESC, l.Nome";
-
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@inicio", inicioJanela);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            int posicao = 1;
-                            while (reader.Read())
-                            {
-                                var nome = reader.IsDBNull(0) ? "" : reader.GetString(0);
-                                var autor = reader.IsDBNull(1) ? "" : reader.GetString(1);
-                                int emprestimos = 0;
-                                int quantidade = 0;
-                                try { emprestimos = reader.IsDBNull(2) ? 0 : Convert.ToInt32(reader.GetValue(2)); } catch { }
-                                try { quantidade = reader.IsDBNull(3) ? 0 : Convert.ToInt32(reader.GetValue(3)); } catch { }
-
-                                string disponibilidade = quantidade > 0 ? "Disponível" : "Indisponível";
-                                if (quantidade > 0 && quantidade < 5) disponibilidade = "Poucas unidades";
-
-                                lista.Add(new LivroPopular
-                                {
-                                    Posicao = posicao++,
-                                    Titulo = nome,
-                                    Autor = autor,
-                                    Emprestimos = emprestimos,
-                                    Disponibilidade = disponibilidade
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    var logDir = Path.Combine(Application.StartupPath, "logs");
-                    Directory.CreateDirectory(logDir);
-                    File.AppendAllText(Path.Combine(logDir, "inicio_obter_livros.log"),
-                        DateTime.Now + " - " + ex.Message + Environment.NewLine + ex.StackTrace + Environment.NewLine);
-                }
-                catch { }
-            }
-            return lista;
-        }
-
-        public class EstatisticaEmprestimo { public string Categoria { get; set; } public double Valor { get; set; } public string Detalhes { get; set; } }
-        public class LivroPopular { public int Posicao { get; set; } public string Titulo { get; set; } public string Autor { get; set; } public int Emprestimos { get; set; } public string Disponibilidade { get; set; } }
-
         private void SetStatus(string texto)
         {
-            if (lblStatusSmall == null) return;
-            try { BeginInvoke(new Action(() => lblStatusSmall.Text = texto)); } catch { }
+            if (lblStatusSmall == null)
+                return;
+            try
+            {
+                BeginInvoke(new Action(() => lblStatusSmall.Text = texto));
+            }
+            catch
+            {
+            }
         }
 
         public void DefinirVisibilidadeDoStatus(bool visivel)
         {
             if (lblStatusSmall == null || IsDisposed)
                 return;
-
             lblStatusSmall.Visible = visivel;
         }
 
-        private Dictionary<string, int> ObterEstatisticas()
-        {
-            var dict = new Dictionary<string, int>
-            {
-                ["Usuarios"] = 0,
-                ["Livros"] = 0,
-                ["EmpAtivos"] = 0,
-                ["Atrasados"] = 0,
-                ["RapidosHoje"] = 0,
-                ["MediaMes"] = 0 // novo campo
-            };
-
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Usuarios", conexao))
-                        dict["Usuarios"] = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-
-                    
-                    using (var cmd = new SqlCeCommand("SELECT COALESCE(SUM(Quantidade), 0) FROM Livros", conexao))
-                    {
-                        var result = cmd.ExecuteScalar();
-                        dict["Livros"] = result != null ? Convert.ToInt32(result) : 0;
-                    }
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status <> 'Devolvido'", conexao))
-                        dict["EmpAtivos"] = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-
-                    using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM Emprestimo WHERE Status = 'Atrasado'", conexao))
-                        dict["Atrasados"] = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-
-                    using (var cmd = new SqlCeCommand("SELECT Id, DataHoraEmprestimo FROM EmprestimoRapido WHERE Status = 'Ativo'", conexao))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        int cont = 0;
-                        while (reader.Read())
-                        {
-                            if (!reader.IsDBNull(1))
-                            {
-                                var dt = reader.GetDateTime(1);
-                                if (dt.Date == DateTime.Now.Date) cont++;
-                            }
-                        }
-                        dict["RapidosHoje"] = cont;
-                    }
-
-                    // Média de empréstimos do mês atual
-                    var primeiroDia = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                    var ultimoDia = primeiroDia.AddMonths(1).AddDays(-1);
-                    using (var cmd = new SqlCeCommand(
-                        "SELECT COUNT(*) FROM Emprestimo WHERE DataEmprestimo >= @inicio AND DataEmprestimo <= @fim", conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@inicio", primeiroDia);
-                        cmd.Parameters.AddWithValue("@fim", ultimoDia);
-                        int totalMes = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-                        int dias = DateTime.Now.Day;
-                        dict["MediaMes"] = dias > 0 ? (int)Math.Round(totalMes / (double)dias) : 0;
-                    }
-                }
-            }
-            catch { /*silent*/ }
-
-            return dict;
-        }
-
-
-
-        private void AtualizarCards(Dictionary<string, int> stats)
-        {
-            if (stats == null) return;
-            foreach (Control c in flowCards.Controls)
-            {
-                if (c is Panel card && card.Tag is string key)
-                {
-                    // não sobrescrever o card "TopUsuario" aqui (ele mostra texto, não número)
-                    if (string.Equals(key, "TopUsuario", StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    var valLabel = card.Controls.Find("val_" + key, true).FirstOrDefault() as Label;
-                    if (valLabel != null)
-                    {
-                        int v = stats.ContainsKey(key) ? stats[key] : 0;
-                        valLabel.Text = v.ToString("N0");
-                    }
-                }
-            }
-        }
-
-
-        #endregion
-
-        #region EmprestimoRapido open as MDI child (com toggle de botões do MainForm)
         private void BtnEmprestimoRapido_Click(object sender, EventArgs e)
         {
             AbrirEmprestimoRapido();
@@ -1525,8 +182,7 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 MainForm mainForm = this.MdiParent as MainForm;
                 if (mainForm == null)
                 {
-                    MessageBox.Show("Não foi possível identificar a janela principal (MainForm).",
-                        "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Não foi possível identificar a janela principal (MainForm).", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -1542,55 +198,66 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao abrir Empréstimo Rápido: " + ex.Message, "Erro",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Erro ao abrir Empréstimo Rápido: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
-
 
         private void EmprestimoRap_FormClosed(object sender, FormClosedEventArgs e)
         {
             try
             {
                 Form main = this.FindForm();
-                if (main == null) main = this.MdiParent;
-                if (main == null) return;
-
-                foreach (var kv in mainButtonsOriginalState) SetButtonEnabledOnForm(main, kv.Key, kv.Value);
-
+                if (main == null)
+                    main = this.MdiParent;
+                if (main == null)
+                    return;
+                foreach (var kv in mainButtonsOriginalState)
+                    SetButtonEnabledOnForm(main, kv.Key, kv.Value);
                 _ = CarregarEstatisticasAsync();
             }
-            catch { /*silent*/ }
+            catch
+            { /*silent*/
+            }
         }
 
         private Control FindControlOnForm(Form form, string controlName)
         {
-            if (form == null || string.IsNullOrWhiteSpace(controlName)) return null;
+            if (form == null || string.IsNullOrWhiteSpace(controlName))
+                return null;
             var found = form.Controls.Find(controlName, true);
-            if (found != null && found.Length > 0) return found[0];
+            if (found != null && found.Length > 0)
+                return found[0];
             var t = form.GetType();
             var field = t.GetField(controlName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             if (field != null)
             {
                 var val = field.GetValue(form);
-                if (val is Control c) return c;
+                if (val is Control c)
+                    return c;
             }
+
             var prop = t.GetProperty(controlName, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
             if (prop != null)
             {
                 var val = prop.GetValue(form);
-                if (val is Control c2) return c2;
+                if (val is Control c2)
+                    return c2;
             }
+
             return null;
         }
 
         private void SetButtonEnabledOnForm(Form form, string controlName, bool enabled)
         {
             var ctrl = FindControlOnForm(form, controlName);
-            if (ctrl != null) try { ctrl.Enabled = enabled; } catch { }
+            if (ctrl != null)
+                try
+                {
+                    ctrl.Enabled = enabled;
+                }
+                catch
+                {
+                }
         }
 
         private void InicioForm_KeyDown(object sender, KeyEventArgs e)
@@ -1601,200 +268,9 @@ ORDER BY TotalEmprestimos DESC, l.Nome";
                 AbrirEmprestimoRapido();
             }
         }
-        #endregion
 
-        private void lblResultado_Click(object sender, EventArgs e) { }
-
-        private void BtnImprimirCarta_Click(object sender, EventArgs e)
+        private void lblResultado_Click(object sender, EventArgs e)
         {
-            // Localiza o DataGrid de Devedores
-            var tabControl = panel1.Controls.Find("tabEstatisticas", true).FirstOrDefault() as TabControl;
-            if (tabControl == null) return;
-            var dgvDevedores = tabControl.TabPages[0].Controls.Find("dgvDevedores", true).FirstOrDefault() as DataGridView;
-            if (dgvDevedores == null || dgvDevedores.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Selecione um empréstimo atrasado para gerar o comunicado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            var emprestimo = dgvDevedores.SelectedRows[0].DataBoundItem as EmprestimoAtrasadoInfo;
-            if (emprestimo == null)
-            {
-                MessageBox.Show("Não foi possível obter os dados do empréstimo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Buscar os livros em atraso do aluno
-            var itens = ObterItensAtrasadosPorUsuario(emprestimo.UsuarioId);
-            GerarComunicadoAtrasoPdf(emprestimo, itens);
-        }
-
-        private void GerarComunicadoAtrasoPdf(EmprestimoAtrasadoInfo devedor, List<ItemComunicadoAtraso> itens)
-        {
-            if (devedor == null || itens == null || itens.Count == 0)
-            {
-                MessageBox.Show("Não há itens em atraso para gerar o comunicado.", "Comunicado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            string safeName = string.IsNullOrWhiteSpace(devedor.Nome) ? "Aluno" : string.Concat(devedor.Nome.Split(Path.GetInvalidFileNameChars()));
-            var dlg = new SaveFileDialog
-            {
-                Filter = "PDF (*.pdf)|*.pdf",
-                FileName = $"Comunicado_atraso_{safeName}.pdf"
-            };
-            if (dlg.ShowDialog() != DialogResult.OK) return;
-
-            var configuracao = InstituicaoConfiguracaoStore.Carregar();
-            string instituicao = string.IsNullOrWhiteSpace(configuracao?.Nome) ? "Biblioteca Escolar" : configuracao.Nome;
-            DateTime agora = DateTime.Now;
-            Document doc = new Document(PageSize.A4, 40, 40, 40, 40);
-            using (var fs = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
-            {
-                PdfWriter.GetInstance(doc, fs);
-                doc.Open();
-
-                var titulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 15);
-                var destaque = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 11);
-                var normal = FontFactory.GetFont(FontFactory.HELVETICA, 10.5f);
-                var pequeno = FontFactory.GetFont(FontFactory.HELVETICA, 8.5f);
-                var cabecalho = new PdfPTable(2) { WidthPercentage = 100, SpacingAfter = 22f };
-                cabecalho.SetWidths(new[] { 0.55f, 6.45f });
-                var selo = new PdfPCell { Border = iTextSharp.text.Rectangle.BOTTOM_BORDER, BorderColorBottom = new BaseColor(203, 213, 225), BorderWidthBottom = 0.5f, VerticalAlignment = Element.ALIGN_MIDDLE, PaddingBottom = 7f };
-                try
-                {
-                    string caminhoMarca = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "sub-monocromatico.png");
-                    var marca = iTextSharp.text.Image.GetInstance(caminhoMarca);
-                    marca.ScaleToFit(25f, 25f);
-                    selo.AddElement(marca);
-                }
-                catch { }
-                cabecalho.AddCell(selo);
-                var assinatura = new Phrase();
-                assinatura.Add(new Chunk("Sistema Único Bibliotecário\n", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10.5f, new BaseColor(31, 41, 55))));
-                assinatura.Add(new Chunk(instituicao, FontFactory.GetFont(FontFactory.HELVETICA, 9.5f, new BaseColor(75, 85, 99))));
-                cabecalho.AddCell(new PdfPCell(assinatura) { Border = iTextSharp.text.Rectangle.BOTTOM_BORDER, BorderColorBottom = new BaseColor(203, 213, 225), BorderWidthBottom = 0.5f, VerticalAlignment = Element.ALIGN_MIDDLE, PaddingLeft = 8f, PaddingBottom = 7f });
-                doc.Add(cabecalho);
-                doc.Add(new Paragraph("NOTIFICAÇÃO DE DEVOLUÇÃO EM ATRASO", titulo) { Alignment = Element.ALIGN_CENTER, SpacingAfter = 16f });
-                doc.Add(new Paragraph("Data: " + agora.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("pt-BR")), normal) { SpacingAfter = 14f });
-                doc.Add(new Paragraph("À família ou ao(à) responsável legal pelo(a) estudante " + devedor.Nome + (string.IsNullOrWhiteSpace(devedor.Turma) ? "." : " — Turma: " + devedor.Turma + "."), normal) { SpacingAfter = 14f });
-                var aviso = new PdfPCell(new Phrase("PENDÊNCIA REGISTRADA", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9, new BaseColor(52, 58, 64))))
-                {
-                    BackgroundColor = new BaseColor(243, 244, 246),
-                    BorderColor = new BaseColor(209, 213, 219),
-                    Padding = 7f
-                };
-                var caixaAviso = new PdfPTable(1) { WidthPercentage = 100, SpacingAfter = 14f };
-                caixaAviso.AddCell(aviso);
-                doc.Add(caixaAviso);
-                doc.Add(new Paragraph("Esta notificação formal registra pendência de devolução dos itens relacionados abaixo. Solicitamos a regularização junto à Biblioteca Escolar com prioridade. A pendência permanecerá registrada até a devolução dos itens ou a tratativa pela biblioteca.", normal) { SpacingAfter = 14f });
-
-                var item = itens[0];
-                var pendencia = new PdfPTable(1) { WidthPercentage = 100, SpacingAfter = 22f };
-                var conteudoPendencia = new PdfPCell { BorderColor = new BaseColor(209, 213, 219), Padding = 14f };
-                conteudoPendencia.AddElement(new Paragraph("ITEM COM DEVOLUÇÃO EM ATRASO", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9, new BaseColor(75, 85, 99))) { SpacingAfter = 8f });
-                conteudoPendencia.AddElement(new Paragraph(item.Titulo ?? "Livro não identificado", FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14, new BaseColor(31, 41, 55))) { SpacingAfter = 3f });
-                if (!string.IsNullOrWhiteSpace(item.Autor))
-                    conteudoPendencia.AddElement(new Paragraph("Autor: " + item.Autor, normal) { SpacingAfter = 14f });
-
-                var dadosItem = new PdfPTable(2) { WidthPercentage = 100 };
-                dadosItem.SetWidths(new[] { 1f, 1f });
-                dadosItem.AddCell(new PdfPCell(new Phrase("DEVOLUÇÃO PREVISTA\n" + item.DataDevolucaoPrevista.ToString("dd/MM/yyyy"), FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(52, 58, 64)))) { Border = iTextSharp.text.Rectangle.NO_BORDER, BackgroundColor = new BaseColor(243, 244, 246), Padding = 10f });
-                dadosItem.AddCell(new PdfPCell(new Phrase("DIAS EM ATRASO\n" + item.DiasAtraso, FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, new BaseColor(52, 58, 64)))) { Border = iTextSharp.text.Rectangle.NO_BORDER, BackgroundColor = new BaseColor(243, 244, 246), Padding = 10f, HorizontalAlignment = Element.ALIGN_CENTER });
-                conteudoPendencia.AddElement(dadosItem);
-                pendencia.AddCell(conteudoPendencia);
-                doc.Add(pendencia);
-                doc.Add(new Paragraph("Atenciosamente,\nBiblioteca Escolar de " + instituicao, normal) { SpacingAfter = 24f });
-                doc.Add(new Paragraph("Em caso de dúvidas, procure a Biblioteca Escolar.\nGerado pelo SUB — Sistema Único Bibliotecário", pequeno) { Alignment = Element.ALIGN_CENTER });
-
-                doc.Close();
-            }
-
-            RegistrarComunicadoAtraso(devedor.UsuarioId, instituicao, agora, itens);
-            MessageBox.Show("Comunicado de atraso gerado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            try { Process.Start(dlg.FileName); } catch { }
-        }
-
-        private List<ItemComunicadoAtraso> ObterItensAtrasadosPorUsuario(int usuarioId)
-        {
-            var itens = new List<ItemComunicadoAtraso>();
-            try
-            {
-                using (var conexao = Conexao.ObterConexao())
-                {
-                    conexao.Open();
-                    string sql = @"
-SELECT e.Id, l.Id, l.Nome, l.Autor, COALESCE(e.DataProrrogacao, e.DataDevolucao), DATEDIFF(day, COALESCE(e.DataProrrogacao, e.DataDevolucao), GETDATE())
-FROM Emprestimo e
-INNER JOIN Livros l ON e.LivroId = l.Id
-WHERE e.Alocador = @usuarioId
-  AND e.Status <> 'Devolvido'
-  AND COALESCE(e.DataProrrogacao, e.DataDevolucao) < GETDATE()";
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@usuarioId", usuarioId);
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                itens.Add(new ItemComunicadoAtraso
-                                {
-                                    EmprestimoId = reader.GetInt32(0),
-                                    LivroId = reader.IsDBNull(1) ? 0 : reader.GetInt32(1),
-                                    Titulo = reader.IsDBNull(2) ? "" : reader.GetString(2),
-                                    Autor = reader.IsDBNull(3) ? "" : reader.GetString(3),
-                                    DataDevolucaoPrevista = reader.GetDateTime(4),
-                                    DiasAtraso = Math.Max(1, reader.GetInt32(5))
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            catch { }
-            return itens;
-        }
-
-        private void RegistrarComunicadoAtraso(int usuarioId, string instituicao, DateTime geradoEm, List<ItemComunicadoAtraso> itens)
-        {
-            using (var conexao = Conexao.ObterConexao())
-            {
-                conexao.Open();
-                using (var transacao = conexao.BeginTransaction())
-                {
-                    int comunicadoId;
-                    using (var inserir = new SqlCeCommand(@"INSERT INTO ComunicadosAtraso (UsuarioId, Bibliotecaria, Instituicao, GeradoEm, VersaoModelo)
-VALUES (@usuario, @bibliotecaria, @instituicao, @geradoEm, @versao)", conexao, transacao))
-                    {
-                        inserir.Parameters.AddWithValue("@usuario", usuarioId);
-                        inserir.Parameters.AddWithValue("@bibliotecaria", (object)(Sessao.NomeBibliotecariaLogada ?? "") ?? DBNull.Value);
-                        inserir.Parameters.AddWithValue("@instituicao", instituicao);
-                        inserir.Parameters.AddWithValue("@geradoEm", geradoEm);
-                        inserir.Parameters.AddWithValue("@versao", 1);
-                        inserir.ExecuteNonQuery();
-                    }
-                    using (var id = new SqlCeCommand("SELECT @@IDENTITY", conexao, transacao))
-                        comunicadoId = Convert.ToInt32(id.ExecuteScalar());
-
-                    foreach (var item in itens)
-                    using (var inserirItem = new SqlCeCommand(@"INSERT INTO ComunicadosAtrasoItens
-(ComunicadoId, EmprestimoId, LivroId, Titulo, Autor, DataDevolucaoPrevista, DiasAtraso)
-VALUES (@comunicado, @emprestimo, @livro, @titulo, @autor, @devolucao, @dias)", conexao, transacao))
-                    {
-                        inserirItem.Parameters.AddWithValue("@comunicado", comunicadoId);
-                        inserirItem.Parameters.AddWithValue("@emprestimo", item.EmprestimoId);
-                        inserirItem.Parameters.AddWithValue("@livro", item.LivroId == 0 ? (object)DBNull.Value : item.LivroId);
-                        inserirItem.Parameters.AddWithValue("@titulo", item.Titulo ?? "");
-                        inserirItem.Parameters.AddWithValue("@autor", item.Autor ?? "");
-                        inserirItem.Parameters.AddWithValue("@devolucao", item.DataDevolucaoPrevista);
-                        inserirItem.Parameters.AddWithValue("@dias", item.DiasAtraso);
-                        inserirItem.ExecuteNonQuery();
-                    }
-                    transacao.Commit();
-                }
-            }
         }
     }
 }
-
-#endregion

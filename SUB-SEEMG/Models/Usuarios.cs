@@ -14,14 +14,13 @@ public class Usuarios
     public string Turma { get; set; }
     public string Senha { get; set; }
     public string ConfirmarSenha { get; set; }
-
-   
     public static List<Usuarios> ListaUsuarios { get; set; } = new List<Usuarios>();
 
-    public Usuarios() { }
+    public Usuarios()
+    {
+    }
 
-    public Usuarios(int id, string nome, string tipoUsuario, string cpf, DateTime dataNascimento,
-                   string telefone, string email, string turma, string senha, string confirmarSenha)
+    public Usuarios(int id, string nome, string tipoUsuario, string cpf, DateTime dataNascimento, string telefone, string email, string turma, string senha, string confirmarSenha)
     {
         Id = id;
         Nome = nome;
@@ -42,11 +41,7 @@ public class Usuarios
 
     public bool CamposObrigatoriosPreenchidos()
     {
-        return !string.IsNullOrWhiteSpace(Nome)
-            && !string.IsNullOrWhiteSpace(TipoUsuario)
-            && !string.IsNullOrWhiteSpace(CPF)
-            && !string.IsNullOrWhiteSpace(Senha)
-            && !string.IsNullOrWhiteSpace(ConfirmarSenha);
+        return !string.IsNullOrWhiteSpace(Nome) && !string.IsNullOrWhiteSpace(TipoUsuario) && !string.IsNullOrWhiteSpace(CPF) && !string.IsNullOrWhiteSpace(Senha) && !string.IsNullOrWhiteSpace(ConfirmarSenha);
     }
 
     public override string ToString()
@@ -54,7 +49,7 @@ public class Usuarios
         return $"{Nome} - {Turma}";
     }
 
-    // Para Manipulação de dados SOMENTE dos Alunos 
+    // Para Manipulação de dados SOMENTE dos Alunos
     public class Aluno
     {
         public string Nome { get; set; }
@@ -64,6 +59,4 @@ public class Usuarios
         public string CPF { get; set; }
         public DateTime DataNascimento { get; set; }
     }
-
-
 }

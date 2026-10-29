@@ -8,18 +8,15 @@ namespace SUB.Forms.Utils
     {
         private readonly Timer _closeTimer;
         private bool _operationComplete;
-
         public frmProgresso()
         {
             InitializeComponent();
             ThemeManager.ApplyConfiguredTheme(this);
-
             // Configurações iniciais
             _operationComplete = false;
             progressBar1.Minimum = 0;
             progressBar1.Maximum = 100;
             progressBar1.Value = 0;
-
             // Configura o timer para fechar automaticamente
             _closeTimer = new Timer
             {
@@ -38,10 +35,8 @@ namespace SUB.Forms.Utils
         {
             if (this.IsDisposed)
                 return;
-
             // Garante que o valor esteja dentro dos limites
             valor = Math.Max(0, Math.Min(valor, 100));
-
             if (InvokeRequired)
             {
                 BeginInvoke(new Action(() =>
@@ -61,10 +56,8 @@ namespace SUB.Forms.Utils
             {
                 if (this.IsDisposed)
                     return;
-
                 progressBar1.Value = valor;
                 lblStatus.Text = mensagem;
-
                 // Se completou 100% e ainda não foi iniciado o timer
                 if (valor >= 100 && !_operationComplete)
                 {
@@ -74,11 +67,9 @@ namespace SUB.Forms.Utils
             }
             catch (ObjectDisposedException)
             {
-                // Ignora se o formulário já foi descartado
+            // Ignora se o formulário já foi descartado
             }
         }
-
-
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
@@ -95,7 +86,6 @@ namespace SUB.Forms.Utils
 
         private void lblStatus_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

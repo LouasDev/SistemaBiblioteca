@@ -1,8 +1,8 @@
-using SUB.Models;
-using SUB.Utils;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using SUB.Models;
+using SUB.Utils;
 
 namespace SUB.Forms.Configuracoes
 {
@@ -13,20 +13,14 @@ namespace SUB.Forms.Configuracoes
             InitializeComponent();
         }
 
-        public void CarregarNovidades(AtualizacaoManifesto manifesto, bool permitirAtualizacao = false,
-            bool instalada = false)
+        public void CarregarNovidades(AtualizacaoManifesto manifesto, bool permitirAtualizacao = false, bool instalada = false)
         {
             if (manifesto == null)
                 throw new ArgumentNullException(nameof(manifesto));
-
             lblVersao.Text = "SUB " + (VersaoAplicativo.Formatar(manifesto.Versao) ?? "—");
-            lblData.Text = string.IsNullOrWhiteSpace(manifesto.Data)
-                ? string.Empty : "Publicada em " + manifesto.Data.Trim();
-            lblSubtitulo.Text = instalada ? "Atualização instalada. Confira o que mudou."
-                : "Confira as melhorias e correções desta versão.";
-            rtbNovidades.Text = string.IsNullOrWhiteSpace(manifesto.Notas)
-                ? "Não foram informadas notas para esta versão."
-                : ConfiguracaoForm.TruncarNotas(manifesto.Notas);
+            lblData.Text = string.IsNullOrWhiteSpace(manifesto.Data) ? string.Empty : "Publicada em " + manifesto.Data.Trim();
+            lblSubtitulo.Text = instalada ? "Atualização instalada. Confira o que mudou." : "Confira as melhorias e correções desta versão.";
+            rtbNovidades.Text = string.IsNullOrWhiteSpace(manifesto.Notas) ? "Não foram informadas notas para esta versão." : ConfiguracaoForm.TruncarNotas(manifesto.Notas);
             btnContinuar.Visible = permitirAtualizacao;
             btnFechar.Text = permitirAtualizacao ? "Agora não" : "Entendi";
             btnFechar.DialogResult = permitirAtualizacao ? DialogResult.Cancel : DialogResult.OK;

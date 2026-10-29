@@ -1,15 +1,14 @@
-using Newtonsoft.Json;
-using SUB.Models;
 using System;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using SUB.Models;
 
 namespace SUB.Utils
 {
     internal sealed class NovidadesAtualizacaoStore
     {
         private readonly string caminho;
-
         internal sealed class Registro
         {
             public AtualizacaoManifesto Manifesto { get; set; }
@@ -25,18 +24,7 @@ namespace SUB.Utils
         {
             if (manifesto == null || !VersaoAplicativo.FormatoValido(manifesto.Versao))
                 throw new ArgumentException("Versão inválida para as novidades da atualização.");
-
-            Salvar(new Registro
-            {
-                Manifesto = new AtualizacaoManifesto
-                {
-                    Versao = manifesto.Versao,
-                    Data = manifesto.Data,
-                    Notas = manifesto.Notas != null && manifesto.Notas.Length > 4000
-                        ? manifesto.Notas.Substring(0, 4000) + Environment.NewLine + "[notas truncadas]"
-                        : manifesto.Notas
-                }
-            });
+            Salvar(new Registro { Manifesto = new AtualizacaoManifesto { Versao = manifesto.Versao, Data = manifesto.Data, Notas = manifesto.Notas != null && manifesto.Notas.Length > 4000 ? manifesto.Notas.Substring(0, 4000) + Environment.NewLine + "[notas truncadas]" : manifesto.Notas } });
         }
 
         internal Registro ObterDaVersao(string versao)
@@ -46,13 +34,20 @@ namespace SUB.Utils
                 if (!File.Exists(caminho) || new FileInfo(caminho).Length > 65536)
                     return null;
                 var registro = JsonConvert.DeserializeObject<Registro>(File.ReadAllText(caminho));
-                return registro?.Manifesto != null && VersaoAplicativo.FormatoValido(versao) &&
-                    VersaoAplicativo.Formatar(registro.Manifesto.Versao) == versao
-                    ? registro : null;
+                return registro?.Manifesto != null && VersaoAplicativo.FormatoValido(versao) && VersaoAplicativo.Formatar(registro.Manifesto.Versao) == versao ? registro : null;
             }
-            catch (IOException) { return null; }
-            catch (UnauthorizedAccessException) { return null; }
-            catch (JsonException) { return null; }
+            catch (IOException)
+            {
+                return null;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return null;
+            }
+            catch (JsonException)
+            {
+                return null;
+            }
         }
 
         internal void MarcarExibida(string versao)

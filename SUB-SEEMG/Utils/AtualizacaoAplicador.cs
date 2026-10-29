@@ -1,21 +1,16 @@
-using SUB.Models;
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Windows.Forms;
+using SUB.Models;
 
 namespace SUB.Utils
 {
     public static class AtualizacaoAplicador
     {
         public static string PastaInstalacao => Application.StartupPath;
-
-        public static string CaminhoUpdaterInstalado =>
-            Path.Combine(Application.StartupPath, "SUB-UPDATER.exe");
-
-        public static string CaminhoUpdaterTemp =>
-            Path.Combine(AppPaths.UpdateFolder, "updater", "SUB-UPDATER.exe");
+        public static string CaminhoUpdaterInstalado => Path.Combine(Application.StartupPath, "SUB-UPDATER.exe");
+        public static string CaminhoUpdaterTemp => Path.Combine(AppPaths.UpdateFolder, "updater", "SUB-UPDATER.exe");
 
         public static bool PastaInstalacaoGravavel()
         {
@@ -36,21 +31,16 @@ namespace SUB.Utils
         {
             if (manifesto == null)
                 return "Manifesto de atualização indisponível.";
-
             if (string.IsNullOrWhiteSpace(caminhoZip) || !File.Exists(caminhoZip))
                 return "O pacote baixado não foi encontrado. Verifique novamente as atualizações.";
-
             var info = new FileInfo(caminhoZip);
             if (info.Length != manifesto.Tamanho)
                 return "O tamanho do pacote não confere mais com o manifesto. Baixe novamente.";
-
             var hash = AtualizacaoService.CalcularSha256(caminhoZip);
             if (!string.Equals(hash, (manifesto.Sha256 ?? string.Empty).Trim(), StringComparison.OrdinalIgnoreCase))
                 return "O hash SHA-256 do pacote não confere mais. Baixe novamente.";
-
             if (!File.Exists(CaminhoUpdaterInstalado))
                 return "O atualizador (SUB-UPDATER.exe) não foi encontrado na pasta do programa.";
-
             return null;
         }
 
@@ -66,7 +56,6 @@ namespace SUB.Utils
                 var carimbo = DateTime.Now.ToString("yyyyMMdd-HHmmss");
                 var destino = Path.Combine(dadosFolder, "backups", carimbo);
                 Directory.CreateDirectory(destino);
-
                 var pastaBanco = Path.Combine(dadosFolder, "SUB");
                 if (Directory.Exists(pastaBanco))
                 {
@@ -77,7 +66,6 @@ namespace SUB.Utils
                 var config = Path.Combine(dadosFolder, "instituicao.json");
                 if (File.Exists(config))
                     File.Copy(config, Path.Combine(destino, "instituicao.json"), true);
-
                 PodarBackups(Path.Combine(dadosFolder, "backups"), 3);
                 return null;
             }
@@ -91,7 +79,6 @@ namespace SUB.Utils
         {
             if (!Directory.Exists(pastaBackups))
                 return;
-
             var pastas = Directory.GetDirectories(pastaBackups);
             Array.Sort(pastas, StringComparer.Ordinal);
             for (int i = 0; i < pastas.Length - manter; i++)
@@ -105,15 +92,7 @@ namespace SUB.Utils
                 var destino = CaminhoUpdaterTemp;
                 Directory.CreateDirectory(Path.GetDirectoryName(destino));
                 File.Copy(CaminhoUpdaterInstalado, destino, true);
-
-                var args = string.Format(
-                    "--pid {0} --pasta \"{1}\" --pacote \"{2}\" --versao \"{3}\" --dados \"{4}\"",
-                    Process.GetCurrentProcess().Id,
-                    PastaInstalacao,
-                    caminhoZip,
-                    AtualizacaoService.NormalizarVersao(manifesto.Versao),
-                    AppPaths.AppDataFolder);
-
+                var args = string.Format("--pid {0} --pasta \"{1}\" --pacote \"{2}\" --versao \"{3}\" --dados \"{4}\"", Process.GetCurrentProcess().Id, PastaInstalacao, caminhoZip, AtualizacaoService.NormalizarVersao(manifesto.Versao), AppPaths.AppDataFolder);
                 Process.Start(destino, args);
                 return null;
             }
@@ -135,18 +114,11 @@ namespace SUB.Utils
                 var pendente = Path.Combine(pastaUpdate, "rollback-pendente.txt");
                 if (!File.Exists(pendente))
                     return;
-
                 var rollback = (File.ReadAllText(pendente) ?? string.Empty).Trim();
                 var rollbackFull = Path.GetFullPath(rollback);
                 var baseFull = Path.GetFullPath(pastaUpdate) + Path.DirectorySeparatorChar;
-
-                File.WriteAllText(
-                    Path.Combine(pastaUpdate, "atualizacao-ok.txt"),
-                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - versao " +
-                    AtualizacaoService.VersaoAtual());
-
-                if (rollbackFull.StartsWith(baseFull, StringComparison.OrdinalIgnoreCase) &&
-                    Directory.Exists(rollbackFull))
+                File.WriteAllText(Path.Combine(pastaUpdate, "atualizacao-ok.txt"), DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " - versao " + AtualizacaoService.VersaoAtual());
+                if (rollbackFull.StartsWith(baseFull, StringComparison.OrdinalIgnoreCase) && Directory.Exists(rollbackFull))
                 {
                     Directory.Delete(rollbackFull, true);
                 }

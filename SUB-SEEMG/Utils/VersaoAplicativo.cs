@@ -7,8 +7,7 @@ namespace SUB.Utils
     {
         public static bool FormatoValido(string valor)
         {
-            return valor != null && Regex.IsMatch(valor, @"\A[0-9]+\.[0-9]+\.[0-9]+\z") &&
-                   Formatar(valor) == valor;
+            return valor != null && Regex.IsMatch(valor, @"\A[0-9]+\.[0-9]+\.[0-9]+\z") && Formatar(valor) == valor;
         }
 
         // Os metadados do Windows podem acrescentar uma revisão zero.
@@ -17,7 +16,6 @@ namespace SUB.Utils
         {
             if (valor == null || !Regex.IsMatch(valor, @"\A[0-9]+\.[0-9]+\.[0-9]+(?:\.0)?\z"))
                 return null;
-
             Version versao;
             if (!Version.TryParse(valor, out versao))
                 return null;

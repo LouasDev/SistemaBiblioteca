@@ -26,7 +26,12 @@ namespace SUB.Utils
 
     public sealed class GuidedTourOverlay : Panel
     {
-        private enum TourScreen { Welcome, Step, Completion }
+        private enum TourScreen
+        {
+            Welcome,
+            Step,
+            Completion
+        }
 
         private readonly Panel card;
         private readonly PictureBox picIcon;
@@ -48,10 +53,8 @@ namespace SUB.Utils
         private bool ownerKeyPreview;
         private Bitmap backgroundSnapshot;
         private int cardTargetTop;
-
         public event EventHandler Completed;
         public event EventHandler Skipped;
-
         public GuidedTourOverlay()
         {
             Dock = DockStyle.None;
@@ -59,9 +62,19 @@ namespace SUB.Utils
             TabStop = true;
             DoubleBuffered = true;
             BackColor = Color.FromArgb(28, 39, 53);
-
-            card = new Panel { Size = new Size(474, 246), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
-            picIcon = new PictureBox { Location = new Point(412, 23), Size = new Size(38, 38), SizeMode = PictureBoxSizeMode.Zoom, BackColor = Color.Transparent };
+            card = new Panel
+            {
+                Size = new Size(474, 246),
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            picIcon = new PictureBox
+            {
+                Location = new Point(412, 23),
+                Size = new Size(38, 38),
+                SizeMode = PictureBoxSizeMode.Zoom,
+                BackColor = Color.Transparent
+            };
             lblSection = CreateLabel(new Point(24, 20), new Size(360, 17), 8.5F, FontStyle.Bold);
             lblTitle = CreateLabel(new Point(24, 39), new Size(370, 31), 15F, FontStyle.Bold);
             lblMessage = CreateLabel(new Point(24, 85), new Size(426, 57), 10F, FontStyle.Regular);
@@ -71,13 +84,14 @@ namespace SUB.Utils
             btnBack = CreateButton("Voltar", new Point(24, 188), new Size(92, 34));
             btnSkip = CreateButton("Pular tutorial", new Point(128, 188), new Size(132, 34));
             btnNext = CreateButton("Próximo", new Point(344, 188), new Size(106, 34));
-
             btnBack.Click += (sender, args) => ShowStep(stepIndex - 1);
             btnNext.Click += (sender, args) => Advance();
             btnSkip.Click += (sender, args) => Skipped?.Invoke(this, EventArgs.Empty);
-            cardTransitionTimer = new Timer { Interval = 15 };
+            cardTransitionTimer = new Timer
+            {
+                Interval = 15
+            };
             cardTransitionTimer.Tick += CardTransitionTimer_Tick;
-
             card.Controls.Add(picIcon);
             card.Controls.Add(lblSection);
             card.Controls.Add(lblTitle);
@@ -88,14 +102,17 @@ namespace SUB.Utils
             card.Controls.Add(btnNext);
             card.Paint += Card_Paint;
             Controls.Add(card);
-            Resize += (sender, args) => { CaptureBackground(); PositionCard(); };
+            Resize += (sender, args) =>
+            {
+                CaptureBackground();
+                PositionCard();
+            };
         }
 
         public void Start(IList<TutorialStep> tutorialSteps, Color themeColor, Func<Bitmap> backgroundProvider, Image logo)
         {
             if (tutorialSteps == null || tutorialSteps.Count == 0)
                 throw new ArgumentException("O tutorial precisa ter pelo menos uma etapa.", nameof(tutorialSteps));
-
             steps = tutorialSteps;
             captureBackground = backgroundProvider;
             brandImage = logo;
@@ -140,6 +157,7 @@ namespace SUB.Utils
                 owner.KeyDown -= Owner_KeyDown;
                 owner.KeyPreview = ownerKeyPreview;
             }
+
             if (disposing && backgroundSnapshot != null)
                 backgroundSnapshot.Dispose();
             if (disposing)
@@ -147,17 +165,21 @@ namespace SUB.Utils
                 cardTransitionTimer.Stop();
                 cardTransitionTimer.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
-        protected override void OnPaintBackground(PaintEventArgs e) { }
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-            if (backgroundSnapshot != null) e.Graphics.DrawImage(backgroundSnapshot, ClientRectangle);
-            else e.Graphics.Clear(BackColor);
-
+            if (backgroundSnapshot != null)
+                e.Graphics.DrawImage(backgroundSnapshot, ClientRectangle);
+            else
+                e.Graphics.Clear(BackColor);
             using (SolidBrush shade = new SolidBrush(Color.FromArgb(118, 10, 22, 36)))
                 e.Graphics.FillRectangle(shade, ClientRectangle);
             DrawTarget(e.Graphics);
@@ -166,9 +188,22 @@ namespace SUB.Utils
 
         private void Advance()
         {
-            if (screen == TourScreen.Welcome) { ShowStep(0); return; }
-            if (screen == TourScreen.Completion) { Completed?.Invoke(this, EventArgs.Empty); return; }
-            if (stepIndex == steps.Count - 1) ShowCompletion(); else ShowStep(stepIndex + 1);
+            if (screen == TourScreen.Welcome)
+            {
+                ShowStep(0);
+                return;
+            }
+
+            if (screen == TourScreen.Completion)
+            {
+                Completed?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            if (stepIndex == steps.Count - 1)
+                ShowCompletion();
+            else
+                ShowStep(stepIndex + 1);
         }
 
         private void ShowWelcome()
@@ -187,14 +222,13 @@ namespace SUB.Utils
 
         private void ShowStep(int index)
         {
-            if (index < 0 || steps == null || index >= steps.Count) return;
-
+            if (index < 0 || steps == null || index >= steps.Count)
+                return;
             stepIndex = index;
             screen = TourScreen.Step;
             TutorialStep step = steps[stepIndex];
             step.Prepare?.Invoke();
             CaptureBackground();
-
             Control target = GetTarget();
             string progress = string.Format("ETAPA {0} DE {1}", stepIndex + 1, steps.Count);
             ConfigureCard(step.Section, step.Title, step.Message, GetTargetImage(target) ?? brandImage, progress, stepIndex > 0, true, stepIndex == steps.Count - 1 ? "Concluir" : "Próximo", "Pular tutorial");
@@ -226,36 +260,49 @@ namespace SUB.Utils
         private void CaptureBackground()
         {
             Bitmap next = null;
-            try { next = captureBackground?.Invoke(); } catch { }
+            try
+            {
+                next = captureBackground?.Invoke();
+            }
+            catch
+            {
+            }
+
             if (next == null && ClientSize.Width > 0 && ClientSize.Height > 0)
             {
                 next = new Bitmap(ClientSize.Width, ClientSize.Height);
-                using (Graphics graphics = Graphics.FromImage(next)) graphics.Clear(BackColor);
+                using (Graphics graphics = Graphics.FromImage(next))
+                    graphics.Clear(BackColor);
             }
+
             Bitmap previous = backgroundSnapshot;
             backgroundSnapshot = next;
-            if (previous != null) previous.Dispose();
+            if (previous != null)
+                previous.Dispose();
         }
 
         private void PositionCard()
         {
-            if (ClientSize.Width <= 0 || ClientSize.Height <= 0) return;
+            if (ClientSize.Width <= 0 || ClientSize.Height <= 0)
+                return;
             Rectangle target = GetTargetBounds(GetTarget());
             int x = target.IsEmpty ? (ClientSize.Width - card.Width) / 2 : target.Right + 26;
             int y = target.IsEmpty ? (ClientSize.Height - card.Height) / 2 : target.Top - 12;
-            if (x + card.Width > ClientSize.Width - 18) x = Math.Max(18, target.IsEmpty ? (ClientSize.Width - card.Width) / 2 : target.Left - card.Width - 26);
-            if (x < 18) x = Math.Max(18, (ClientSize.Width - card.Width) / 2);
+            if (x + card.Width > ClientSize.Width - 18)
+                x = Math.Max(18, target.IsEmpty ? (ClientSize.Width - card.Width) / 2 : target.Left - card.Width - 26);
+            if (x < 18)
+                x = Math.Max(18, (ClientSize.Width - card.Width) / 2);
             cardTargetTop = Math.Max(18, Math.Min(y, ClientSize.Height - card.Height - 18));
             card.Location = new Point(x, cardTargetTop);
         }
 
         private void DrawTarget(Graphics graphics)
         {
-            if (screen != TourScreen.Step) return;
+            if (screen != TourScreen.Step)
+                return;
             Rectangle target = GetTargetBounds(GetTarget());
             if (target.IsEmpty)
                 return;
-
             target.Inflate(5, 5);
             using (GraphicsPath path = RoundedRectangle(target, 8))
             using (Pen glow = new Pen(Color.FromArgb(140, Color.White), 7F))
@@ -268,9 +315,11 @@ namespace SUB.Utils
 
         private void DrawCardShadow(Graphics graphics)
         {
-            Rectangle shadow = card.Bounds; shadow.Offset(0, 8);
+            Rectangle shadow = card.Bounds;
+            shadow.Offset(0, 8);
             using (GraphicsPath shadowPath = RoundedRectangle(shadow, 15))
-            using (SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(64, 0, 0, 0))) graphics.FillPath(shadowBrush, shadowPath);
+            using (SolidBrush shadowBrush = new SolidBrush(Color.FromArgb(64, 0, 0, 0)))
+                graphics.FillPath(shadowBrush, shadowPath);
         }
 
         private void CardTransitionTimer_Tick(object sender, EventArgs e)
@@ -291,8 +340,10 @@ namespace SUB.Utils
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
             Rectangle bounds = new Rectangle(0, 0, card.Width - 1, card.Height - 1);
             using (GraphicsPath path = RoundedRectangle(bounds, 15))
-            using (Pen pen = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaryColor, 0.58F), 1F)) e.Graphics.DrawPath(pen, path);
-            using (SolidBrush accent = new SolidBrush(primaryColor)) e.Graphics.FillRectangle(accent, new Rectangle(0, 0, 6, card.Height));
+            using (Pen pen = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaryColor, 0.58F), 1F))
+                e.Graphics.DrawPath(pen, path);
+            using (SolidBrush accent = new SolidBrush(primaryColor))
+                e.Graphics.FillRectangle(accent, new Rectangle(0, 0, 6, card.Height));
             if (screen == TourScreen.Step && steps != null)
             {
                 int startX = card.Width - 200;
@@ -307,26 +358,46 @@ namespace SUB.Utils
 
         private void Owner_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!Visible || steps == null) return;
+            if (!Visible || steps == null)
+                return;
             if (e.KeyCode == Keys.Escape)
             {
                 e.SuppressKeyPress = true;
-                if (screen == TourScreen.Completion) Completed?.Invoke(this, EventArgs.Empty); else Skipped?.Invoke(this, EventArgs.Empty);
+                if (screen == TourScreen.Completion)
+                    Completed?.Invoke(this, EventArgs.Empty);
+                else
+                    Skipped?.Invoke(this, EventArgs.Empty);
             }
-            else if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Right) { e.SuppressKeyPress = true; Advance(); }
-            else if (e.KeyCode == Keys.Left && screen == TourScreen.Step && stepIndex > 0) { e.SuppressKeyPress = true; ShowStep(stepIndex - 1); }
+            else if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Right)
+            {
+                e.SuppressKeyPress = true;
+                Advance();
+            }
+            else if (e.KeyCode == Keys.Left && screen == TourScreen.Step && stepIndex > 0)
+            {
+                e.SuppressKeyPress = true;
+                ShowStep(stepIndex - 1);
+            }
         }
 
         private Control GetTarget()
         {
             if (screen != TourScreen.Step || steps == null || stepIndex < 0 || stepIndex >= steps.Count)
                 return null;
-            try { return steps[stepIndex].Target?.Invoke(); } catch { return null; }
+            try
+            {
+                return steps[stepIndex].Target?.Invoke();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         private Rectangle GetTargetBounds(Control target)
         {
-            if (target == null || target.IsDisposed || !target.Visible) return Rectangle.Empty;
+            if (target == null || target.IsDisposed || !target.Visible)
+                return Rectangle.Empty;
             return RectangleToClient(target.RectangleToScreen(target.ClientRectangle));
         }
 
@@ -338,12 +409,31 @@ namespace SUB.Utils
 
         private static Label CreateLabel(Point location, Size size, float fontSize, FontStyle style)
         {
-            return new Label { AutoSize = false, Location = location, Size = size, Font = new Font("Segoe UI", fontSize, style) };
+            return new Label
+            {
+                AutoSize = false,
+                Location = location,
+                Size = size,
+                Font = new Font("Segoe UI", fontSize, style)
+            };
         }
 
         private static Button CreateButton(string text, Point location, Size size)
         {
-            return new Button { Text = text, Location = location, Size = size, FlatStyle = FlatStyle.Flat, FlatAppearance = { BorderSize = 1 }, Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold), Cursor = Cursors.Hand, UseVisualStyleBackColor = false };
+            return new Button
+            {
+                Text = text,
+                Location = location,
+                Size = size,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance =
+                {
+                    BorderSize = 1
+                },
+                Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold),
+                Cursor = Cursors.Hand,
+                UseVisualStyleBackColor = false
+            };
         }
 
         private static void StyleSecondaryButton(Button button, Color primaryColor)

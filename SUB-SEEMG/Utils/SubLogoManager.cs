@@ -1,11 +1,11 @@
-﻿using SUB.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using SUB.Properties;
 
 namespace SUB.Utils
 {
@@ -17,11 +17,9 @@ namespace SUB.Utils
 
     public static class SubLogoManager
     {
-        private static readonly object SyncRoot = new object();
+        private static readonly object SyncRoot = new object ();
         private static readonly Dictionary<string, Bitmap> Cache = new Dictionary<string, Bitmap>(StringComparer.OrdinalIgnoreCase);
-        private static readonly ConditionalWeakTable<Form, FormIconState> FormIcons =
-            new ConditionalWeakTable<Form, FormIconState>();
-
+        private static readonly ConditionalWeakTable<Form, FormIconState> FormIcons = new ConditionalWeakTable<Form, FormIconState>();
         private sealed class FormIconState
         {
             public int ThemeArgb;
@@ -29,7 +27,6 @@ namespace SUB.Utils
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern bool DestroyIcon(IntPtr hIcon);
-
         public static Bitmap Get(SubLogoVariant variant, Color primaryColor, Color backgroundColor)
         {
             return Get(variant, primaryColor, backgroundColor, Size.Empty);
@@ -42,13 +39,11 @@ namespace SUB.Utils
             bool redimensionar = renderSize.Width > 0 && renderSize.Height > 0;
             string tamanho = redimensionar ? string.Format(":{0}x{1}", renderSize.Width, renderSize.Height) : string.Empty;
             string key = string.Format("{0}:{1}:{2}{3}", variant, ColorTranslator.ToHtml(primaryColor), ColorTranslator.ToHtml(backgroundColor), tamanho);
-
             lock (SyncRoot)
             {
                 Bitmap cached;
                 if (Cache.TryGetValue(key, out cached))
                     return cached;
-
                 Bitmap themed;
                 using (Bitmap original = GetOriginal(variant))
                 {
@@ -85,7 +80,6 @@ namespace SUB.Utils
         }
 
         private static readonly Color AzulOriginal = Color.FromArgb(31, 72, 126);
-
         private static Bitmap CreateVariant(Bitmap source, Color primaryColor, Color backgroundColor)
         {
             Color logoColor = GetLogoColor(primaryColor, backgroundColor);
@@ -97,12 +91,10 @@ namespace SUB.Utils
                     Color pixel = source.GetPixel(x, y);
                     // As bordas suavizadas são mesclas de azul e branco: mantém a proporção na nova paleta.
                     double branco = ProporcaoBranco(pixel);
-                    result.SetPixel(x, y, Color.FromArgb(pixel.A,
-                        Misturar(logoColor.R, backgroundColor.R, branco),
-                        Misturar(logoColor.G, backgroundColor.G, branco),
-                        Misturar(logoColor.B, backgroundColor.B, branco)));
+                    result.SetPixel(x, y, Color.FromArgb(pixel.A, Misturar(logoColor.R, backgroundColor.R, branco), Misturar(logoColor.G, backgroundColor.G, branco), Misturar(logoColor.B, backgroundColor.B, branco)));
                 }
             }
+
             return result;
         }
 
@@ -136,25 +128,17 @@ namespace SUB.Utils
 
         private static Color GetLogoColor(Color primaryColor, Color backgroundColor)
         {
-            double luminance = (0.299 * backgroundColor.R) +
-                               (0.587 * backgroundColor.G) +
-                               (0.114 * backgroundColor.B);
-
-            return luminance >= 180
-                ? primaryColor
-                : ThemeManager.GetContrastColor(backgroundColor);
+            double luminance = (0.299 * backgroundColor.R) + (0.587 * backgroundColor.G) + (0.114 * backgroundColor.B);
+            return luminance >= 180 ? primaryColor : ThemeManager.GetContrastColor(backgroundColor);
         }
 
         public static void SetImage(PictureBox pictureBox, SubLogoVariant variant, Color primaryColor, Color backgroundColor)
         {
             if (pictureBox == null)
                 return;
-
             // Entrega no tamanho exato: a redução da PictureBox (Zoom) serrilha o logo.
             int lado = Math.Min(pictureBox.ClientSize.Width, pictureBox.ClientSize.Height);
-            Bitmap next = lado > 0
-                ? Get(variant, primaryColor, backgroundColor, new Size(lado, lado))
-                : Get(variant, primaryColor, backgroundColor);
+            Bitmap next = lado > 0 ? Get(variant, primaryColor, backgroundColor, new Size(lado, lado)) : Get(variant, primaryColor, backgroundColor);
             Image previous = pictureBox.Image;
             pictureBox.Image = new Bitmap(next);
             if (previous != null)
@@ -167,15 +151,12 @@ namespace SUB.Utils
         {
             if (form == null || form.IsDisposed)
                 return;
-
             primaryColor = ThemeManager.Normalize(primaryColor);
             FormIconState state;
             if (FormIcons.TryGetValue(form, out state) && state.ThemeArgb == primaryColor.ToArgb())
                 return;
-
             Icon next = CreateWindowIcon(primaryColor);
             Icon previous = form.Icon;
-
             try
             {
                 form.Icon = next;
@@ -188,12 +169,12 @@ namespace SUB.Utils
 
             if (previous != null)
                 previous.Dispose();
-
             if (state == null)
             {
                 state = new FormIconState();
                 FormIcons.Add(form, state);
             }
+
             state.ThemeArgb = primaryColor.ToArgb();
         }
 
@@ -222,7 +203,6 @@ namespace SUB.Utils
         {
             Color foreground = ThemeManager.GetContrastColor(primaryColor);
             Bitmap result = new Bitmap(source.Width, source.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
             for (int y = 0; y < source.Height; y++)
             {
                 for (int x = 0; x < source.Width; x++)
@@ -231,10 +211,7 @@ namespace SUB.Utils
                     // A arte original é azul de fundo com o símbolo branco.
                     // Mantém essa relação, substituindo apenas o azul pelo tema.
                     double branco = ProporcaoBranco(pixel);
-                    result.SetPixel(x, y, Color.FromArgb(pixel.A,
-                        Misturar(primaryColor.R, foreground.R, branco),
-                        Misturar(primaryColor.G, foreground.G, branco),
-                        Misturar(primaryColor.B, foreground.B, branco)));
+                    result.SetPixel(x, y, Color.FromArgb(pixel.A, Misturar(primaryColor.R, foreground.R, branco), Misturar(primaryColor.G, foreground.G, branco), Misturar(primaryColor.B, foreground.B, branco)));
                 }
             }
 
@@ -242,4 +219,3 @@ namespace SUB.Utils
         }
     }
 }
-

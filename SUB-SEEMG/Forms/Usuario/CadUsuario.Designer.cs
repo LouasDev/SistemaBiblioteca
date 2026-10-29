@@ -1,4 +1,4 @@
-﻿ namespace SUB.Froms.Usuario
+﻿ namespace SUB.Forms.Usuario
 {
     partial class CadUsuario
     {

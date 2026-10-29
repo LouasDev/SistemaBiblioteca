@@ -6,13 +6,11 @@ namespace SUB.Utils
     internal static class ProrrogacaoService
     {
         // A conexão é fornecida pelo chamador; os testes usam somente bancos fictícios.
-        internal static void Prorrogar(SqlCeConnection conexao, int emprestimoId, int dias,
-            DateTime prazoConfirmado, string bibliotecaria, DateTime agora)
+        internal static void Prorrogar(SqlCeConnection conexao, int emprestimoId, int dias, DateTime prazoConfirmado, string bibliotecaria, DateTime agora)
         {
             RegrasCirculacao.CalcularProrrogacao(prazoConfirmado, dias);
             if (string.IsNullOrWhiteSpace(bibliotecaria) || bibliotecaria.Length > 200)
                 throw new InvalidOperationException("Não foi possível identificar a bibliotecária. Entre novamente no sistema.");
-
             using (var transacao = conexao.BeginTransaction())
             {
                 DateTime prazoAtual;
@@ -65,6 +63,7 @@ namespace SUB.Utils
                     registrar.Parameters.AddWithValue("@Bibliotecaria", bibliotecaria);
                     registrar.ExecuteNonQuery();
                 }
+
                 // Dispose sem Commit desfaz a operação inteira, inclusive se o histórico falhar.
                 transacao.Commit();
             }

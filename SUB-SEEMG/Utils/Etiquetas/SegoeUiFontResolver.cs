@@ -11,33 +11,33 @@ namespace SUB.Utils.Etiquetas
         private const string BOLD = "SEGOEUI#B";
         private const string ITALIC = "SEGOEUI#I";
         private const string BOLDITALIC = "SEGOEUI#Z";
-
         private static byte[] _regular;
         private static byte[] _bold;
         private static byte[] _italic;
         private static byte[] _boldItalic;
-
         public string DefaultFontName => FamilyName;
 
         public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
         {
             bool isEmpty = string.IsNullOrWhiteSpace(familyName);
             string noSpaces = isEmpty ? string.Empty : familyName.Replace(" ", string.Empty);
-
-            if (isEmpty ||
-                familyName.Equals(FamilyName, StringComparison.OrdinalIgnoreCase) ||
-                noSpaces.Equals("segoeui", StringComparison.OrdinalIgnoreCase) ||
-                familyName.IndexOf("segoe", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (isEmpty || familyName.Equals(FamilyName, StringComparison.OrdinalIgnoreCase) || noSpaces.Equals("segoeui", StringComparison.OrdinalIgnoreCase) || familyName.IndexOf("segoe", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                if (isBold && isItalic) return new FontResolverInfo(BOLDITALIC);
-                if (isBold) return new FontResolverInfo(BOLD);
-                if (isItalic) return new FontResolverInfo(ITALIC);
+                if (isBold && isItalic)
+                    return new FontResolverInfo(BOLDITALIC);
+                if (isBold)
+                    return new FontResolverInfo(BOLD);
+                if (isItalic)
+                    return new FontResolverInfo(ITALIC);
                 return new FontResolverInfo(REGULAR);
             }
 
-            if (isBold && isItalic) return new FontResolverInfo(BOLDITALIC);
-            if (isBold) return new FontResolverInfo(BOLD);
-            if (isItalic) return new FontResolverInfo(ITALIC);
+            if (isBold && isItalic)
+                return new FontResolverInfo(BOLDITALIC);
+            if (isBold)
+                return new FontResolverInfo(BOLD);
+            if (isItalic)
+                return new FontResolverInfo(ITALIC);
             return new FontResolverInfo(REGULAR);
         }
 
@@ -45,11 +45,16 @@ namespace SUB.Utils.Etiquetas
         {
             switch (faceName)
             {
-                case REGULAR: return _regular ?? (_regular = LoadFromFontsFolder("segoeui.ttf"));
-                case BOLD: return _bold ?? (_bold = LoadFromFontsFolder("segoeuib.ttf"));
-                case ITALIC: return _italic ?? (_italic = LoadFromFontsFolder("segoeuii.ttf"));
-                case BOLDITALIC: return _boldItalic ?? (_boldItalic = LoadFromFontsFolder("segoeuiz.ttf"));
-                default: return null;
+                case REGULAR:
+                    return _regular ?? (_regular = LoadFromFontsFolder("segoeui.ttf"));
+                case BOLD:
+                    return _bold ?? (_bold = LoadFromFontsFolder("segoeuib.ttf"));
+                case ITALIC:
+                    return _italic ?? (_italic = LoadFromFontsFolder("segoeuii.ttf"));
+                case BOLDITALIC:
+                    return _boldItalic ?? (_boldItalic = LoadFromFontsFolder("segoeuiz.ttf"));
+                default:
+                    return null;
             }
         }
 

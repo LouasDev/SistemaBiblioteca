@@ -14,13 +14,15 @@ namespace SUB.Utils
     {
         public static List<string> TurmasPermitidas
         {
-            get { return Carregar(); }
+            get
+            {
+                return Carregar();
+            }
         }
 
         public static List<string> Carregar()
         {
             var turmas = new List<string>();
-
             using (var conexao = Conexao.ObterConexao())
             using (var comando = new SqlCeCommand("SELECT Nome FROM Turmas ORDER BY Nome", conexao))
             {
@@ -38,7 +40,6 @@ namespace SUB.Utils
         public static void Salvar(IEnumerable<string> turmas, IDictionary<string, string> renomeacoes = null)
         {
             var lista = NormalizarLista(turmas);
-
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
@@ -50,9 +51,7 @@ namespace SUB.Utils
                         {
                             if (string.Equals(renomeacao.Key, renomeacao.Value, StringComparison.OrdinalIgnoreCase))
                                 continue;
-
-                            using (var atualizarUsuarios = new SqlCeCommand(
-                                "UPDATE usuarios SET Turma = @novaTurma WHERE Turma = @turmaAnterior", conexao, transacao))
+                            using (var atualizarUsuarios = new SqlCeCommand("UPDATE usuarios SET Turma = @novaTurma WHERE Turma = @turmaAnterior", conexao, transacao))
                             {
                                 atualizarUsuarios.Parameters.AddWithValue("@novaTurma", renomeacao.Value);
                                 atualizarUsuarios.Parameters.AddWithValue("@turmaAnterior", renomeacao.Key);
@@ -62,7 +61,6 @@ namespace SUB.Utils
 
                         using (var limpar = new SqlCeCommand("DELETE FROM Turmas", conexao, transacao))
                             limpar.ExecuteNonQuery();
-
                         foreach (string turma in lista)
                         {
                             using (var inserir = new SqlCeCommand("INSERT INTO Turmas (Nome) VALUES (@nome)", conexao, transacao))
@@ -76,7 +74,14 @@ namespace SUB.Utils
                     }
                     catch
                     {
-                        try { transacao.Rollback(); } catch { }
+                        try
+                        {
+                            transacao.Rollback();
+                        }
+                        catch
+                        {
+                        }
+
                         throw;
                     }
                 }
@@ -85,15 +90,13 @@ namespace SUB.Utils
 
         public static bool Existe(string turma)
         {
-            return !string.IsNullOrWhiteSpace(turma) &&
-                   Carregar().Contains(turma.Trim(), StringComparer.OrdinalIgnoreCase);
+            return !string.IsNullOrWhiteSpace(turma) && Carregar().Contains(turma.Trim(), StringComparer.OrdinalIgnoreCase);
         }
 
         public static bool EmUso(string turma)
         {
             if (string.IsNullOrWhiteSpace(turma))
                 return false;
-
             using (var conexao = Conexao.ObterConexao())
             using (var comando = new SqlCeCommand("SELECT COUNT(*) FROM usuarios WHERE Turma = @turma", conexao))
             {
@@ -108,32 +111,18 @@ namespace SUB.Utils
             var turmas = Carregar();
             if (string.IsNullOrWhiteSpace(texto))
                 return new List<string>();
-
             string busca = Normalizar(texto);
-            return turmas
-                .Select(turma => new { Turma = turma, Normalizada = Normalizar(turma) })
-                .Where(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) ||
-                               item.Normalizada.IndexOf(busca, StringComparison.OrdinalIgnoreCase) >= 0)
-                .OrderBy(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) ? 0 : 1)
-                .ThenBy(item => item.Turma, StringComparer.OrdinalIgnoreCase)
-                .Select(item => item.Turma)
-                .ToList();
+            return turmas.Select(turma => new { Turma = turma, Normalizada = Normalizar(turma) }).Where(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) || item.Normalizada.IndexOf(busca, StringComparison.OrdinalIgnoreCase) >= 0).OrderBy(item => item.Normalizada.StartsWith(busca, StringComparison.OrdinalIgnoreCase) ? 0 : 1).ThenBy(item => item.Turma, StringComparer.OrdinalIgnoreCase).Select(item => item.Turma).ToList();
         }
 
         private static List<string> NormalizarLista(IEnumerable<string> turmas)
         {
-            return (turmas ?? Enumerable.Empty<string>())
-                .Where(turma => !string.IsNullOrWhiteSpace(turma))
-                .Select(turma => turma.Trim().ToUpperInvariant())
-                .Distinct(StringComparer.OrdinalIgnoreCase)
-                .OrderBy(turma => turma, StringComparer.CurrentCultureIgnoreCase)
-                .ToList();
+            return (turmas ?? Enumerable.Empty<string>()).Where(turma => !string.IsNullOrWhiteSpace(turma)).Select(turma => turma.Trim().ToUpperInvariant()).Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(turma => turma, StringComparer.CurrentCultureIgnoreCase).ToList();
         }
 
         private static string Normalizar(string valor)
         {
-            string texto = (valor ?? string.Empty).Trim().ToLowerInvariant()
-                .Normalize(System.Text.NormalizationForm.FormD);
+            string texto = (valor ?? string.Empty).Trim().ToLowerInvariant().Normalize(System.Text.NormalizationForm.FormD);
             texto = Regex.Replace(texto, @"\p{M}", string.Empty);
             return Regex.Replace(texto, @"\s+", " ");
         }

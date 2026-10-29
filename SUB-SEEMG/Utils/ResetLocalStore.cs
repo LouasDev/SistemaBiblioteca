@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace SUB.Utils
 {
@@ -22,8 +22,21 @@ namespace SUB.Utils
     {
         private const string NomePedido = ".reset-autorizado.dat";
         private readonly string pasta;
-        private string ArquivoPedido { get { return Path.Combine(pasta, NomePedido); } }
-        internal bool Pendente { get { return File.Exists(ArquivoPedido); } }
+        private string ArquivoPedido
+        {
+            get
+            {
+                return Path.Combine(pasta, NomePedido);
+            }
+        }
+
+        internal bool Pendente
+        {
+            get
+            {
+                return File.Exists(ArquivoPedido);
+            }
+        }
 
         internal ResetLocalStore(string pastaDados)
         {
@@ -71,8 +84,7 @@ namespace SUB.Utils
             byte[] dados = ProtectedData.Unprotect(File.ReadAllBytes(ArquivoPedido), null, DataProtectionScope.CurrentUser);
             var pedido = JsonConvert.DeserializeObject<PedidoReset>(Encoding.UTF8.GetString(dados));
             Guid id;
-            if (pedido == null || !Guid.TryParse(pedido.Id, out id) || pedido.UsuarioId <= 0 ||
-                pedido.CriadoEmUtc == default(DateTime) || pedido.CriadoEmUtc > DateTime.UtcNow.AddMinutes(1))
+            if (pedido == null || !Guid.TryParse(pedido.Id, out id) || pedido.UsuarioId <= 0 || pedido.CriadoEmUtc == default(DateTime) || pedido.CriadoEmUtc > DateTime.UtcNow.AddMinutes(1))
                 throw new InvalidOperationException("Pedido de reset inválido. Nenhum dado foi apagado.");
             return pedido;
         }
@@ -97,7 +109,6 @@ namespace SUB.Utils
             var arquivos = new List<string>();
             var diretorios = new List<string>();
             Enumerar(pasta, arquivos, diretorios);
-
             // Detecta arquivos ocupados ou sem permissão antes da primeira exclusão.
             var bloqueios = new List<FileStream>();
             try
@@ -118,11 +129,13 @@ namespace SUB.Utils
                 ValidarEntrada(arquivo);
                 File.Delete(arquivo);
             }
+
             foreach (string diretorio in diretorios.OrderByDescending(d => d.Length))
             {
                 ValidarEntrada(diretorio);
                 Directory.Delete(diretorio, false);
             }
+
             // O pedido permanece até a limpeza terminar: uma falha pode ser
             // retomada no próximo início, antes de abrir login ou primeiro uso.
             if (Directory.GetFileSystemEntries(pasta).Any(a => !string.Equals(a, ArquivoPedido, StringComparison.OrdinalIgnoreCase)))
@@ -134,9 +147,7 @@ namespace SUB.Utils
         private void ValidarEntrada(string caminho)
         {
             string absoluto = Path.GetFullPath(caminho);
-            if (!absoluto.StartsWith(pasta + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) ||
-                (File.Exists(absoluto) || Directory.Exists(absoluto)) &&
-                (File.GetAttributes(absoluto) & FileAttributes.ReparsePoint) != 0)
+            if (!absoluto.StartsWith(pasta + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || (File.Exists(absoluto) || Directory.Exists(absoluto)) && (File.GetAttributes(absoluto) & FileAttributes.ReparsePoint) != 0)
                 throw new IOException("Foi encontrado um caminho fora dos dados locais ou um redirecionamento. Reset interrompido.");
         }
 

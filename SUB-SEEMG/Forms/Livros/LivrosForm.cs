@@ -1,63 +1,49 @@
-﻿using SUB.Utils;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Livros
 {
-
     public partial class LivrosForm : Form
     {
-        #region Construtor e Inicialização
-
+#region Construtor e Inicialização
         private Timer filtroTimer;
-
         // Inicializa uma nova instância do formulário LivrosForm
         public LivrosForm()
         {
             InitializeComponent();
             LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
-
             dgvLivros.CellFormatting += dgvLivros_CellFormatting;
-
             mtxCodigoBarras.KeyPress += mtxCodigoBarras_KeyPressLimiter;
             mtxCodigoBarras.TextChanged += mtxCodigoBarras_TextChangedLimiter;
-
             btnProcurar.PerformClick();
-
             // Assina o evento global para atualizar a lista automaticamente
             SUB.Utils.EventosGlobais.LivroCadastradoOuAlterado += (s, e) => CarregarLivros();
-
             filtroTimer = new Timer();
             filtroTimer.Interval = 250; // 250ms de espera
             filtroTimer.Tick += FiltroTimer_Tick;
-
             // Assina o evento TextChanged
             txtNome.TextChanged += TxtNome_TextChanged;
-
         }
 
-        #endregion
-
-        #region Métodos Utilitários
-
+#endregion
+#region Métodos Utilitários
         /// <summary>
         /// Ativa renderização suave no DataGridView de livros.
         /// </summary>
         private void ConfigurarGridLivros()
         {
             dgvLivros.SuspendLayout();
-
             dgvLivros.AutoGenerateColumns = false;
             dgvLivros.Columns.Clear();
             dgvLivros.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
             DataGridViewTextBoxColumn AddTextCol(string dataProp, string header, float fillWeight, DataGridViewContentAlignment align, int minWidth = 60)
             {
                 var col = new DataGridViewTextBoxColumn
@@ -68,7 +54,11 @@ namespace SUB.Forms.Livros
                     ReadOnly = true,
                     FillWeight = fillWeight,
                     MinimumWidth = minWidth,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = align, WrapMode = DataGridViewTriState.False }
+                    DefaultCellStyle = new DataGridViewCellStyle
+                    {
+                        Alignment = align,
+                        WrapMode = DataGridViewTriState.False
+                    }
                 };
                 dgvLivros.Columns.Add(col);
                 return col;
@@ -81,8 +71,6 @@ namespace SUB.Forms.Livros
             AddTextCol("Quantidade", "Quantidade", 45, DataGridViewContentAlignment.MiddleCenter, 100);
             AddTextCol("CodigoBarras", "Código de Barras", 110, DataGridViewContentAlignment.MiddleLeft, 120);
             AddTextCol("Status", "Status", 60, DataGridViewContentAlignment.MiddleLeft, 100);
-
-
             // Botão Editar
             var btnEditar = new DataGridViewButtonColumn
             {
@@ -95,7 +83,6 @@ namespace SUB.Forms.Livros
                 FlatStyle = FlatStyle.Flat
             };
             dgvLivros.Columns.Add(btnEditar);
-
             dgvLivros.BackgroundColor = Color.White;
             dgvLivros.BorderStyle = BorderStyle.None;
             dgvLivros.GridColor = Color.FromArgb(235, 239, 244);
@@ -107,7 +94,6 @@ namespace SUB.Forms.Livros
             dgvLivros.AllowUserToAddRows = false;
             dgvLivros.AllowUserToDeleteRows = false;
             dgvLivros.AllowUserToResizeRows = false;
-
             dgvLivros.DefaultCellStyle.BackColor = Color.White;
             dgvLivros.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgvLivros.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
@@ -115,7 +101,6 @@ namespace SUB.Forms.Livros
             dgvLivros.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvLivros.RowTemplate.Height = 40;
             dgvLivros.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-
             dgvLivros.EnableHeadersVisualStyles = false;
             dgvLivros.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvLivros.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 61, 88);
@@ -124,42 +109,25 @@ namespace SUB.Forms.Livros
             dgvLivros.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgvLivros.ColumnHeadersHeight = 44;
             dgvLivros.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-
             dgvLivros.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             foreach (DataGridViewColumn col in dgvLivros.Columns)
             {
                 col.SortMode = DataGridViewColumnSortMode.Automatic;
                 col.Resizable = DataGridViewTriState.False;
             }
 
-            typeof(DataGridView).InvokeMember(
-                "DoubleBuffered",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
-                null,
-                dgvLivros,
-                new object[] { true }
-            );
-
-
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvLivros, new object[] { true });
             if (dgvLivros.Columns.Contains("Id"))
             {
                 var colId = dgvLivros.Columns["Id"];
-
                 colId.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-
                 var headerStyle = (DataGridViewCellStyle)dgvLivros.ColumnHeadersDefaultCellStyle.Clone();
                 headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 colId.HeaderCell.Style = headerStyle;
                 colId.HeaderCell.Style.Padding = new Padding(14, 0, 0, 0);
-
-                colId.MinimumWidth = 60;   // largura mínima em pixels (ajuste conforme desejar)
-                colId.FillWeight = 30f;    // peso relativo (aumente para dar mais espaço proporcional)
+                colId.MinimumWidth = 60; // largura mínima em pixels (ajuste conforme desejar)
+                colId.FillWeight = 30f; // peso relativo (aumente para dar mais espaço proporcional)
             }
-
-            
-
 
             dgvLivros.ResumeLayout();
         }
@@ -168,11 +136,9 @@ namespace SUB.Forms.Livros
         {
             if (e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
                 return;
-
             if (dgvLivros.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
                 string status = e.Value.ToString();
-
                 if (status.Equals("Disponível", StringComparison.OrdinalIgnoreCase))
                 {
                     e.CellStyle.ForeColor = Color.Green;
@@ -186,10 +152,8 @@ namespace SUB.Forms.Livros
             }
         }
 
-        #endregion
-
-        #region Eventos do Formulário
-
+#endregion
+#region Eventos do Formulário
         /// <summary>
         /// Evento executado ao carregar o formulário
         /// </summary>
@@ -201,10 +165,8 @@ namespace SUB.Forms.Livros
             cbFiltro.SelectedIndex = 0;
         }
 
-        #endregion
-
-        #region Funcionalidades de Busca e Filtros
-
+#endregion
+#region Funcionalidades de Busca e Filtros
         // Executa busca de livros com filtros dinâmicos
         public void btnProcurar_Click(object sender, EventArgs e)
         {
@@ -213,14 +175,16 @@ namespace SUB.Forms.Livros
                 try
                 {
                     conexao.Open();
-
                     string campo = "Nome"; // padrão
                     if (cbFiltro.SelectedItem != null)
                     {
                         string selecionado = cbFiltro.SelectedItem.ToString();
-                        if (selecionado == "Autor") campo = "Autor";
-                        else if (selecionado == "Gênero") campo = "Genero";
-                        else if (selecionado == "Nome") campo = "Nome";
+                        if (selecionado == "Autor")
+                            campo = "Autor";
+                        else if (selecionado == "Gênero")
+                            campo = "Genero";
+                        else if (selecionado == "Nome")
+                            campo = "Nome";
                     }
 
                     string query = @"
@@ -237,11 +201,9 @@ namespace SUB.Forms.Livros
                     END AS Status
                 FROM Livros
                 WHERE 1=1";
-
                     // 🔍 Filtro por código de barras (busca por prefixo)
                     if (!string.IsNullOrWhiteSpace(ObterCodigoDeBarrasFormatado()))
                         query += " AND CodigoBarras LIKE @codigo";
-
                     // 🔍 Filtro por disponibilidade
                     if (cbDisponibilidade.SelectedItem != null)
                     {
@@ -253,24 +215,18 @@ namespace SUB.Forms.Livros
                     }
 
                     query += " ORDER BY Nome ASC";
-
                     using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                     {
                         if (!string.IsNullOrWhiteSpace(ObterCodigoDeBarrasFormatado()))
                             comando.Parameters.AddWithValue("@codigo", ObterCodigoDeBarrasFormatado() + "%");
-
                         SqlCeDataAdapter adaptador = new SqlCeDataAdapter(comando);
                         DataTable tabela = new DataTable();
                         adaptador.Fill(tabela);
-
                         if (!string.IsNullOrWhiteSpace(txtNome.Text))
                             tabela = FiltrarTabela(tabela, campo, txtNome.Text, buscaPorPrefixo: false);
-
                         dgvLivros.AutoGenerateColumns = false;
                         dgvLivros.DataSource = tabela;
-
                         lblTitulos.Text = $"Títulos encontrados: {tabela.Rows.Count}";
-
                         // Soma todas as unidades (coluna "Quantidade")
                         int totalUnidades = 0;
                         foreach (DataRow r in tabela.Rows)
@@ -279,8 +235,8 @@ namespace SUB.Forms.Livros
                             int.TryParse(r["Quantidade"]?.ToString() ?? "0", out q);
                             totalUnidades += q;
                         }
-                        lblUnidades.Text = $"Unidades encontradas: {totalUnidades}";
 
+                        lblUnidades.Text = $"Unidades encontradas: {totalUnidades}";
                         // Oculta o campo "disponibilidade" caso ainda exista no banco
                         if (dgvLivros.Columns.Contains("disponibilidade"))
                             dgvLivros.Columns["disponibilidade"].Visible = false;
@@ -290,7 +246,6 @@ namespace SUB.Forms.Livros
                 {
                     dgvLivros.DataSource = null;
                     MessageBox.Show("Erro ao procurar: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                     lblTitulos.Text = "Títulos encontrados: 0";
                     lblUnidades.Text = "Unidades encontradas: 0";
                 }
@@ -298,11 +253,9 @@ namespace SUB.Forms.Livros
         }
 
         private const int LIMITE_CODIGO_BARRAS = 13;
-
-
         private string ObterCodigoDeBarrasFormatado()
         {
-            return new string(mtxCodigoBarras.Text.Where(char.IsDigit).ToArray());
+            return new string (mtxCodigoBarras.Text.Where(char.IsDigit).ToArray());
         }
 
         private void mtxCodigoBarras_KeyPressLimiter(object sender, KeyPressEventArgs e)
@@ -330,8 +283,6 @@ namespace SUB.Forms.Livros
             }
         }
 
-
-
         // Carrega lista de livros com filtros opcionais
         // Torna o método público para permitir atualização externa
         public void CarregarLivros(string nomeFiltro = "", string generoFiltro = "Todos", string disponibilidadeFiltro = "Todos")
@@ -341,7 +292,6 @@ namespace SUB.Forms.Livros
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-
                     string sql = @"
                 SELECT
                     Id,
@@ -357,7 +307,6 @@ namespace SUB.Forms.Livros
 END AS Status
                 FROM Livros
                 WHERE 1 = 1";
-
                     if (!string.Equals(disponibilidadeFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                     {
                         switch (disponibilidadeFiltro)
@@ -368,12 +317,10 @@ END AS Status
                             case "Indisponível":
                                 sql += " AND Quantidade = 0";
                                 break;
-                            
                         }
                     }
 
                     sql += " ORDER BY Nome ASC";
-
                     using (var cmd = new SqlCeCommand(sql, conexao))
                     {
                         var tabela = new DataTable();
@@ -384,17 +331,11 @@ END AS Status
 
                         if (!string.IsNullOrWhiteSpace(nomeFiltro))
                             tabela = FiltrarTabela(tabela, "Nome", nomeFiltro, buscaPorPrefixo: true);
-
                         if (!string.Equals(generoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                             tabela = FiltrarTabela(tabela, "Genero", generoFiltro, buscaPorPrefixo: false);
-
                         dgvLivros.DataSource = tabela;
-
-
-
                         // Atualiza os contadores
                         lblTitulos.Text = $"Títulos encontrados: {tabela.Rows.Count}";
-
                         int totalUnidades = 0;
                         foreach (DataRow r in tabela.Rows)
                         {
@@ -402,15 +343,14 @@ END AS Status
                             int.TryParse(r["Quantidade"]?.ToString() ?? "0", out q);
                             totalUnidades += q;
                         }
-                        lblUnidades.Text = $"Unidades encontradas: {totalUnidades}";
 
+                        lblUnidades.Text = $"Unidades encontradas: {totalUnidades}";
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao carregar livros: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 lblTitulos.Text = "Títulos encontrados: 0";
                 lblUnidades.Text = "Unidades encontradas: 0";
             }
@@ -418,34 +358,24 @@ END AS Status
 
         private static DataTable FiltrarTabela(DataTable tabela, string coluna, string termo, bool buscaPorPrefixo)
         {
-            var linhas = tabela.AsEnumerable()
-                .Where(linha =>
-                {
-                    string valor = linha.Field<string>(coluna) ?? string.Empty;
-                    return buscaPorPrefixo
-                        ? TextoBusca.ComecaCom(valor, termo)
-                        : TextoBusca.Contem(valor, termo);
-                });
-
+            var linhas = tabela.AsEnumerable().Where(linha =>
+            {
+                string valor = linha.Field<string>(coluna) ?? string.Empty;
+                return buscaPorPrefixo ? TextoBusca.ComecaCom(valor, termo) : TextoBusca.Contem(valor, termo);
+            });
             return linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
         }
 
-        #endregion
-
-        #region Configuração e Estilização do DataGridView
-
-
-
+#endregion
+#region Configuração e Estilização do DataGridView
         // Formata células baseado na disponibilidade do livro
         private void Lista_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
                 return;
-
             if (dgvLivros.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
                 string valor = e.Value.ToString();
-
                 if (valor == "Indisponível")
                 {
                     dgvLivros.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray;
@@ -460,27 +390,20 @@ END AS Status
             }
         }
 
-
         // Desenha botões personalizados no DataGridView
-
         private void dgvLivros_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvLivros.Columns.Count)
                 return;
-
             if (dgvLivros.Columns[e.ColumnIndex].Name == "Editar")
             {
                 e.PaintBackground(e.CellBounds, true);
-
                 // Cores do tema
                 Color corFundo = dgvLivros.ColumnHeadersDefaultCellStyle.BackColor;
                 Color corTexto = dgvLivros.ColumnHeadersDefaultCellStyle.ForeColor;
-
                 // Desenha botão arredondado
                 int borderRadius = 8;
-                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6,
-                                               e.CellBounds.Width - 12, e.CellBounds.Height - 12);
-
+                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6, e.CellBounds.Width - 12, e.CellBounds.Height - 12);
                 using (SolidBrush brush = new SolidBrush(corFundo))
                 using (Pen pen = new Pen(corFundo, 1))
                 {
@@ -490,7 +413,6 @@ END AS Status
                     path.AddArc(rect.Right - borderRadius, rect.Bottom - borderRadius, borderRadius, borderRadius, 0, 90);
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
-
                     var suavizacaoAnterior = e.Graphics.SmoothingMode;
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
@@ -499,20 +421,13 @@ END AS Status
                 }
 
                 // Texto centralizado
-                TextRenderer.DrawText(e.Graphics, "Editar",
-                    new Font("Segoe UI Semibold", 9F),
-                    rect,
-                    corTexto,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-
+                TextRenderer.DrawText(e.Graphics, "Editar", new Font("Segoe UI Semibold", 9F), rect, corTexto, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
                 e.Handled = true;
             }
         }
 
-        #endregion
-
-        #region Eventos do DataGridView
-
+#endregion
+#region Eventos do DataGridView
         // Manipula cliques em células do DataGridView
         private void dgvLivros_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -520,40 +435,25 @@ END AS Status
             {
                 var row = dgvLivros.Rows[e.RowIndex];
                 var nomeLivro = row.Cells["Nome"].Value?.ToString();
-
                 var confirm = MessageBox.Show($"Deseja editar o livro \"{nomeLivro}\"?", "Editar Livro", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (confirm == DialogResult.Yes)
                 {
                     var livroEdit = new AlterarCadLivroForm();
-
-                    livroEdit.PreencherLivro(new Livro
-                    {
-                        Id = Convert.ToInt32(row.Cells["Id"].Value),
-                        Nome = row.Cells["Nome"].Value?.ToString(),
-                        Autor = row.Cells["Autor"].Value?.ToString(),
-                        Genero = row.Cells["Genero"].Value?.ToString(),
-                        Quantidade = Convert.ToInt32(row.Cells["Quantidade"].Value),
-                        CodigoDeBarras = row.Cells["CodigoBarras"].Value?.ToString(),
-
-                    });
-
+                    livroEdit.PreencherLivro(new Livro { Id = Convert.ToInt32(row.Cells["Id"].Value), Nome = row.Cells["Nome"].Value?.ToString(), Autor = row.Cells["Autor"].Value?.ToString(), Genero = row.Cells["Genero"].Value?.ToString(), Quantidade = Convert.ToInt32(row.Cells["Quantidade"].Value), CodigoDeBarras = row.Cells["CodigoBarras"].Value?.ToString(), });
                     // Conecta o evento para atualizar o grid após edição
                     livroEdit.LivroAtualizado += (s, args) => CarregarLivros();
-
                     livroEdit.MdiParent = this.MdiParent;
                     livroEdit.Dock = DockStyle.Fill;
-                    livroEdit.FormClosed += (s, args) => { livroEdit.Dispose(); };
+                    livroEdit.FormClosed += (s, args) =>
+                    {
+                        livroEdit.Dispose();
+                    };
                     livroEdit.Show();
                 }
             }
         }
 
-
-
-
-
-        #endregion
-
+#endregion
         private void TxtNome_TextChanged(object sender, EventArgs e)
         {
             // Reinicia o timer a cada tecla
@@ -565,7 +465,6 @@ END AS Status
         {
             // O timer disparou, pare-o e execute a busca
             filtroTimer.Stop();
-
             btnProcurar_Click(sender, e);
         }
 
@@ -576,14 +475,11 @@ END AS Status
             if (keyData == Keys.Enter && this.ActiveControl == mtxCodigoBarras)
             {
                 // --- Início da sua lógica de busca ---
-
-                string codigo = new string(mtxCodigoBarras.Text.Where(char.IsDigit).ToArray()).Trim();
-
+                string codigo = new string (mtxCodigoBarras.Text.Where(char.IsDigit).ToArray()).Trim();
                 if (!string.IsNullOrWhiteSpace(codigo))
                 {
                     // Executa a busca
                     btnProcurar.PerformClick();
-
                     // Agenda a limpeza e o foco para o próximo escaneamento
                     Task.Delay(1000).ContinueWith(_ =>
                     {
@@ -595,12 +491,13 @@ END AS Status
                                 mtxCodigoBarras.Focus();
                             }));
                         }
-                        catch { /* Ignora erro se o form fechar */ }
+                        catch
+                        { /* Ignora erro se o form fechar */
+                        }
                     });
                 }
 
                 // --- Fim da sua lógica de busca ---
-
                 // Retorna 'true' para dizer ao Windows Forms:
                 // "Eu já processei esta tecla, não faça mais nada com ela."
                 return true;
@@ -617,8 +514,5 @@ END AS Status
             // deixa o Windows Forms continuar com seu comportamento padrão.
             return base.ProcessCmdKey(ref msg, keyData);
         }
-
-       
     }
 }
-

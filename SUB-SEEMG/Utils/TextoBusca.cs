@@ -14,16 +14,12 @@ namespace SUB.Utils
         {
             if (string.IsNullOrWhiteSpace(texto))
                 return string.Empty;
-
             string decomposto = texto.Trim().Normalize(NormalizationForm.FormD);
             var resultado = new StringBuilder(decomposto.Length);
-
             foreach (char caractere in decomposto)
             {
                 UnicodeCategory categoria = CharUnicodeInfo.GetUnicodeCategory(caractere);
-                if (categoria != UnicodeCategory.NonSpacingMark &&
-                    categoria != UnicodeCategory.SpacingCombiningMark &&
-                    categoria != UnicodeCategory.EnclosingMark)
+                if (categoria != UnicodeCategory.NonSpacingMark && categoria != UnicodeCategory.SpacingCombiningMark && categoria != UnicodeCategory.EnclosingMark)
                 {
                     resultado.Append(caractere);
                 }
@@ -51,15 +47,10 @@ namespace SUB.Utils
         {
             if (string.IsNullOrWhiteSpace(consulta))
                 return true;
-
             if (string.IsNullOrWhiteSpace(texto))
                 return false;
-
             string textoNormalizado = Normalizar(texto);
-            return consulta
-                .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(Normalizar)
-                .All(token => textoNormalizado.Contains(token));
+            return consulta.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(Normalizar).All(token => textoNormalizado.Contains(token));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SUB.Models
+﻿namespace SUB.Models
 {
     public static class Sessao
     {
@@ -8,7 +6,6 @@ namespace SUB.Models
         public static string NomeUsuario { get; set; }
         public static string Perfil { get; set; }
         public static string NomeBibliotecariaLogada { get; set; }
-
         public static bool UsuarioAutenticado => UsuarioId.HasValue;
 
         public static void Limpar()
@@ -20,4 +17,3 @@ namespace SUB.Models
         }
     }
 }
-

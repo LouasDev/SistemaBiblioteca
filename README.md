@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 <img src="SUB-SEEMG/Resources/sub-200x200px.png" alt="Logotipo do SUB" width="120">
 
@@ -73,7 +73,7 @@ As versões seguem o padrão **`0.0.0`**, como `1.0.2`. O aplicativo recebe atua
 | Aplicação | Tecnologias utilizadas |
 | --- | --- |
 | **Linguagem e plataforma** | C# · .NET Framework 4.8 |
-| **Interface** | Windows Forms · controles personalizados · MaterialSkin |
+| **Interface** | Windows Forms · controles personalizados |
 | **Banco de dados local** | SQL Server Compact 4.0 · ADO.NET |
 | **Planilhas** | ClosedXML |
 | **Documentos PDF** | iTextSharp · PDFsharp |

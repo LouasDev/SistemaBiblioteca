@@ -1,9 +1,9 @@
-using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Usuario
 {
@@ -13,7 +13,6 @@ namespace SUB.Forms.Usuario
         private readonly Dictionary<string, string> _renomeacoes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private string _turmaEmEdicao;
         private string _turmaOriginalEmEdicao;
-
         public GerenciarTurmasForm()
         {
             InitializeComponent();
@@ -39,8 +38,7 @@ namespace SUB.Forms.Usuario
                 return;
             }
 
-            if (_turmas.Contains(turma, StringComparer.OrdinalIgnoreCase) &&
-                !string.Equals(turma, _turmaEmEdicao, StringComparison.OrdinalIgnoreCase))
+            if (_turmas.Contains(turma, StringComparer.OrdinalIgnoreCase) && !string.Equals(turma, _turmaEmEdicao, StringComparison.OrdinalIgnoreCase))
             {
                 ExibirStatus("Esta turma já está na lista.", true);
                 txtNovaTurma.SelectAll();
@@ -53,12 +51,10 @@ namespace SUB.Forms.Usuario
                 int indice = _turmas.FindIndex(item => string.Equals(item, _turmaEmEdicao, StringComparison.OrdinalIgnoreCase));
                 if (indice >= 0)
                     _turmas[indice] = turma;
-
                 if (string.Equals(_turmaOriginalEmEdicao, turma, StringComparison.OrdinalIgnoreCase))
                     _renomeacoes.Remove(_turmaOriginalEmEdicao);
                 else
                     _renomeacoes[_turmaOriginalEmEdicao] = turma;
-
                 _turmaEmEdicao = null;
                 _turmaOriginalEmEdicao = null;
                 btnAdicionar.Text = "Adicionar turma";
@@ -80,12 +76,8 @@ namespace SUB.Forms.Usuario
             string turma = lstTurmas.SelectedItem as string;
             if (string.IsNullOrWhiteSpace(turma))
                 return;
-
             _turmaEmEdicao = turma;
-            _turmaOriginalEmEdicao = _renomeacoes
-                .Where(item => string.Equals(item.Value, turma, StringComparison.OrdinalIgnoreCase))
-                .Select(item => item.Key)
-                .FirstOrDefault() ?? turma;
+            _turmaOriginalEmEdicao = _renomeacoes.Where(item => string.Equals(item.Value, turma, StringComparison.OrdinalIgnoreCase)).Select(item => item.Key).FirstOrDefault() ?? turma;
             txtNovaTurma.Text = turma;
             txtNovaTurma.SelectAll();
             btnAdicionar.Text = "Salvar edição";
@@ -98,7 +90,6 @@ namespace SUB.Forms.Usuario
             string turma = lstTurmas.SelectedItem as string;
             if (string.IsNullOrWhiteSpace(turma))
                 return;
-
             if (TurmaPossuiUsuarios(turma))
             {
                 ExibirStatus("Esta turma possui alunos cadastrados e não pode ser removida.", true);
@@ -116,9 +107,7 @@ namespace SUB.Forms.Usuario
             {
                 TurmasUtil.Salvar(_turmas, _renomeacoes);
                 _renomeacoes.Clear();
-                ExibirStatus(_turmas.Count == 0
-                    ? "Nenhuma turma cadastrada. Você poderá adicionar quando precisar."
-                    : "Turmas atualizadas com sucesso.", false);
+                ExibirStatus(_turmas.Count == 0 ? "Nenhuma turma cadastrada. Você poderá adicionar quando precisar." : "Turmas atualizadas com sucesso.", false);
             }
             catch (Exception ex)
             {
@@ -145,7 +134,6 @@ namespace SUB.Forms.Usuario
         {
             if (!char.IsDigit(e.KeyChar) || txtNovaTurma.SelectionStart != 0 || txtNovaTurma.Text.Length != 0)
                 return;
-
             txtNovaTurma.Text = e.KeyChar + "° ";
             txtNovaTurma.SelectionStart = txtNovaTurma.Text.Length;
             e.Handled = true;
@@ -159,10 +147,8 @@ namespace SUB.Forms.Usuario
             foreach (string turma in _turmas.OrderBy(item => item, StringComparer.CurrentCultureIgnoreCase))
                 lstTurmas.Items.Add(turma);
             lstTurmas.EndUpdate();
-
             if (!string.IsNullOrWhiteSpace(selecionada))
                 lstTurmas.SelectedItem = selecionada;
-
             lblContagem.Text = _turmas.Count == 1 ? "1 turma cadastrada" : _turmas.Count + " turmas cadastradas";
             btnRemover.Enabled = lstTurmas.SelectedIndex >= 0;
             btnEditar.Enabled = lstTurmas.SelectedIndex >= 0;
@@ -172,12 +158,7 @@ namespace SUB.Forms.Usuario
         {
             if (TurmasUtil.EmUso(turma))
                 return true;
-
-            string turmaOriginal = _renomeacoes
-                .Where(item => string.Equals(item.Value, turma, StringComparison.OrdinalIgnoreCase))
-                .Select(item => item.Key)
-                .FirstOrDefault();
-
+            string turmaOriginal = _renomeacoes.Where(item => string.Equals(item.Value, turma, StringComparison.OrdinalIgnoreCase)).Select(item => item.Key).FirstOrDefault();
             return !string.IsNullOrWhiteSpace(turmaOriginal) && TurmasUtil.EmUso(turmaOriginal);
         }
 

@@ -1,55 +1,44 @@
-using SUB.Models;
-using SUB.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Data.SqlServerCe;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SUB.Models;
+using SUB.Utils;
 using static Usuarios;
 
 namespace SUB.Forms.Livros
 {
     public partial class DevoluçãoForm : Form
     {
-        #region Construtor
-
+#region Construtor
         private int hoveredIndex = -1;
         private List<Usuarios> _cacheUsuarios = new List<Usuarios>();
         private bool _suppressSuggestionOnSetText = false;
-
         public DevoluçãoForm()
         {
             InitializeComponent();
             LayoutAdaptavel.Aplicar(this);
             ThemeManager.ApplyConfiguredTheme(this);
-
-       
             InicializarSugestoesUsuario();
-
-          
         }
+
         private void InicializarSugestoesUsuario()
         {
             // garante que o listbox tenha o mesmo estilo/behavior dos outros forms
             EstilizarListBoxSugestao(lstSugestoesUsuario);
-
-            
-
             // eventos (se já estiverem ligados no designer, não tem problema — estamos só garantindo)
             txtUsuario.TextChanged += txtUsuario_TextChanged;
             txtUsuario.KeyDown += txtUsuario_KeyDown;
             lstSugestoesUsuario.Click += lstSugestoesUsuario_Click;
             lstSugestoesUsuario.KeyDown += lstSugestoesUsuario_KeyDown;
             lstSugestoesUsuario.Leave += lstSugestoesUsuario_Leave;
-
             mtxCodigoBarras.KeyPress += mtxCodigoBarras_KeyPressLimiter;
             mtxCodigoBarras.TextChanged += mtxCodigoBarras_TextChangedLimiter;
-
             // O botão Procurar nunca foi ligado no designer: clicar nele (ou ler um código e dar
             // Enter, que aciona o botão) não fazia a busca.
             btnBuscarEmprestimo.Click -= btnBuscarEmprestimo_Click;
@@ -61,18 +50,14 @@ namespace SUB.Forms.Livros
             listBox.DrawMode = DrawMode.OwnerDrawFixed;
             listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
             listBox.ItemHeight = 40;
-
             listBox.BackColor = ThemeManager.FundoDaSugestao(false);
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
-
             listBox.DrawItem -= ListBoxSugestao_DrawItem;
             listBox.DrawItem += ListBoxSugestao_DrawItem;
-
             listBox.MouseMove -= ListBoxSugestao_MouseMove;
             listBox.MouseMove += ListBoxSugestao_MouseMove;
-
             listBox.MouseLeave -= ListBoxSugestao_MouseLeave;
             listBox.MouseLeave += ListBoxSugestao_MouseLeave;
         }
@@ -80,22 +65,17 @@ namespace SUB.Forms.Livros
         private void ListBoxSugestao_DrawItem(object sender, DrawItemEventArgs e)
         {
             var listBox = sender as ListBox;
-            if (e.Index < 0) return;
-
+            if (e.Index < 0)
+                return;
             bool hovered = (e.Index == hoveredIndex);
-
             Color backColor = ThemeManager.FundoDaSugestao(hovered);
             Color textColor = ThemeManager.TextoDaSugestao;
-
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
-
             string text = listBox.Items[e.Index].ToString();
             Font font = listBox.Font;
-
             Rectangle textRect = new Rectangle(e.Bounds.Left + 12, e.Bounds.Top, e.Bounds.Width - 24, e.Bounds.Height);
             TextRenderer.DrawText(e.Graphics, text, font, textRect, textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
-
             // linha divisória suave entre itens
             if (e.Index < listBox.Items.Count - 1)
             {
@@ -121,32 +101,26 @@ namespace SUB.Forms.Livros
             (sender as ListBox).Invalidate();
         }
 
-        #endregion
-
-        #region Eventos do Formulário
-
+#endregion
+#region Eventos do Formulário
         public event EventHandler LivroAtualizado;
         private void DevoluçãoForm_Load(object sender, EventArgs e)
         {
-           
-
             InicializarFormulario();
             VerificarAtrasos(); // Atualiza status de atrasos antes de buscar
         }
 
         // ---- INÍCIO: handlers e helpers para sugestões de usuário ----
-
         private void txtUsuario_TextChanged(object sender, EventArgs e)
         {
-            if (_suppressSuggestionOnSetText) return;
-
+            if (_suppressSuggestionOnSetText)
+                return;
             lstSugestoesUsuario.Items.Clear();
             lstSugestoesUsuario.Visible = false;
             _cacheUsuarios.Clear();
-
             string termo = txtUsuario.Text.Trim();
-            if (string.IsNullOrWhiteSpace(termo)) return;
-
+            if (string.IsNullOrWhiteSpace(termo))
+                return;
             try
             {
                 using (var conexao = Conexao.ObterConexao())
@@ -167,12 +141,8 @@ namespace SUB.Forms.Livros
                                     Turma = reader["Turma"]?.ToString() ?? "",
                                     TipoUsuario = reader["TipoUsuario"]?.ToString() ?? ""
                                 };
-
                                 _cacheUsuarios.Add(usuario);
-
-                                string sufixo = !string.IsNullOrWhiteSpace(usuario.Turma)
-                                                ? usuario.Turma
-                                                : (!string.IsNullOrWhiteSpace(usuario.TipoUsuario) ? usuario.TipoUsuario : "");
+                                string sufixo = !string.IsNullOrWhiteSpace(usuario.Turma) ? usuario.Turma : (!string.IsNullOrWhiteSpace(usuario.TipoUsuario) ? usuario.TipoUsuario : "");
                                 string exibicao = !string.IsNullOrWhiteSpace(sufixo) ? $"{usuario.Nome} - {sufixo}" : usuario.Nome;
                                 lstSugestoesUsuario.Items.Add(exibicao);
                             }
@@ -184,7 +154,6 @@ namespace SUB.Forms.Livros
                 {
                     lstSugestoesUsuario.Visible = true;
                     lstSugestoesUsuario.SelectedIndex = 0;
-
                     int visibleItems = Math.Min(6, lstSugestoesUsuario.Items.Count);
                     int extraPadding = 6;
                     lstSugestoesUsuario.ItemHeight = 40; // garante consistência com EstilizarListBoxSugestao
@@ -203,8 +172,8 @@ namespace SUB.Forms.Livros
 
         private void txtUsuario_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!lstSugestoesUsuario.Visible) return;
-
+            if (!lstSugestoesUsuario.Visible)
+                return;
             if (e.KeyCode == Keys.Down)
             {
                 if (lstSugestoesUsuario.SelectedIndex < lstSugestoesUsuario.Items.Count - 1)
@@ -263,7 +232,6 @@ namespace SUB.Forms.Livros
         {
             int idx = texto.IndexOf(" - ");
             string nome = (idx >= 0) ? texto.Substring(0, idx).Trim() : texto.Trim();
-
             _suppressSuggestionOnSetText = true;
             try
             {
@@ -275,9 +243,6 @@ namespace SUB.Forms.Livros
                 _suppressSuggestionOnSetText = false;
             }
         }
-
-
-
 
         private void btnBuscarEmprestimo_Click(object sender, EventArgs e)
         {
@@ -291,6 +256,7 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("Entre com uma conta de bibliotecário para prorrogar empréstimos.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             if (dgvEmprestimos.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Selecione um empréstimo para prorrogar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -304,6 +270,7 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("Somente empréstimos em aberto podem ser prorrogados.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             int idEmprestimo = Convert.ToInt32(row.Cells["ID do Empréstimo"].Value);
             string livro = row.Cells["Livro"].Value?.ToString();
             string alocador = row.Cells["Alocador"].Value?.ToString();
@@ -312,35 +279,25 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("O empréstimo não possui uma data de devolução válida.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            DateTime dataDevolucaoAtual = (DateTime)row.Cells["Data de Devolução"].Value;
 
+            DateTime dataDevolucaoAtual = (DateTime)row.Cells["Data de Devolução"].Value;
             using (var frm = new ProrrogarDiasForm())
             {
                 frm.DataDevolucaoAtual = dataDevolucaoAtual; // Passe a data atual aqui
                 if (frm.ShowDialog(this) != DialogResult.OK)
                     return;
-
                 int dias = frm.DiasSelecionados;
                 DateTime novaData = RegrasCirculacao.CalcularProrrogacao(dataDevolucaoAtual, dias);
-
-                string msg = $"Confirma a prorrogação deste empréstimo?\n\n" +
-                             $"Livro: {livro}\n" +
-                             $"Leitor: {alocador}\n" +
-                             $"Data de Devolução Atual: {dataDevolucaoAtual:dd/MM/yyyy}\n" +
-                             $"Nova Data de Devolução: {novaData:dd/MM/yyyy}\n" +
-                             $"Dias de prorrogação: {dias}";
-
+                string msg = $"Confirma a prorrogação deste empréstimo?\n\n" + $"Livro: {livro}\n" + $"Leitor: {alocador}\n" + $"Data de Devolução Atual: {dataDevolucaoAtual:dd/MM/yyyy}\n" + $"Nova Data de Devolução: {novaData:dd/MM/yyyy}\n" + $"Dias de prorrogação: {dias}";
                 var confirm = MessageBox.Show(msg, "Confirmação de Prorrogação", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (confirm != DialogResult.Yes)
                     return;
-
                 try
                 {
                     using (SqlCeConnection conexao = Conexao.ObterConexao())
                     {
                         conexao.Open();
-                        ProrrogacaoService.Prorrogar(conexao, idEmprestimo, dias, dataDevolucaoAtual,
-                            Sessao.NomeBibliotecariaLogada, DateTime.Now);
+                        ProrrogacaoService.Prorrogar(conexao, idEmprestimo, dias, dataDevolucaoAtual, Sessao.NomeBibliotecariaLogada, DateTime.Now);
                     }
                 }
                 catch (InvalidOperationException ex)
@@ -351,20 +308,16 @@ namespace SUB.Forms.Livros
                 catch (Exception ex)
                 {
                     System.Diagnostics.Trace.TraceError("Falha na prorrogação: {0}", ex);
-                    MessageBox.Show("Não foi possível concluir a prorrogação. A alteração do prazo e o histórico não foram salvos. Atualize a lista e tente novamente.",
-                        "Prorrogação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Não foi possível concluir a prorrogação. A alteração do prazo e o histórico não foram salvos. Atualize a lista e tente novamente.", "Prorrogação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 // notificação UX
                 MessageBox.Show("Empréstimo prorrogado com sucesso.", "Prorrogação", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                 // Atualiza grid local
                 BuscarEmprestimos();
-
                 // dispara evento global para que outros forms (ex.: InicioForm) atualizem automaticamente
                 SUB.Utils.EventosGlobais.OnEmprestimoProrrogado();
-
             }
         }
 
@@ -382,11 +335,9 @@ namespace SUB.Forms.Livros
         {
             if (dgvEmprestimos.Columns[e.ColumnIndex].Name != "Status" || e.Value == null)
                 return;
-
             string status = e.Value.ToString().Trim();
             Color cor = ObterCorStatus(status);
             FontStyle estilo = ObterEstiloStatus(status);
-
             e.CellStyle.ForeColor = cor;
             e.CellStyle.Font = new Font(e.CellStyle.Font, estilo);
         }
@@ -400,10 +351,8 @@ namespace SUB.Forms.Livros
         {
             if (e.RowIndex < 0)
                 return;
-
             dgvEmprestimos.ClearSelection();
             dgvEmprestimos.Rows[e.RowIndex].Selected = true;
-
             if (e.ColumnIndex >= 0)
                 dgvEmprestimos.CurrentCell = dgvEmprestimos.Rows[e.RowIndex].Cells[e.ColumnIndex];
         }
@@ -413,10 +362,8 @@ namespace SUB.Forms.Livros
             DesenharBotaoFicha(e);
         }
 
-        #endregion
-
-        #region Inicialização
-
+#endregion
+#region Inicialização
         private void InicializarFormulario()
         {
             BuscarEmprestimos();
@@ -425,14 +372,8 @@ namespace SUB.Forms.Livros
             VerificarAtrasos();
         }
 
-        #endregion
-
-        #region Métodos de Interface
-
-       
-
-      
-
+#endregion
+#region Métodos de Interface
         private Color ObterCorStatus(string status)
         {
             switch (status)
@@ -461,31 +402,24 @@ namespace SUB.Forms.Livros
             }
         }
 
-        #endregion
-
-        #region Busca e Consulta de Dados
-
+#endregion
+#region Busca e Consulta de Dados
         private void BuscarEmprestimos()
         {
             var filtros = ObterFiltrosBusca();
-
             using (SqlCeConnection conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
                 string query = ConstruirQueryBusca(filtros);
-
                 using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                 {
                     AdicionarParametrosBusca(comando, filtros);
-
                     SqlCeDataAdapter adaptador = new SqlCeDataAdapter(comando);
                     DataTable tabela = new DataTable();
                     adaptador.Fill(tabela);
-
                     if (!string.IsNullOrWhiteSpace(filtros.NomeLivro))
                     {
-                        var linhas = tabela.AsEnumerable()
-                            .Where(linha => TextoBusca.Contem(linha.Field<string>("Livro"), filtros.NomeLivro));
+                        var linhas = tabela.AsEnumerable().Where(linha => TextoBusca.Contem(linha.Field<string>("Livro"), filtros.NomeLivro));
                         tabela = linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
                     }
 
@@ -505,9 +439,10 @@ namespace SUB.Forms.Livros
             };
         }
 
-
-
-        private string ObterCodigoDeBarrasFormatado() { return new string(mtxCodigoBarras.Text.Where(char.IsDigit).ToArray()); }
+        private string ObterCodigoDeBarrasFormatado()
+        {
+            return new string (mtxCodigoBarras.Text.Where(char.IsDigit).ToArray());
+        }
 
         private string ConstruirQueryBusca(FiltrosBusca filtros)
         {
@@ -527,16 +462,12 @@ namespace SUB.Forms.Livros
         LEFT JOIN Usuarios uResponsavel ON e.Responsavel = uResponsavel.Id
         JOIN Livros l ON e.LivroId = l.Id
         WHERE 1=1";
-
             if (filtros.FiltrarCodigoBarras)
                 queryBase += " AND l.CodigoBarras LIKE @CodigoBarras";
-
             if (filtros.FiltrarStatus)
                 queryBase += " AND e.Status = @Status";
-
             if (filtros.FiltrarUsuario)
                 queryBase += " AND (uAlocador.Nome LIKE @UsuarioNome OR uResponsavel.Nome LIKE @UsuarioNome)";
-
             queryBase += @"
         ORDER BY 
             CASE e.Status
@@ -545,53 +476,39 @@ namespace SUB.Forms.Livros
                 WHEN 'Devolvido' THEN 3
                 ELSE 4
             END";
-
             return queryBase;
         }
-
 
         private void AdicionarParametrosBusca(SqlCeCommand comando, FiltrosBusca filtros)
         {
             if (filtros.FiltrarCodigoBarras)
                 comando.Parameters.AddWithValue("@CodigoBarras", "%" + filtros.CodigoBarras + "%");
-
             if (filtros.FiltrarStatus)
                 comando.Parameters.AddWithValue("@Status", filtros.StatusFiltro);
-
             if (filtros.FiltrarUsuario)
                 comando.Parameters.AddWithValue("@UsuarioNome", "%" + filtros.NomeUsuario + "%");
         }
 
-
-        #endregion
-
-        #region Configuração do DataGridView
-
+#endregion
+#region Configuração do DataGridView
         private void ConfigurarGridEmprestimos()
         {
             dgvEmprestimos.SuspendLayout();
-
             ConfigurarColunasGrid();
             ConfigurarEstiloGrid();
             ConfigurarEventosGrid();
             AdicionarBotaoFicha();
-
             if (dgvEmprestimos.Columns.Contains("ID do Empréstimo"))
             {
                 var colId = dgvEmprestimos.Columns["ID do Empréstimo"];
-
                 colId.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-
                 var headerStyle = (DataGridViewCellStyle)dgvEmprestimos.ColumnHeadersDefaultCellStyle.Clone();
                 headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 colId.HeaderCell.Style = headerStyle;
                 colId.HeaderCell.Style.Padding = new Padding(14, 0, 0, 0);
-
-                colId.MinimumWidth = 60;   // largura mínima em pixels (ajuste conforme desejar)
-                colId.FillWeight = 30f;    // peso relativo (aumente para dar mais espaço proporcional)
+                colId.MinimumWidth = 60; // largura mínima em pixels (ajuste conforme desejar)
+                colId.FillWeight = 30f; // peso relativo (aumente para dar mais espaço proporcional)
             }
-
 
             dgvEmprestimos.ResumeLayout();
         }
@@ -601,7 +518,6 @@ namespace SUB.Forms.Livros
             dgvEmprestimos.AutoGenerateColumns = false;
             dgvEmprestimos.Columns.Clear();
             dgvEmprestimos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
             var colunas = ObterDefinicoesColunas();
             foreach (var coluna in colunas)
             {
@@ -631,7 +547,6 @@ namespace SUB.Forms.Livros
         {
             Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
             Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
-
             var col = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = def.DataProperty,
@@ -680,7 +595,6 @@ namespace SUB.Forms.Livros
         {
             Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
             Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
-
             dgvEmprestimos.DefaultCellStyle.BackColor = Color.White;
             dgvEmprestimos.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgvEmprestimos.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
@@ -693,7 +607,6 @@ namespace SUB.Forms.Livros
         private void ConfigurarEstiloCabecalho()
         {
             Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
-
             dgvEmprestimos.EnableHeadersVisualStyles = false;
             dgvEmprestimos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor = corPrimaria;
@@ -715,13 +628,7 @@ namespace SUB.Forms.Livros
 
         private void HabilitarDoubleBuffering()
         {
-            typeof(DataGridView).InvokeMember(
-                "DoubleBuffered",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
-                null,
-                dgvEmprestimos,
-                new object[] { true }
-            );
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvEmprestimos, new object[] { true });
         }
 
         private void ConfigurarEventosGrid()
@@ -733,13 +640,11 @@ namespace SUB.Forms.Livros
                     AplicarCorStatus(row);
                 }
             };
-
             dgvEmprestimos.DataBindingComplete += (s, e) =>
             {
                 foreach (DataGridViewRow row in dgvEmprestimos.Rows)
                 {
                     AplicarCorStatus(row);
-
                     // Verificar se o livro ainda existe
                     string nomeLivro = row.Cells["Livro"].Value?.ToString();
                     if (!string.IsNullOrEmpty(nomeLivro))
@@ -752,7 +657,6 @@ namespace SUB.Forms.Livros
                             {
                                 cmd.Parameters.AddWithValue("@nome", nomeLivro);
                                 int count = (int)cmd.ExecuteScalar();
-
                                 if (count == 0)
                                 {
                                     row.Cells["Livro"].Style.ForeColor = Color.Red;
@@ -771,7 +675,6 @@ namespace SUB.Forms.Livros
             var status = row.Cells["Status"].Value?.ToString()?.Trim();
             Color foreColor = ObterCorForegroundStatus(status);
             Color selectionColor = ObterCorSelectionStatus(status);
-
             row.Cells["Status"].Style.ForeColor = foreColor;
             row.Cells["Status"].Style.SelectionForeColor = selectionColor;
         }
@@ -806,15 +709,12 @@ namespace SUB.Forms.Livros
             }
         }
 
-        #endregion
-
-        #region Botão Ficha do Aluno
-
+#endregion
+#region Botão Ficha do Aluno
         private void AdicionarBotaoFicha()
         {
             Color corPrimaria = ThemeManager.Normalize(dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor);
             Color corSelecao = ThemeManager.Lighten(corPrimaria, 0.88f);
-
             var btnFicha = new DataGridViewButtonColumn
             {
                 Name = "Ficha",
@@ -832,7 +732,6 @@ namespace SUB.Forms.Livros
                     SelectionForeColor = Color.FromArgb(35, 42, 50)
                 }
             };
-
             dgvEmprestimos.Columns.Add(btnFicha);
         }
 
@@ -840,7 +739,6 @@ namespace SUB.Forms.Livros
         {
             if (e.RowIndex < 0 || dgvEmprestimos.Columns[e.ColumnIndex].Name != "Ficha")
                 return;
-
             var idObj = dgvEmprestimos.Rows[e.RowIndex].Cells["IdAluno"].Value;
             if (idObj != null && int.TryParse(idObj.ToString(), out int idUsuario))
             {
@@ -851,7 +749,6 @@ namespace SUB.Forms.Livros
         private void AbrirFichaAluno(int idUsuario)
         {
             var aluno = BuscarAlunoPorId(idUsuario);
-
             if (aluno != null)
             {
                 var fichaForm = new FichaAlunoForm();
@@ -870,19 +767,11 @@ namespace SUB.Forms.Livros
         {
             if (e.RowIndex < 0 || dgvEmprestimos.Columns[e.ColumnIndex].Name != "Ficha")
                 return;
-
             e.PaintBackground(e.CellBounds, true);
-
             Color corFundo = dgvEmprestimos.ColumnHeadersDefaultCellStyle.BackColor;
             Color corTexto = dgvEmprestimos.ColumnHeadersDefaultCellStyle.ForeColor;
             int borderRadius = 8;
-
-            Rectangle rect = new Rectangle(
-                e.CellBounds.X + 6,
-                e.CellBounds.Y + 6,
-                e.CellBounds.Width - 12,
-                e.CellBounds.Height - 12);
-
+            Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6, e.CellBounds.Width - 12, e.CellBounds.Height - 12);
             DesenharBotaoArredondado(e.Graphics, rect, corFundo, corTexto, borderRadius);
             e.Handled = true;
         }
@@ -897,11 +786,7 @@ namespace SUB.Forms.Livros
                 graphics.DrawPath(pen, path);
             }
 
-            TextRenderer.DrawText(graphics, "Ficha",
-                new Font("Segoe UI Semibold", 9F),
-                rect,
-                corTexto,
-                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(graphics, "Ficha", new Font("Segoe UI Semibold", 9F), rect, corTexto, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
         }
 
         private System.Drawing.Drawing2D.GraphicsPath CriarCaminhoArredondado(Rectangle rect, int borderRadius)
@@ -915,17 +800,13 @@ namespace SUB.Forms.Livros
             return path;
         }
 
-        #endregion
-
-        #region Operações de Devolução
-
+#endregion
+#region Operações de Devolução
         private void DevolverEmprestimo()
         {
             if (!ValidarSelecaoEmprestimo())
                 return;
-
             var emprestimoInfo = ObterInformacoesEmprestimoSelecionado();
-
             if (!RegrasCirculacao.EmprestimoNormalAberto(emprestimoInfo.Status))
             {
                 MessageBox.Show("Este empréstimo já foi devolvido ou não está em aberto.");
@@ -936,22 +817,11 @@ namespace SUB.Forms.Livros
             var row = dgvEmprestimos.SelectedRows[0];
             string livro = row.Cells["Livro"].Value?.ToString();
             string alocador = row.Cells["Alocador"].Value?.ToString();
-           
-            string dataEmprestimo = row.Cells["Data do Empréstimo"].Value != null
-                ? Convert.ToDateTime(row.Cells["Data do Empréstimo"].Value).ToString("dd/MM/yyyy")
-                : "";
- 
-
-            string msg = $"Confirma a devolução deste empréstimo?\n\n" +
-                         $"Livro: {livro}\n" +
-                         $"Leitor: {alocador}\n" +
-                         $"Data do Empréstimo: {dataEmprestimo}\n";
-                        
-
+            string dataEmprestimo = row.Cells["Data do Empréstimo"].Value != null ? Convert.ToDateTime(row.Cells["Data do Empréstimo"].Value).ToString("dd/MM/yyyy") : "";
+            string msg = $"Confirma a devolução deste empréstimo?\n\n" + $"Livro: {livro}\n" + $"Leitor: {alocador}\n" + $"Data do Empréstimo: {dataEmprestimo}\n";
             var confirm = MessageBox.Show(msg, "Confirmação de Devolução", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm != DialogResult.Yes)
                 return;
-
             try
             {
                 ProcessarDevolucaoNoBanco(emprestimoInfo.Id);
@@ -964,16 +834,14 @@ namespace SUB.Forms.Livros
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Falha na devolução: {0}", ex);
-                MessageBox.Show("Não foi possível salvar a devolução. O empréstimo e o estoque não foram alterados. Atualize a consulta e tente novamente.",
-                    "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível salvar a devolução. O empréstimo e o estoque não foram alterados. Atualize a consulta e tente novamente.", "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             MessageBox.Show("Livro devolvido com sucesso.");
             LivroAtualizado?.Invoke(this, EventArgs.Empty);
-
             // Gatilho global para atualização em outros formulários
             SUB.Utils.EventosGlobais.OnLivroDevolvido();
-
             BuscarEmprestimos();
         }
 
@@ -984,6 +852,7 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("Selecione um empréstimo para devolver.");
                 return false;
             }
+
             return true;
         }
 
@@ -1005,16 +874,14 @@ namespace SUB.Forms.Livros
                 CirculacaoService.DevolverNormal(conexao, idEmprestimo, DateTime.Now);
             }
         }
-        #endregion
 
-        #region Verificação de Atrasos
-
+#endregion
+#region Verificação de Atrasos
         private void VerificarAtrasos()
         {
             using (SqlCeConnection conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
-
                 string query = @"
                     UPDATE Emprestimo
                     SET Status = 'Atrasado'
@@ -1024,39 +891,31 @@ namespace SUB.Forms.Livros
                         OR
                         (DataProrrogacao IS NULL AND DataDevolucao < @Hoje)
                     )";
-
                 using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                 {
                     comando.Parameters.AddWithValue("@Hoje", DateTime.Now);
                     int afetados = comando.ExecuteNonQuery();
-
                     if (afetados > 0)
                     {
-                        MessageBox.Show($"{afetados} empréstimo(s) foram marcados como atrasados.",
-                                        "Verificação de Atrasos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show($"{afetados} empréstimo(s) foram marcados como atrasados.", "Verificação de Atrasos", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
         }
 
-        #endregion
-
-        #region Consulta de Alunos
-
+#endregion
+#region Consulta de Alunos
         public Aluno BuscarAlunoPorId(int id)
         {
             using (SqlCeConnection conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
-
                 string query = @"
                     SELECT Nome, Email, Turma, Telefone, Cpf, DataNascimento 
                     FROM Usuarios WHERE Id = @Id";
-
                 using (SqlCeCommand cmd = new SqlCeCommand(query, conexao))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-
                     using (SqlCeDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -1068,9 +927,7 @@ namespace SUB.Forms.Livros
                                 Turma = reader["Turma"].ToString(),
                                 Telefone = reader["Telefone"].ToString(),
                                 CPF = reader["Cpf"].ToString(),
-                                DataNascimento = reader["DataNascimento"] != DBNull.Value
-                                    ? Convert.ToDateTime(reader["DataNascimento"])
-                                    : DateTime.MinValue
+                                DataNascimento = reader["DataNascimento"] != DBNull.Value ? Convert.ToDateTime(reader["DataNascimento"]) : DateTime.MinValue
                             };
                         }
                     }
@@ -1080,14 +937,12 @@ namespace SUB.Forms.Livros
             return null;
         }
 
-        #endregion
-
+#endregion
         private void DevoluçãoForm_Activated(object sender, EventArgs e)
         {
-           BuscarEmprestimos();
+            BuscarEmprestimos();
             VerificarAtrasos();
         }
-
 
         private const int LIMITE_CODIGO_BARRAS = 13;
         private void mtxCodigoBarras_KeyPressLimiter(object sender, KeyPressEventArgs e)
@@ -1122,13 +977,11 @@ namespace SUB.Forms.Livros
             {
                 // Pega o código de barras formatado (apenas dígitos)
                 string codigo = ObterCodigoDeBarrasFormatado();
-
                 // Só executa a busca se houver algum código
                 if (!string.IsNullOrWhiteSpace(codigo))
                 {
                     // 2. Aciona o clique no botão de busca
                     btnBuscarEmprestimo.PerformClick();
-
                     // 3. Agenda a limpeza do campo para permitir o próximo escaneamento
                     Task.Delay(1000).ContinueWith(_ =>
                     {
@@ -1143,7 +996,7 @@ namespace SUB.Forms.Livros
                         }
                         catch
                         {
-                            // Ignora erros caso o formulário seja fechado durante o delay
+                        // Ignora erros caso o formulário seja fechado durante o delay
                         }
                     });
                 }
@@ -1154,8 +1007,7 @@ namespace SUB.Forms.Livros
             }
 
             // Enter nos campos de nome procura; com a lista de sugestões aberta, o Enter escolhe a sugestão.
-            if (keyData == Keys.Enter && !lstSugestoesUsuario.Visible &&
-                (this.ActiveControl == txtUsuario || this.ActiveControl == txtLivro))
+            if (keyData == Keys.Enter && !lstSugestoesUsuario.Visible && (this.ActiveControl == txtUsuario || this.ActiveControl == txtLivro))
             {
                 btnBuscarEmprestimo.PerformClick();
                 return true;
@@ -1167,25 +1019,20 @@ namespace SUB.Forms.Livros
 
         private void gradientPanel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
     }
 
-    #region Classes Auxiliares
-
+#region Classes Auxiliares
     public class FiltrosBusca
     {
         public string NomeLivro { get; set; } = "";
         public string CodigoBarras { get; set; } = "";
         public string StatusFiltro { get; set; } = "";
         public string NomeUsuario { get; set; } = "";
-
         public bool FiltrarCodigoBarras => !string.IsNullOrEmpty(CodigoBarras);
         public bool FiltrarStatus => StatusFiltro != "Todos" && !string.IsNullOrEmpty(StatusFiltro);
         public bool FiltrarUsuario => !string.IsNullOrWhiteSpace(NomeUsuario);
     }
-
-
 
     public class DefinicaoColuna
     {
@@ -1195,8 +1042,7 @@ namespace SUB.Forms.Livros
         public DataGridViewContentAlignment Alignment { get; }
         public int MinWidth { get; }
 
-        public DefinicaoColuna(string dataProperty, string header, float fillWeight,
-                              DataGridViewContentAlignment alignment, int minWidth)
+        public DefinicaoColuna(string dataProperty, string header, float fillWeight, DataGridViewContentAlignment alignment, int minWidth)
         {
             DataProperty = dataProperty;
             Header = header;
@@ -1211,7 +1057,5 @@ namespace SUB.Forms.Livros
         public int Id { get; set; }
         public string Status { get; set; }
     }
-
-
-    #endregion
+#endregion
 }

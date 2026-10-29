@@ -88,9 +88,6 @@
     <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
       <HintPath>packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
     </Reference>
-    <Reference Include="MaterialSkin, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\MaterialSkin.2.2.3.1\lib\net48\MaterialSkin.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=10.0.0.7, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.10.0.7\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -119,9 +116,6 @@
       <HintPath>packages\Microsoft.Extensions.Primitives.9.0.15\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="MySql.Data, Version=9.3.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>packages\MySql.Data.9.3.0\lib\net48\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -267,6 +261,30 @@
     <Compile Include="Utils\TutorialStateStore.cs" />
     <Compile Include="Utils\GuidedTourOverlay.cs" />
     <Compile Include="Utils\AtualizacaoService.cs" />
+    <Compile Include="Forms\Inicio\InicioForm.Dashboard.cs">
+      <DependentUpon>InicioForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Inicio\InicioForm.Dados.cs">
+      <DependentUpon>InicioForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Inicio\InicioForm.Comunicados.cs">
+      <DependentUpon>InicioForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Inicio\MainForm.Tutorial.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Configuracoes\ConfiguracaoForm.Atualizacao.cs">
+      <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Configuracoes\ConfiguracaoForm.Reset.cs">
+      <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Utils\LivroMetadataService.cs" />
     <Compile Include="Utils\VersaoAplicativo.cs" />
     <Compile Include="Utils\ResetLocalStore.cs" />
@@ -291,12 +309,6 @@
     <Compile Include="Utils\ProrrogacaoService.cs" />
     <Compile Include="Utils\CirculacaoService.cs" />
     <Compile Include="Utils\RegrasCirculacao.cs" />
-    <Compile Include="Elements\AnimatedToggle.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Elements\AnimatedToggle.Designer.cs">
-      <DependentUpon>AnimatedToggle.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Livros\AlterarCadLivroForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -382,12 +394,6 @@
     <Compile Include="Models\Emprestimo.cs" />
     <Compile Include="Models\InstituicaoConfiguracao.cs" />
     <Compile Include="Models\Livro.cs" />
-    <Compile Include="Component1.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Component1.Designer.cs">
-      <DependentUpon>Component1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Livros\EmprestimoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -468,9 +474,6 @@
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\TurmasUtil.cs" />
-    <EmbeddedResource Include="Elements\AnimatedToggle.resx">
-      <DependentUpon>AnimatedToggle.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Configuracoes\ConfiguracaoForm.resx">
       <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -568,48 +571,6 @@
     <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-cardápio-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-página-inicial-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-página-inicial-30-white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-grupo-de-usuário-homem-homem-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-livros-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-relatório-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-sair-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-cardápio-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-cardápio-30-black.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-chamada-em-conferência-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-livros-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-página-inicial-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-relatório-20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-sair-20.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icons8-chamada-em-conferência-25.png" />
   </ItemGroup>
   <ItemGroup>
@@ -619,24 +580,15 @@
     <None Include="Resources\icons8-página-inicial-25.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-livros-25.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icons8-sair-25.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\configuracao-25.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-cardápio-25.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-engrenagem-25.png" />
     <Content Include="Resources\SEEMG.jpg" />
     <Content Include="sub-200x200px_icon.ico" />
     <None Include="Resources\SEEMG1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icons8-x-20.png" />
@@ -648,40 +600,10 @@
     <None Include="Resources\icons8-menos-20.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-fuga-de-equipes-20.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\icons8-quadrado-arredondado-20.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icons8-adicionar-usuário-masculino-30.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\8d7e22bfe4da9ba08eb4b469ea8c532f-quadrado-quadrado-arredondado.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icons8-grupo-de-usuário-homem-homem-301.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\botão redondo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\clouds-upright-2x.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\clouds-upright-2x1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\material-symbols - tab-search-rounded %281%29.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\material-symbols - tab-search-rounded.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\material-symbols - tab-search-rounded 25px.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
@@ -698,22 +620,7 @@
   <ItemGroup>
     <None Include="Resources\icons8-search-25.png" />
     <None Include="Resources\icons8-refresh-barcode-25.png" />
-    <None Include="Resources\icons8-barcode-scanner-20 %281%29.png" />
-    <None Include="Resources\icons8-synchronize-25.png" />
-    <None Include="Resources\icons8-github-50.png" />
     <None Include="Resources\icons8-github-30.png" />
-    <None Include="Resources\images.png" />
-    <None Include="Resources\icons8-export-excel-20.png" />
-    <None Include="Resources\icons8-export-excel-25.png" />
-    <None Include="Resources\icons8-usuário-1001.png" />
-    <None Include="Resources\icons8-usuário-501.png" />
-    <None Include="Resources\icons8-usuário-30.png" />
-    <None Include="Resources\icons8-usuário-50.png" />
-    <None Include="Resources\icons8-usuário-100.png" />
-    <None Include="Resources\icons8-símbolo-da-lua-22.png" />
-    <None Include="Resources\icons8-símbolo-da-lua-20.png" />
-    <None Include="Resources\icons8-sol-25.png" />
-    <None Include="Resources\icons8-não-perturbe-2-25.png" />
     <None Include="Resources\icons8-usuário-masculino-25.png" />
     <None Include="Resources\icons8-registration-25.png" />
     <None Include="Resources\icons8-adicionar-usuário-masculino-25.png" />
@@ -724,7 +631,6 @@
     <None Include="Resources\sub-full.png" />
     <None Include="Resources\sub-200x200px.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.2\build\net471\System.ValueTuple.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

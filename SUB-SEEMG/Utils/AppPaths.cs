@@ -6,9 +6,7 @@ namespace SUB.Utils
 {
     public static class AppPaths
     {
-        public static string AppDataFolder =>
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SUB");
-
+        public static string AppDataFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SUB");
         public static string MappingFolder => Path.Combine(AppDataFolder, "mapeamentoanual");
         public static string ReportsFolder => Path.Combine(AppDataFolder, "Relatorios");
         public static string UpdateFolder => Path.Combine(AppDataFolder, "update");
@@ -23,9 +21,8 @@ namespace SUB.Utils
             }
             catch
             {
-                // Não levantar aqui — quem chamar pode tratar. Mas tentamos garantir diretórios.
+            // Não levantar aqui — quem chamar pode tratar. Mas tentamos garantir diretórios.
             }
         }
     }
 }
-

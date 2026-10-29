@@ -1,11 +1,9 @@
-﻿using SeuProjeto;
 using System;
-using SUB.Models;
-using SUB.Utils;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
+using SUB.Utils;
 
 namespace SUB.Forms.Login
 {
@@ -15,12 +13,10 @@ namespace SUB.Forms.Login
         private Bitmap _iconeFecharTema;
         private Bitmap _iconeGithubTema;
         private Bitmap _logoCompletaTema;
-
         public AboutForm()
         {
             InitializeComponent();
             label5.Text = "Versão " + AtualizacaoService.VersaoAtual();
-
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(188, 199, 212), meuRaio, 1);
@@ -30,7 +26,6 @@ namespace SUB.Forms.Login
         {
             var configuracao = InstituicaoConfiguracaoStore.Carregar();
             Color corPrimaria = ThemeManager.DefaultColor;
-
             if (configuracao != null)
             {
                 try
@@ -44,7 +39,6 @@ namespace SUB.Forms.Login
             }
 
             AplicarTema(corPrimaria);
-
             label7.Text = string.Format("© {0} Sistema Único Bibliotecário · SEE/MG", DateTime.Now.Year);
             BtnOk.Focus();
         }
@@ -57,14 +51,12 @@ namespace SUB.Forms.Login
             _corPrimariaAtual = primaria;
             bool escuro = ThemeManager.Escuro;
             Color divisoria = escuro ? ThemeManager.Dark.Borda : ThemeManager.Lighten(primaria, 0.72f);
-
             BackColor = escuro ? ThemeManager.Dark.Fundo : tema.AccentColor;
             panel5.BackColor = escuro ? ThemeManager.Dark.Fundo : Color.FromArgb(250, 252, 255);
             pnlMarcaAbout.BackColor = primaria;
             pnlLogoAbout.BackColor = primaria;
             panel2.BackColor = divisoria;
             linhaRodape.BackColor = divisoria;
-
             BtnOk.BaseColor = primaria;
             BtnOk.Invalidate();
             foreach (LinkLabel link in new[] { btnTerm, linkRepositorio, linkSuporte })
@@ -74,7 +66,14 @@ namespace SUB.Forms.Login
                 link.VisitedLinkColor = primaria;
             }
 
-            foreach (LinkLabel link in new[] { label4, label8, label9, })
+            foreach (LinkLabel link in new[]
+            {
+                label4,
+                label8,
+                label9,
+            }
+
+            )
             {
                 link.LinkColor = Color.FromArgb(43, 55, 69);
                 link.ActiveLinkColor = primaria;
@@ -86,7 +85,6 @@ namespace SUB.Forms.Login
             picExit.BackColor = Color.Transparent;
             AtualizarLogoCompleta(primaria);
             pnlLogoAbout.BringToFront();
-
             // O cabeçalho na cor da instituição (com o selo da SEE em fundo branco) fica como está.
             if (escuro)
             {
@@ -95,6 +93,7 @@ namespace SUB.Forms.Login
                     if (filho != pnlMarcaAbout && filho != panel2 && filho != linhaRodape)
                         ThemeManager.AplicarModoEscuro(filho, primaria);
                 }
+
                 this.AlterarCorDaBorda(ThemeManager.Dark.Borda);
             }
         }
@@ -102,11 +101,7 @@ namespace SUB.Forms.Login
         private void AtualizarIconesGithub(Color cor)
         {
             Bitmap origem = Properties.Resources.icons8_github_30;
-            Bitmap novoIcone = new Bitmap(
-                origem.Width,
-                origem.Height,
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
+            Bitmap novoIcone = new Bitmap(origem.Width, origem.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             for (int y = 0; y < origem.Height; y++)
             {
                 for (int x = 0; x < origem.Width; x++)
@@ -119,23 +114,23 @@ namespace SUB.Forms.Login
 
             Bitmap iconeAnterior = _iconeGithubTema;
             _iconeGithubTema = novoIcone;
+            foreach (PictureBox icone in new[]
+            {
+                GitRenato,
+                GitLuis,
+                GitIthalo
+            }
 
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo})
+            )
                 icone.Image = novoIcone;
-
             if (iconeAnterior != null)
                 iconeAnterior.Dispose();
         }
 
         private void AtualizarLogoCompleta(Color primaria)
         {
-            Bitmap origem = SubLogoManager.Get(
-                SubLogoVariant.Full,
-                primaria,
-                Color.FromArgb(250, 252, 255),
-                new Size(picLogoAbout.Width * 2, picLogoAbout.Height * 2));
+            Bitmap origem = SubLogoManager.Get(SubLogoVariant.Full, primaria, Color.FromArgb(250, 252, 255), new Size(picLogoAbout.Width * 2, picLogoAbout.Height * 2));
             Bitmap logo = new Bitmap(origem);
-
             Bitmap logoAnterior = _logoCompletaTema;
             _logoCompletaTema = logo;
             picLogoAbout.Image = logo;
@@ -146,7 +141,6 @@ namespace SUB.Forms.Login
         private void AtualizarIconeFechar(Color cor)
         {
             Bitmap novoIcone = new Bitmap(20, 20);
-
             using (Graphics grafico = Graphics.FromImage(novoIcone))
             using (Pen caneta = new Pen(cor, 2.2F))
             {
@@ -181,7 +175,14 @@ namespace SUB.Forms.Login
 
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            foreach (PictureBox icone in new[] { GitRenato, GitLuis, GitIthalo, })
+            foreach (PictureBox icone in new[]
+            {
+                GitRenato,
+                GitLuis,
+                GitIthalo,
+            }
+
+            )
                 icone.Image = null;
             if (_iconeGithubTema != null)
             {
@@ -217,13 +218,11 @@ namespace SUB.Forms.Login
 
         private void btnTerm_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Este projeto é distribuído sob a licença MIT.",
-                "Licença MIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Este projeto é distribuído sob a licença MIT.", "Licença MIT", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void gradientPanel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void GitRenato_Click(object sender, EventArgs e)
@@ -264,8 +263,7 @@ namespace SUB.Forms.Login
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Não foi possível abrir o link: " + ex.Message,
-                                "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível abrir o link: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -275,4 +273,3 @@ namespace SUB.Forms.Login
         }
     }
 }
-

@@ -5,7 +5,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Windows.Forms;
-
 using ZXing;
 using ZXing.Common;
 
@@ -13,14 +12,13 @@ namespace SUB.Utils.Etiquetas
 {
     public sealed class LabelPrintOptions
     {
-        public int StartPosition { get; set; } = 1;     // 1..30
+        public int StartPosition { get; set; } = 1; // 1..30
         public float OffsetXmm { get; set; } = 0f;
         public float OffsetYmm { get; set; } = 0f;
         public string PrinterName { get; set; }
         public bool GroupByGenre { get; set; } = true;
         public bool ShowPrintDialog { get; set; } = true;
         public bool Preview { get; set; } = false;
-
         // Novo: suporte a salvar direto em arquivo (ex.: Microsoft Print to PDF)
         public bool PrintToFile { get; set; } = false;
         public string OutputFilePath { get; set; }
@@ -37,43 +35,39 @@ namespace SUB.Utils.Etiquetas
     {
         private const int Colunas = 3;
         private const int Linhas = 10;
-
         private const float LabelWidthMm = 66.7f;
         private const float LabelHeightMm = 25.4f;
         private const float HorizontalPitchMm = 69.8f;
         private const float VerticalPitchMm = 25.4f;
-
         private const float PageMarginLeftMm = 4.8f;
         private const float PageMarginRightMm = 4.8f;
         private const float PageMarginTopMm = 12.7f;
         private const float PageMarginBottomMm = 12.7f;
-
         private const float CornerRadiusMm = 3.0f;
         private const float PageWidthMm = 215.9f;
         private const float PageHeightMm = 279.4f;
-
         private static readonly Font TitleFont = new Font("Segoe UI", 9.0f, FontStyle.Bold, GraphicsUnit.Point);
         private static readonly Font InfoFont = new Font("Segoe UI", 8.0f, FontStyle.Regular, GraphicsUnit.Point);
         private static readonly Font CodeFont = new Font("Segoe UI", 7.0f, FontStyle.Regular, GraphicsUnit.Point);
-
         public static void PrintLabels(IEnumerable<EtiquetaLabelItem> sourceItems, LabelPrintOptions options)
         {
-            if (sourceItems == null) throw new ArgumentNullException(nameof(sourceItems));
-            if (options == null) options = new LabelPrintOptions();
-
+            if (sourceItems == null)
+                throw new ArgumentNullException(nameof(sourceItems));
+            if (options == null)
+                options = new LabelPrintOptions();
             var items = sourceItems.ToList();
-            if (items.Count == 0) return;
-
+            if (items.Count == 0)
+                return;
             if (options.GroupByGenre)
                 items = GroupByGenre(items);
-
             int currentIndex = 0;
             int startPosition = Math.Max(1, Math.Min(Colunas * Linhas, options.StartPosition));
             float offsetXmm = options.OffsetXmm;
             float offsetYmm = options.OffsetYmm;
-
-            var doc = new PrintDocument { OriginAtMargins = false };
-
+            var doc = new PrintDocument
+            {
+                OriginAtMargins = false
+            };
             try
             {
                 doc.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
@@ -85,21 +79,27 @@ namespace SUB.Utils.Etiquetas
             {
                 try
                 {
-                    var letter = doc.PrinterSettings.PaperSizes
-                        .Cast<PaperSize>()
-                        .FirstOrDefault(p => p.Kind == PaperKind.Letter);
+                    var letter = doc.PrinterSettings.PaperSizes.Cast<PaperSize>().FirstOrDefault(p => p.Kind == PaperKind.Letter);
                     if (letter != null)
                     {
                         doc.DefaultPageSettings.PaperSize = letter;
                         doc.DefaultPageSettings.Landscape = false;
                     }
                 }
-                catch { }
+                catch
+                {
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(options.PrinterName))
             {
-                try { doc.PrinterSettings.PrinterName = options.PrinterName; } catch { }
+                try
+                {
+                    doc.PrinterSettings.PrinterName = options.PrinterName;
+                }
+                catch
+                {
+                }
             }
 
             // Novo: salva direto no arquivo indicado (driver que suporta PrintToFile, ex.: Microsoft Print to PDF)
@@ -110,7 +110,9 @@ namespace SUB.Utils.Etiquetas
                     doc.PrinterSettings.PrintToFile = true;
                     doc.PrinterSettings.PrintFileName = options.OutputFilePath;
                 }
-                catch { /* alguns drivers podem ignorar */ }
+                catch
+                { /* alguns drivers podem ignorar */
+                }
             }
 
             doc.PrintPage += (s, e) =>
@@ -119,37 +121,22 @@ namespace SUB.Utils.Etiquetas
                 int pageW = ps.Width, pageH = ps.Height;
                 int hardX = (int)Math.Round(e.PageSettings.HardMarginX);
                 int hardY = (int)Math.Round(e.PageSettings.HardMarginY);
-
                 int originPageX = -hardX + MmToHi(offsetXmm);
                 int originPageY = -hardY + MmToHi(offsetYmm);
                 var pageRect = new Rectangle(originPageX, originPageY, pageW, pageH);
-
                 int insetL = MmToHi(PageMarginLeftMm);
                 int insetR = MmToHi(PageMarginRightMm);
                 int insetT = MmToHi(PageMarginTopMm);
                 int insetB = MmToHi(PageMarginBottomMm);
-
-                var layout = new Rectangle(
-                    pageRect.Left + insetL,
-                    pageRect.Top + insetT,
-                    Math.Max(0, pageRect.Width - insetL - insetR),
-                    Math.Max(0, pageRect.Height - insetT - insetB));
-
-                var headerRect = new Rectangle(
-                    pageRect.Left + insetL,
-                    pageRect.Top,
-                    Math.Max(0, pageRect.Width - insetL - insetR),
-                    insetT);
-
+                var layout = new Rectangle(pageRect.Left + insetL, pageRect.Top + insetT, Math.Max(0, pageRect.Width - insetL - insetR), Math.Max(0, pageRect.Height - insetT - insetB));
+                var headerRect = new Rectangle(pageRect.Left + insetL, pageRect.Top, Math.Max(0, pageRect.Width - insetL - insetR), insetT);
                 int wLabel = MmToHi(LabelWidthMm);
                 int hLabel = MmToHi(LabelHeightMm);
                 int pitchX = MmToHi(HorizontalPitchMm);
                 int pitchY = MmToHi(VerticalPitchMm);
-
                 int labelsPerPage = Colunas * Linhas;
                 int skip = Math.Max(0, startPosition - 1);
                 int pageCapacity = Math.Max(0, labelsPerPage - skip);
-
                 string headerText = BuildPageHeaderGenresText(items, currentIndex, pageCapacity);
                 using (var brush = new SolidBrush(Color.Black))
                 {
@@ -164,7 +151,6 @@ namespace SUB.Utils.Etiquetas
 
                 var oldSmoothing = e.Graphics.SmoothingMode;
                 e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-
                 using (var pen = new Pen(Color.LightGray))
                 {
                     for (int r = 0; r < Linhas; r++)
@@ -174,14 +160,17 @@ namespace SUB.Utils.Etiquetas
                             int x = layout.Left + c * pitchX;
                             int y = layout.Top + r * pitchY;
                             var cell = new Rectangle(x, y, wLabel, hLabel);
-
                             using (var path = CreateRoundedRect(cell, MmToHi(CornerRadiusMm)))
                             {
                                 e.Graphics.DrawPath(pen, path);
+                                if (skip > 0)
+                                {
+                                    skip--;
+                                    continue;
+                                }
 
-                                if (skip > 0) { skip--; continue; }
-                                if (currentIndex >= items.Count) continue;
-
+                                if (currentIndex >= items.Count)
+                                    continue;
                                 var state = e.Graphics.Save();
                                 try
                                 {
@@ -201,11 +190,9 @@ namespace SUB.Utils.Etiquetas
                 }
 
                 e.Graphics.SmoothingMode = oldSmoothing;
-
                 startPosition = 1; // pr�ximas p�ginas sempre iniciam do slot 1
                 e.HasMorePages = currentIndex < items.Count;
             };
-
             if (options.Preview)
             {
                 using (var prev = new PrintPreviewDialog())
@@ -213,6 +200,7 @@ namespace SUB.Utils.Etiquetas
                     prev.Document = doc;
                     prev.ShowDialog();
                 }
+
                 return;
             }
 
@@ -245,16 +233,17 @@ namespace SUB.Utils.Etiquetas
                     map[g] = list;
                     order.Add(g);
                 }
+
                 list.Add(it);
             }
+
             var result = new List<EtiquetaLabelItem>(items.Count);
-            foreach (var g in order) result.AddRange(map[g]);
+            foreach (var g in order)
+                result.AddRange(map[g]);
             return result;
         }
 
-        private static string NormalizeGenre(string genero)
-            => string.IsNullOrWhiteSpace(genero) ? "Sem g�nero" : genero.Trim();
-
+        private static string NormalizeGenre(string genero) => string.IsNullOrWhiteSpace(genero) ? "Sem g�nero" : genero.Trim();
         private static string BuildPageHeaderGenresText(IList<EtiquetaLabelItem> items, int startIndex, int pageCapacity)
         {
             if (pageCapacity <= 0 || startIndex >= items.Count)
@@ -265,8 +254,10 @@ namespace SUB.Utils.Etiquetas
             for (int i = startIndex; i < endExclusive; i++)
             {
                 var g = NormalizeGenre(items[i].Genero);
-                if (set.Add(g)) list.Add(g);
+                if (set.Add(g))
+                    list.Add(g);
             }
+
             return list.Count == 1 ? $"G�nero: {list[0]}" : "G�neros: " + string.Join(", ", list);
         }
 
@@ -275,15 +266,12 @@ namespace SUB.Utils.Etiquetas
             int vGap = MmToHi(0.7f);
             int hGap = MmToHi(1.0f);
             int minShelfUnderline = MmToHi(18.0f);
-
             int titleAreaH = (int)Math.Round(bounds.Height * 0.28);
             int infoAreaH = (int)Math.Round(bounds.Height * 0.18);
             int barcodeAreaH = Math.Max(8, bounds.Height - titleAreaH - infoAreaH - vGap * 2);
-
             Rectangle titleRect = new Rectangle(bounds.Left, bounds.Top, bounds.Width, titleAreaH);
             Rectangle infoRect = new Rectangle(bounds.Left, titleRect.Bottom + vGap, bounds.Width, infoAreaH);
             Rectangle barcodeRect = new Rectangle(bounds.Left, infoRect.Bottom + vGap, bounds.Width, barcodeAreaH);
-
             using (var brush = new SolidBrush(Color.Black))
             {
                 var fmtTitle = new StringFormat(StringFormatFlags.NoWrap)
@@ -293,14 +281,11 @@ namespace SUB.Utils.Etiquetas
                     LineAlignment = StringAlignment.Near
                 };
                 g.DrawString(item.Titulo ?? "", TitleFont, brush, titleRect, fmtTitle);
-
                 string genero = item.Genero ?? "";
                 string shelfLabel = "Prateleira:";
                 var shelfLabelSize = g.MeasureString(shelfLabel, InfoFont);
-
                 int shelfLabelW = (int)Math.Ceiling(shelfLabelSize.Width);
                 int maxGenreW = Math.Max(0, infoRect.Width - shelfLabelW - minShelfUnderline - hGap);
-
                 var genreRect = new Rectangle(infoRect.Left, infoRect.Top, maxGenreW, infoRect.Height);
                 var fmtGenre = new StringFormat(StringFormatFlags.NoWrap)
                 {
@@ -309,11 +294,9 @@ namespace SUB.Utils.Etiquetas
                     LineAlignment = StringAlignment.Near
                 };
                 g.DrawString(genero, InfoFont, brush, genreRect, fmtGenre);
-
                 int shelfLabelX = genreRect.Right + hGap;
                 var shelfLabelRect = new Rectangle(shelfLabelX, infoRect.Top, shelfLabelW, infoRect.Height);
                 g.DrawString(shelfLabel, InfoFont, brush, shelfLabelRect, fmtGenre);
-
                 int underlineLeft = shelfLabelRect.Right + hGap;
                 int underlineRight = infoRect.Right;
                 int underlineY = infoRect.Top + infoRect.Height / 2 + 2;
@@ -325,17 +308,8 @@ namespace SUB.Utils.Etiquetas
 
                 // Barcode
                 int codeTextHeight = (int)Math.Max(12, CodeFont.GetHeight(g));
-                Rectangle barcodeOnlyRect = new Rectangle(
-                    barcodeRect.Left,
-                    barcodeRect.Top,
-                    barcodeRect.Width,
-                    Math.Max(8, barcodeRect.Height - codeTextHeight - 2));
-                Rectangle codeTextRect = new Rectangle(
-                    barcodeRect.Left,
-                    barcodeOnlyRect.Bottom + 2,
-                    barcodeRect.Width,
-                    codeTextHeight);
-
+                Rectangle barcodeOnlyRect = new Rectangle(barcodeRect.Left, barcodeRect.Top, barcodeRect.Width, Math.Max(8, barcodeRect.Height - codeTextHeight - 2));
+                Rectangle codeTextRect = new Rectangle(barcodeRect.Left, barcodeOnlyRect.Bottom + 2, barcodeRect.Width, codeTextHeight);
                 string code = item.CodigoBarras ?? "";
                 if (!string.IsNullOrWhiteSpace(code))
                 {
@@ -359,10 +333,16 @@ namespace SUB.Utils.Etiquetas
                             g.DrawImage(bmp, barcodeOnlyRect);
                         }
                     }
-                    catch { /* fallback: somente texto */ }
+                    catch
+                    { /* fallback: somente texto */
+                    }
                 }
 
-                var fmtCode = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+                var fmtCode = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Center
+                };
                 g.DrawString(code, CodeFont, brush, codeTextRect, fmtCode);
             }
         }
@@ -372,7 +352,12 @@ namespace SUB.Utils.Etiquetas
             int r = Math.Max(0, Math.Min(radius, Math.Min(rect.Width, rect.Height) / 2));
             int d = r * 2;
             var path = new GraphicsPath();
-            if (r <= 0) { path.AddRectangle(rect); path.CloseFigure(); return path; }
+            if (r <= 0)
+            {
+                path.AddRectangle(rect);
+                path.CloseFigure();
+                return path;
+            }
 
             path.AddArc(rect.Left, rect.Top, d, d, 180, 90);
             path.AddArc(rect.Right - d, rect.Top, d, d, 270, 90);

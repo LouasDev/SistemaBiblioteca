@@ -57,7 +57,5 @@ namespace SUB.Utils
         {
             TutorialSolicitado?.Invoke(null, EventArgs.Empty);
         }
-
-
     }
 }

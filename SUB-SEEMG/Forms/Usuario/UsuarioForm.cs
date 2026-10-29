@@ -1,8 +1,6 @@
 ﻿using SUB.Forms.Inicio;
-using SUB.Forms.Livros;
 using SUB.Utils; // ADICIONE ESTA LINHA
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Drawing;
@@ -10,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-
 
 namespace SUB.Forms.Usuario
 {
@@ -26,7 +23,6 @@ namespace SUB.Forms.Usuario
             this.FormClosed += UsuarioForm_FormClosed;
         }
 
-
         private void EventosGlobais_EmprestimoProrrogado(object sender, EventArgs e)
         {
             // Garantir execução na UI thread
@@ -38,11 +34,10 @@ namespace SUB.Forms.Usuario
                 }
                 catch
                 {
-                    // se BeginInvoke falhar por algum motivo (form fechando), ignore
+                // se BeginInvoke falhar por algum motivo (form fechando), ignore
                 }
             }
         }
-
 
         private void UsuarioForm_Load(object sender, EventArgs e)
         {
@@ -50,14 +45,10 @@ namespace SUB.Forms.Usuario
             SUB.Utils.EventosGlobais.EmprestimoRealizado += EventosGlobais_EmprestimoRealizado;
             SUB.Utils.EventosGlobais.EmprestimoProrrogado -= EventosGlobais_EmprestimoProrrogado;
             SUB.Utils.EventosGlobais.EmprestimoProrrogado += EventosGlobais_EmprestimoProrrogado;
-
-
             var caminho = Conexao.CaminhoBanco;
             if (!File.Exists(caminho))
             {
-                MessageBox.Show("Arquivo .sdf NÃO encontrado em: " + caminho +
-                                "\nDefina o arquivo como 'Copy to Output Directory'.",
-                                "Banco não encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Arquivo .sdf NÃO encontrado em: " + caminho + "\nDefina o arquivo como 'Copy to Output Directory'.", "Banco não encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -70,17 +61,17 @@ namespace SUB.Forms.Usuario
                     using (var cmd = new SqlCeCommand("SELECT COUNT(*) FROM usuarios", c))
                     {
                         var count = Convert.ToInt32(cmd.ExecuteScalar() ?? 0);
-                        // Opcional para depurar:
-                        // MessageBox.Show("Registros em 'usuarios': " + count);
+                    // Opcional para depurar:
+                    // MessageBox.Show("Registros em 'usuarios': " + count);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Falha ao abrir o banco .sdf ou acessar a tabela 'usuarios': " + ex.Message,
-                                "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Falha ao abrir o banco .sdf ou acessar a tabela 'usuarios': " + ex.Message, "Erro de conexão", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             // Itens e seleção padrão
             cmbTipoUsuario.Items.Clear();
             cmbTipoUsuario.Items.AddRange(new object[] { "Todos", "Aluno(a)", "Professor(a)", "Bibliotecário(a)", "Outros" });
@@ -88,17 +79,12 @@ namespace SUB.Forms.Usuario
             cmbEmprestimo.SelectedItem = "Todos";
             if (cmbTipoUsuario.SelectedIndex < 0 && cmbTipoUsuario.Items.Count > 0)
                 cmbTipoUsuario.SelectedIndex = 0;
-
-            
-
             // Estilo e colunas do grid antes de carregar
             ConfigurarGrid();
             CarregarUsuarios();
-
             filtroTimer = new Timer();
             filtroTimer.Interval = 200; // 200ms de espera
             filtroTimer.Tick += FiltroTimer_Tick;
-
             // Assina o evento TextChanged
             txtNome.TextChanged += TxtNome_TextChanged;
         }
@@ -150,14 +136,12 @@ namespace SUB.Forms.Usuario
         {
             // O timer disparou, pare-o e execute a busca
             filtroTimer.Stop();
-
             // Reutiliza a lógica de filtragem (igual ao btnFiltrar_Click)
             string nome = txtNome.Text?.Trim() ?? string.Empty;
             string tipo = cmbTipoUsuario.SelectedItem?.ToString() ?? "Todos";
             string emprestimo = cmbEmprestimo?.SelectedItem?.ToString() ?? "Todos";
             CarregarUsuarios(nome, tipo, emprestimo);
         }
-
 
         private void CarregarUsuarios(string nomeFiltro = "", string tipoFiltro = "Todos", string emprestimoFiltro = "Todos")
         {
@@ -166,7 +150,6 @@ namespace SUB.Forms.Usuario
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-
                     string sql = @"
                 SELECT
                     u.id              AS Id,
@@ -194,11 +177,9 @@ namespace SUB.Forms.Usuario
                     END AS EmprestimoStatus
                 FROM Usuarios u
                 WHERE 1 = 1";
-
                     // Mantemos filtros por tipo/emprestimo no SQL — mas **NÃO** aplicamos filtro por nome aqui.
                     if (!string.Equals(tipoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                         sql += " AND u.tipousuario LIKE @tipo";
-
                     if (!string.Equals(emprestimoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                     {
                         switch (emprestimoFiltro)
@@ -212,7 +193,6 @@ namespace SUB.Forms.Usuario
                                   AND e.Status <> 'Devolvido'
                             )";
                                 break;
-
                             case "Ativo":
                                 sql += @"
                             AND EXISTS (
@@ -222,7 +202,6 @@ namespace SUB.Forms.Usuario
                                   AND e.Status = 'Ativo'
                             )";
                                 break;
-
                             case "Atrasado":
                                 sql += @"
                             AND EXISTS (
@@ -236,12 +215,10 @@ namespace SUB.Forms.Usuario
                     }
 
                     sql += " ORDER BY u.nome ASC";
-
                     using (var cmd = new SqlCeCommand(sql, conexao))
                     {
                         if (!string.Equals(tipoFiltro, "Todos", StringComparison.OrdinalIgnoreCase))
                             cmd.Parameters.AddWithValue("@tipo", "%" + tipoFiltro + "%");
-
                         var tabela = new DataTable();
                         using (var adapter = new SqlCeDataAdapter(cmd))
                         {
@@ -252,15 +229,12 @@ namespace SUB.Forms.Usuario
                         if (!string.IsNullOrWhiteSpace(nomeFiltro))
                         {
                             string nomeSemAcentoFiltro = RemoverAcentos(nomeFiltro).ToLowerInvariant();
-
-                            var linhas = tabela.AsEnumerable()
-                                .Where(r =>
-                                {
-                                    string nomeDb = r.Field<string>("Nome") ?? "";
-                                    string nomeDbSemAcento = RemoverAcentos(nomeDb).ToLowerInvariant();
-                                    return nomeDbSemAcento.Contains(nomeSemAcentoFiltro);
-                                });
-
+                            var linhas = tabela.AsEnumerable().Where(r =>
+                            {
+                                string nomeDb = r.Field<string>("Nome") ?? "";
+                                string nomeDbSemAcento = RemoverAcentos(nomeDb).ToLowerInvariant();
+                                return nomeDbSemAcento.Contains(nomeSemAcentoFiltro);
+                            });
                             dgvUsuarios.DataSource = linhas.Any() ? linhas.CopyToDataTable() : tabela.Clone();
                         }
                         else
@@ -276,20 +250,13 @@ namespace SUB.Forms.Usuario
             }
         }
 
-
-
-
-
         private void ConfigurarGrid()
         {
             dgvUsuarios.SuspendLayout();
-
             dgvUsuarios.AutoGenerateColumns = false;
             dgvUsuarios.Columns.Clear();
-
             // Alinha o conteúdo padrão à esquerda (caso alguma coluna seja criada sem alinhamento explícito)
             dgvUsuarios.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
             DataGridViewTextBoxColumn AddTextCol(string dataProp, string header, float fillWeight, DataGridViewContentAlignment align, int minWidth = 60)
             {
                 var col = new DataGridViewTextBoxColumn
@@ -300,7 +267,11 @@ namespace SUB.Forms.Usuario
                     ReadOnly = true,
                     FillWeight = fillWeight,
                     MinimumWidth = minWidth,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = align, WrapMode = DataGridViewTriState.False }
+                    DefaultCellStyle = new DataGridViewCellStyle
+                    {
+                        Alignment = align,
+                        WrapMode = DataGridViewTriState.False
+                    }
                 };
                 dgvUsuarios.Columns.Add(col);
                 return col;
@@ -308,7 +279,6 @@ namespace SUB.Forms.Usuario
 
             // Se quiser ID à esquerda também, troque para MiddleLeft.
             AddTextCol("Id", "ID", 50, DataGridViewContentAlignment.MiddleCenter, 40);
-
             // Todas as colunas de texto alinhadas à esquerda
             AddTextCol("Nome", "Nome", 180, DataGridViewContentAlignment.MiddleLeft, 120);
             AddTextCol("Email", "E-mail", 200, DataGridViewContentAlignment.MiddleLeft, 140);
@@ -316,14 +286,11 @@ namespace SUB.Forms.Usuario
             AddTextCol("CPF", "CPF", 110, DataGridViewContentAlignment.MiddleLeft, 90);
             AddTextCol("Telefone", "Telefone", 120, DataGridViewContentAlignment.MiddleLeft, 90);
             AddTextCol("Turma", "Turma", 180, DataGridViewContentAlignment.MiddleLeft, 140);
-
             var nasc = AddTextCol("DataNascimento", "Nascimento", 130, DataGridViewContentAlignment.MiddleLeft, 110);
             nasc.DefaultCellStyle.Format = "dd/MM/yyyy";
             nasc.DefaultCellStyle.NullValue = "";
-
             // Coluna de empréstimo também à esquerda
             AddTextCol("EmprestimoStatus", "Empréstimo", 140, DataGridViewContentAlignment.MiddleLeft, 110);
-
             // Botão Editar (mantém)
             var btnEditar = new DataGridViewButtonColumn
             {
@@ -336,7 +303,6 @@ namespace SUB.Forms.Usuario
                 FlatStyle = FlatStyle.Flat
             };
             dgvUsuarios.Columns.Add(btnEditar);
-
             // Aparência
             dgvUsuarios.BackgroundColor = Color.White;
             dgvUsuarios.BorderStyle = BorderStyle.None;
@@ -349,7 +315,6 @@ namespace SUB.Forms.Usuario
             dgvUsuarios.AllowUserToAddRows = false;
             dgvUsuarios.AllowUserToDeleteRows = false;
             dgvUsuarios.AllowUserToResizeRows = false;
-
             dgvUsuarios.DefaultCellStyle.BackColor = Color.White;
             dgvUsuarios.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgvUsuarios.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
@@ -357,7 +322,6 @@ namespace SUB.Forms.Usuario
             dgvUsuarios.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvUsuarios.RowTemplate.Height = 40;
             dgvUsuarios.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-
             // Cabeçalho alinhado à esquerda
             dgvUsuarios.EnableHeadersVisualStyles = false;
             dgvUsuarios.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
@@ -367,46 +331,29 @@ namespace SUB.Forms.Usuario
             dgvUsuarios.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgvUsuarios.ColumnHeadersHeight = 44;
             dgvUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-
             // Largura
             dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             foreach (DataGridViewColumn col in dgvUsuarios.Columns)
                 col.SortMode = DataGridViewColumnSortMode.Automatic;
-
             // Suavizar rolagem
-            typeof(DataGridView).InvokeMember(
-                "DoubleBuffered",
-                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
-                null,
-                dgvUsuarios,
-                new object[] { true }
-            );
-
-
+            typeof(DataGridView).InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, dgvUsuarios, new object[] { true });
             if (dgvUsuarios.Columns.Contains("Id"))
             {
                 var colId = dgvUsuarios.Columns["Id"];
-
                 colId.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-
                 var headerStyle = (DataGridViewCellStyle)dgvUsuarios.ColumnHeadersDefaultCellStyle.Clone();
                 headerStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 colId.HeaderCell.Style = headerStyle;
                 colId.HeaderCell.Style.Padding = new Padding(14, 0, 0, 0);
-
-                colId.MinimumWidth = 60;   // largura mínima em pixels (ajuste conforme desejar)
-                colId.FillWeight = 30f;    // peso relativo (aumente para dar mais espaço proporcional)
+                colId.MinimumWidth = 60; // largura mínima em pixels (ajuste conforme desejar)
+                colId.FillWeight = 30f; // peso relativo (aumente para dar mais espaço proporcional)
             }
 
             dgvUsuarios.ResumeLayout();
             dgvUsuarios.CellPainting += DgvUsuarios_CellPainting;
-
             // Mantém a coloração da coluna de empréstimo, se você adicionou antes
             dgvUsuarios.CellFormatting -= DgvUsuarios_CellFormatting;
             dgvUsuarios.CellFormatting += DgvUsuarios_CellFormatting;
-
             foreach (DataGridViewColumn col in dgvUsuarios.Columns)
             {
                 col.SortMode = DataGridViewColumnSortMode.Automatic;
@@ -414,15 +361,15 @@ namespace SUB.Forms.Usuario
             }
         }
 
-        // NOVO: coloração condicional da coluna de empréstimo
+        // coloração condicional da coluna de empréstimo
         private void DgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvUsuarios.Columns.Count)
                 return;
-
-            if (dgvUsuarios.Columns[e.ColumnIndex].Name != "EmprestimoStatus") return;
-            if (e.Value == null) return;
-
+            if (dgvUsuarios.Columns[e.ColumnIndex].Name != "EmprestimoStatus")
+                return;
+            if (e.Value == null)
+                return;
             var status = e.Value.ToString();
             if (status.Equals("Atrasado", StringComparison.OrdinalIgnoreCase))
             {
@@ -444,20 +391,15 @@ namespace SUB.Forms.Usuario
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.ColumnIndex >= dgvUsuarios.Columns.Count)
                 return;
-
             if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Editar")
             {
                 e.PaintBackground(e.CellBounds, true);
-
                 // Reutiliza as cores aplicadas pelo ThemeManager ao cabeçalho da grade.
                 Color corFundo = dgvUsuarios.ColumnHeadersDefaultCellStyle.BackColor;
                 Color corTexto = dgvUsuarios.ColumnHeadersDefaultCellStyle.ForeColor;
-
                 // Desenha botão arredondado
                 int borderRadius = 8;
-                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6,
-                                               e.CellBounds.Width - 12, e.CellBounds.Height - 12);
-
+                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6, e.CellBounds.Width - 12, e.CellBounds.Height - 12);
                 using (SolidBrush brush = new SolidBrush(corFundo))
                 using (Pen pen = new Pen(corFundo, 1))
                 {
@@ -467,7 +409,6 @@ namespace SUB.Forms.Usuario
                     path.AddArc(rect.Right - borderRadius, rect.Bottom - borderRadius, borderRadius, borderRadius, 0, 90);
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
-
                     var suavizacaoAnterior = e.Graphics.SmoothingMode;
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
@@ -476,12 +417,7 @@ namespace SUB.Forms.Usuario
                 }
 
                 // Texto centralizado
-                TextRenderer.DrawText(e.Graphics, "Editar",
-                    new Font("Segoe UI Semibold", 9F),
-                    rect,
-                    corTexto,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-
+                TextRenderer.DrawText(e.Graphics, "Editar", new Font("Segoe UI Semibold", 9F), rect, corTexto, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
                 e.Handled = true;
             }
         }
@@ -490,9 +426,6 @@ namespace SUB.Forms.Usuario
         private EditarUsuarioForm usuarioEdit;
         private int? _restoredUserId = null;
         private bool _needsRefreshAfterClose = false;
-
-
-
         private void UsuarioEdit_UsuarioAtualizado(object sender, EventArgs e)
         {
             // Recarrega a grid com os dados mais recentes
@@ -510,14 +443,11 @@ namespace SUB.Forms.Usuario
             // Verifica se clicou na coluna de botão "Editar" e se não é header
             if (e.RowIndex < 0 || dgvUsuarios.Columns[e.ColumnIndex].Name != "Editar")
                 return;
-
             var row = dgvUsuarios.Rows[e.RowIndex];
             var nome = row.Cells["Nome"].Value?.ToString();
-
             var confirm = MessageBox.Show($"Deseja editar o usuário \"{nome}\"?", "Editar Usuário", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm != DialogResult.Yes)
                 return;
-
             // Reutiliza a instância de campo (não criar uma local!)
             // Reutiliza a instância de campo
             if (usuarioEdit == null || usuarioEdit.IsDisposed)
@@ -530,7 +460,6 @@ namespace SUB.Forms.Usuario
             }
 
             usuarioEdit.FecharAoSalvar = true;
-
             // Ajusta botões no MainForm (se MdiParent existir)
             var main = this.MdiParent as MainForm;
             if (main != null)
@@ -550,27 +479,12 @@ namespace SUB.Forms.Usuario
 
             // Abre o editor primeiro (assim OnLoad/Shown já executam)
             OpenChild(usuarioEdit, keepPreviousHidden: true);
-
             // Preenche o formulário APÓS o form ser exibido
             usuarioEdit.BeginInvoke(new Action(() =>
             {
-                usuarioEdit.PreencherUsuario(new Usuarios
-                {
-                    Id = Convert.ToInt32(row.Cells["Id"].Value),
-                    Nome = row.Cells["Nome"].Value?.ToString(),
-                    Email = row.Cells["Email"].Value?.ToString(),
-                    TipoUsuario = row.Cells["TipoUsuario"].Value?.ToString(),
-                    CPF = row.Cells["CPF"].Value?.ToString(),
-                    Telefone = row.Cells["Telefone"].Value?.ToString(),
-                    Turma = row.Cells["Turma"].Value?.ToString(),
-                    DataNascimento = row.Cells["DataNascimento"].Value != DBNull.Value
-                        ? Convert.ToDateTime(row.Cells["DataNascimento"].Value)
-                        : DateTime.MinValue
-                });
+                usuarioEdit.PreencherUsuario(new Usuarios { Id = Convert.ToInt32(row.Cells["Id"].Value), Nome = row.Cells["Nome"].Value?.ToString(), Email = row.Cells["Email"].Value?.ToString(), TipoUsuario = row.Cells["TipoUsuario"].Value?.ToString(), CPF = row.Cells["CPF"].Value?.ToString(), Telefone = row.Cells["Telefone"].Value?.ToString(), Turma = row.Cells["Turma"].Value?.ToString(), DataNascimento = row.Cells["DataNascimento"].Value != DBNull.Value ? Convert.ToDateTime(row.Cells["DataNascimento"].Value) : DateTime.MinValue });
             }));
         }
-
-
 
         private void UsuarioEdit_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -582,7 +496,6 @@ namespace SUB.Forms.Usuario
             var main = this.MdiParent as MainForm;
             if (main != null)
                 main.ResetarUsuarioEdit();
-
             // Se o editor sinalizou que houve alteração -> recarrega e tenta restaurar a seleção/posição
             if (_needsRefreshAfterClose)
             {
@@ -600,13 +513,11 @@ namespace SUB.Forms.Usuario
             usuarioEdit = null;
         }
 
-
         private void RestoreSelectionAfterRefresh()
         {
-            if (!_restoredUserId.HasValue) return;
-
+            if (!_restoredUserId.HasValue)
+                return;
             int idParaRestaurar = _restoredUserId.Value;
-
             // Executa depois que o binding for aplicado à grid (garante que as linhas já existam)
             this.BeginInvoke(new Action(() =>
             {
@@ -615,17 +526,15 @@ namespace SUB.Forms.Usuario
                     for (int i = 0; i < dgvUsuarios.Rows.Count; i++)
                     {
                         var cell = dgvUsuarios.Rows[i].Cells["Id"];
-                        if (cell?.Value == null) continue;
-
+                        if (cell?.Value == null)
+                            continue;
                         if (int.TryParse(cell.Value.ToString(), out int rowId) && rowId == idParaRestaurar)
                         {
                             // Seleciona a linha encontrada
                             dgvUsuarios.ClearSelection();
                             dgvUsuarios.Rows[i].Selected = true;
-
                             // Ajusta a célula corrente
                             dgvUsuarios.CurrentCell = dgvUsuarios.Rows[i].Cells[0];
-
                             // Centraliza a linha na visualização
                             int visible = Math.Max(1, dgvUsuarios.DisplayedRowCount(false));
                             int targetFirst = Math.Max(0, i - visible / 2);
@@ -636,7 +545,7 @@ namespace SUB.Forms.Usuario
                             }
                             catch
                             {
-                                // ignore
+                            // ignore
                             }
 
                             break;
@@ -645,7 +554,7 @@ namespace SUB.Forms.Usuario
                 }
                 catch
                 {
-                    // ignore
+                // ignore
                 }
                 finally
                 {
@@ -655,7 +564,6 @@ namespace SUB.Forms.Usuario
             }));
         }
 
-
         public void RefreshGrid()
         {
             // chama o método que já existe; se quiser, pode passar filtros padrão
@@ -664,10 +572,10 @@ namespace SUB.Forms.Usuario
 
         private static string RemoverAcentos(string texto)
         {
-            if (string.IsNullOrEmpty(texto)) return texto;
+            if (string.IsNullOrEmpty(texto))
+                return texto;
             var normalized = texto.Normalize(System.Text.NormalizationForm.FormD);
             var sb = new System.Text.StringBuilder();
-
             foreach (var c in normalized)
             {
                 var uc = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
@@ -678,19 +586,15 @@ namespace SUB.Forms.Usuario
             return sb.ToString().Normalize(System.Text.NormalizationForm.FormC);
         }
 
-
-
-
         Form activeChild = null;
-
         /// <summary>
         /// Mostra o form child como único MDI child visível (esconde o anterior),
         /// garante Dock, MdiParent, BringToFront e Activate.
         /// </summary>
         private void OpenChild(Form child, bool keepPreviousHidden = false)
         {
-            if (child == null) return;
-
+            if (child == null)
+                return;
             try
             {
                 if (activeChild != null && activeChild != child && !activeChild.IsDisposed)
@@ -700,22 +604,15 @@ namespace SUB.Forms.Usuario
 
                 child.MdiParent = this.MdiParent;
                 child.Dock = DockStyle.Fill;
-
                 if (!child.Visible)
                     child.Show();
-
                 child.BringToFront();
                 child.Activate();
-
                 activeChild = child;
             }
             catch (Exception)
             {
             }
         }
-
-       
     }
 }
-
-

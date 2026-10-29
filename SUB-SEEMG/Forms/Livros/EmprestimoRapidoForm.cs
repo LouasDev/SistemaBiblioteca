@@ -1,14 +1,11 @@
-using SUB.Models;
-using SUB.Forms.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using SUB.Models;
 using SUB.Utils;
 
 namespace SUB.Forms.Livros
@@ -18,13 +15,9 @@ namespace SUB.Forms.Livros
         private List<string> turmasCadastradas = new List<string>();
         private List<string> livrosCadastrados = new List<string>();
         private List<string> professoresCadastrados = new List<string>();
-
         public event EventHandler LivroAtualizado;
-
-
         // Limite de caracteres do código de barras (igual ao EmprestimoForm)
         private const int LIMITE_CODIGO_BARRAS = 13;
-
         public EmprestimoRapidoForm()
         {
             InitializeComponent();
@@ -32,7 +25,6 @@ namespace SUB.Forms.Livros
             ThemeManager.ApplyConfiguredTheme(this);
             this.KeyPreview = true;
             this.KeyDown += EmprestimoRapidoForm_KeyDown;
-
             SUB.Utils.EventosGlobais.BibliotecariaCadastrada += (s, e) => CarregarSugestoesECombo();
             SUB.Utils.EventosGlobais.ProfessorCadastrado += (s, e) => CarregarSugestoesECombo();
             SUB.Utils.EventosGlobais.LivroDidaticoCadastrado += (s, e) => CarregarSugestoesECombo();
@@ -68,65 +60,48 @@ namespace SUB.Forms.Livros
             }
         }
 
-
         private void EmprestimoRapidoForm_Load(object sender, EventArgs e)
         {
             AppPaths.EnsureFolders();
-
             // O painel filtra devolvidos antigos sem excluir histórico.
-
             // Carrega dados para sugestões (turmas, livros, professors) e bibliotecárias
             CarregarSugestoesECombo();
-
             txtProfessor.Focus();
-
-
             lblHoraEmprestimo.Text = $"Hora do empréstimo: {DateTime.Now:HH:mm}";
-
             horaTimer = new System.Windows.Forms.Timer();
             horaTimer.Interval = 1000; // curto para alinhamento inicial
             horaTimer.Tick += AlinharEIniciarTimerMinuto;
             horaTimer.Start();
-
             this.FormClosing += EmprestimoRapidoForm_FormClosing;
-
             // Configura DataGrid
             ConfigurarGridRapidos();
             CarregarGridRapidos();
-
             numQuantidade.Text = "1"; // valor inicial
             numQuantidade.KeyPress += numQuantidade_KeyPress;
             numQuantidade.TextChanged += numQuantidade_TextChanged;
             numQuantidade.Leave += numQuantidade_Leave; // NOVO
-
             // Eventos para o autocomplete de Turma
             txtTurma.KeyDown += txtTurma_KeyDown;
             txtTurma.Leave += txtTurma_Leave;
-
             lstSugestoesTurma.Click += lstSugestoesTurma_Click;
             lstSugestoesTurma.KeyDown += lstSugestoesTurma_KeyDown;
             lstSugestoesTurma.Leave += lstSugestoesTurma_Leave;
-
-            // NOVO: Eventos para Professor
+            // Eventos para Professor
             txtProfessor.KeyDown += txtProfessor_KeyDown;
             lstSugestoesProfessor.KeyDown += lstSugestoesProfessor_KeyDown;
             lstSugestoesProfessor.Leave += lstSugestoesProfessor_Leave;
-
-            // NOVO: Eventos para Livro
+            // Eventos para Livro
             txtLivro.KeyDown += txtLivro_KeyDown;
             lstSugestoesLivro.KeyDown += lstSugestoesLivro_KeyDown;
             lstSugestoesLivro.Leave += lstSugestoesLivro_Leave;
-
             // Esconde listboxes inicialmente
             lstSugestoesProfessor.Visible = false;
             lstSugestoesLivro.Visible = false;
             lstSugestoesTurma.Visible = false;
-
             EstilizarListBoxSugestao(lstSugestoesProfessor);
             EstilizarListBoxSugestao(lstSugestoesLivro);
             EstilizarListBoxSugestao(lstSugestoesTurma);
-
-            // === NOVO: Eventos do txtBarcode (igual EmprestimoForm) ===
+            // Eventos do txtBarcode (igual EmprestimoForm)
             txtBarcode.Leave += txtBarcode_Leave;
             txtBarcode.KeyPress += txtBarcode_KeyPressLimiter;
             txtBarcode.TextChanged += txtBarcode_TextChangedLimiter;
@@ -134,28 +109,29 @@ namespace SUB.Forms.Livros
 
         private void EmprestimoRapidoForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode != Keys.Enter) return;
-
+            if (e.KeyCode != Keys.Enter)
+                return;
             // Se houver alguma lista visível, confirma a seleção correspondente
             if (lstSugestoesProfessor.Visible || lstSugestoesLivro.Visible || lstSugestoesTurma.Visible)
             {
                 e.SuppressKeyPress = true;
-
                 // Prioriza a lista focada; se não houver, prioriza a relacionada ao campo focado
                 if (lstSugestoesProfessor.Focused || (txtProfessor.Focused && lstSugestoesProfessor.Visible))
-                    if (ConfirmarSugestao(lstSugestoesProfessor, txtProfessor)) return;
-
+                    if (ConfirmarSugestao(lstSugestoesProfessor, txtProfessor))
+                        return;
                 if (lstSugestoesLivro.Focused || (txtLivro.Focused && lstSugestoesLivro.Visible))
-                    if (ConfirmarSugestao(lstSugestoesLivro, txtLivro)) return;
-
+                    if (ConfirmarSugestao(lstSugestoesLivro, txtLivro))
+                        return;
                 if (lstSugestoesTurma.Focused || (txtTurma.Focused && lstSugestoesTurma.Visible))
-                    if (ConfirmarSugestao(lstSugestoesTurma, txtTurma)) return;
-
+                    if (ConfirmarSugestao(lstSugestoesTurma, txtTurma))
+                        return;
                 // Fallback: se alguma está visível, confirma na ordem
-                if (ConfirmarSugestao(lstSugestoesProfessor, txtProfessor)) return;
-                if (ConfirmarSugestao(lstSugestoesLivro, txtLivro)) return;
-                if (ConfirmarSugestao(lstSugestoesTurma, txtTurma)) return;
-
+                if (ConfirmarSugestao(lstSugestoesProfessor, txtProfessor))
+                    return;
+                if (ConfirmarSugestao(lstSugestoesLivro, txtLivro))
+                    return;
+                if (ConfirmarSugestao(lstSugestoesTurma, txtTurma))
+                    return;
                 return;
             }
 
@@ -170,19 +146,17 @@ namespace SUB.Forms.Livros
         // Confirma a seleção do listbox (seleciona o primeiro se nada estiver selecionado)
         private bool ConfirmarSugestao(ListBox listBox, RoundedTextBox target)
         {
-            if (!listBox.Visible || listBox.Items.Count == 0) return false;
-
-            if (listBox.SelectedIndex < 0) listBox.SelectedIndex = 0;
-
+            if (!listBox.Visible || listBox.Items.Count == 0)
+                return false;
+            if (listBox.SelectedIndex < 0)
+                listBox.SelectedIndex = 0;
             var valor = listBox.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(valor)) return false;
-
+            if (string.IsNullOrEmpty(valor))
+                return false;
             target.Text = valor;
-
-            // === NOVO: ao confirmar livro pelo nome, preencher o barcode como no EmprestimoForm ===
+            // ao confirmar livro pelo nome, preencher o barcode como no EmprestimoForm
             if (ReferenceEquals(target, txtLivro))
                 AtualizarBarcodePorLivro(valor);
-
             listBox.Visible = false;
             target.Focus();
             this.SelectNextControl(target, true, true, true, true);
@@ -195,13 +169,11 @@ namespace SUB.Forms.Livros
             livrosCadastrados.Clear();
             professoresCadastrados.Clear();
             cbBibliotecaria.Items.Clear();
-
             try
             {
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-
                     // Turmas (distinct)
                     using (var cmd = new SqlCeCommand("SELECT DISTINCT Turma FROM Usuarios WHERE Turma IS NOT NULL AND Turma <> ''", conexao))
                     using (var reader = cmd.ExecuteReader())
@@ -258,11 +230,10 @@ namespace SUB.Forms.Livros
             }
         }
 
-        #region Métodos de Turma
+#region Métodos de Turma
         private void txtTurma_TextChanged(object sender, EventArgs e)
         {
             string texto = txtTurma.Text.Trim();
-
             if (string.IsNullOrEmpty(texto))
             {
                 lstSugestoesTurma.Visible = false;
@@ -271,22 +242,17 @@ namespace SUB.Forms.Livros
 
             // Buscar sugestões inteligentes nas turmas permitidas
             var sugestoes = SUB.Utils.TurmasUtil.BuscarSugestoes(texto);
-
             lstSugestoesTurma.Items.Clear();
-
             if (sugestoes.Count > 0)
             {
                 foreach (var s in sugestoes)
                     lstSugestoesTurma.Items.Add(s);
-
                 // Seleciona o primeiro item por padrão
                 lstSugestoesTurma.SelectedIndex = 0;
-
                 int visibleItems = Math.Min(5, sugestoes.Count);
                 int extraPadding = 8;
                 lstSugestoesTurma.Height = visibleItems * lstSugestoesTurma.ItemHeight + extraPadding;
                 lstSugestoesTurma.Width = txtTurma.Width;
-
                 // Posição exata abaixo do txtTurma, considerando o Form
                 var pt = txtTurma.Parent.PointToScreen(txtTurma.Location);
                 pt = this.PointToClient(pt);
@@ -340,6 +306,7 @@ namespace SUB.Forms.Livros
                     e.SuppressKeyPress = true;
                     this.SelectNextControl((Control)sender, true, true, true, true);
                 }
+
                 return;
             }
 
@@ -357,7 +324,6 @@ namespace SUB.Forms.Livros
                     txtTurma.Text = lstSugestoesTurma.SelectedItem.ToString();
                 else if (lstSugestoesTurma.Items.Count > 0)
                     txtTurma.Text = lstSugestoesTurma.Items[0].ToString();
-
                 lstSugestoesTurma.Visible = false;
                 this.SelectNextControl((Control)sender, true, true, true, true);
             }
@@ -373,11 +339,9 @@ namespace SUB.Forms.Livros
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-
                 // Garante selecionar a primeira opção se nada estiver selecionado
                 if (lstSugestoesTurma.SelectedIndex < 0 && lstSugestoesTurma.Items.Count > 0)
                     lstSugestoesTurma.SelectedIndex = 0;
-
                 if (lstSugestoesTurma.SelectedItem != null)
                 {
                     txtTurma.Text = lstSugestoesTurma.SelectedItem.ToString();
@@ -403,6 +367,7 @@ namespace SUB.Forms.Livros
                     e.SuppressKeyPress = true;
                     this.SelectNextControl((Control)sender, true, true, true, true);
                 }
+
                 return;
             }
 
@@ -420,7 +385,6 @@ namespace SUB.Forms.Livros
                     txtProfessor.Text = lstSugestoesProfessor.SelectedItem.ToString();
                 else if (lstSugestoesProfessor.Items.Count > 0)
                     txtProfessor.Text = lstSugestoesProfessor.Items[0].ToString();
-
                 lstSugestoesProfessor.Visible = false;
                 this.SelectNextControl((Control)sender, true, true, true, true);
             }
@@ -436,10 +400,8 @@ namespace SUB.Forms.Livros
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-
                 if (lstSugestoesProfessor.SelectedIndex < 0 && lstSugestoesProfessor.Items.Count > 0)
                     lstSugestoesProfessor.SelectedIndex = 0;
-
                 if (lstSugestoesProfessor.SelectedItem != null)
                 {
                     txtProfessor.Text = lstSugestoesProfessor.SelectedItem.ToString();
@@ -465,6 +427,7 @@ namespace SUB.Forms.Livros
                     e.SuppressKeyPress = true;
                     this.SelectNextControl((Control)sender, true, true, true, true);
                 }
+
                 return;
             }
 
@@ -499,17 +462,13 @@ namespace SUB.Forms.Livros
             if (e.KeyCode == Keys.Enter)
             {
                 e.SuppressKeyPress = true;
-
                 if (lstSugestoesLivro.SelectedIndex < 0 && lstSugestoesLivro.Items.Count > 0)
                     lstSugestoesLivro.SelectedIndex = 0;
-
                 if (lstSugestoesLivro.SelectedItem != null)
                 {
                     txtLivro.Text = lstSugestoesLivro.SelectedItem.ToString();
-
-                    // === NOVO: ao escolher o livro pelo nome, preencher o barcode ===
+                    // ao escolher o livro pelo nome, preencher o barcode
                     AtualizarBarcodePorLivro(txtLivro.Text);
-
                     lstSugestoesLivro.Visible = false;
                     txtLivro.Focus();
                     this.SelectNextControl(txtLivro, true, true, true, true);
@@ -537,11 +496,9 @@ namespace SUB.Forms.Livros
         {
             lstSugestoesTurma.Visible = false;
         }
-        #endregion
 
-        #region Autocomplete listboxes (Professor / Livro)
-
-
+#endregion
+#region Autocomplete listboxes (Professor / Livro)
         private bool NomeContemTodosTokens(string nome, string query)
         {
             return TextoBusca.ContemTodosTokens(nome, query);
@@ -557,10 +514,7 @@ namespace SUB.Forms.Livros
                 return;
             }
 
-            var sugest = professoresCadastrados
-                .Where(x => x != null && NomeContemTodosTokens(x, texto))
-                .ToArray();
-
+            var sugest = professoresCadastrados.Where(x => x != null && NomeContemTodosTokens(x, texto)).ToArray();
             if (sugest.Length > 0)
             {
                 lstSugestoesProfessor.Items.AddRange(sugest);
@@ -586,7 +540,6 @@ namespace SUB.Forms.Livros
         {
             var prefixo = txtLivro.Text.Trim();
             lstSugestoesLivro.Items.Clear();
-
             // Se veio do scanner, não exibe listbox e só aplica limites
             if (_preenchendoPorBarcode)
             {
@@ -613,10 +566,7 @@ namespace SUB.Forms.Livros
                 return;
             }
 
-            var sugest = livrosCadastrados
-                .Where(x => x != null && NomeContemTodosTokens(x, prefixo))
-                .ToArray();
-
+            var sugest = livrosCadastrados.Where(x => x != null && NomeContemTodosTokens(x, prefixo)).ToArray();
             if (sugest.Length > 0)
             {
                 lstSugestoesLivro.Items.AddRange(sugest);
@@ -633,7 +583,6 @@ namespace SUB.Forms.Livros
         }
 
         private int quantidadeMaximaDisponivel = 1;
-
         private void LimitarQuantidadeDisponivel(string nomeLivro)
         {
             quantidadeMaximaDisponivel = 1; // valor padrão
@@ -668,8 +617,8 @@ namespace SUB.Forms.Livros
             }
 
             // Se o usuário está digitando, não altere o texto agora; valida ao sair
-            if (numQuantidade.Focused) return;
-
+            if (numQuantidade.Focused)
+                return;
             // Fora de foco, normalize o valor para o intervalo permitido
             if (!int.TryParse(numQuantidade.Text, out var valorAtual) || valorAtual < 1)
                 numQuantidade.Text = "1";
@@ -682,37 +631,29 @@ namespace SUB.Forms.Livros
             if (lstSugestoesLivro.SelectedItem != null)
             {
                 txtLivro.Text = lstSugestoesLivro.SelectedItem.ToString();
-
-                // === NOVO: ao escolher o livro pelo nome, preencher o barcode ===
+                // ao escolher o livro pelo nome, preencher o barcode
                 AtualizarBarcodePorLivro(txtLivro.Text);
-
                 lstSugestoesLivro.Visible = false;
             }
         }
-        #endregion
 
-        #region Registrar Empréstimo Rápido
+#endregion
+#region Registrar Empréstimo Rápido
         private void btnRegistrar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtProfessor.Text) ||
-                string.IsNullOrWhiteSpace(txtLivro.Text) ||
-                string.IsNullOrWhiteSpace(txtTurma.Text) ||
-                !int.TryParse(numQuantidade.Text, out int qtd) || !RegrasCirculacao.QuantidadeRetiradaValida(qtd) ||
-                cbBibliotecaria.SelectedItem == null)
+            if (string.IsNullOrWhiteSpace(txtProfessor.Text) || string.IsNullOrWhiteSpace(txtLivro.Text) || string.IsNullOrWhiteSpace(txtTurma.Text) || !int.TryParse(numQuantidade.Text, out int qtd) || !RegrasCirculacao.QuantidadeRetiradaValida(qtd) || cbBibliotecaria.SelectedItem == null)
             {
                 MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             try
             {
-                string livro = livrosCadastrados.FirstOrDefault(nome => TextoBusca.SaoIguais(nome, txtLivro.Text))
-                    ?? txtLivro.Text.Trim();
-
+                string livro = livrosCadastrados.FirstOrDefault(nome => TextoBusca.SaoIguais(nome, txtLivro.Text)) ?? txtLivro.Text.Trim();
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    CirculacaoService.EmprestarRapido(conexao, txtProfessor.Text.Trim(), livro,
-                        txtTurma.Text.Trim(), qtd, cbBibliotecaria.SelectedItem.ToString(), DateTime.Now);
+                    CirculacaoService.EmprestarRapido(conexao, txtProfessor.Text.Trim(), livro, txtTurma.Text.Trim(), qtd, cbBibliotecaria.SelectedItem.ToString(), DateTime.Now);
                 }
             }
             catch (InvalidOperationException ex)
@@ -723,10 +664,10 @@ namespace SUB.Forms.Livros
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Falha no empréstimo rápido: {0}", ex);
-                MessageBox.Show("Não foi possível salvar o empréstimo rápido. O estoque não foi alterado. Atualize a consulta e tente novamente.",
-                    "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível salvar o empréstimo rápido. O estoque não foi alterado. Atualize a consulta e tente novamente.", "Empréstimo não realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             MessageBox.Show("Empréstimo rápido registrado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             LimparCampos();
             CarregarSugestoesECombo();
@@ -734,6 +675,7 @@ namespace SUB.Forms.Livros
             LivroAtualizado?.Invoke(this, EventArgs.Empty);
             SUB.Utils.EventosGlobais.OnEmprestimoRealizado();
         }
+
         private void LimparCampos()
         {
             txtProfessor.Text = "";
@@ -743,15 +685,14 @@ namespace SUB.Forms.Livros
             txtBarcode.Text = "";
             txtBarcode.Enabled = true;
         }
-        #endregion
 
-        #region Grid: configurar / carregar / finalizar
+#endregion
+#region Grid: configurar / carregar / finalizar
         private void ConfigurarGridRapidos()
         {
             dgvRapidos.SuspendLayout();
             dgvRapidos.AutoGenerateColumns = false;
             dgvRapidos.Columns.Clear();
-
             DataGridViewTextBoxColumn AddTextCol(string prop, string hdr, int minw, DataGridViewContentAlignment align, float fillWeight = 100F)
             {
                 var c = new DataGridViewTextBoxColumn
@@ -763,7 +704,10 @@ namespace SUB.Forms.Livros
                     MinimumWidth = minw,
                     AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                     FillWeight = fillWeight,
-                    DefaultCellStyle = new DataGridViewCellStyle { Alignment = align }
+                    DefaultCellStyle = new DataGridViewCellStyle
+                    {
+                        Alignment = align
+                    }
                 };
                 c.HeaderCell.Style.Alignment = align;
                 dgvRapidos.Columns.Add(c);
@@ -778,47 +722,44 @@ namespace SUB.Forms.Livros
                 Visible = false,
             };
             dgvRapidos.Columns.Add(colId);
-
             var ColPoint = new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Point",
                 Name = "Point",
                 HeaderText = "",
                 ReadOnly = true,
-                Width = 30,  // largura fixa
+                Width = 30, // largura fixa
                 MinimumWidth = 30,
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // não cresce
-                DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
+                DefaultCellStyle = new DataGridViewCellStyle
+                {
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                }
             };
             dgvRapidos.Columns.Add(ColPoint);
-
             AddTextCol("Professor", "Professor", 145, DataGridViewContentAlignment.MiddleLeft, 150F);
             AddTextCol("Livro", "Livro", 165, DataGridViewContentAlignment.MiddleLeft, 180F);
             AddTextCol("Turma", "Turma", 85, DataGridViewContentAlignment.MiddleLeft, 90F);
             AddTextCol("Quantidade", "Qtd", 42, DataGridViewContentAlignment.MiddleCenter, 55F);
-
             var colEmp = AddTextCol("DataHoraEmprestimo", "Empréstimo", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colEmp.DefaultCellStyle.Format = "dd/MM HH:mm";
             var colDev = AddTextCol("DataHoraDevolucaoReal", "Devolução", 95, DataGridViewContentAlignment.MiddleCenter, 95F);
             colDev.DefaultCellStyle.Format = "dd/MM HH:mm";
-
             AddTextCol("Bibliotecaria", "Bibliotecária", 100, DataGridViewContentAlignment.MiddleLeft, 110F);
             AddTextCol("Status", "Status", 60, DataGridViewContentAlignment.MiddleCenter, 65F);
-
             var btnFinalizar = new DataGridViewButtonColumn
             {
                 Name = "Finalizar",
                 HeaderText = "Ação",
                 Text = "",
                 UseColumnTextForButtonValue = true,
-                Width = 80,                   // largura fixa
-                MinimumWidth = 80,            // impede encolher
+                Width = 80, // largura fixa
+                MinimumWidth = 80, // impede encolher
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.None, // impede crescer
                 FlatStyle = FlatStyle.Flat
             };
             btnFinalizar.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvRapidos.Columns.Add(btnFinalizar);
-
             // styling (copiado do UsuarioForm)
             dgvRapidos.BackgroundColor = Color.White;
             dgvRapidos.BorderStyle = BorderStyle.None;
@@ -831,8 +772,6 @@ namespace SUB.Forms.Livros
             dgvRapidos.AllowUserToAddRows = false;
             dgvRapidos.AllowUserToDeleteRows = false;
             dgvRapidos.AllowUserToResizeRows = false;
-
-
             dgvRapidos.DefaultCellStyle.BackColor = Color.White;
             dgvRapidos.DefaultCellStyle.ForeColor = Color.FromArgb(20, 42, 60);
             dgvRapidos.DefaultCellStyle.Font = new Font("Segoe UI", 10f, FontStyle.Regular);
@@ -840,7 +779,6 @@ namespace SUB.Forms.Livros
             dgvRapidos.DefaultCellStyle.SelectionForeColor = Color.Black;
             dgvRapidos.RowTemplate.Height = 40;
             dgvRapidos.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
-
             dgvRapidos.EnableHeadersVisualStyles = false;
             dgvRapidos.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvRapidos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(30, 61, 88);
@@ -850,18 +788,10 @@ namespace SUB.Forms.Livros
             dgvRapidos.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
             dgvRapidos.ColumnHeadersHeight = 40;
             dgvRapidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-
             dgvRapidos.AllowUserToResizeColumns = false;
             dgvRapidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
             // double buffer
-            typeof(DataGridView).InvokeMember(
-       "DoubleBuffered",
-       System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty,
-       null,
-       dgvRapidos,
-       new object[] { true });
-
+            typeof(DataGridView).InvokeMember("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.SetProperty, null, dgvRapidos, new object[] { true });
             dgvRapidos.ResumeLayout();
         }
 
@@ -877,7 +807,6 @@ namespace SUB.Forms.Livros
                 tabela.Columns.Add("Quantidade", typeof(int));
                 tabela.Columns.Add("DataHoraEmprestimo", typeof(DateTime));
                 tabela.Columns.Add("DataHoraDevolucaoReal", typeof(DateTime));
-
                 tabela.Columns.Add("Bibliotecaria", typeof(string));
                 tabela.Columns.Add("Status", typeof(string));
                 using (var conexao = Conexao.ObterConexao())
@@ -895,18 +824,15 @@ namespace SUB.Forms.Livros
                             row["Turma"] = reader.IsDBNull(3) ? "" : reader.GetString(3);
                             row["Quantidade"] = reader.GetValue(4);
                             row["DataHoraEmprestimo"] = reader.GetValue(5);
-
                             if (!reader.IsDBNull(6))
                                 row["DataHoraDevolucaoReal"] = reader.GetDateTime(6); // coluna do DataTable (ver nota abaixo)
                             else
                                 row["DataHoraDevolucaoReal"] = DBNull.Value;
-
                             row["Bibliotecaria"] = reader.IsDBNull(7) ? "" : reader.GetString(7);
                             row["Status"] = reader.IsDBNull(8) ? "Não informado" : reader.GetString(8);
                             tabela.Rows.Add(row);
                         }
                     }
-
                 }
 
                 dgvRapidos.DataSource = tabela;
@@ -919,9 +845,10 @@ namespace SUB.Forms.Livros
 
         private void dgvRapidos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
-            if (dgvRapidos.Columns[e.ColumnIndex].Name != "Finalizar") return;
-
+            if (e.RowIndex < 0)
+                return;
+            if (dgvRapidos.Columns[e.ColumnIndex].Name != "Finalizar")
+                return;
             var row = dgvRapidos.Rows[e.RowIndex];
             var status = row.Cells["Status"].Value?.ToString();
             if (string.Equals(status, "Devolvido", StringComparison.OrdinalIgnoreCase))
@@ -929,6 +856,7 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("Empréstimo já finalizado.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             AbrirDevolucaoRapidaForm(row);
         }
 
@@ -938,15 +866,11 @@ namespace SUB.Forms.Livros
             if (e.RowIndex >= 0 && dgvRapidos.Columns[e.ColumnIndex].Name == "Finalizar")
             {
                 e.PaintBackground(e.CellBounds, true);
-
                 // Reutiliza as cores aplicadas pelo ThemeManager ao cabeçalho da grade.
                 Color corFundo = dgvRapidos.ColumnHeadersDefaultCellStyle.BackColor;
                 Color corTexto = dgvRapidos.ColumnHeadersDefaultCellStyle.ForeColor;
-
                 int borderRadius = 8;
-                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6,
-                                               e.CellBounds.Width - 12, e.CellBounds.Height - 12);
-
+                Rectangle rect = new Rectangle(e.CellBounds.X + 6, e.CellBounds.Y + 6, e.CellBounds.Width - 12, e.CellBounds.Height - 12);
                 using (SolidBrush brush = new SolidBrush(corFundo))
                 using (Pen pen = new Pen(corFundo, 1))
                 {
@@ -956,7 +880,6 @@ namespace SUB.Forms.Livros
                     path.AddArc(rect.Right - borderRadius, rect.Bottom - borderRadius, borderRadius, borderRadius, 0, 90);
                     path.AddArc(rect.X, rect.Bottom - borderRadius, borderRadius, borderRadius, 90, 90);
                     path.CloseFigure();
-
                     var suavizacaoAnterior = e.Graphics.SmoothingMode;
                     e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillPath(brush, path);
@@ -964,20 +887,15 @@ namespace SUB.Forms.Livros
                     e.Graphics.SmoothingMode = suavizacaoAnterior;
                 }
 
-                TextRenderer.DrawText(e.Graphics, "Finalizar",
-                    new Font("Segoe UI Semibold", 9F),
-                    rect,
-                    corTexto,
-                    TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
-
+                TextRenderer.DrawText(e.Graphics, "Finalizar", new Font("Segoe UI Semibold", 9F), rect, corTexto, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
                 e.Handled = true;
             }
         }
 
         private void dgvRapidos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.RowIndex < 0) return;
-
+            if (e.RowIndex < 0)
+                return;
             // --- Status ---
             if (dgvRapidos.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
@@ -1028,28 +946,22 @@ namespace SUB.Forms.Livros
             }
         }
 
-        #endregion
-
-        #region estilizacao listbox
+#endregion
+#region estilizacao listbox
         private int hoveredIndex = -1;
-
         private void EstilizarListBoxSugestao(ListBox listBox)
         {
             listBox.DrawMode = DrawMode.OwnerDrawFixed;
             listBox.Font = new Font("Segoe UI", 12, FontStyle.Regular);
             listBox.ItemHeight = 40;
-
             listBox.BackColor = ThemeManager.FundoDaSugestao(false);
             listBox.ForeColor = Color.FromArgb(30, 61, 88);
             listBox.BorderStyle = BorderStyle.FixedSingle;
             listBox.IntegralHeight = false;
-
             listBox.DrawItem -= ListBoxSugestao_DrawItem;
             listBox.DrawItem += ListBoxSugestao_DrawItem;
-
             listBox.MouseMove -= ListBoxSugestao_MouseMove;
             listBox.MouseMove += ListBoxSugestao_MouseMove;
-
             listBox.MouseLeave -= ListBoxSugestao_MouseLeave;
             listBox.MouseLeave += ListBoxSugestao_MouseLeave;
         }
@@ -1057,23 +969,17 @@ namespace SUB.Forms.Livros
         private void ListBoxSugestao_DrawItem(object sender, DrawItemEventArgs e)
         {
             var listBox = sender as ListBox;
-            if (e.Index < 0) return;
-
+            if (e.Index < 0)
+                return;
             bool hovered = (e.Index == hoveredIndex);
-
             Color backColor = ThemeManager.FundoDaSugestao(hovered);
-
             Color textColor = ThemeManager.TextoDaSugestao;
-
             using (SolidBrush b = new SolidBrush(backColor))
                 e.Graphics.FillRectangle(b, e.Bounds);
-
             string text = listBox.Items[e.Index].ToString();
             Font font = listBox.Font;
-
             Rectangle textRect = new Rectangle(e.Bounds.Left + 12, e.Bounds.Top, e.Bounds.Width - 24, e.Bounds.Height);
             TextRenderer.DrawText(e.Graphics, text, font, textRect, textColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
-
             // Linha divisória entre itens (cinza bem suave)
             if (e.Index < listBox.Items.Count - 1)
             {
@@ -1098,8 +1004,8 @@ namespace SUB.Forms.Livros
             hoveredIndex = -1;
             (sender as ListBox).Invalidate();
         }
-        #endregion
 
+#endregion
         // Helpers centralizados
         private int ObterQuantidadeAtual()
         {
@@ -1109,8 +1015,10 @@ namespace SUB.Forms.Livros
 
         private void DefinirQuantidade(int valor)
         {
-            if (valor < 1) valor = 1;
-            if (valor > quantidadeMaximaDisponivel) valor = quantidadeMaximaDisponivel;
+            if (valor < 1)
+                valor = 1;
+            if (valor > quantidadeMaximaDisponivel)
+                valor = quantidadeMaximaDisponivel;
             numQuantidade.Text = valor.ToString();
         }
 
@@ -1123,8 +1031,8 @@ namespace SUB.Forms.Livros
 
         private void numQuantidade_TextChanged(object sender, EventArgs e)
         {
-            // Não faz clamp durante a digitação. Valida no Leave e nos botões.
-            // Mantemos este handler leve para permitir múltiplos dígitos.
+        // Não faz clamp durante a digitação. Valida no Leave e nos botões.
+        // Mantemos este handler leve para permitir múltiplos dígitos.
         }
 
         private void numQuantidade_Leave(object sender, EventArgs e)
@@ -1159,20 +1067,19 @@ namespace SUB.Forms.Livros
                 MessageBox.Show("Somente empréstimos em aberto podem ser devolvidos.", "Devolução", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (!(row.Cells["Quantidade"].Value is int) || (int)row.Cells["Quantidade"].Value <= 0 ||
-                !(row.Cells["DataHoraEmprestimo"].Value is DateTime))
+
+            if (!(row.Cells["Quantidade"].Value is int) || (int)row.Cells["Quantidade"].Value <= 0 || !(row.Cells["DataHoraEmprestimo"].Value is DateTime))
             {
-                MessageBox.Show("O empréstimo possui saldo ou data incompletos. Confira o cadastro antes de registrar a devolução.",
-                    "Devolução", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("O empréstimo possui saldo ou data incompletos. Confira o cadastro antes de registrar a devolução.", "Devolução", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             int emprestimoId = Convert.ToInt32(row.Cells["Id"].Value);
             string professor = row.Cells["Professor"].Value?.ToString();
             string livro = row.Cells["Livro"].Value?.ToString();
             string turma = row.Cells["Turma"].Value?.ToString();
             int quantidadeEmprestada = Convert.ToInt32(row.Cells["Quantidade"].Value);
             DateTime dataEmprestimo = (DateTime)row.Cells["DataHoraEmprestimo"].Value;
-
             string codigoBarras = "";
             // Buscar o código de barras do livro no banco
             using (var conexao = Conexao.ObterConexao())
@@ -1196,6 +1103,7 @@ namespace SUB.Forms.Livros
                 }
             }
         }
+
         private void ProcessarDevolucaoRapida(int emprestimoId, int quantidadeEmprestada, int quantidadeDevolvida, string professor)
         {
             try
@@ -1214,28 +1122,27 @@ namespace SUB.Forms.Livros
             catch (Exception ex)
             {
                 System.Diagnostics.Trace.TraceError("Falha na devolução rápida: {0}", ex);
-                MessageBox.Show("Não foi possível salvar a devolução. O saldo e o estoque não foram alterados. Atualize a consulta e tente novamente.",
-                    "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Não foi possível salvar a devolução. O saldo e o estoque não foram alterados. Atualize a consulta e tente novamente.", "Devolução não realizada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
             MessageBox.Show("Devolução registrada com sucesso.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             CarregarSugestoesECombo();
             CarregarGridRapidos();
             LivroAtualizado?.Invoke(this, EventArgs.Empty);
             SUB.Utils.EventosGlobais.OnLivroDevolvido();
         }
+
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-
         }
 
         private void numQuantidade_Load(object sender, EventArgs e)
         {
-
         }
 
         // =========================
-        // NOVO: Métodos de Código de Barras (igual EmprestimoForm)
+        // Métodos de Código de Barras (igual EmprestimoForm)
         // =========================
         private void txtBarcode_Leave(object sender, EventArgs e)
         {
@@ -1249,8 +1156,8 @@ namespace SUB.Forms.Livros
         private void BuscarEPreencherLivroPorCodigo()
         {
             string codigo = (txtBarcode.Text ?? string.Empty).Trim();
-            if (string.IsNullOrEmpty(codigo)) return;
-
+            if (string.IsNullOrEmpty(codigo))
+                return;
             try
             {
                 using (var conexao = Conexao.ObterConexao())
@@ -1262,22 +1169,19 @@ namespace SUB.Forms.Livros
                     {
                         cmd.Parameters.AddWithValue("@codigo", codigo);
                         cmd.Parameters.AddWithValue("@Genero", RegrasCirculacao.GeneroRapido);
-
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
                                 // Define o nome sem mostrar listbox e sem acionar autocompletar visual
                                 SetLivroTextProgrammatic(reader.GetString(0), origemBarcode: true);
-
                                 // Oculta qualquer lista e aplica limitações de quantidade
                                 lstSugestoesLivro.Visible = false;
                                 LimitarQuantidadeDisponivel(txtLivro.Text);
                             }
                             else
                             {
-                                MessageBox.Show("Livro (Didático) não encontrado pelo código de barras. Escaneie novamente.",
-                                                "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show("Livro (Didático) não encontrado pelo código de barras. Escaneie novamente.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 txtBarcode.Focus();
                                 txtBarcode.Text = "";
                             }
@@ -1287,8 +1191,7 @@ namespace SUB.Forms.Livros
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ao buscar o livro por código de barras: " + ex.Message,
-                                "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Erro ao buscar o livro por código de barras: " + ex.Message, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -1338,9 +1241,7 @@ namespace SUB.Forms.Livros
                     {
                         cmd.Parameters.AddWithValue("@nome", nomeLivro);
                         var obj = cmd.ExecuteScalar();
-
                         string codigo = obj == null ? "" : obj.ToString();
-
                         // Igual ao EmprestimoForm: habilita, seta e desabilita o campo
                         txtBarcode.Enabled = true;
                         txtBarcode.Text = codigo;
@@ -1361,23 +1262,18 @@ namespace SUB.Forms.Livros
         private bool _alterandoTxtLivroProgramaticamente = false;
         private bool _preenchendoPorBarcode = false;
         private string _nomePreenchidoPorBarcode = null;
-
         // Helper para definir o texto do livro de forma programática
         private void SetLivroTextProgrammatic(string value, bool origemBarcode)
         {
             _alterandoTxtLivroProgramaticamente = true;
-
             if (origemBarcode)
             {
-                _preenchendoPorBarcode = true;           // sinaliza que veio do scanner
-                _nomePreenchidoPorBarcode = value;       // guarda o nome encontrado pelo código
+                _preenchendoPorBarcode = true; // sinaliza que veio do scanner
+                _nomePreenchidoPorBarcode = value; // guarda o nome encontrado pelo código
             }
 
             txtLivro.Text = value;
-
             _alterandoTxtLivroProgramaticamente = false;
         }
-
-       
     }
 }

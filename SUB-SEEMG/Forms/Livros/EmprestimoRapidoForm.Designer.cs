@@ -1,4 +1,4 @@
-﻿// EmprestimoRapidoForm.Designer.cs
+// EmprestimoRapidoForm.Designer.cs
 using System;
 
 namespace SUB.Forms.Livros
@@ -31,6 +31,7 @@ namespace SUB.Forms.Livros
             this.lstSugestoesProfessor = new System.Windows.Forms.ListBox();
             this.lstSugestoesTurma = new System.Windows.Forms.ListBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlFiltrosRapidos = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.label7 = new System.Windows.Forms.Label();
             this.btnMenos = new System.Windows.Forms.Button();
             this.btnMais = new System.Windows.Forms.Button();
@@ -43,6 +44,7 @@ namespace SUB.Forms.Livros
             this.pnlResultadosRapidos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRapidos)).BeginInit();
             this.panel1.SuspendLayout();
+            this.pnlFiltrosRapidos.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlResultadosRapidos
@@ -109,7 +111,7 @@ namespace SUB.Forms.Livros
             this.lblProfessor.BackColor = System.Drawing.Color.Transparent;
             this.lblProfessor.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblProfessor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblProfessor.Location = new System.Drawing.Point(107, 137);
+            this.lblProfessor.Location = new System.Drawing.Point(11, 17);
             this.lblProfessor.Name = "lblProfessor";
             this.lblProfessor.Size = new System.Drawing.Size(98, 25);
             this.lblProfessor.TabIndex = 84;
@@ -121,7 +123,7 @@ namespace SUB.Forms.Livros
             this.lblLivro.BackColor = System.Drawing.Color.Transparent;
             this.lblLivro.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLivro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblLivro.Location = new System.Drawing.Point(458, 137);
+            this.lblLivro.Location = new System.Drawing.Point(362, 17);
             this.lblLivro.Name = "lblLivro";
             this.lblLivro.Size = new System.Drawing.Size(59, 25);
             this.lblLivro.TabIndex = 85;
@@ -133,7 +135,7 @@ namespace SUB.Forms.Livros
             this.lblTurma.BackColor = System.Drawing.Color.Transparent;
             this.lblTurma.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTurma.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblTurma.Location = new System.Drawing.Point(107, 219);
+            this.lblTurma.Location = new System.Drawing.Point(11, 99);
             this.lblTurma.Name = "lblTurma";
             this.lblTurma.Size = new System.Drawing.Size(71, 25);
             this.lblTurma.TabIndex = 87;
@@ -145,7 +147,7 @@ namespace SUB.Forms.Livros
             this.lblQuantidade.BackColor = System.Drawing.Color.Transparent;
             this.lblQuantidade.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblQuantidade.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblQuantidade.Location = new System.Drawing.Point(806, 219);
+            this.lblQuantidade.Location = new System.Drawing.Point(710, 99);
             this.lblQuantidade.Name = "lblQuantidade";
             this.lblQuantidade.Size = new System.Drawing.Size(117, 25);
             this.lblQuantidade.TabIndex = 88;
@@ -157,7 +159,7 @@ namespace SUB.Forms.Livros
             this.lblBibliotecaria.BackColor = System.Drawing.Color.Transparent;
             this.lblBibliotecaria.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblBibliotecaria.Location = new System.Drawing.Point(458, 219);
+            this.lblBibliotecaria.Location = new System.Drawing.Point(362, 99);
             this.lblBibliotecaria.Name = "lblBibliotecaria";
             this.lblBibliotecaria.Size = new System.Drawing.Size(123, 25);
             this.lblBibliotecaria.TabIndex = 90;
@@ -171,7 +173,7 @@ namespace SUB.Forms.Livros
             this.btnRegistrar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRegistrar.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnRegistrar.ForeColor = System.Drawing.Color.White;
-            this.btnRegistrar.Location = new System.Drawing.Point(950, 240);
+            this.btnRegistrar.Location = new System.Drawing.Point(854, 120);
             this.btnRegistrar.Name = "btnRegistrar";
             this.btnRegistrar.Size = new System.Drawing.Size(194, 48);
             this.btnRegistrar.TabIndex = 9;
@@ -185,7 +187,7 @@ namespace SUB.Forms.Livros
             this.lblHoraEmprestimo.BackColor = System.Drawing.Color.Transparent;
             this.lblHoraEmprestimo.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHoraEmprestimo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblHoraEmprestimo.Location = new System.Drawing.Point(514, 297);
+            this.lblHoraEmprestimo.Location = new System.Drawing.Point(418, 177);
             this.lblHoraEmprestimo.Name = "lblHoraEmprestimo";
             this.lblHoraEmprestimo.Size = new System.Drawing.Size(199, 21);
             this.lblHoraEmprestimo.TabIndex = 94;
@@ -236,30 +238,37 @@ namespace SUB.Forms.Livros
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.txtBarcode);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.btnMenos);
-            this.panel1.Controls.Add(this.numQuantidade);
-            this.panel1.Controls.Add(this.btnMais);
+            this.pnlFiltrosRapidos.Controls.Add(this.txtBarcode);
+            this.pnlFiltrosRapidos.Controls.Add(this.label7);
+            this.pnlFiltrosRapidos.Controls.Add(this.btnMenos);
+            this.pnlFiltrosRapidos.Controls.Add(this.numQuantidade);
+            this.pnlFiltrosRapidos.Controls.Add(this.btnMais);
             this.panel1.Controls.Add(this.lstSugestoesTurma);
             this.panel1.Controls.Add(this.lstSugestoesProfessor);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.lstSugestoesLivro);
-            this.panel1.Controls.Add(this.lblHoraEmprestimo);
-            this.panel1.Controls.Add(this.cbBibliotecaria);
-            this.panel1.Controls.Add(this.txtTurma);
-            this.panel1.Controls.Add(this.btnRegistrar);
-            this.panel1.Controls.Add(this.lblBibliotecaria);
-            this.panel1.Controls.Add(this.lblQuantidade);
-            this.panel1.Controls.Add(this.lblTurma);
-            this.panel1.Controls.Add(this.txtLivro);
-            this.panel1.Controls.Add(this.lblLivro);
-            this.panel1.Controls.Add(this.lblProfessor);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblHoraEmprestimo);
+            this.pnlFiltrosRapidos.Controls.Add(this.cbBibliotecaria);
+            this.pnlFiltrosRapidos.Controls.Add(this.txtTurma);
+            this.pnlFiltrosRapidos.Controls.Add(this.btnRegistrar);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblBibliotecaria);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblQuantidade);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblTurma);
+            this.pnlFiltrosRapidos.Controls.Add(this.txtLivro);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblLivro);
+            this.pnlFiltrosRapidos.Controls.Add(this.lblProfessor);
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
             this.panel1.Controls.Add(this.lblSubtitulo);
-            this.panel1.Controls.Add(this.txtProfessor);
+            this.pnlFiltrosRapidos.Controls.Add(this.txtProfessor);
             this.panel1.Controls.Add(this.labelTitle);
             this.panel1.Controls.Add(this.pnlResultadosRapidos);
+            this.panel1.Controls.Add(this.pnlFiltrosRapidos);
+            this.pnlFiltrosRapidos.BackColor = System.Drawing.Color.White;
+            this.pnlFiltrosRapidos.BorderRadius = 20;
+            this.pnlFiltrosRapidos.Location = new System.Drawing.Point(96, 120);
+            this.pnlFiltrosRapidos.Name = "pnlFiltrosRapidos";
+            this.pnlFiltrosRapidos.Size = new System.Drawing.Size(1088, 216);
+            this.pnlFiltrosRapidos.TabIndex = 1;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -273,7 +282,7 @@ namespace SUB.Forms.Livros
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label7.Location = new System.Drawing.Point(806, 137);
+            this.label7.Location = new System.Drawing.Point(710, 17);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(162, 25);
@@ -283,7 +292,7 @@ namespace SUB.Forms.Livros
             // btnMenos
             // 
             this.btnMenos.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenos.Location = new System.Drawing.Point(868, 264);
+            this.btnMenos.Location = new System.Drawing.Point(772, 144);
             this.btnMenos.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenos.Name = "btnMenos";
             this.btnMenos.Size = new System.Drawing.Size(16, 19);
@@ -295,7 +304,7 @@ namespace SUB.Forms.Livros
             // btnMais
             // 
             this.btnMais.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMais.Location = new System.Drawing.Point(868, 245);
+            this.btnMais.Location = new System.Drawing.Point(772, 125);
             this.btnMais.Margin = new System.Windows.Forms.Padding(0);
             this.btnMais.Name = "btnMais";
             this.btnMais.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -318,7 +327,7 @@ namespace SUB.Forms.Livros
             this.txtBarcode.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBarcode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtBarcode.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtBarcode.Location = new System.Drawing.Point(811, 165);
+            this.txtBarcode.Location = new System.Drawing.Point(715, 45);
             this.txtBarcode.Margin = new System.Windows.Forms.Padding(4);
             this.txtBarcode.Name = "txtBarcode";
             this.txtBarcode.OnlyNumbers = true;
@@ -348,7 +357,7 @@ namespace SUB.Forms.Livros
             this.numQuantidade.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.numQuantidade.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.numQuantidade.HoverBackColor = System.Drawing.Color.LightGray;
-            this.numQuantidade.Location = new System.Drawing.Point(811, 247);
+            this.numQuantidade.Location = new System.Drawing.Point(715, 127);
             this.numQuantidade.Name = "numQuantidade";
             this.numQuantidade.OnlyNumbers = true;
             this.numQuantidade.Padding = new System.Windows.Forms.Padding(7);
@@ -379,7 +388,7 @@ namespace SUB.Forms.Livros
             this.cbBibliotecaria.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.cbBibliotecaria.FormattingEnabled = true;
             this.cbBibliotecaria.ItemsFont = new System.Drawing.Font("Segoe UI", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbBibliotecaria.Location = new System.Drawing.Point(463, 247);
+            this.cbBibliotecaria.Location = new System.Drawing.Point(367, 127);
             this.cbBibliotecaria.Name = "cbBibliotecaria";
             this.cbBibliotecaria.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbBibliotecaria.PlaceholderMargin = 10;
@@ -400,7 +409,7 @@ namespace SUB.Forms.Livros
             this.txtTurma.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTurma.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtTurma.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtTurma.Location = new System.Drawing.Point(112, 247);
+            this.txtTurma.Location = new System.Drawing.Point(16, 127);
             this.txtTurma.Name = "txtTurma";
             this.txtTurma.Padding = new System.Windows.Forms.Padding(7);
             this.txtTurma.PlaceholderColor = System.Drawing.Color.Gray;
@@ -429,7 +438,7 @@ namespace SUB.Forms.Livros
             this.txtLivro.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLivro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtLivro.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtLivro.Location = new System.Drawing.Point(463, 165);
+            this.txtLivro.Location = new System.Drawing.Point(367, 45);
             this.txtLivro.Name = "txtLivro";
             this.txtLivro.Padding = new System.Windows.Forms.Padding(7);
             this.txtLivro.PlaceholderColor = System.Drawing.Color.Gray;
@@ -458,7 +467,7 @@ namespace SUB.Forms.Livros
             this.txtProfessor.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtProfessor.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtProfessor.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtProfessor.Location = new System.Drawing.Point(111, 165);
+            this.txtProfessor.Location = new System.Drawing.Point(15, 45);
             this.txtProfessor.Name = "txtProfessor";
             this.txtProfessor.Padding = new System.Windows.Forms.Padding(7);
             this.txtProfessor.PlaceholderColor = System.Drawing.Color.Gray;
@@ -487,6 +496,8 @@ namespace SUB.Forms.Livros
             this.Load += new System.EventHandler(this.EmprestimoRapidoForm_Load);
             this.pnlResultadosRapidos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRapidos)).EndInit();
+            this.pnlFiltrosRapidos.ResumeLayout(false);
+            this.pnlFiltrosRapidos.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -514,6 +525,7 @@ namespace SUB.Forms.Livros
         private System.Windows.Forms.ListBox lstSugestoesProfessor;
         private System.Windows.Forms.ListBox lstSugestoesTurma;
         private System.Windows.Forms.Panel panel1;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltrosRapidos;
         private RoundedTextBox numQuantidade;
         private System.Windows.Forms.Button btnMais;
         private System.Windows.Forms.Button btnMenos;

@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Livros
+namespace SUB.Forms.Livros
 {
     partial class DevoluçãoForm
     {
@@ -38,6 +38,7 @@
             this.dgvEmprestimos = new System.Windows.Forms.DataGridView();
             this.lblDadosLivro = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlFiltrosDevolucao = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.mtxCodigoBarras = new RoundedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtUsuario = new RoundedTextBox();
@@ -53,6 +54,7 @@
             this.pnlResultadosEmprestimos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).BeginInit();
             this.panel1.SuspendLayout();
+            this.pnlFiltrosDevolucao.SuspendLayout();
             this.pnlAcoesDev.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -175,20 +177,27 @@
             this.panel1.AutoSize = true;
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.lstSugestoesUsuario);
-            this.panel1.Controls.Add(this.mtxCodigoBarras);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.txtUsuario);
-            this.panel1.Controls.Add(this.cbFiltroEmprestimo);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.btnBuscarEmprestimo);
-            this.panel1.Controls.Add(this.lblNome);
-            this.panel1.Controls.Add(this.txtLivro);
-            this.panel1.Controls.Add(this.label4);
+            this.pnlFiltrosDevolucao.Controls.Add(this.mtxCodigoBarras);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label1);
+            this.pnlFiltrosDevolucao.Controls.Add(this.txtUsuario);
+            this.pnlFiltrosDevolucao.Controls.Add(this.cbFiltroEmprestimo);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label6);
+            this.pnlFiltrosDevolucao.Controls.Add(this.btnBuscarEmprestimo);
+            this.pnlFiltrosDevolucao.Controls.Add(this.lblNome);
+            this.pnlFiltrosDevolucao.Controls.Add(this.txtLivro);
+            this.pnlFiltrosDevolucao.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.pnlLinhaCabecalho);
             this.panel1.Controls.Add(this.lblSubtitulo);
             this.panel1.Controls.Add(this.Titulo);
             this.panel1.Controls.Add(this.pnlResultadosEmprestimos);
             this.panel1.Controls.Add(this.pnlAcoesDev);
+            this.panel1.Controls.Add(this.pnlFiltrosDevolucao);
+            this.pnlFiltrosDevolucao.BackColor = System.Drawing.Color.White;
+            this.pnlFiltrosDevolucao.BorderRadius = 20;
+            this.pnlFiltrosDevolucao.Location = new System.Drawing.Point(96, 136);
+            this.pnlFiltrosDevolucao.Name = "pnlFiltrosDevolucao";
+            this.pnlFiltrosDevolucao.Size = new System.Drawing.Size(820, 168);
+            this.pnlFiltrosDevolucao.TabIndex = 1;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -209,7 +218,7 @@
             this.mtxCodigoBarras.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.mtxCodigoBarras.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.mtxCodigoBarras.HoverBackColor = System.Drawing.Color.LightGray;
-            this.mtxCodigoBarras.Location = new System.Drawing.Point(658, 183);
+            this.mtxCodigoBarras.Location = new System.Drawing.Point(562, 47);
             this.mtxCodigoBarras.Margin = new System.Windows.Forms.Padding(4);
             this.mtxCodigoBarras.Name = "mtxCodigoBarras";
             this.mtxCodigoBarras.OnlyNumbers = true;
@@ -232,7 +241,7 @@
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label1.Location = new System.Drawing.Point(105, 155);
+            this.label1.Location = new System.Drawing.Point(9, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(159, 25);
             this.label1.TabIndex = 154;
@@ -251,7 +260,7 @@
             this.txtUsuario.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUsuario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtUsuario.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtUsuario.Location = new System.Drawing.Point(109, 183);
+            this.txtUsuario.Location = new System.Drawing.Point(13, 47);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Padding = new System.Windows.Forms.Padding(7);
             this.txtUsuario.PlaceholderColor = System.Drawing.Color.Gray;
@@ -283,7 +292,7 @@
             "Atrasado",
             "Ativo"});
             this.cbFiltroEmprestimo.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
-            this.cbFiltroEmprestimo.Location = new System.Drawing.Point(110, 256);
+            this.cbFiltroEmprestimo.Location = new System.Drawing.Point(14, 120);
             this.cbFiltroEmprestimo.Name = "cbFiltroEmprestimo";
             this.cbFiltroEmprestimo.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbFiltroEmprestimo.PlaceholderMargin = 10;
@@ -296,7 +305,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label6.Location = new System.Drawing.Point(106, 228);
+            this.label6.Location = new System.Drawing.Point(10, 92);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(90, 25);
@@ -311,7 +320,7 @@
             this.btnBuscarEmprestimo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnBuscarEmprestimo.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold);
             this.btnBuscarEmprestimo.ForeColor = System.Drawing.Color.White;
-            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(695, 245);
+            this.btnBuscarEmprestimo.Location = new System.Drawing.Point(599, 109);
             this.btnBuscarEmprestimo.Name = "btnBuscarEmprestimo";
             this.btnBuscarEmprestimo.Size = new System.Drawing.Size(168, 41);
             this.btnBuscarEmprestimo.TabIndex = 151;
@@ -324,7 +333,7 @@
             this.lblNome.BackColor = System.Drawing.Color.Transparent;
             this.lblNome.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.lblNome.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.lblNome.Location = new System.Drawing.Point(389, 155);
+            this.lblNome.Location = new System.Drawing.Point(293, 19);
             this.lblNome.Name = "lblNome";
             this.lblNome.Size = new System.Drawing.Size(140, 25);
             this.lblNome.TabIndex = 149;
@@ -343,7 +352,7 @@
             this.txtLivro.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLivro.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
             this.txtLivro.HoverBackColor = System.Drawing.Color.LightGray;
-            this.txtLivro.Location = new System.Drawing.Point(393, 183);
+            this.txtLivro.Location = new System.Drawing.Point(297, 47);
             this.txtLivro.Name = "txtLivro";
             this.txtLivro.Padding = new System.Windows.Forms.Padding(7);
             this.txtLivro.PlaceholderColor = System.Drawing.Color.Gray;
@@ -364,7 +373,7 @@
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(42)))), ((int)(((byte)(60)))));
-            this.label4.Location = new System.Drawing.Point(654, 155);
+            this.label4.Location = new System.Drawing.Point(558, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(162, 25);
             this.label4.TabIndex = 150;
@@ -432,6 +441,8 @@
             this.Load += new System.EventHandler(this.DevoluçãoForm_Load);
             this.pnlResultadosEmprestimos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEmprestimos)).EndInit();
+            this.pnlFiltrosDevolucao.ResumeLayout(false);
+            this.pnlFiltrosDevolucao.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.pnlAcoesDev.ResumeLayout(false);
@@ -452,6 +463,7 @@
         private System.Windows.Forms.DataGridView dgvEmprestimos;
         private System.Windows.Forms.Label lblDadosLivro;
         private System.Windows.Forms.Panel panel1;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltrosDevolucao;
         private RoundedTextBox mtxCodigoBarras;
         private System.Windows.Forms.ListBox lstSugestoesUsuario;
         public System.Windows.Forms.Label label1;

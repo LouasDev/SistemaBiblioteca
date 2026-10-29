@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlServerCe;
@@ -255,7 +255,7 @@ namespace SUB.Forms.Livros
                 lstSugestoesTurma.Width = txtTurma.Width;
                 // Posição exata abaixo do txtTurma, considerando o Form
                 var pt = txtTurma.Parent.PointToScreen(txtTurma.Location);
-                pt = this.PointToClient(pt);
+                pt = lstSugestoesTurma.Parent.PointToClient(pt);
                 lstSugestoesTurma.Left = pt.X;
                 lstSugestoesTurma.Top = pt.Y + txtTurma.Height;
                 lstSugestoesTurma.BringToFront();

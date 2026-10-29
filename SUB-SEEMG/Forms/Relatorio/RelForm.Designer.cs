@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Relatorio
+namespace SUB.Forms.Relatorio
 {
     partial class RelForm
     {
@@ -36,7 +36,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlResultadosRelatorio = new System.Windows.Forms.Panel();
-            this.pnlFiltrosRelatorio = new System.Windows.Forms.Panel();
+            this.pnlFiltrosRelatorio = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.lstSugestoesUsuario = new System.Windows.Forms.ListBox();
             this.lstLivros = new System.Windows.Forms.ListBox();
             this.btnExportar = new System.Windows.Forms.Button();
@@ -182,6 +182,7 @@
             this.pnlFiltrosRelatorio.Controls.Add(this.txtUsuario);
             this.pnlFiltrosRelatorio.Location = new System.Drawing.Point(96, 112);
             this.pnlFiltrosRelatorio.Name = "pnlFiltrosRelatorio";
+            this.pnlFiltrosRelatorio.BorderRadius = 20;
             this.pnlFiltrosRelatorio.Size = new System.Drawing.Size(1164, 200);
             this.pnlFiltrosRelatorio.TabIndex = 134;
             // 
@@ -488,7 +489,7 @@
         private RoundedDatePicker dtpInicio;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
-        private System.Windows.Forms.Panel pnlFiltrosRelatorio;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltrosRelatorio;
         private System.Windows.Forms.Panel pnlResultadosRelatorio;
     }
 }

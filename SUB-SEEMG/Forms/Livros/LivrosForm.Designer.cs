@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Livros
+namespace SUB.Forms.Livros
 {
     partial class LivrosForm
     {
@@ -29,11 +29,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlResultados = new System.Windows.Forms.Panel();
             this.dgvLivros = new System.Windows.Forms.DataGridView();
-            this.pnlFiltros = new System.Windows.Forms.Panel();
+            this.pnlFiltros = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.lblUnidades = new System.Windows.Forms.Label();
             this.lblTitulos = new System.Windows.Forms.Label();
             this.mtxCodigoBarras = new RoundedTextBox();
@@ -89,14 +89,14 @@
             this.dgvLivros.AllowUserToDeleteRows = false;
             this.dgvLivros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLivros.BackgroundColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvLivros.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvLivros.ColumnHeadersHeight = 42;
             this.dgvLivros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvLivros.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -128,6 +128,7 @@
             this.pnlFiltros.Controls.Add(this.label1);
             this.pnlFiltros.Location = new System.Drawing.Point(96, 112);
             this.pnlFiltros.Name = "pnlFiltros";
+            this.pnlFiltros.BorderRadius = 20;
             this.pnlFiltros.Size = new System.Drawing.Size(1088, 172);
             this.pnlFiltros.TabIndex = 136;
             // 
@@ -249,6 +250,7 @@
             // 
             // cbDisponibilidade
             // 
+            this.cbDisponibilidade.ArrowColor = System.Drawing.Color.Empty;
             this.cbDisponibilidade.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbDisponibilidade.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbDisponibilidade.BorderRadius = 8;
@@ -259,6 +261,8 @@
             this.cbDisponibilidade.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbDisponibilidade.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbDisponibilidade.FormattingEnabled = true;
+            this.cbDisponibilidade.HighlightColor = System.Drawing.Color.Empty;
+            this.cbDisponibilidade.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbDisponibilidade.Items.AddRange(new object[] {
             "Todos",
             "Disponíveis",
@@ -266,6 +270,7 @@
             this.cbDisponibilidade.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbDisponibilidade.Location = new System.Drawing.Point(521, 116);
             this.cbDisponibilidade.Name = "cbDisponibilidade";
+            this.cbDisponibilidade.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbDisponibilidade.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbDisponibilidade.PlaceholderMargin = 10;
             this.cbDisponibilidade.PlaceholderText = "Filtre por disponibilidade...";
@@ -290,6 +295,7 @@
             // 
             // cbFiltro
             // 
+            this.cbFiltro.ArrowColor = System.Drawing.Color.Empty;
             this.cbFiltro.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cbFiltro.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.cbFiltro.BorderRadius = 8;
@@ -300,6 +306,8 @@
             this.cbFiltro.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbFiltro.Font = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbFiltro.FormattingEnabled = true;
+            this.cbFiltro.HighlightColor = System.Drawing.Color.Empty;
+            this.cbFiltro.HighlightTextColor = System.Drawing.Color.Empty;
             this.cbFiltro.Items.AddRange(new object[] {
             "Nome",
             "Autor",
@@ -307,6 +315,7 @@
             this.cbFiltro.ItemsFont = new System.Drawing.Font("Segoe UI", 14.25F);
             this.cbFiltro.Location = new System.Drawing.Point(521, 42);
             this.cbFiltro.Name = "cbFiltro";
+            this.cbFiltro.PlaceholderColor = System.Drawing.Color.Gray;
             this.cbFiltro.PlaceholderFont = new System.Drawing.Font("Segoe UI", 14F);
             this.cbFiltro.PlaceholderMargin = 10;
             this.cbFiltro.PlaceholderText = "Escolha um tipo de busca...";
@@ -406,7 +415,7 @@
         private System.Windows.Forms.Label lblTitulos;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
-        private System.Windows.Forms.Panel pnlFiltros;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltros;
         private System.Windows.Forms.Panel pnlResultados;
     }
 }

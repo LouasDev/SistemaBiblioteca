@@ -159,8 +159,9 @@ namespace SUB.Forms.Livros
                     lstSugestoesUsuario.ItemHeight = 40; // garante consistência com EstilizarListBoxSugestao
                     lstSugestoesUsuario.Height = visibleItems * lstSugestoesUsuario.ItemHeight + extraPadding;
                     lstSugestoesUsuario.Width = txtUsuario.Width;
-                    lstSugestoesUsuario.Left = txtUsuario.Left;
-                    lstSugestoesUsuario.Top = txtUsuario.Bottom;
+                    var abaixoDoCampo = lstSugestoesUsuario.Parent.PointToClient(
+                        txtUsuario.Parent.PointToScreen(new Point(txtUsuario.Left, txtUsuario.Bottom)));
+                    lstSugestoesUsuario.Location = abaixoDoCampo;
                     lstSugestoesUsuario.BringToFront();
                 }
             }

@@ -230,6 +230,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\RoundedSurfacePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Elements\CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>

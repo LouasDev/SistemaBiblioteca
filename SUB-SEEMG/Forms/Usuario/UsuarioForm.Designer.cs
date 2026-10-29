@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Usuario
+namespace SUB.Forms.Usuario
 {
     partial class UsuarioForm
     {
@@ -31,7 +31,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlResultadosUsuarios = new System.Windows.Forms.Panel();
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
-            this.pnlFiltrosUsuarios = new System.Windows.Forms.Panel();
+            this.pnlFiltrosUsuarios = new SUB.ElementosPersonalizados.RoundedSurfacePanel();
             this.lblEmprestimo = new System.Windows.Forms.Label();
             this.btnFiltrar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -105,6 +105,7 @@
             this.pnlFiltrosUsuarios.Controls.Add(this.txtNome);
             this.pnlFiltrosUsuarios.Location = new System.Drawing.Point(93, 116);
             this.pnlFiltrosUsuarios.Name = "pnlFiltrosUsuarios";
+            this.pnlFiltrosUsuarios.BorderRadius = 20;
             this.pnlFiltrosUsuarios.Size = new System.Drawing.Size(1175, 112);
             this.pnlFiltrosUsuarios.TabIndex = 116;
             // 
@@ -323,7 +324,7 @@
         public RoundedTextBox txtNome;
         private System.Windows.Forms.Label lblSubtitulo;
         private System.Windows.Forms.Panel pnlLinhaCabecalho;
-        private System.Windows.Forms.Panel pnlFiltrosUsuarios;
+        private SUB.ElementosPersonalizados.RoundedSurfacePanel pnlFiltrosUsuarios;
         private System.Windows.Forms.Panel pnlResultadosUsuarios;
         private System.Windows.Forms.Button btnGerenciarTurmas;
     }

@@ -100,13 +100,13 @@ Sugestões e relatos de problemas são bem-vindos nas [issues](https://github.co
 
 ## Equipe do projeto
 
-Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**:
+Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**. As contribuições abaixo registram as principais frentes assumidas pela equipe durante o desenvolvimento:
 
-| Integrante | Participação |
+| Integrante | Contribuições registradas |
 | --- | --- |
-| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end. |
-| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end. |
-| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Documentação do projeto. |
+| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. |
+| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. |
+| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. |
 
 Veja também o [histórico de contribuidores](https://github.com/LouasDev/SistemaBiblioteca/graphs/contributors) do repositório.
 

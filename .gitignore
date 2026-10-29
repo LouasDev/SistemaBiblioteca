@@ -2,6 +2,7 @@
 .vs/
 **/bin/
 **/obj/
+__pycache__/
 
 # Pacotes, dados ficticios e auxiliares temporarios de validacao.
 /artifacts/

@@ -102,13 +102,19 @@ Sugestões e relatos de problemas são bem-vindos nas [issues](https://github.co
 
 Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**. As contribuições abaixo registram as principais frentes assumidas pela equipe durante o desenvolvimento.
 
-| Integrante | Contribuições registradas | Estatísticas no repositório |
-| --- | --- | --- |
-| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. | **196 commits** · **+311.211** / **−37.762** linhas |
-| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. | **79 commits** · **+45.527** / **−277.056** linhas |
-| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. | **75 commits** · **+30.906** / **−14.277** linhas |
+| Integrante | Contribuições registradas |
+| --- | --- |
+| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. |
+| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. |
+| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. |
 
-<sub>Métricas do histórico Git até o commit <code>c4756ec</code>; incluem aliases de autoria conhecidos e desconsideram commits de merge.</sub>
+<p align="center">
+  <a href="https://github.com/renato0x"><img src="assets/contribuicoes/renato0x.svg" width="31%" alt="Card de contribuição de renato0x no SistemaBiblioteca."></a>
+  <a href="https://github.com/LouasDev"><img src="assets/contribuicoes/LouasDev.svg" width="31%" alt="Card de contribuição de LouasDev no SistemaBiblioteca."></a>
+  <a href="https://github.com/Ithaloluzdepanela"><img src="assets/contribuicoes/Ithaloluzdepanela.svg" width="31%" alt="Card de contribuição de Ithaloluzdepanela no SistemaBiblioteca."></a>
+</p>
+
+<sub>Cards atualizados automaticamente pela GitHub Actions a partir do histórico Git, incluindo aliases de autoria conhecidos e sem commits de merge.</sub>
 
 Veja também o [histórico de contribuidores](https://github.com/LouasDev/SistemaBiblioteca/graphs/contributors) do repositório.
 

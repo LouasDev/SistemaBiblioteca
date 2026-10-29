@@ -100,13 +100,15 @@ Sugestões e relatos de problemas são bem-vindos nas [issues](https://github.co
 
 ## Equipe do projeto
 
-Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**. As contribuições abaixo registram as principais frentes assumidas pela equipe durante o desenvolvimento:
+Alunos responsáveis pelo sistema original e pela construção do SUB, conforme os créditos do painel **Sobre**. As contribuições abaixo registram as principais frentes assumidas pela equipe durante o desenvolvimento.
 
-| Integrante | Contribuições registradas |
-| --- | --- |
-| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. |
-| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. |
-| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. |
+| Integrante | Contribuições registradas | Estatísticas no repositório |
+| --- | --- | --- |
+| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. | **196 commits** · **+311.211** / **−37.762** linhas |
+| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. | **79 commits** · **+45.527** / **−277.056** linhas |
+| [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. | **75 commits** · **+30.906** / **−14.277** linhas |
+
+<sub>Métricas do histórico Git até o commit <code>c4756ec</code>; incluem aliases de autoria conhecidos e desconsideram commits de merge.</sub>
 
 Veja também o [histórico de contribuidores](https://github.com/LouasDev/SistemaBiblioteca/graphs/contributors) do repositório.
 

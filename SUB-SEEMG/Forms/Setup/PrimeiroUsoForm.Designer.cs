@@ -1,4 +1,4 @@
-﻿namespace SUB.Forms.Setup
+namespace SUB.Forms.Setup
 {
     partial class PrimeiroUsoForm
     {
@@ -177,7 +177,16 @@
             this.pnlCodigoRecuperacao.SuspendLayout();
             this.pnlEtapa3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).BeginInit();
-            this.btnRegrasEmprestimo = new System.Windows.Forms.Button();
+            this.pnlEtapa4 = new System.Windows.Forms.Panel();
+            this.editorRegras = new SUB.Forms.Configuracoes.PoliticaEmprestimosEditor();
+            this.lblTituloEtapa4 = new System.Windows.Forms.Label();
+            this.btnVoltarEtapa4 = new System.Windows.Forms.Button();
+            this.btnAvancarEtapa3 = new CustomButton();
+            this.lblPasso4Numero = new System.Windows.Forms.Label();
+            this.lblPasso4Texto = new System.Windows.Forms.Label();
+            this.linhaRoteiro3 = new System.Windows.Forms.Panel();
+            this.indicadorEtapa4 = new System.Windows.Forms.Panel();
+            this.pnlEtapa4.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlInstitucional
@@ -441,9 +450,9 @@
             // indicadorEtapa3
             // 
             this.indicadorEtapa3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(227)))), ((int)(((byte)(234)))));
-            this.indicadorEtapa3.Location = new System.Drawing.Point(371, 108);
+            this.indicadorEtapa3.Location = new System.Drawing.Point(290, 108);
             this.indicadorEtapa3.Name = "indicadorEtapa3";
-            this.indicadorEtapa3.Size = new System.Drawing.Size(160, 5);
+            this.indicadorEtapa3.Size = new System.Drawing.Size(119, 5);
             this.indicadorEtapa3.TabIndex = 6;
             // 
             // lblTitulo
@@ -475,22 +484,22 @@
             this.lblEtapaAtual.Name = "lblEtapaAtual";
             this.lblEtapaAtual.Size = new System.Drawing.Size(112, 22);
             this.lblEtapaAtual.TabIndex = 1;
-            this.lblEtapaAtual.Text = "Etapa 1 de 3";
+            this.lblEtapaAtual.Text = "Etapa 1 de 4";
             this.lblEtapaAtual.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // indicadorEtapa1
             // 
             this.indicadorEtapa1.Location = new System.Drawing.Point(42, 108);
             this.indicadorEtapa1.Name = "indicadorEtapa1";
-            this.indicadorEtapa1.Size = new System.Drawing.Size(160, 5);
+            this.indicadorEtapa1.Size = new System.Drawing.Size(119, 5);
             this.indicadorEtapa1.TabIndex = 3;
             // 
             // indicadorEtapa2
             // 
             this.indicadorEtapa2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(227)))), ((int)(((byte)(234)))));
-            this.indicadorEtapa2.Location = new System.Drawing.Point(207, 108);
+            this.indicadorEtapa2.Location = new System.Drawing.Point(166, 108);
             this.indicadorEtapa2.Name = "indicadorEtapa2";
-            this.indicadorEtapa2.Size = new System.Drawing.Size(160, 5);
+            this.indicadorEtapa2.Size = new System.Drawing.Size(119, 5);
             this.indicadorEtapa2.TabIndex = 5;
             // 
             // lblErroGeral
@@ -506,13 +515,6 @@
             this.lblErroGeral.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErroGeral.Visible = false;
             // 
-            this.btnRegrasEmprestimo.Name = "btnRegrasEmprestimo";
-            this.btnRegrasEmprestimo.Text = "Regras de empréstimo";
-            this.btnRegrasEmprestimo.Location = new System.Drawing.Point(3, 370);
-            this.btnRegrasEmprestimo.Size = new System.Drawing.Size(190, 34);
-            this.btnRegrasEmprestimo.TabIndex = 8;
-            this.btnRegrasEmprestimo.Click += new System.EventHandler(this.btnRegrasEmprestimo_Click);
-            this.pnlEtapa1.Controls.Add(this.btnRegrasEmprestimo);
             // pnlEtapa1
             // 
             this.pnlEtapa1.Controls.Add(this.lblTituloEtapa1);
@@ -1104,7 +1106,8 @@
             this.pnlEtapa3.Controls.Add(this.btnRemoverTurma);
             this.pnlEtapa3.Controls.Add(this.lblErroTurmas);
             this.pnlEtapa3.Controls.Add(this.btnVoltarEtapa3);
-            this.pnlEtapa3.Controls.Add(this.salvar);
+            this.pnlEtapa4.Controls.Add(this.salvar);
+            this.pnlEtapa3.Controls.Add(this.btnAvancarEtapa3);
             this.pnlEtapa3.Location = new System.Drawing.Point(42, 153);
             this.pnlEtapa3.Name = "pnlEtapa3";
             this.pnlEtapa3.Size = new System.Drawing.Size(491, 517);
@@ -1256,6 +1259,67 @@
             this.btnFechar.TabStop = false;
             this.btnFechar.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            this.pnlConteudo.Controls.Add(this.pnlEtapa4);
+            this.pnlEtapa4.Name = "pnlEtapa4";
+            this.pnlEtapa4.Location = new System.Drawing.Point(42, 153);
+            this.pnlEtapa4.Size = new System.Drawing.Size(491, 517);
+            this.pnlEtapa4.Visible = false;
+            this.pnlEtapa4.TabIndex = 10;
+            this.pnlEtapa4.Controls.Add(this.lblTituloEtapa4);
+            this.pnlEtapa4.Controls.Add(this.editorRegras);
+            this.pnlEtapa4.Controls.Add(this.btnVoltarEtapa4);
+            this.lblTituloEtapa4.Name = "lblTituloEtapa4";
+            this.lblTituloEtapa4.Text = "Regras de empréstimo";
+            this.lblTituloEtapa4.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTituloEtapa4.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloEtapa4.Size = new System.Drawing.Size(488, 40);
+            this.editorRegras.Name = "editorRegras";
+            this.editorRegras.Location = new System.Drawing.Point(3, 56);
+            this.editorRegras.Size = new System.Drawing.Size(485, 410);
+            this.editorRegras.ExibirCartoes = false;
+            this.editorRegras.TabIndex = 0;
+            this.btnVoltarEtapa4.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnVoltarEtapa4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVoltarEtapa4.Name = "btnVoltarEtapa4";
+            this.btnVoltarEtapa4.Text = "Voltar";
+            this.btnVoltarEtapa4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnVoltarEtapa4.FlatAppearance.BorderSize = 0;
+            this.btnVoltarEtapa4.Location = new System.Drawing.Point(3, 480);
+            this.btnVoltarEtapa4.Size = new System.Drawing.Size(92, 34);
+            this.btnVoltarEtapa4.TabIndex = 1;
+            this.btnVoltarEtapa4.Click += new System.EventHandler(this.btnVoltarEtapa4_Click);
+            this.btnAvancarEtapa3.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnAvancarEtapa3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnAvancarEtapa3.Name = "btnAvancarEtapa3";
+            this.btnAvancarEtapa3.Text = "Próximo: regras";
+            this.btnAvancarEtapa3.Location = new System.Drawing.Point(288, 477);
+            this.btnAvancarEtapa3.Size = new System.Drawing.Size(200, 40);
+            this.btnAvancarEtapa3.TabIndex = 8;
+            this.btnAvancarEtapa3.Click += new System.EventHandler(this.btnAvancarEtapa3_Click);
+            this.salvar.TabIndex = 2;
+            this.pnlInstitucional.Controls.Add(this.lblPasso4Numero);
+            this.pnlInstitucional.Controls.Add(this.lblPasso4Texto);
+            this.pnlInstitucional.Controls.Add(this.linhaRoteiro3);
+            this.lblPasso4Numero.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblPasso4Numero.Name = "lblPasso4Numero";
+            this.lblPasso4Numero.Text = "4";
+            this.lblPasso4Numero.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPasso4Numero.Location = new System.Drawing.Point(40, 624);
+            this.lblPasso4Numero.Size = new System.Drawing.Size(28, 28);
+            this.lblPasso4Texto.Name = "lblPasso4Texto";
+            this.lblPasso4Texto.Text = "Regras de empréstimo";
+            this.lblPasso4Texto.ForeColor = System.Drawing.Color.White;
+            this.lblPasso4Texto.Location = new System.Drawing.Point(82, 621);
+            this.lblPasso4Texto.Size = new System.Drawing.Size(263, 34);
+            this.lblPasso4Texto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.linhaRoteiro3.Name = "linhaRoteiro3";
+            this.linhaRoteiro3.Location = new System.Drawing.Point(53, 588);
+            this.linhaRoteiro3.Size = new System.Drawing.Size(2, 36);
+            this.pnlConteudo.Controls.Add(this.indicadorEtapa4);
+            this.indicadorEtapa4.Name = "indicadorEtapa4";
+            this.indicadorEtapa4.Location = new System.Drawing.Point(414, 108);
+            this.indicadorEtapa4.Size = new System.Drawing.Size(119, 5);
+            this.indicadorEtapa4.BackColor = System.Drawing.Color.FromArgb(222, 227, 234);
             // PrimeiroUsoForm
             // 
             this.AcceptButton = this.btnAvancar;
@@ -1287,6 +1351,7 @@
             this.pnlCodigoRecuperacao.PerformLayout();
             this.pnlEtapa3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).EndInit();
+            this.pnlEtapa4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1296,6 +1361,14 @@
         private System.Windows.Forms.Panel linhaRoteiro2;
         private System.Windows.Forms.Panel indicadorEtapa3;
         private System.Windows.Forms.PictureBox btnFechar;
-        private System.Windows.Forms.Button btnRegrasEmprestimo;
+        private System.Windows.Forms.Panel pnlEtapa4;
+        private SUB.Forms.Configuracoes.PoliticaEmprestimosEditor editorRegras;
+        private System.Windows.Forms.Label lblTituloEtapa4;
+        private System.Windows.Forms.Button btnVoltarEtapa4;
+        private CustomButton btnAvancarEtapa3;
+        private System.Windows.Forms.Label lblPasso4Numero;
+        private System.Windows.Forms.Label lblPasso4Texto;
+        private System.Windows.Forms.Panel linhaRoteiro3;
+        private System.Windows.Forms.Panel indicadorEtapa4;
     }
 }

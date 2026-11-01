@@ -311,6 +311,8 @@
     <Compile Include="Utils\RegrasMapeamentoTurmas.cs" />
     <Compile Include="Utils\ProrrogacaoService.cs" />
     <Compile Include="Models\PoliticaEmprestimos.cs" />
+    <Compile Include="Forms\Configuracoes\PoliticaEmprestimosEditor.cs"><SubType>UserControl</SubType></Compile>
+    <Compile Include="Forms\Configuracoes\PoliticaEmprestimosEditor.Designer.cs"><DependentUpon>PoliticaEmprestimosEditor.cs</DependentUpon></Compile>
     <Compile Include="Forms\Configuracoes\PoliticaEmprestimosForm.cs"><SubType>Form</SubType></Compile>
     <Compile Include="Forms\Configuracoes\PoliticaEmprestimosForm.Designer.cs"><DependentUpon>PoliticaEmprestimosForm.cs</DependentUpon></Compile>
     <Compile Include="Utils\CirculacaoService.cs" />
@@ -481,6 +483,7 @@
       <DependentUpon>PasswordForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\TurmasUtil.cs" />
+    <EmbeddedResource Include="Forms\Configuracoes\PoliticaEmprestimosForm.resx"><DependentUpon>PoliticaEmprestimosForm.cs</DependentUpon></EmbeddedResource>
     <EmbeddedResource Include="Forms\Configuracoes\ConfiguracaoForm.resx">
       <DependentUpon>ConfiguracaoForm.cs</DependentUpon>
     </EmbeddedResource>

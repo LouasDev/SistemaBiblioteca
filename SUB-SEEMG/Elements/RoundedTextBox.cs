@@ -154,7 +154,16 @@ public class RoundedTextBox : UserControl
         if (keyData == (Keys.Tab | Keys.Shift))
         {
             Form form = FindForm();
-            if (form != null && form.SelectNextControl(this, false, true, true, true))
+            Control origem = this;
+            var container = Parent?.GetContainerControl() as ContainerControl;
+            while (container != null && container != form)
+            {
+                if (container.SelectNextControl(origem, false, true, true, false))
+                    return true;
+                origem = container;
+                container = container.Parent?.GetContainerControl() as ContainerControl;
+            }
+            if (form != null && form.SelectNextControl(origem, false, true, true, true))
                 return true;
         }
         return base.ProcessDialogKey(keyData);

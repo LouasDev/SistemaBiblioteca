@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -298,6 +298,7 @@ namespace SUB.Utils
 
         private static void ApplyRecursive(Control control, Color primaryColor, bool insideNavigation)
         {
+            if (control is Button && Equals(control.Tag, "PreservarCores")) return;
             bool isNavigation = insideNavigation || IsNavigationContainer(control) || IsThemedHeaderPanel(control);
             if (!ControlsWithThemeHandler.TryGetValue(control, out _))
             {
@@ -426,6 +427,7 @@ namespace SUB.Utils
 
         private static void AdaptarParaEscuro(Control control, Color primaryColor)
         {
+            if (control is Button && Equals(control.Tag, "PreservarCores")) return;
             var formulario = control as Form;
             if (formulario != null)
             {

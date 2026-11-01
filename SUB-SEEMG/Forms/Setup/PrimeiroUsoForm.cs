@@ -17,13 +17,11 @@ namespace SUB.Forms.Setup
     [System.ComponentModel.DesignerCategory("Form")]
     public partial class PrimeiroUsoForm : Form
     {
-        private PoliticaEmprestimos regrasEmprestimo = new PoliticaEmprestimos();
-        private void btnRegrasEmprestimo_Click(object sender, EventArgs e)
+        private void btnAvancarEtapa3_Click(object sender, EventArgs e)
         {
-            using (var dialog = new SUB.Forms.Configuracoes.PoliticaEmprestimosForm(regrasEmprestimo, TemaSelecionado.PrimaryColor))
-                if (dialog.ShowDialog(this) == DialogResult.OK)
-                    regrasEmprestimo = dialog.Regras;
+            if (ValidarEtapa3()) MostrarEtapa(4);
         }
+        private void btnVoltarEtapa4_Click(object sender, EventArgs e) => MostrarEtapa(3);
 
         private readonly string _codigoMestreGerado = GerarCodigoMestre();
         private readonly Color _corErro = Color.FromArgb(184, 50, 50);
@@ -43,6 +41,7 @@ namespace SUB.Forms.Setup
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
             InitializeComponent();
+            editorRegras.ValidadeAlterada += valido => AtualizarEstadoConclusao();
             if (System.ComponentModel.LicenseManager.UsageMode == System.ComponentModel.LicenseUsageMode.Designtime)
                 return;
             GuardarCoresRotulos(pnlConteudo);
@@ -118,6 +117,11 @@ namespace SUB.Forms.Setup
             pnlEtapa1.BackColor = Color.Transparent;
             pnlEtapa2.BackColor = Color.Transparent;
             pnlEtapa3.BackColor = Color.Transparent;
+            pnlEtapa4.BackColor = Color.Transparent;
+            editorRegras.AplicarTema(primaria);
+            btnAvancarEtapa3.BaseColor = primaria;
+            btnVoltarEtapa4.BackColor = pnlConteudo.BackColor;
+            btnVoltarEtapa4.ForeColor = CorTextoSetup(primaria);
             pnlLogo.BackColor = Color.White;
             foreach (var rotulo in _coresRotulosClaros)
                 rotulo.Key.ForeColor = CorTextoSetup(rotulo.Key == statusCodigo ? _corStatusCodigo : rotulo.Value);
@@ -154,6 +158,7 @@ namespace SUB.Forms.Setup
             {
                 btnVoltar,
                 btnVoltarEtapa3,
+                btnVoltarEtapa4,
                 exportarCodigo,
                 btnRemoverTurma
             }
@@ -244,22 +249,27 @@ namespace SUB.Forms.Setup
             pnlEtapa1.Visible = etapa == 1;
             pnlEtapa2.Visible = etapa == 2;
             pnlEtapa3.Visible = etapa == 3;
+            pnlEtapa4.Visible = etapa == 4;
             if (etapa == 1)
                 pnlEtapa1.BringToFront();
             else if (etapa == 2)
                 pnlEtapa2.BringToFront();
-            else
+            else if (etapa == 3)
                 pnlEtapa3.BringToFront();
-            lblEtapaAtual.Text = "Etapa " + etapa + " de 3";
-            AcceptButton = etapa == 1 ? (IButtonControl)btnAvancar : etapa == 2 ? (IButtonControl)btnAvancarEtapa2 : salvar;
+            else
+                pnlEtapa4.BringToFront();
+            lblEtapaAtual.Text = "Etapa " + etapa + " de 4";
+            AcceptButton = etapa == 1 ? (IButtonControl)btnAvancar : etapa == 2 ? (IButtonControl)btnAvancarEtapa2 : etapa == 3 ? (IButtonControl)btnAvancarEtapa3 : salvar;
             AtualizarIndicadorEtapa();
             OcultarErroGeral();
             if (etapa == 1)
                 _nomeInstituicao.Focus();
             else if (etapa == 2)
                 _nomeBibliotecaria.Focus();
-            else
+            else if (etapa == 3)
                 txtNovaTurma.Focus();
+            else
+                editorRegras.SelectNextControl(null, true, true, true, true);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -347,6 +357,11 @@ namespace SUB.Forms.Setup
             lblPasso3Texto.Font = new Font("Segoe UI", 10F, terceiraEtapa ? FontStyle.Bold : FontStyle.Regular);
             linhaRoteiro.BackColor = ThemeManager.Lighten(primaria, 0.42f);
             linhaRoteiro2.BackColor = ThemeManager.Lighten(primaria, 0.42f);
+            linhaRoteiro3.BackColor = ThemeManager.Lighten(primaria, 0.42f);
+            indicadorEtapa4.BackColor = _etapaAtual >= 4 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
+            lblPasso4Numero.BackColor = _etapaAtual == 4 ? Color.White : ThemeManager.Lighten(primaria, 0.34f);
+            lblPasso4Numero.ForeColor = _etapaAtual == 4 ? primaria : Color.White;
+            lblPasso4Texto.Font = new Font("Segoe UI", 10F, _etapaAtual == 4 ? FontStyle.Bold : FontStyle.Regular);
         }
 
         private void btnAvancar_Click(object sender, EventArgs e)
@@ -638,7 +653,7 @@ namespace SUB.Forms.Setup
         private void AtualizarEstadoConclusao()
         {
             bool codigoDisponivel = !string.IsNullOrWhiteSpace(_caminhoCodigoMestre) && File.Exists(_caminhoCodigoMestre);
-            salvar.Enabled = codigoDisponivel && _turmasIniciais.Count > 0 && !_concluindo;
+            salvar.Enabled = codigoDisponivel && _turmasIniciais.Count > 0 && editorRegras.ValoresValidos && !_concluindo;
             salvar.BaseColor = salvar.Enabled ? TemaSelecionado.PrimaryColor : Color.FromArgb(130, 139, 150);
             salvar.Cursor = salvar.Enabled ? Cursors.Hand : Cursors.Default;
             salvar.Invalidate();
@@ -654,7 +669,7 @@ namespace SUB.Forms.Setup
 
         private void salvar_Click(object sender, EventArgs e)
         {
-            if (_concluindo)
+            if (_concluindo || _etapaAtual != 4)
                 return;
             if (string.IsNullOrWhiteSpace(_caminhoCodigoMestre) || !File.Exists(_caminhoCodigoMestre))
             {
@@ -669,6 +684,7 @@ namespace SUB.Forms.Setup
                 return;
             if (!ValidarEtapa3())
                 return;
+            if (!editorRegras.ValidarValores()) return;
             ConcluirConfiguracao();
         }
 
@@ -747,7 +763,7 @@ VALUES
 
                 InstituicaoConfiguracaoStore.Salvar(new InstituicaoConfiguracao
                 {
-                    RegrasEmprestimo = regrasEmprestimo.Copiar(),
+                    RegrasEmprestimo = editorRegras.LerRegras(),
                     Nome = _nomeInstituicao.Text.Trim(),
                     CorPrimaria = ColorTranslator.ToHtml(tema.PrimaryColor),
                     Aparencia = (ModoAparencia)_aparencia.SelectedIndex,

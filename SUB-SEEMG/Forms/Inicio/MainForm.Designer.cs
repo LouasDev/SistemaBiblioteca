@@ -81,11 +81,11 @@ namespace SUB.Forms.Inicio
             this.panelControl.AllowDrop = true;
             this.panelControl.BackColor = System.Drawing.Color.Transparent;
             this.panelControl.Controls.Add(this.ControlPanel);
-            this.panelControl.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.panelControl.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelControl.ForeColor = System.Drawing.SystemColors.Control;
-            this.panelControl.Location = new System.Drawing.Point(1332, 0);
+            this.panelControl.Location = new System.Drawing.Point(264, 0);
             this.panelControl.Name = "panelControl";
-            this.panelControl.Size = new System.Drawing.Size(108, 30);
+            this.panelControl.Size = new System.Drawing.Size(1176, 30);
             this.panelControl.TabIndex = 1;
             this.panelControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelControl_MouseDown);
             // 
@@ -95,7 +95,7 @@ namespace SUB.Forms.Inicio
             this.ControlPanel.Controls.Add(this.picExit);
             this.ControlPanel.Controls.Add(this.picMax);
             this.ControlPanel.Controls.Add(this.picMin);
-            this.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ControlPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.ControlPanel.Location = new System.Drawing.Point(1068, 0);
             this.ControlPanel.Name = "ControlPanel";

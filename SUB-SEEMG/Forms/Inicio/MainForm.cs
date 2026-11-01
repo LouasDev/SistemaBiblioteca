@@ -28,13 +28,6 @@ namespace SUB.Forms.Inicio
         public MainForm()
         {
             InitializeComponent();
-            // Os controles da janela ficam sobrepostos no canto, sem reservar uma faixa acima
-            // das telas MDI. O conteúdo pode ocupar toda a altura disponível.
-            panelControl.BringToFront();
-            panel1.MouseDown += panelControl_MouseDown;
-            picLogoMenu.MouseDown += panelControl_MouseDown;
-            lblMarcaMenu.MouseDown += panelControl_MouseDown;
-            lblContextoMenu.MouseDown += panelControl_MouseDown;
             fundoClaroDoForm = BackColor;
             fundoClaroDoPainelControle = panelControl.BackColor;
             mdiProp();
@@ -65,6 +58,7 @@ namespace SUB.Forms.Inicio
 
             menu.BackColor = corPrimaria;
             ThemeManager.Apply(this, corPrimaria);
+            AtualizarCorBarraSuperior();
             VincularEventosNavegacao();
             AplicarTemaDaNavegacao();
             EventosGlobais.ConfiguracaoSalva += MainForm_ConfiguracaoSalva;
@@ -77,6 +71,8 @@ namespace SUB.Forms.Inicio
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
+            HandleCreated += (s, e) => OcultarBordaNativa();
+            if (IsHandleCreated) OcultarBordaNativa();
             // Os botões da janela são só ícones; a dica diz o que cada um faz.
             var dicas = new ToolTip(components);
             dicas.SetToolTip(picMin, "Minimizar");
@@ -253,6 +249,22 @@ namespace SUB.Forms.Inicio
         // da janela não foi marcada como redimensionável nesse estilo.
         private const int WS_SIZEFRAME = 0x00040000;
         private const int WS_MAXIMIZEBOX = 0x00010000;
+        private const int DWMWA_BORDER_COLOR = 34;
+        private const int DWMWA_COLOR_NONE = unchecked((int)0xFFFFFFFE);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr janela, int atributo, ref int valor, int tamanho);
+
+        private void OcultarBordaNativa()
+        {
+            try
+            {
+                int semBorda = DWMWA_COLOR_NONE;
+                DwmSetWindowAttribute(Handle, DWMWA_BORDER_COLOR, ref semBorda, sizeof(int));
+            }
+            catch (DllNotFoundException) { }
+            catch (EntryPointNotFoundException) { }
+        }
 
         protected override CreateParams CreateParams
         {
@@ -268,17 +280,10 @@ namespace SUB.Forms.Inicio
         // pode crescer ao maximizar — sem isto ela cobriria a barra de tarefas.
         private void AtualizarLimitesDeMaximizacao()
         {
-            Rectangle areaUtil = Screen.FromHandle(Handle).WorkingArea;
-            // WS_SIZEFRAME reserva uma faixa invisível para o arraste nas quatro bordas.
-            // Ao maximizar, deixamos somente essa faixa fora da área útil: o cliente continua
-            // exatamente dentro dela e o conteúdo passa a preencher toda a área visível.
-            Size moldura = new Size(Math.Max(0, Width - ClientSize.Width), Math.Max(0, Height - ClientSize.Height));
-            int esquerda = moldura.Width / 2;
-            int topo = moldura.Height / 2;
-            int direita = moldura.Width - esquerda;
-            int baixo = moldura.Height - topo;
-            MaximizedBounds = Rectangle.FromLTRB(areaUtil.Left - esquerda, areaUtil.Top - topo,
-                areaUtil.Right + direita, areaUtil.Bottom + baixo);
+            Rectangle area = Screen.FromHandle(Handle).WorkingArea;
+            int bordaX = Math.Max(0, Width - ClientSize.Width) / 2;
+            int bordaY = Math.Max(0, Height - ClientSize.Height) / 2;
+            MaximizedBounds = Rectangle.Inflate(area, bordaX, bordaY);
         }
 
         // Redimensionar arrastando a borda. FormBorderStyle.None tira esse comportamento de
@@ -354,6 +359,11 @@ namespace SUB.Forms.Inicio
             var cliente = Controls.OfType<MdiClient>().FirstOrDefault();
             if (cliente != null)
                 cliente.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Fundo : Color.FromArgb(232, 234, 237);
+        }
+
+        private void AtualizarCorBarraSuperior()
+        {
+            panelControl.BackColor = ThemeManager.Escuro ? ThemeManager.Dark.Fundo : Color.White;
         }
 
         private Color CorDeRealceDosControles()
@@ -1196,6 +1206,7 @@ namespace SUB.Forms.Inicio
             menu.BackColor = corPrimaria;
             SubLogoManager.SetImage(picLogoMenu, SubLogoVariant.Square, corPrimaria, corPrimaria);
             ThemeManager.Apply(this, corPrimaria);
+            AtualizarCorBarraSuperior();
             AplicarTemaDaNavegacao();
             if (tutorialOverlay != null && !tutorialOverlay.IsDisposed)
                 tutorialOverlay.ApplyTheme(corPrimaria);

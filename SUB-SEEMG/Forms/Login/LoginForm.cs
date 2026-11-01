@@ -241,14 +241,7 @@ namespace SUB.Forms.Login
             {
                 return "Devolvido";
             }
-            else if (DateTime.Now > dataReferencia)
-            {
-                return "Atrasado";
-            }
-            else
-            {
-                return "Ativo";
-            }
+            return RegrasCirculacao.SituacaoPrazo(dataReferencia, DateTime.Now);
         }
 
 #endregion

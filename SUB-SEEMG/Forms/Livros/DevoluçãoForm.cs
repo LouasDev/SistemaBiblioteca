@@ -894,7 +894,9 @@ namespace SUB.Forms.Livros
                     )";
                 using (SqlCeCommand comando = new SqlCeCommand(query, conexao))
                 {
-                    comando.Parameters.AddWithValue("@Hoje", DateTime.Now);
+                    // O vencimento é por dia, não por horário: um empréstimo vence
+                    // somente após o fim da data registrada.
+                    comando.Parameters.AddWithValue("@Hoje", DateTime.Today);
                     int afetados = comando.ExecuteNonQuery();
                     if (afetados > 0)
                     {

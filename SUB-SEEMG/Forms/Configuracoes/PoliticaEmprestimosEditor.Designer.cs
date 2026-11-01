@@ -84,10 +84,10 @@
             // 
             this.lblDica.BackColor = System.Drawing.Color.Transparent;
             this.lblDica.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblDica.Location = new System.Drawing.Point(2, 356);
+            this.lblDica.Location = new System.Drawing.Point(18, 356);
             this.lblDica.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblDica.Name = "lblDica";
-            this.lblDica.Size = new System.Drawing.Size(476, 54);
+            this.lblDica.Size = new System.Drawing.Size(444, 54);
             this.lblDica.TabIndex = 2;
             this.lblDica.Text = "Use zero para impedir novos empréstimos ou prorrogações. Empréstimos rápidos segu" +
     "em regras separadas. Os prazos já registrados são preservados; cada prorrogação " +
@@ -122,10 +122,11 @@
             // lblAluno
             // 
             this.lblAluno.BackColor = System.Drawing.Color.Transparent;
-            this.lblAluno.Location = new System.Drawing.Point(18, 65);
+            this.lblAluno.Location = new System.Drawing.Point(18, 61);
             this.lblAluno.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblAluno.Name = "lblAluno";
-            this.lblAluno.Size = new System.Drawing.Size(170, 28);
+            this.lblAluno.Size = new System.Drawing.Size(170, 35);
+            this.lblAluno.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblAluno.TabIndex = 2;
             this.lblAluno.Text = "Alunos";
             // 
@@ -161,10 +162,10 @@
             // 
             // chkSemLimiteAluno
             // 
-            this.chkSemLimiteAluno.Location = new System.Drawing.Point(328, 65);
+            this.chkSemLimiteAluno.Location = new System.Drawing.Point(328, 61);
             this.chkSemLimiteAluno.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.chkSemLimiteAluno.Name = "chkSemLimiteAluno";
-            this.chkSemLimiteAluno.Size = new System.Drawing.Size(132, 28);
+            this.chkSemLimiteAluno.Size = new System.Drawing.Size(132, 35);
             this.chkSemLimiteAluno.TabIndex = 1;
             this.chkSemLimiteAluno.Text = "Sem limite";
             this.chkSemLimiteAluno.CheckedChanged += new System.EventHandler(this.SemLimite_CheckedChanged);
@@ -172,10 +173,11 @@
             // lblProfessor
             // 
             this.lblProfessor.BackColor = System.Drawing.Color.Transparent;
-            this.lblProfessor.Location = new System.Drawing.Point(18, 107);
+            this.lblProfessor.Location = new System.Drawing.Point(18, 103);
             this.lblProfessor.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblProfessor.Name = "lblProfessor";
-            this.lblProfessor.Size = new System.Drawing.Size(170, 28);
+            this.lblProfessor.Size = new System.Drawing.Size(170, 35);
+            this.lblProfessor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProfessor.TabIndex = 3;
             this.lblProfessor.Text = "Professores";
             // 
@@ -211,10 +213,10 @@
             // 
             // chkSemLimiteProfessor
             // 
-            this.chkSemLimiteProfessor.Location = new System.Drawing.Point(328, 107);
+            this.chkSemLimiteProfessor.Location = new System.Drawing.Point(328, 103);
             this.chkSemLimiteProfessor.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.chkSemLimiteProfessor.Name = "chkSemLimiteProfessor";
-            this.chkSemLimiteProfessor.Size = new System.Drawing.Size(132, 28);
+            this.chkSemLimiteProfessor.Size = new System.Drawing.Size(132, 35);
             this.chkSemLimiteProfessor.TabIndex = 3;
             this.chkSemLimiteProfessor.Text = "Sem limite";
             this.chkSemLimiteProfessor.CheckedChanged += new System.EventHandler(this.SemLimite_CheckedChanged);
@@ -222,10 +224,11 @@
             // lblBibliotecario
             // 
             this.lblBibliotecario.BackColor = System.Drawing.Color.Transparent;
-            this.lblBibliotecario.Location = new System.Drawing.Point(18, 149);
+            this.lblBibliotecario.Location = new System.Drawing.Point(18, 145);
             this.lblBibliotecario.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblBibliotecario.Name = "lblBibliotecario";
-            this.lblBibliotecario.Size = new System.Drawing.Size(170, 28);
+            this.lblBibliotecario.Size = new System.Drawing.Size(170, 35);
+            this.lblBibliotecario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblBibliotecario.TabIndex = 4;
             this.lblBibliotecario.Text = "Bibliotecários";
             // 
@@ -261,10 +264,10 @@
             // 
             // chkSemLimiteBibliotecario
             // 
-            this.chkSemLimiteBibliotecario.Location = new System.Drawing.Point(328, 149);
+            this.chkSemLimiteBibliotecario.Location = new System.Drawing.Point(328, 145);
             this.chkSemLimiteBibliotecario.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.chkSemLimiteBibliotecario.Name = "chkSemLimiteBibliotecario";
-            this.chkSemLimiteBibliotecario.Size = new System.Drawing.Size(132, 28);
+            this.chkSemLimiteBibliotecario.Size = new System.Drawing.Size(132, 35);
             this.chkSemLimiteBibliotecario.TabIndex = 5;
             this.chkSemLimiteBibliotecario.Text = "Sem limite";
             this.chkSemLimiteBibliotecario.CheckedChanged += new System.EventHandler(this.SemLimite_CheckedChanged);
@@ -274,13 +277,13 @@
             this.btnMaisAluno.AccessibleName = "Aumentar Aluno";
             this.btnMaisAluno.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaisAluno.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMaisAluno.Location = new System.Drawing.Point(280, 60);
+            this.btnMaisAluno.Location = new System.Drawing.Point(280, 61);
             this.btnMaisAluno.Margin = new System.Windows.Forms.Padding(0);
             this.btnMaisAluno.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMaisAluno.Tag = "PreservarCores";
             this.btnMaisAluno.Name = "btnMaisAluno";
             this.btnMaisAluno.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnMaisAluno.Size = new System.Drawing.Size(28, 18);
+            this.btnMaisAluno.Size = new System.Drawing.Size(28, 17);
             this.btnMaisAluno.TabIndex = 6;
             this.btnMaisAluno.TabStop = false;
             this.btnMaisAluno.Text = "▲";
@@ -293,12 +296,12 @@
             this.btnMenosAluno.AccessibleName = "Diminuir Aluno";
             this.btnMenosAluno.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMenosAluno.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenosAluno.Location = new System.Drawing.Point(280, 80);
+            this.btnMenosAluno.Location = new System.Drawing.Point(280, 79);
             this.btnMenosAluno.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenosAluno.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMenosAluno.Tag = "PreservarCores";
             this.btnMenosAluno.Name = "btnMenosAluno";
-            this.btnMenosAluno.Size = new System.Drawing.Size(28, 18);
+            this.btnMenosAluno.Size = new System.Drawing.Size(28, 17);
             this.btnMenosAluno.TabIndex = 7;
             this.btnMenosAluno.TabStop = false;
             this.btnMenosAluno.Text = "▼";
@@ -311,13 +314,13 @@
             this.btnMaisProfessor.AccessibleName = "Aumentar Professor";
             this.btnMaisProfessor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaisProfessor.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMaisProfessor.Location = new System.Drawing.Point(280, 102);
+            this.btnMaisProfessor.Location = new System.Drawing.Point(280, 103);
             this.btnMaisProfessor.Margin = new System.Windows.Forms.Padding(0);
             this.btnMaisProfessor.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMaisProfessor.Tag = "PreservarCores";
             this.btnMaisProfessor.Name = "btnMaisProfessor";
             this.btnMaisProfessor.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnMaisProfessor.Size = new System.Drawing.Size(28, 18);
+            this.btnMaisProfessor.Size = new System.Drawing.Size(28, 17);
             this.btnMaisProfessor.TabIndex = 8;
             this.btnMaisProfessor.TabStop = false;
             this.btnMaisProfessor.Text = "▲";
@@ -330,12 +333,12 @@
             this.btnMenosProfessor.AccessibleName = "Diminuir Professor";
             this.btnMenosProfessor.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMenosProfessor.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenosProfessor.Location = new System.Drawing.Point(280, 122);
+            this.btnMenosProfessor.Location = new System.Drawing.Point(280, 121);
             this.btnMenosProfessor.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenosProfessor.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMenosProfessor.Tag = "PreservarCores";
             this.btnMenosProfessor.Name = "btnMenosProfessor";
-            this.btnMenosProfessor.Size = new System.Drawing.Size(28, 18);
+            this.btnMenosProfessor.Size = new System.Drawing.Size(28, 17);
             this.btnMenosProfessor.TabIndex = 9;
             this.btnMenosProfessor.TabStop = false;
             this.btnMenosProfessor.Text = "▼";
@@ -348,13 +351,13 @@
             this.btnMaisBibliotecario.AccessibleName = "Aumentar Bibliotecario";
             this.btnMaisBibliotecario.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaisBibliotecario.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMaisBibliotecario.Location = new System.Drawing.Point(280, 144);
+            this.btnMaisBibliotecario.Location = new System.Drawing.Point(280, 145);
             this.btnMaisBibliotecario.Margin = new System.Windows.Forms.Padding(0);
             this.btnMaisBibliotecario.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMaisBibliotecario.Tag = "PreservarCores";
             this.btnMaisBibliotecario.Name = "btnMaisBibliotecario";
             this.btnMaisBibliotecario.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnMaisBibliotecario.Size = new System.Drawing.Size(28, 18);
+            this.btnMaisBibliotecario.Size = new System.Drawing.Size(28, 17);
             this.btnMaisBibliotecario.TabIndex = 10;
             this.btnMaisBibliotecario.TabStop = false;
             this.btnMaisBibliotecario.Text = "▲";
@@ -367,12 +370,12 @@
             this.btnMenosBibliotecario.AccessibleName = "Diminuir Bibliotecario";
             this.btnMenosBibliotecario.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMenosBibliotecario.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenosBibliotecario.Location = new System.Drawing.Point(280, 164);
+            this.btnMenosBibliotecario.Location = new System.Drawing.Point(280, 163);
             this.btnMenosBibliotecario.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenosBibliotecario.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMenosBibliotecario.Tag = "PreservarCores";
             this.btnMenosBibliotecario.Name = "btnMenosBibliotecario";
-            this.btnMenosBibliotecario.Size = new System.Drawing.Size(28, 18);
+            this.btnMenosBibliotecario.Size = new System.Drawing.Size(28, 17);
             this.btnMenosBibliotecario.TabIndex = 11;
             this.btnMenosBibliotecario.TabStop = false;
             this.btnMenosBibliotecario.Text = "▼";
@@ -402,10 +405,11 @@
             // lblPrazo
             // 
             this.lblPrazo.BackColor = System.Drawing.Color.Transparent;
-            this.lblPrazo.Location = new System.Drawing.Point(18, 49);
+            this.lblPrazo.Location = new System.Drawing.Point(18, 45);
             this.lblPrazo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblPrazo.Name = "lblPrazo";
-            this.lblPrazo.Size = new System.Drawing.Size(170, 28);
+            this.lblPrazo.Size = new System.Drawing.Size(170, 35);
+            this.lblPrazo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblPrazo.TabIndex = 1;
             this.lblPrazo.Text = "Prazo (dias)";
             // 
@@ -442,10 +446,11 @@
             // lblProrrogacoes
             // 
             this.lblProrrogacoes.BackColor = System.Drawing.Color.Transparent;
-            this.lblProrrogacoes.Location = new System.Drawing.Point(18, 93);
+            this.lblProrrogacoes.Location = new System.Drawing.Point(18, 89);
             this.lblProrrogacoes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.lblProrrogacoes.Name = "lblProrrogacoes";
-            this.lblProrrogacoes.Size = new System.Drawing.Size(170, 28);
+            this.lblProrrogacoes.Size = new System.Drawing.Size(170, 35);
+            this.lblProrrogacoes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblProrrogacoes.TabIndex = 2;
             this.lblProrrogacoes.Text = "Prorrogações permitidas";
             // 
@@ -481,10 +486,10 @@
             // 
             // chkSemLimiteProrrogacoes
             // 
-            this.chkSemLimiteProrrogacoes.Location = new System.Drawing.Point(328, 93);
+            this.chkSemLimiteProrrogacoes.Location = new System.Drawing.Point(328, 89);
             this.chkSemLimiteProrrogacoes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.chkSemLimiteProrrogacoes.Name = "chkSemLimiteProrrogacoes";
-            this.chkSemLimiteProrrogacoes.Size = new System.Drawing.Size(132, 28);
+            this.chkSemLimiteProrrogacoes.Size = new System.Drawing.Size(132, 35);
             this.chkSemLimiteProrrogacoes.TabIndex = 2;
             this.chkSemLimiteProrrogacoes.Text = "Sem limite";
             this.chkSemLimiteProrrogacoes.CheckedChanged += new System.EventHandler(this.SemLimite_CheckedChanged);
@@ -494,13 +499,13 @@
             this.btnMaisPrazo.AccessibleName = "Aumentar Prazo";
             this.btnMaisPrazo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaisPrazo.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMaisPrazo.Location = new System.Drawing.Point(280, 44);
+            this.btnMaisPrazo.Location = new System.Drawing.Point(280, 45);
             this.btnMaisPrazo.Margin = new System.Windows.Forms.Padding(0);
             this.btnMaisPrazo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMaisPrazo.Tag = "PreservarCores";
             this.btnMaisPrazo.Name = "btnMaisPrazo";
             this.btnMaisPrazo.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnMaisPrazo.Size = new System.Drawing.Size(28, 18);
+            this.btnMaisPrazo.Size = new System.Drawing.Size(28, 17);
             this.btnMaisPrazo.TabIndex = 3;
             this.btnMaisPrazo.TabStop = false;
             this.btnMaisPrazo.Text = "▲";
@@ -513,12 +518,12 @@
             this.btnMenosPrazo.AccessibleName = "Diminuir Prazo";
             this.btnMenosPrazo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMenosPrazo.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenosPrazo.Location = new System.Drawing.Point(280, 64);
+            this.btnMenosPrazo.Location = new System.Drawing.Point(280, 63);
             this.btnMenosPrazo.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenosPrazo.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMenosPrazo.Tag = "PreservarCores";
             this.btnMenosPrazo.Name = "btnMenosPrazo";
-            this.btnMenosPrazo.Size = new System.Drawing.Size(28, 18);
+            this.btnMenosPrazo.Size = new System.Drawing.Size(28, 17);
             this.btnMenosPrazo.TabIndex = 4;
             this.btnMenosPrazo.TabStop = false;
             this.btnMenosPrazo.Text = "▼";
@@ -531,13 +536,13 @@
             this.btnMaisProrrogacoes.AccessibleName = "Aumentar Prorrogacoes";
             this.btnMaisProrrogacoes.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMaisProrrogacoes.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMaisProrrogacoes.Location = new System.Drawing.Point(280, 88);
+            this.btnMaisProrrogacoes.Location = new System.Drawing.Point(280, 89);
             this.btnMaisProrrogacoes.Margin = new System.Windows.Forms.Padding(0);
             this.btnMaisProrrogacoes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMaisProrrogacoes.Tag = "PreservarCores";
             this.btnMaisProrrogacoes.Name = "btnMaisProrrogacoes";
             this.btnMaisProrrogacoes.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnMaisProrrogacoes.Size = new System.Drawing.Size(28, 18);
+            this.btnMaisProrrogacoes.Size = new System.Drawing.Size(28, 17);
             this.btnMaisProrrogacoes.TabIndex = 5;
             this.btnMaisProrrogacoes.TabStop = false;
             this.btnMaisProrrogacoes.Text = "▲";
@@ -550,12 +555,12 @@
             this.btnMenosProrrogacoes.AccessibleName = "Diminuir Prorrogacoes";
             this.btnMenosProrrogacoes.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMenosProrrogacoes.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
-            this.btnMenosProrrogacoes.Location = new System.Drawing.Point(280, 108);
+            this.btnMenosProrrogacoes.Location = new System.Drawing.Point(280, 107);
             this.btnMenosProrrogacoes.Margin = new System.Windows.Forms.Padding(0);
             this.btnMenosProrrogacoes.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
             this.btnMenosProrrogacoes.Tag = "PreservarCores";
             this.btnMenosProrrogacoes.Name = "btnMenosProrrogacoes";
-            this.btnMenosProrrogacoes.Size = new System.Drawing.Size(28, 18);
+            this.btnMenosProrrogacoes.Size = new System.Drawing.Size(28, 17);
             this.btnMenosProrrogacoes.TabIndex = 6;
             this.btnMenosProrrogacoes.TabStop = false;
             this.btnMenosProrrogacoes.Text = "▼";

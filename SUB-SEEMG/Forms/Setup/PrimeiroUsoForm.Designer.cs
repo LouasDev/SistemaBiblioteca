@@ -388,7 +388,7 @@ namespace SUB.Forms.Setup
             // linhaInstitucional
             // 
             this.linhaInstitucional.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.linhaInstitucional.Location = new System.Drawing.Point(54, 651);
+            this.linhaInstitucional.Location = new System.Drawing.Point(54, 660);
             this.linhaInstitucional.Name = "linhaInstitucional";
             this.linhaInstitucional.Size = new System.Drawing.Size(256, 1);
             this.linhaInstitucional.TabIndex = 16;
@@ -1270,12 +1270,12 @@ namespace SUB.Forms.Setup
             this.pnlEtapa4.Controls.Add(this.btnVoltarEtapa4);
             this.lblTituloEtapa4.Name = "lblTituloEtapa4";
             this.lblTituloEtapa4.Text = "Regras de empréstimo";
-            this.lblTituloEtapa4.Font = new System.Drawing.Font("Segoe UI Semibold", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTituloEtapa4.Font = new System.Drawing.Font("Segoe UI Semibold", 15F, System.Drawing.FontStyle.Bold);
             this.lblTituloEtapa4.Location = new System.Drawing.Point(0, 0);
-            this.lblTituloEtapa4.Size = new System.Drawing.Size(488, 40);
+            this.lblTituloEtapa4.Size = new System.Drawing.Size(485, 30);
             this.editorRegras.Name = "editorRegras";
-            this.editorRegras.Location = new System.Drawing.Point(3, 56);
-            this.editorRegras.Size = new System.Drawing.Size(485, 410);
+            this.editorRegras.Location = new System.Drawing.Point(0, 46);
+            this.editorRegras.Size = new System.Drawing.Size(491, 410);
             this.editorRegras.ExibirCartoes = false;
             this.editorRegras.TabIndex = 0;
             this.btnVoltarEtapa4.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
@@ -1284,7 +1284,7 @@ namespace SUB.Forms.Setup
             this.btnVoltarEtapa4.Text = "Voltar";
             this.btnVoltarEtapa4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnVoltarEtapa4.FlatAppearance.BorderSize = 0;
-            this.btnVoltarEtapa4.Location = new System.Drawing.Point(3, 480);
+            this.btnVoltarEtapa4.Location = new System.Drawing.Point(0, 480);
             this.btnVoltarEtapa4.Size = new System.Drawing.Size(92, 34);
             this.btnVoltarEtapa4.TabIndex = 1;
             this.btnVoltarEtapa4.Click += new System.EventHandler(this.btnVoltarEtapa4_Click);

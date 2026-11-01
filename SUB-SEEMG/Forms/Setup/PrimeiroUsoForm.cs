@@ -340,9 +340,15 @@ namespace SUB.Forms.Setup
         private void AtualizarIndicadorEtapa()
         {
             Color primaria = TemaSelecionado.PrimaryColor;
-            indicadorEtapa1.BackColor = primaria;
-            indicadorEtapa2.BackColor = _etapaAtual >= 2 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
-            indicadorEtapa3.BackColor = _etapaAtual >= 3 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
+            Color pendente = ThemeManager.Escuro ? Color.FromArgb(57, 65, 79) : Color.FromArgb(222, 227, 234);
+            Color atual = ThemeManager.Escuro ? ThemeManager.Lighten(primaria, 0.45f) : primaria;
+            Color concluida = ThemeManager.Escuro ? primaria : ThemeManager.Lighten(primaria, 0.35f);
+            Panel[] indicadores = { indicadorEtapa1, indicadorEtapa2, indicadorEtapa3, indicadorEtapa4 };
+            for (int i = 0; i < indicadores.Length; i++)
+            {
+                indicadores[i].BackColor = i + 1 == _etapaAtual ? atual : i + 1 < _etapaAtual ? concluida : pendente;
+                indicadores[i].Invalidate();
+            }
             bool primeiraEtapa = _etapaAtual == 1;
             bool segundaEtapa = _etapaAtual == 2;
             bool terceiraEtapa = _etapaAtual == 3;
@@ -358,7 +364,6 @@ namespace SUB.Forms.Setup
             linhaRoteiro.BackColor = ThemeManager.Lighten(primaria, 0.42f);
             linhaRoteiro2.BackColor = ThemeManager.Lighten(primaria, 0.42f);
             linhaRoteiro3.BackColor = ThemeManager.Lighten(primaria, 0.42f);
-            indicadorEtapa4.BackColor = _etapaAtual >= 4 ? primaria : (ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(222, 227, 234));
             lblPasso4Numero.BackColor = _etapaAtual == 4 ? Color.White : ThemeManager.Lighten(primaria, 0.34f);
             lblPasso4Numero.ForeColor = _etapaAtual == 4 ? primaria : Color.White;
             lblPasso4Texto.Font = new Font("Segoe UI", 10F, _etapaAtual == 4 ? FontStyle.Bold : FontStyle.Regular);

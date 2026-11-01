@@ -90,6 +90,7 @@ namespace SUB.Utils
                 throw new ArgumentNullException(nameof(configuracao));
             if (string.IsNullOrWhiteSpace(configuracao.Nome))
                 throw new ArgumentException("O nome da instituição é obrigatório.", nameof(configuracao));
+            configuracao.RegrasEmprestimo?.Validar();
             AppPaths.EnsureFolders();
             configuracao.AtualizadaEm = DateTime.Now;
             if (configuracao.ConfiguradaEm == default(DateTime))

@@ -352,6 +352,12 @@ namespace SUB.Forms.Usuario
                 return;
             }
 
+            if (Sessao.UsuarioId == _usuarioSelecionado.Id)
+            {
+                MessageBox.Show("Não é possível excluir ou desativar o usuário conectado.", "Operação não permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // Pedir a senha duas vezes usando o PasswordForm personalizado
             string senha1 = ObterSenha("Confirmação de Senha", "Digite sua senha:");
             if (string.IsNullOrEmpty(senha1))
@@ -380,62 +386,26 @@ namespace SUB.Forms.Usuario
                 return;
             }
 
+            if (MessageBox.Show("Excluir este cadastro? Se houver histórico, ele será apenas desativado para preservar os registros. Empréstimos pendentes bloqueiam a operação.",
+                "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
             try
             {
+                ResultadoExclusaoCadastro resultado;
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    // Verificar se o usuário tem empréstimos
-                    string sqlVerificar = @"
-    SELECT COUNT(*) FROM Emprestimo WHERE Alocador = @id AND Status <> 'Devolvido'";
-                    int emprestimosAtivos = 0;
-                    using (var cmdVerificar = new SqlCeCommand(sqlVerificar, conexao))
-                    {
-                        cmdVerificar.Parameters.AddWithValue("@id", _usuarioSelecionado.Id);
-                        using (var reader = cmdVerificar.ExecuteReader())
-                        {
-                            if (reader.Read())
-                                emprestimosAtivos = reader.GetInt32(0);
-                        }
-                    }
-
-                    // Se houver empréstimos , mostrar aviso mais severo
-                    if (emprestimosAtivos > 0)
-                    {
-                        var resultado = MessageBox.Show($"⚠️ ATENÇÃO: Este usuário possui registros ativos no sistema:\n\n" + $"- {emprestimosAtivos} empréstimo(s) ativo(s)\n" + $"A exclusão removerá TODOS os dados do usuário, mantendo somente os registros do sistema.\n\n" + $"Tem CERTEZA ABSOLUTA que deseja excluir este usuário?", "ALERTA - Exclusão com Registros Ativos", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
-                        if (resultado != DialogResult.Yes)
-                        {
-                            MessageBox.Show("Exclusão cancelada.");
-                            return;
-                        }
-
-                        // Aviso final para confirmação extrema
-                        var confirmacaoFinal = MessageBox.Show("🚨 EXCLUSÃO IRREVERSÍVEL 🚨\n\n" + "Você está prestes a excluir um usuário com registros ativos.\n\n" + "Esta ação NÃO PODE SER DESFEITA!\n\n" + "Confirmar exclusão definitiva?", "CONFIRMAÇÃO FINAL", MessageBoxButtons.YesNo, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2);
-                        if (confirmacaoFinal != DialogResult.Yes)
-                        {
-                            MessageBox.Show("Exclusão cancelada.");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        // Confirmação normal para usuários sem registros ativos
-                        var confirm = MessageBox.Show("Tem certeza que deseja excluir este usuário?\n\n" + "Todos os dados do usuário serão removidos, mantendo apenas os registros do sistema.", "Confirmação de Exclusão", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                        if (confirm != DialogResult.Yes)
-                            return;
-                    }
-
-                    // Agora excluir o usuário
-                    string sql = "DELETE FROM Usuarios WHERE Id = @id";
-                    using (var cmd = new SqlCeCommand(sql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@id", _usuarioSelecionado.Id);
-                        cmd.ExecuteNonQuery();
-                    }
+                    resultado = ExclusaoCadastroService.ExcluirUsuario(conexao, _usuarioSelecionado.Id);
                 }
-
-                MessageBox.Show("Usuário excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(resultado == ResultadoExclusaoCadastro.Desativado
+                    ? "Usuário desativado. O cadastro foi preservado porque possui histórico."
+                    : "Usuário excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UsuarioAtualizado?.Invoke(this, EventArgs.Empty);
                 LimparCampos();
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Operação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

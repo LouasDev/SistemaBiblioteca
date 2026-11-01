@@ -263,29 +263,25 @@ namespace SUB
                 return;
             }
 
-            if (MessageBox.Show("Tem certeza que deseja excluir este livro?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (MessageBox.Show("Excluir este livro? Se houver histórico, ele será apenas desativado para preservar os registros. Empréstimos pendentes bloqueiam a operação.", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
                 return;
             try
             {
                 using (var conn = Conexao.ObterConexao())
                 {
                     conn.Open();
-                    using (var cmd = new SqlCeCommand("DELETE FROM Livros WHERE Id=@id", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", livroId);
-                        if (cmd.ExecuteNonQuery() > 0)
-                        {
-                            MessageBox.Show("Livro excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            LivroAtualizado?.Invoke(this, EventArgs.Empty);
-                            EventosGlobais.OnLivroCadastradoOuAlterado();
-                            this.Close();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Nenhum livro foi excluído.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
-                    }
+                    var resultado = ExclusaoCadastroService.ExcluirLivro(conn, livroId);
+                    MessageBox.Show(resultado == ResultadoExclusaoCadastro.Desativado
+                        ? "Livro desativado. O cadastro foi preservado porque possui histórico."
+                        : "Livro excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LivroAtualizado?.Invoke(this, EventArgs.Empty);
+                    EventosGlobais.OnLivroCadastradoOuAlterado();
+                    this.Close();
                 }
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(ex.Message, "Operação não realizada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             catch (Exception ex)
             {

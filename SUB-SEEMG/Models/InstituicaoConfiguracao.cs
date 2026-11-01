@@ -13,6 +13,7 @@ namespace SUB.Models
 
     public class InstituicaoConfiguracao
     {
+        public PoliticaEmprestimos RegrasEmprestimo { get; set; }
         public string Nome { get; set; }
         public string CorPrimaria { get; set; }
         public bool TemaEscuro { get; set; }

@@ -38,6 +38,7 @@
             this.c = new RoundedTextBox();
             this.lblNome = new System.Windows.Forms.Label();
             this.lblCor = new System.Windows.Forms.Label();
+            this.pnlCorPreview = new System.Windows.Forms.Panel();
             this.lblAparencia = new System.Windows.Forms.Label();
             this.cbAparencia = new RoundedComboBox();
             this.grpAtualizacao = new System.Windows.Forms.GroupBox();
@@ -57,10 +58,10 @@
             this.pnlLinhaCabecalho = new System.Windows.Forms.Panel();
             this.lblSubtitulo = new System.Windows.Forms.Label();
             this.Titulo = new System.Windows.Forms.Label();
-            this.pnlCorPreview = new System.Windows.Forms.Panel();
             this.grpInstituicao.SuspendLayout();
             this.grpAtualizacao.SuspendLayout();
             this.grpManutencao.SuspendLayout();
+            this.btnRegrasEmprestimo = new CustomButton();
             this.SuspendLayout();
             // 
             // grpInstituicao
@@ -155,6 +156,13 @@
             this.lblCor.Size = new System.Drawing.Size(101, 20);
             this.lblCor.TabIndex = 1;
             this.lblCor.Text = "Cor principal:";
+            // 
+            // pnlCorPreview
+            // 
+            this.pnlCorPreview.Location = new System.Drawing.Point(1159, 41);
+            this.pnlCorPreview.Name = "pnlCorPreview";
+            this.pnlCorPreview.Size = new System.Drawing.Size(60, 60);
+            this.pnlCorPreview.TabIndex = 2;
             // 
             // lblAparencia
             // 
@@ -408,24 +416,36 @@
             this.btnReverTutorial.Text = "Rever tutorial";
             this.btnReverTutorial.UseVisualStyleBackColor = false;
             this.btnReverTutorial.Click += new System.EventHandler(this.btnReverTutorial_Click);
-            //
+            // 
             // linkSuporteConfig
-            //
+            // 
             this.linkSuporteConfig.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(54)))), ((int)(((byte)(96)))));
             this.linkSuporteConfig.AutoSize = true;
             this.linkSuporteConfig.Cursor = System.Windows.Forms.Cursors.Hand;
             this.linkSuporteConfig.Font = new System.Drawing.Font("Segoe UI Semibold", 9.5F, System.Drawing.FontStyle.Bold);
             this.linkSuporteConfig.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkSuporteConfig.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
-            this.linkSuporteConfig.Location = new System.Drawing.Point(1024, 35);
+            this.linkSuporteConfig.Location = new System.Drawing.Point(1003, 35);
             this.linkSuporteConfig.Name = "linkSuporteConfig";
-            this.linkSuporteConfig.Size = new System.Drawing.Size(200, 17);
-            this.linkSuporteConfig.TabIndex = 2;
+            this.linkSuporteConfig.Size = new System.Drawing.Size(221, 17);
+            this.linkSuporteConfig.TabIndex = 3;
             this.linkSuporteConfig.TabStop = true;
             this.linkSuporteConfig.Text = "Suporte: subgvsuporte@gmail.com";
             this.linkSuporteConfig.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(72)))), ((int)(((byte)(126)))));
             this.linkSuporteConfig.Click += new System.EventHandler(this.linkSuporteConfig_Click);
             // 
+            this.btnRegrasEmprestimo.Name = "btnRegrasEmprestimo";
+            this.btnRegrasEmprestimo.BorderRadius = 10;
+            this.btnRegrasEmprestimo.BaseColor = System.Drawing.Color.FromArgb(31, 72, 126);
+            this.btnRegrasEmprestimo.ForeColor = System.Drawing.Color.White;
+            this.btnRegrasEmprestimo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRegrasEmprestimo.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.btnRegrasEmprestimo.Text = "Regras de empréstimo";
+            this.btnRegrasEmprestimo.Location = new System.Drawing.Point(370, 26);
+            this.btnRegrasEmprestimo.Size = new System.Drawing.Size(190, 34);
+            this.btnRegrasEmprestimo.TabIndex = 2;
+            this.btnRegrasEmprestimo.Click += new System.EventHandler(this.btnRegrasEmprestimo_Click);
+            this.grpManutencao.Controls.Add(this.btnRegrasEmprestimo);
             // grpManutencao
             // 
             this.grpManutencao.Controls.Add(this.btnReverTutorial);
@@ -469,13 +489,6 @@
             this.Titulo.TabIndex = 0;
             this.Titulo.Text = "Configurações da instituição";
             // 
-            // pnlCorPreview
-            // 
-            this.pnlCorPreview.Location = new System.Drawing.Point(1159, 41);
-            this.pnlCorPreview.Name = "pnlCorPreview";
-            this.pnlCorPreview.Size = new System.Drawing.Size(60, 60);
-            this.pnlCorPreview.TabIndex = 2;
-            // 
             // ConfiguracaoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -503,6 +516,7 @@
             this.grpAtualizacao.ResumeLayout(false);
             this.grpAtualizacao.PerformLayout();
             this.grpManutencao.ResumeLayout(false);
+            this.grpManutencao.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -534,5 +548,6 @@
         private System.Windows.Forms.ProgressBar pbVerificando;
         private System.Windows.Forms.ProgressBar pbDownload;
         private System.Windows.Forms.Panel pnlCorPreview;
+        private CustomButton btnRegrasEmprestimo;
     }
 }

@@ -64,7 +64,7 @@ namespace SUB.Forms.Livros
         private void EmprestimoForm_Load(object sender, EventArgs e)
         {
             dtpDataEmprestimo.Value = DateTime.Today;
-            dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
+            dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
             this.KeyPreview = true;
             this.KeyDown += Form_KeyDown;
             // Limite de caracteres para o código de barras (RoundedTextBox não tem MaxLength)
@@ -181,7 +181,7 @@ namespace SUB.Forms.Livros
                 using (var conexao = Conexao.ObterConexao())
                 {
                     conexao.Open();
-                    CirculacaoService.EmprestarNormal(conexao, usuario.Id, livro.Id, responsavel.Id, dtpDataDevolucao.Value, DateTime.Now, dtpDataEmprestimo.Value);
+                    CirculacaoService.EmprestarNormal(conexao, usuario.Id, livro.Id, responsavel.Id, dtpDataDevolucao.Value, DateTime.Now, dtpDataEmprestimo.Value, PoliticaEmprestimos.Carregar());
                 }
             }
             catch (InvalidOperationException ex)
@@ -319,19 +319,10 @@ namespace SUB.Forms.Livros
             var usuario = _cacheUsuarios[index];
             txtNomeUsuario.Text = usuario.Nome;
             lstSugestoesUsuario.Visible = false;
-            if (RegrasCirculacao.ProfessorTemPrazoPersonalizado(usuario.TipoUsuario))
-            {
-                chkDevolucaoPersonalizada.Checked = true;
-                chkDevolucaoPersonalizada.Enabled = false;
-                dtpDataDevolucao.Enabled = true;
-            }
-            else
-            {
-                chkDevolucaoPersonalizada.Checked = false;
-                chkDevolucaoPersonalizada.Enabled = true;
-                dtpDataDevolucao.Enabled = false;
-                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today); // 7 dias por padrão
-            }
+            chkDevolucaoPersonalizada.Checked = false;
+            chkDevolucaoPersonalizada.Enabled = true;
+            dtpDataDevolucao.Enabled = false;
+            dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
         }
 
         private void txtNomeUsuario_Leave(object sender, EventArgs e)
@@ -759,7 +750,7 @@ namespace SUB.Forms.Livros
         {
             dtpDataDevolucao.Enabled = chkDevolucaoPersonalizada.Checked;
             if (!chkDevolucaoPersonalizada.Checked)
-                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
+                dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
         }
 
         public void LimparCampos()
@@ -768,7 +759,7 @@ namespace SUB.Forms.Livros
             txtLivro.Text = "";
             txtBarcode.Text = "";
             cbBibliotecaria.Text = "";
-            dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(DateTime.Today);
+            dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
             chkDevolucaoPersonalizada.Checked = false;
         }
 
@@ -834,9 +825,9 @@ namespace SUB.Forms.Livros
 #endregion
         private bool ValidarDatas()
         {
-            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value) || dtpDataDevolucao.Value.Date > PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value))
             {
-                MessageBox.Show(RegrasCirculacao.ErroPrazo, "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("A devolução deve ficar entre a data do empréstimo e o prazo máximo de " + PoliticaEmprestimos.Carregar().PrazoDias + " dias.", "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpDataDevolucao.Focus();
                 return false;
             }
@@ -846,19 +837,19 @@ namespace SUB.Forms.Livros
 
         private void dtpDataDevolucao_ValueChanged(object sender, EventArgs e)
         {
-            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value) || dtpDataDevolucao.Value.Date > PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value))
             {
-                MessageBox.Show(RegrasCirculacao.ErroPrazo, "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(dtpDataEmprestimo.Value);
+                MessageBox.Show("A devolução deve ficar entre a data do empréstimo e o prazo máximo de " + PoliticaEmprestimos.Carregar().PrazoDias + " dias.", "Data Inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
             }
         }
 
         private void dtpDataEmprestimo_ValueChanged(object sender, EventArgs e)
         {
-            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value))
+            if (!RegrasCirculacao.PrazoValido(dtpDataEmprestimo.Value, dtpDataDevolucao.Value) || dtpDataDevolucao.Value.Date > PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value))
             {
                 // Ajusta automaticamente a data de devolução
-                dtpDataDevolucao.Value = RegrasCirculacao.PrazoPadrao(dtpDataEmprestimo.Value);
+                dtpDataDevolucao.Value = PoliticaEmprestimos.Carregar().CalcularPrazo(dtpDataEmprestimo.Value);
             }
         }
 

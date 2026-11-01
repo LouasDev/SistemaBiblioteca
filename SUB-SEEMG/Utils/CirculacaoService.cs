@@ -1,5 +1,7 @@
 using System;
+using System.Data;
 using System.Data.SqlServerCe;
+using SUB.Models;
 
 namespace SUB.Utils
 {
@@ -26,17 +28,23 @@ namespace SUB.Utils
             return cmd;
         }
 
-        internal static void EmprestarNormal(SqlCeConnection c, int usuarioId, int livroId, int responsavelId, DateTime prazo, DateTime agora, DateTime? dataEmprestimoInformada = null)
+        internal static void EmprestarNormal(SqlCeConnection c, int usuarioId, int livroId, int responsavelId, DateTime prazo, DateTime agora, DateTime? dataEmprestimoInformada = null, PoliticaEmprestimos regras = null)
         {
+            regras = (regras ?? new PoliticaEmprestimos()).Copiar();
+            regras.Validar();
+            if (prazo.Date > regras.CalcularPrazo(dataEmprestimoInformada ?? agora))
+                throw new InvalidOperationException("O prazo máximo do empréstimo é de " + regras.PrazoDias + " dias.");
             if (!RegrasCirculacao.PrazoValido(dataEmprestimoInformada ?? agora, prazo))
                 throw new InvalidOperationException(RegrasCirculacao.ErroPrazo);
-            using (var tx = c.BeginTransaction())
+            using (var tx = c.BeginTransaction(IsolationLevel.Serializable))
             {
                 string perfil = PerfilAtivo(c, tx, usuarioId);
                 if (PerfilAtivo(c, tx, responsavelId) != RegrasCirculacao.PerfilBibliotecario)
                     throw new InvalidOperationException("Selecione uma bibliotecária responsável válida.");
-                if (perfil == RegrasCirculacao.PerfilAluno && RegrasCirculacao.AlunoAtingiuLimite(perfil, Contar(c, tx, "SELECT COUNT(*) FROM Emprestimo WHERE Alocador = @Id AND Status = 'Ativo'", usuarioId)))
-                    throw new InvalidOperationException("Este aluno já possui um empréstimo ativo.");
+                int limite = regras.LimitePara(perfil);
+                int abertos = Contar(c, tx, "SELECT COUNT(*) FROM Emprestimo WHERE (Alocador = @Id OR UsuarioId = @Id) AND Status IN ('Ativo', 'Atrasado')", usuarioId);
+                if (limite >= 0 && abertos >= limite)
+                    throw new InvalidOperationException("O limite para este tipo de pessoa é de " + limite + " livro(s) simultâneos, incluindo atrasados.");
                 RetirarEstoque(c, tx, livroId, 1);
                 using (var cmd = new SqlCeCommand(@"INSERT INTO Emprestimo
                     (UsuarioId, LivroId, Alocador, Responsavel, DataEmprestimo, DataDevolucao, Status)

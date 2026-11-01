@@ -177,6 +177,7 @@
             this.pnlCodigoRecuperacao.SuspendLayout();
             this.pnlEtapa3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.btnFechar)).BeginInit();
+            this.btnRegrasEmprestimo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // pnlInstitucional
@@ -505,6 +506,13 @@
             this.lblErroGeral.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lblErroGeral.Visible = false;
             // 
+            this.btnRegrasEmprestimo.Name = "btnRegrasEmprestimo";
+            this.btnRegrasEmprestimo.Text = "Regras de empréstimo";
+            this.btnRegrasEmprestimo.Location = new System.Drawing.Point(3, 370);
+            this.btnRegrasEmprestimo.Size = new System.Drawing.Size(190, 34);
+            this.btnRegrasEmprestimo.TabIndex = 8;
+            this.btnRegrasEmprestimo.Click += new System.EventHandler(this.btnRegrasEmprestimo_Click);
+            this.pnlEtapa1.Controls.Add(this.btnRegrasEmprestimo);
             // pnlEtapa1
             // 
             this.pnlEtapa1.Controls.Add(this.lblTituloEtapa1);
@@ -1288,5 +1296,6 @@
         private System.Windows.Forms.Panel linhaRoteiro2;
         private System.Windows.Forms.Panel indicadorEtapa3;
         private System.Windows.Forms.PictureBox btnFechar;
+        private System.Windows.Forms.Button btnRegrasEmprestimo;
     }
 }

@@ -17,6 +17,14 @@ namespace SUB.Forms.Setup
     [System.ComponentModel.DesignerCategory("Form")]
     public partial class PrimeiroUsoForm : Form
     {
+        private PoliticaEmprestimos regrasEmprestimo = new PoliticaEmprestimos();
+        private void btnRegrasEmprestimo_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SUB.Forms.Configuracoes.PoliticaEmprestimosForm(regrasEmprestimo, TemaSelecionado.PrimaryColor))
+                if (dialog.ShowDialog(this) == DialogResult.OK)
+                    regrasEmprestimo = dialog.Regras;
+        }
+
         private readonly string _codigoMestreGerado = GerarCodigoMestre();
         private readonly Color _corErro = Color.FromArgb(184, 50, 50);
         private readonly Color _corSucesso = Color.FromArgb(31, 122, 73);
@@ -739,6 +747,7 @@ VALUES
 
                 InstituicaoConfiguracaoStore.Salvar(new InstituicaoConfiguracao
                 {
+                    RegrasEmprestimo = regrasEmprestimo.Copiar(),
                     Nome = _nomeInstituicao.Text.Trim(),
                     CorPrimaria = ColorTranslator.ToHtml(tema.PrimaryColor),
                     Aparencia = (ModoAparencia)_aparencia.SelectedIndex,

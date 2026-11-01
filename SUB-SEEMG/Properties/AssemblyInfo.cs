@@ -19,3 +19,5 @@ using System.Runtime.InteropServices;
 // Sem prefixos, sufixos ou quarto componente.
 [assembly: AssemblyInformationalVersion("1.0.1")]
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SUB.Tests")]
+

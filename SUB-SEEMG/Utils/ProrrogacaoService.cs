@@ -1,13 +1,16 @@
 using System;
 using System.Data.SqlServerCe;
+using SUB.Models;
 
 namespace SUB.Utils
 {
     internal static class ProrrogacaoService
     {
         // A conexão é fornecida pelo chamador; os testes usam somente bancos fictícios.
-        internal static void Prorrogar(SqlCeConnection conexao, int emprestimoId, int dias, DateTime prazoConfirmado, string bibliotecaria, DateTime agora)
+        internal static void Prorrogar(SqlCeConnection conexao, int emprestimoId, int dias, DateTime prazoConfirmado, string bibliotecaria, DateTime agora, PoliticaEmprestimos regras = null)
         {
+            regras = (regras ?? new PoliticaEmprestimos()).Copiar();
+            regras.Validar();
             RegrasCirculacao.CalcularProrrogacao(prazoConfirmado, dias);
             if (string.IsNullOrWhiteSpace(bibliotecaria) || bibliotecaria.Length > 200)
                 throw new InvalidOperationException("Não foi possível identificar a bibliotecária. Entre novamente no sistema.");
@@ -34,6 +37,13 @@ namespace SUB.Utils
                     }
                 }
 
+                using (var contar = new SqlCeCommand("SELECT COUNT(*) FROM LogProrrogacoes WHERE EmprestimoId = @Id", conexao, transacao))
+                {
+                    contar.Parameters.AddWithValue("@Id", emprestimoId);
+                    int realizadas = Convert.ToInt32(contar.ExecuteScalar());
+                    if (regras.MaximoProrrogacoes >= 0 && realizadas >= regras.MaximoProrrogacoes)
+                        throw new InvalidOperationException("O máximo de prorrogações deste empréstimo foi atingido (" + regras.MaximoProrrogacoes + ").");
+                }
                 if (prazoAtual != prazoConfirmado)
                     throw new InvalidOperationException("O prazo foi alterado após a consulta. Atualize a lista e confira a nova data antes de prorrogar.");
                 DateTime novoPrazo = RegrasCirculacao.CalcularProrrogacao(prazoAtual, dias);

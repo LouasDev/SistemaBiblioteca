@@ -12,6 +12,27 @@ namespace SUB.Forms.Configuracoes
 {
     public partial class ConfiguracaoForm : Form
     {
+        private readonly Dictionary<Control, string> textosDesigner = new Dictionary<Control, string>();
+        private PoliticaEmprestimos regrasPendentes;
+        private bool regrasAlteradas;
+        private void btnRegrasEmprestimo_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var regrasSalvas = PoliticaEmprestimos.Carregar();
+                using (var dialog = new PoliticaEmprestimosForm(regrasPendentes ?? regrasSalvas, corSelecionada))
+                {
+                    if (dialog.ShowDialog(this) != DialogResult.OK) return;
+                    regrasPendentes = dialog.Regras;
+                    regrasAlteradas = regrasPendentes.LimiteAluno != regrasSalvas.LimiteAluno ||
+                        regrasPendentes.LimiteProfessor != regrasSalvas.LimiteProfessor || regrasPendentes.LimiteBibliotecario != regrasSalvas.LimiteBibliotecario ||
+                        regrasPendentes.PrazoDias != regrasSalvas.PrazoDias || regrasPendentes.MaximoProrrogacoes != regrasSalvas.MaximoProrrogacoes;
+                    AtualizarEstadoSalvar();
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message, "Regras de empréstimo", MessageBoxButtons.OK, MessageBoxIcon.Warning); }
+        }
+
         private const int TamanhoMaximoNome = 150;
         private Color corSelecionada = ThemeManager.DefaultColor;
         private string corOriginalHtml;
@@ -25,6 +46,7 @@ namespace SUB.Forms.Configuracoes
             foreach (Control controle in container.Controls)
             {
                 _designerBounds[controle] = controle.Bounds;
+                textosDesigner[controle] = controle.Text;
                 CapturarLayoutDesigner(controle);
             }
         }
@@ -186,7 +208,7 @@ namespace SUB.Forms.Configuracoes
             bool corAlterada = corSelecionada.ToArgb() != ObterCorTemaSalva().ToArgb();
             bool aparenciaAlterada = cbAparencia.SelectedIndex != (int)aparenciaOriginal;
 
-            return nomeAlterado || corAlterada || aparenciaAlterada;
+            return nomeAlterado || corAlterada || aparenciaAlterada || regrasAlteradas;
         }
 
         private void AtualizarEstadoSalvar()
@@ -311,6 +333,7 @@ namespace SUB.Forms.Configuracoes
                 configuracao = new InstituicaoConfiguracao();
             // Carregar devolve o objeto completo (inclui CodigoMestreHash/Salt);
             // alteramos somente os campos editáveis.
+            if (regrasAlteradas) configuracao.RegrasEmprestimo = regrasPendentes.Copiar();
             configuracao.Nome = nome;
             configuracao.CorPrimaria = corHtml;
             configuracao.Aparencia = (ModoAparencia)cbAparencia.SelectedIndex;
@@ -409,6 +432,31 @@ namespace SUB.Forms.Configuracoes
                 }
 
                 grpManutencao.SetBounds(manut.Left, topoManutencao, larguraManutencao, manut.Height);
+                if (larguraManutencao < 600)
+                {
+                    int itemWidth = Math.Max(60, (larguraManutencao - 60) / 4);
+                    btnApagarDados.Text = "Resetar";
+                    btnReverTutorial.Text = "Tutorial";
+                    btnRegrasEmprestimo.Text = "Regras";
+                    btnApagarDados.SetBounds(12, 26, itemWidth, 34);
+                    btnReverTutorial.SetBounds(24 + itemWidth, 26, itemWidth, 34);
+                    btnRegrasEmprestimo.SetBounds(36 + itemWidth * 2, 26, itemWidth, 34);
+                    linkSuporteConfig.AutoSize = false;
+                    linkSuporteConfig.Text = "Suporte";
+                    linkSuporteConfig.SetBounds(48 + itemWidth * 3, 30, itemWidth, 30);
+                }
+                else
+                {
+                    btnApagarDados.Text = textosDesigner[btnApagarDados];
+                    btnReverTutorial.Text = textosDesigner[btnReverTutorial];
+                    btnRegrasEmprestimo.Text = textosDesigner[btnRegrasEmprestimo];
+                    btnApagarDados.Bounds = _designerBounds[btnApagarDados];
+                    btnReverTutorial.Bounds = _designerBounds[btnReverTutorial];
+                    btnRegrasEmprestimo.Bounds = _designerBounds[btnRegrasEmprestimo];
+                    linkSuporteConfig.Text = textosDesigner[linkSuporteConfig];
+                    linkSuporteConfig.AutoSize = true;
+                    linkSuporteConfig.Bounds = _designerBounds[linkSuporteConfig];
+                }
             }
             finally
             {

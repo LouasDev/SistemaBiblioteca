@@ -298,7 +298,7 @@ namespace SUB.Forms.Livros
                     using (SqlCeConnection conexao = Conexao.ObterConexao())
                     {
                         conexao.Open();
-                        ProrrogacaoService.Prorrogar(conexao, idEmprestimo, dias, dataDevolucaoAtual, Sessao.NomeBibliotecariaLogada, DateTime.Now);
+                        ProrrogacaoService.Prorrogar(conexao, idEmprestimo, dias, dataDevolucaoAtual, Sessao.NomeBibliotecariaLogada, DateTime.Now, PoliticaEmprestimos.Carregar());
                     }
                 }
                 catch (InvalidOperationException ex)

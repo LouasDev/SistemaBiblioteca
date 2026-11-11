@@ -104,8 +104,8 @@ Alunos responsáveis pelo sistema original e pela construção do SUB, conforme 
 
 | Integrante | Contribuições registradas |
 | --- | --- |
-| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e reservas. |
-| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções, cadastro de livros e regras de negócio. |
+| [Renato Monteiro](https://github.com/renato0x) | Desenvolvimento front-end e back-end, com atuação nas telas de cadastro de usuários, empréstimos e cadastro de livros. |
+| [Luis Gustavo](https://github.com/LouasDev) | Desenvolvimento front-end e back-end, incluindo login, devoluções e regras de negócio. |
 | [Ithalo Pimentel](https://github.com/Ithaloluzdepanela) | Gestão do projeto e documentação, incluindo a organização inicial do repositório e a documentação de uso, instalação e regras de negócio. |
 
 <p align="center">

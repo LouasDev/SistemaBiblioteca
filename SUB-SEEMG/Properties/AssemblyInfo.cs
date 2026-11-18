@@ -14,10 +14,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0")]
 
 // Versões públicas e de distribuição seguem sempre MAJOR.MINOR.PATCH.
-[assembly: AssemblyFileVersion("1.0.1")]
+[assembly: AssemblyFileVersion("1.0.0")]
 
 // Sem prefixos, sufixos ou quarto componente.
-[assembly: AssemblyInformationalVersion("1.0.1")]
+[assembly: AssemblyInformationalVersion("1.0.0")]
 
 [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SUB.Tests")]
 

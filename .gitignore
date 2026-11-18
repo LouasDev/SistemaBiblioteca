@@ -4,6 +4,11 @@
 **/obj/
 __pycache__/
 
+# Artefatos temporarios, configuracao local do Codex e criticas arquivadas.
+/.artifacts/
+/.codex/
+/critique-runs/
+
 # Pacotes, dados ficticios e auxiliares temporarios de validacao.
 /artifacts/
 /.qa-*/

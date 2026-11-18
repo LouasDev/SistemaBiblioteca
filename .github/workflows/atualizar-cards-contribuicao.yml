@@ -1,10 +1,6 @@
 name: Atualizar cards de contribuição
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - assets/contribuicoes/**
   workflow_dispatch:
 
 permissions:

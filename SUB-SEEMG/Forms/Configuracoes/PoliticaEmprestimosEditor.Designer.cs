@@ -89,9 +89,9 @@
             this.lblDica.Name = "lblDica";
             this.lblDica.Size = new System.Drawing.Size(444, 54);
             this.lblDica.TabIndex = 2;
-            this.lblDica.Text = "Use zero para impedir novos empréstimos ou prorrogações. Empréstimos rápidos segu" +
-    "em regras separadas. Os prazos já registrados são preservados; cada prorrogação " +
-    "permite até 14 dias.";
+            this.lblDica.Text = "Limites de 1 a 100 livros e prazos de 1 a 365 dias. Para impedir prorrogações, " +
+    "use zero. Empréstimos rápidos seguem regras separadas. Os prazos já registrados são " +
+    "preservados; cada prorrogação permite até 14 dias.";
             // 
             // pnlFiltrosLimites
             // 

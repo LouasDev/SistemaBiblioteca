@@ -59,9 +59,9 @@ namespace SUB.Forms.Inicio
             this.btnEmprestimoRap = new System.Windows.Forms.Button();
             this.btnLivro = new System.Windows.Forms.Button();
             this.btnEmprestimo = new System.Windows.Forms.Button();
+            this.btnConfiguracao = new System.Windows.Forms.Button();
             this.livroTransition = new System.Windows.Forms.Timer(this.components);
             this.userTransition = new System.Windows.Forms.Timer(this.components);
-            this.btnConfiguracao = new System.Windows.Forms.Button();
             this.panelControl.SuspendLayout();
             this.ControlPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picExit)).BeginInit();
@@ -75,9 +75,9 @@ namespace SUB.Forms.Inicio
             ((System.ComponentModel.ISupportInitialize)(this.picLogoMenu)).BeginInit();
             this.livroContainer.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // panelControl
-            // 
+            //
             this.panelControl.AllowDrop = true;
             this.panelControl.BackColor = System.Drawing.Color.Transparent;
             this.panelControl.Controls.Add(this.ControlPanel);
@@ -88,9 +88,11 @@ namespace SUB.Forms.Inicio
             this.panelControl.Size = new System.Drawing.Size(1176, 30);
             this.panelControl.TabIndex = 1;
             this.panelControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelControl_MouseDown);
-            // 
+            this.panelControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelControl_MouseMove);
+            this.panelControl.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panelControl_MouseUp);
+            //
             // ControlPanel
-            // 
+            //
             this.ControlPanel.BackColor = System.Drawing.Color.Transparent;
             this.ControlPanel.Controls.Add(this.picExit);
             this.ControlPanel.Controls.Add(this.picMax);
@@ -559,16 +561,6 @@ namespace SUB.Forms.Inicio
             this.btnEmprestimo.UseVisualStyleBackColor = false;
             this.btnEmprestimo.Click += new System.EventHandler(this.btnEmprestimo_Click);
             // 
-            // livroTransition
-            // 
-            this.livroTransition.Interval = 5;
-            this.livroTransition.Tick += new System.EventHandler(this.livroTransition_Tick);
-            // 
-            // userTransition
-            // 
-            this.userTransition.Interval = 5;
-            this.userTransition.Tick += new System.EventHandler(this.userTransition_Tick);
-            // 
             // btnConfiguracao
             // 
             this.btnConfiguracao.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(87)))), ((int)(((byte)(174)))));
@@ -591,7 +583,17 @@ namespace SUB.Forms.Inicio
             this.btnConfiguracao.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnConfiguracao.UseVisualStyleBackColor = false;
             this.btnConfiguracao.Click += new System.EventHandler(this.btnConfiguracao_Click);
-            // 
+            //
+            // livroTransition
+            //
+            this.livroTransition.Interval = 5;
+            this.livroTransition.Tick += new System.EventHandler(this.livroTransition_Tick);
+            //
+            // userTransition
+            //
+            this.userTransition.Interval = 5;
+            this.userTransition.Tick += new System.EventHandler(this.userTransition_Tick);
+            //
             // MainForm
             // 
             this.AllowDrop = true;
@@ -599,7 +601,6 @@ namespace SUB.Forms.Inicio
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlDark;
             this.ClientSize = new System.Drawing.Size(1440, 800);
-            this.MinimumSize = new System.Drawing.Size(1024, 650);
             this.Controls.Add(this.panelControl);
             this.Controls.Add(this.menu);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -607,6 +608,7 @@ namespace SUB.Forms.Inicio
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MinimumSize = new System.Drawing.Size(1024, 650);
             this.Name = "MainForm";
             this.Text = "SUB";
             this.Load += new System.EventHandler(this.MainForm_Load);

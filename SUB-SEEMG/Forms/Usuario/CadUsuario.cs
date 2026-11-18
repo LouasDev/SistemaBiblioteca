@@ -100,6 +100,8 @@ namespace SUB.Forms.Usuario
 
         public bool ValidarCPF(string cpf)
         {
+            if (string.IsNullOrWhiteSpace(cpf))
+                return false;
             cpf = new string (cpf.Where(char.IsDigit).ToArray());
             if (cpf.Length != 11 || cpf.Distinct().Count() == 1)
                 return false;
@@ -147,12 +149,16 @@ namespace SUB.Forms.Usuario
 
         public bool ValidarTelefone(string telefone)
         {
+            if (string.IsNullOrWhiteSpace(telefone))
+                return false;
             string apenasNumeros = new string (telefone.Where(char.IsDigit).ToArray());
-            return apenasNumeros.Length >= 11 && apenasNumeros.Length <= 12;
+            return apenasNumeros.Length == 10 || apenasNumeros.Length == 11;
         }
 
         public bool ValidarEmail(string email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             return Regex.IsMatch(email, pattern);
         }

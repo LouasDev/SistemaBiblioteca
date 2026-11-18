@@ -76,7 +76,30 @@ namespace SUB.Utils
             MigrarEmprestimoRapido(connection);
             MigrarLogProrrogacoes(connection);
             MigrarTurmasDosUsuariosExistentes(connection);
-            GarantirVersaoSchema(connection, 7);
+            GarantirIntegridadeEmprestimos(connection);
+            GarantirVersaoSchema(connection, 8);
+        }
+
+        private static void GarantirIntegridadeEmprestimos(SqlCeConnection connection)
+        {
+            GarantirChaveEstrangeira(connection, "FK_Emprestimo_Usuario", "UsuarioId", "usuarios");
+            GarantirChaveEstrangeira(connection, "FK_Emprestimo_Livro", "LivroId", "Livros");
+        }
+
+        private static void GarantirChaveEstrangeira(SqlCeConnection connection, string nome, string coluna, string tabelaReferenciada)
+        {
+            using (var consulta = new SqlCeCommand(@"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+                WHERE TABLE_NAME = @tabela AND CONSTRAINT_NAME = @nome AND CONSTRAINT_TYPE = 'FOREIGN KEY'", connection))
+            {
+                consulta.Parameters.AddWithValue("@tabela", "Emprestimo");
+                consulta.Parameters.AddWithValue("@nome", nome);
+                if (Convert.ToInt32(consulta.ExecuteScalar()) > 0)
+                    return;
+            }
+
+            Execute(connection, string.Format(
+                "ALTER TABLE Emprestimo ADD CONSTRAINT {0} FOREIGN KEY ({1}) REFERENCES {2}(Id)",
+                nome, coluna, tabelaReferenciada), null);
         }
 
         private static void MigrarLogProrrogacoes(SqlCeConnection connection)

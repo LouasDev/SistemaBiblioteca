@@ -36,10 +36,10 @@ namespace SUB.Forms.Configuracoes
             InitializeComponent();
             GuardarCores(this);
             dicaPadrao = lblDica.Text;
-            ConfigurarContador(numAluno, btnMaisAluno, btnMenosAluno, 0, 1000);
-            ConfigurarContador(numProfessor, btnMaisProfessor, btnMenosProfessor, 0, 1000);
-            ConfigurarContador(numBibliotecario, btnMaisBibliotecario, btnMenosBibliotecario, 0, 1000);
-            ConfigurarContador(numPrazo, btnMaisPrazo, btnMenosPrazo, 1, 3650);
+            ConfigurarContador(numAluno, btnMaisAluno, btnMenosAluno, 1, 100);
+            ConfigurarContador(numProfessor, btnMaisProfessor, btnMenosProfessor, 1, 100);
+            ConfigurarContador(numBibliotecario, btnMaisBibliotecario, btnMenosBibliotecario, 1, 100);
+            ConfigurarContador(numPrazo, btnMaisPrazo, btnMenosPrazo, 1, 365);
             ConfigurarContador(numProrrogacoes, btnMaisProrrogacoes, btnMenosProrrogacoes, 0, 1000);
             Preencher(new PoliticaEmprestimos());
         }
@@ -77,15 +77,14 @@ namespace SUB.Forms.Configuracoes
 
         public void Preencher(PoliticaEmprestimos regras)
         {
-            regras.Validar();
             preenchendo = true;
-            numAluno.Text = Math.Max(0, regras.LimiteAluno).ToString();
+            numAluno.Text = Math.Max(1, regras.LimiteAluno).ToString();
             chkSemLimiteAluno.Checked = regras.LimiteAluno < 0;
-            numProfessor.Text = Math.Max(0, regras.LimiteProfessor).ToString();
+            numProfessor.Text = Math.Max(1, regras.LimiteProfessor).ToString();
             chkSemLimiteProfessor.Checked = regras.LimiteProfessor < 0;
-            numBibliotecario.Text = Math.Max(0, regras.LimiteBibliotecario).ToString();
+            numBibliotecario.Text = Math.Max(1, regras.LimiteBibliotecario).ToString();
             chkSemLimiteBibliotecario.Checked = regras.LimiteBibliotecario < 0;
-            numPrazo.Text = regras.PrazoDias.ToString();
+            numPrazo.Text = Math.Max(1, regras.PrazoDias).ToString();
             numProrrogacoes.Text = Math.Max(0, regras.MaximoProrrogacoes).ToString();
             chkSemLimiteProrrogacoes.Checked = regras.MaximoProrrogacoes < 0;
             preenchendo = false;
@@ -103,7 +102,13 @@ namespace SUB.Forms.Configuracoes
 
         private void ConfigurarContador(RoundedTextBox campo, Button mais, Button menos, int minimo, int maximo)
         {
-            campo.TextChanged += (s, e) => ValidarValores();
+            campo.TextChanged += (s, e) =>
+            {
+                int valor;
+                if (minimo > 0 && int.TryParse(campo.Text, out valor) && valor == 0)
+                    campo.Text = minimo.ToString();
+                ValidarValores();
+            };
             mais.Click += (s, e) => AjustarContador(campo, 1, minimo, maximo);
             menos.Click += (s, e) => AjustarContador(campo, -1, minimo, maximo);
             TextBox editor = campo.Controls.OfType<TextBox>().Single();
@@ -145,14 +150,14 @@ namespace SUB.Forms.Configuracoes
         public bool ValidarValores()
         {
             if (preenchendo) return true;
-            bool valido = ValidarContador(numAluno, btnMaisAluno, btnMenosAluno, 0, 1000);
-            valido &= ValidarContador(numProfessor, btnMaisProfessor, btnMenosProfessor, 0, 1000);
-            valido &= ValidarContador(numBibliotecario, btnMaisBibliotecario, btnMenosBibliotecario, 0, 1000);
-            valido &= ValidarContador(numPrazo, btnMaisPrazo, btnMenosPrazo, 1, 3650);
+            bool valido = ValidarContador(numAluno, btnMaisAluno, btnMenosAluno, 1, 100);
+            valido &= ValidarContador(numProfessor, btnMaisProfessor, btnMenosProfessor, 1, 100);
+            valido &= ValidarContador(numBibliotecario, btnMaisBibliotecario, btnMenosBibliotecario, 1, 100);
+            valido &= ValidarContador(numPrazo, btnMaisPrazo, btnMenosPrazo, 1, 365);
             valido &= ValidarContador(numProrrogacoes, btnMaisProrrogacoes, btnMenosProrrogacoes, 0, 1000);
             bool mudou = ValoresValidos != valido;
             ValoresValidos = valido;
-            lblDica.Text = valido ? dicaPadrao : "Confira os valores: limites e prorrogações de 0 a 1000; prazo de 1 a 3650 dias. Preencha os campos ou marque Sem limite.";
+            lblDica.Text = valido ? dicaPadrao : "Use limites de 1 a 100 livros e prazos de 1 a 365 dias. Prorrogações podem ser de 0 a 1000. Preencha os campos ou marque Sem limite.";
             lblDica.ForeColor = valido ? (ThemeManager.Escuro ? ThemeManager.Dark.Texto : SystemColors.ControlText)
                 : (ThemeManager.Escuro ? Color.LightCoral : Color.Firebrick);
             if (mudou) ValidadeAlterada?.Invoke(valido);

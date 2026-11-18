@@ -25,9 +25,13 @@ namespace SUB.Forms.Inicio
         private Button navAtiva;
         private Color fundoClaroDoForm;
         private Color fundoClaroDoPainelControle;
+        private bool movendoJanela;
+        private Point cursorInicialMovimento;
+        private Point janelaInicialMovimento;
         public MainForm()
         {
             InitializeComponent();
+            panelControl.BringToFront();
             fundoClaroDoForm = BackColor;
             fundoClaroDoPainelControle = panelControl.BackColor;
             mdiProp();
@@ -71,8 +75,6 @@ namespace SUB.Forms.Inicio
             int meuRaio = 15;
             this.ArredondarCantos(meuRaio);
             this.DesenharBorda(Color.FromArgb(31, 72, 126), meuRaio, 1);
-            HandleCreated += (s, e) => OcultarBordaNativa();
-            if (IsHandleCreated) OcultarBordaNativa();
             // Os botões da janela são só ícones; a dica diz o que cada um faz.
             var dicas = new ToolTip(components);
             dicas.SetToolTip(picMin, "Minimizar");
@@ -236,45 +238,8 @@ namespace SUB.Forms.Inicio
         }
         private bool maximizado => WindowState == FormWindowState.Maximized;
 
-        //Funções da API para movimentar a aba
-        [DllImport("user32.dll")]
-        public static extern bool ReleaseCapture();
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HTCAPTION = 0x2;
-
-        // FormBorderStyle.None por padrão cria a janela sem WS_SIZEFRAME: mesmo respondendo
-        // WM_NCHITTEST com HTLEFT/HTTOP/etc., o Windows ignora o pedido de resize se a classe
-        // da janela não foi marcada como redimensionável nesse estilo.
-        private const int WS_SIZEFRAME = 0x00040000;
-        private const int WS_MAXIMIZEBOX = 0x00010000;
-        private const int DWMWA_BORDER_COLOR = 34;
-        private const int DWMWA_COLOR_NONE = unchecked((int)0xFFFFFFFE);
-
-        [DllImport("dwmapi.dll")]
-        private static extern int DwmSetWindowAttribute(IntPtr janela, int atributo, ref int valor, int tamanho);
-
-        private void OcultarBordaNativa()
-        {
-            try
-            {
-                int semBorda = DWMWA_COLOR_NONE;
-                DwmSetWindowAttribute(Handle, DWMWA_BORDER_COLOR, ref semBorda, sizeof(int));
-            }
-            catch (DllNotFoundException) { }
-            catch (EntryPointNotFoundException) { }
-        }
-
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.Style |= WS_SIZEFRAME | WS_MAXIMIZEBOX;
-                return cp;
-            }
-        }
 
         // Sem borda nativa (FormBorderStyle.None), o WinForms não sabe até onde a janela
         // pode crescer ao maximizar — sem isto ela cobriria a barra de tarefas.
@@ -284,55 +249,6 @@ namespace SUB.Forms.Inicio
             int bordaX = Math.Max(0, Width - ClientSize.Width) / 2;
             int bordaY = Math.Max(0, Height - ClientSize.Height) / 2;
             MaximizedBounds = Rectangle.Inflate(area, bordaX, bordaY);
-        }
-
-        // Redimensionar arrastando a borda. FormBorderStyle.None tira esse comportamento de
-        // graça; respondendo WM_NCHITTEST com o código de borda certo, o Windows volta a
-        // tratar essas faixas como se fossem a moldura nativa (cursor de resize incluído).
-        private const int WM_NCHITTEST = 0x84;
-        private const int ESPESSURA_BORDA_RESIZE = 6;
-
-        private const int HTLEFT = 10;
-        private const int HTRIGHT = 11;
-        private const int HTTOP = 12;
-        private const int HTTOPLEFT = 13;
-        private const int HTTOPRIGHT = 14;
-        private const int HTBOTTOM = 15;
-        private const int HTBOTTOMLEFT = 16;
-        private const int HTBOTTOMRIGHT = 17;
-
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg == WM_NCHITTEST && WindowState == FormWindowState.Normal)
-            {
-                // LPARAM empacota as coordenadas de tela como dois shorts com sinal
-                // (LOWORD/HIWORD); um cast direto para int quebra em monitores à
-                // esquerda/acima do principal, onde a coordenada é negativa.
-                int lparam = m.LParam.ToInt32();
-                short telaX = unchecked((short)(lparam & 0xFFFF));
-                short telaY = unchecked((short)((lparam >> 16) & 0xFFFF));
-                Point cursor = PointToClient(new Point(telaX, telaY));
-
-                bool dentro = cursor.X >= 0 && cursor.Y >= 0 && cursor.X < ClientSize.Width && cursor.Y < ClientSize.Height;
-                if (dentro)
-                {
-                    bool perto_esquerda = cursor.X <= ESPESSURA_BORDA_RESIZE;
-                    bool perto_direita = cursor.X >= ClientSize.Width - ESPESSURA_BORDA_RESIZE;
-                    bool perto_topo = cursor.Y <= ESPESSURA_BORDA_RESIZE;
-                    bool perto_baixo = cursor.Y >= ClientSize.Height - ESPESSURA_BORDA_RESIZE;
-
-                    if (perto_topo && perto_esquerda) { m.Result = (IntPtr)HTTOPLEFT; return; }
-                    if (perto_topo && perto_direita) { m.Result = (IntPtr)HTTOPRIGHT; return; }
-                    if (perto_baixo && perto_esquerda) { m.Result = (IntPtr)HTBOTTOMLEFT; return; }
-                    if (perto_baixo && perto_direita) { m.Result = (IntPtr)HTBOTTOMRIGHT; return; }
-                    if (perto_esquerda) { m.Result = (IntPtr)HTLEFT; return; }
-                    if (perto_direita) { m.Result = (IntPtr)HTRIGHT; return; }
-                    if (perto_topo) { m.Result = (IntPtr)HTTOP; return; }
-                    if (perto_baixo) { m.Result = (IntPtr)HTBOTTOM; return; }
-                }
-            }
-
-            base.WndProc(ref m);
         }
 
         //Nome dos Forms
@@ -382,11 +298,6 @@ namespace SUB.Forms.Inicio
         {
             AtualizarLimitesDeMaximizacao();
             WindowState = maximizado ? FormWindowState.Normal : FormWindowState.Maximized;
-        }
-
-        private void PanelControl_MouseDown(object sender, MouseEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void ChecarMapeamentoPendenteAoInicializar()
@@ -725,8 +636,7 @@ namespace SUB.Forms.Inicio
             AlternarMaximizado();
         }
 
-        // Mantém o ícone do botão coerente também quando o estado muda sem passar pelo
-        // clique (arrastar a aba até o topo maximiza, arrastar de volta restaura).
+        // Mantém o ícone sincronizado com o estado da janela.
         private void MainForm_Resize(object sender, EventArgs e)
         {
             picMax.BackgroundImage = maximizado
@@ -773,6 +683,7 @@ namespace SUB.Forms.Inicio
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            panelControl.BringToFront();
             if (!LoginForm.cancelar)
                 return;
             var novidades = new NovidadesAtualizacaoStore(AppPaths.UpdateFolder);
@@ -818,20 +729,35 @@ namespace SUB.Forms.Inicio
             AgendarTutorialInicial();
         }
 
-        //Locomoção do painel
+        // Arrastar a faixa superior move a janela; maximizar/restaurar fica no botão próprio.
         private void panelControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left || WindowState != FormWindowState.Normal)
+                return;
+
+            movendoJanela = true;
+            cursorInicialMovimento = Cursor.Position;
+            janelaInicialMovimento = Location;
+            panelControl.Capture = true;
+        }
+
+        private void panelControl_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!movendoJanela)
+                return;
+
+            Point cursor = Cursor.Position;
+            Location = new Point(janelaInicialMovimento.X + cursor.X - cursorInicialMovimento.X,
+                                 janelaInicialMovimento.Y + cursor.Y - cursorInicialMovimento.Y);
+        }
+
+        private void panelControl_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
                 return;
 
-            // Com WS_SIZEFRAME ativo (ver CreateParams) o próprio Windows já trata HTCAPTION
-            // como a titlebar nativa: arrastar até o topo maximiza, até a lateral faz snap de
-            // metade de tela, e arrastar de volta restaura sob o cursor. Forçar WindowState
-            // aqui por conta própria conflita com esse snap nativo e deixa a janela com
-            // tamanho inconsistente (sobra conteúdo de outra janela visível atrás).
-            AtualizarLimitesDeMaximizacao();
-            ReleaseCapture();
-            SendMessage(this.Handle, WM_NCLBUTTONDOWN, HTCAPTION, 0);
+            movendoJanela = false;
+            panelControl.Capture = false;
         }
 
         //Transição de expansão do livro e usuário

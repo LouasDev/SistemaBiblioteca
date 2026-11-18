@@ -11,6 +11,17 @@ namespace SUB.Forms.Inicio
 {
     public partial class InicioForm
     {
+        // Os cards são redimensionados durante a restauração da janela. Buffer duplo e
+        // redesenho no resize evitam que a borda antiga fique como riscos no conteúdo.
+        private sealed class CardPanel : Panel
+        {
+            public CardPanel()
+            {
+                DoubleBuffered = true;
+                ResizeRedraw = true;
+            }
+        }
+
         // TabControl pintado por inteiro: com OwnerDrawFixed o Windows ainda desenhava
         // a moldura 3D clássica, com bordas escuras em volta das abas.
         private sealed class AbasPlanas : TabControl
@@ -526,6 +537,9 @@ namespace SUB.Forms.Inicio
             }
 
             flowCards.ResumeLayout();
+            foreach (var card in cards)
+                card.Invalidate(true);
+            flowCards.Invalidate(true);
             int altura = alturaCardsDesenho + (linhas - 1) * (cards[0].Height + cards[0].Margin.Vertical);
             if (topPanelInside.Height != altura)
                 topPanelInside.Height = altura;
@@ -535,7 +549,7 @@ namespace SUB.Forms.Inicio
 
         private Panel CriarCard(string key, string title, string subtitle, Color headerColor, int cardWidth, int cardHeight)
         {
-            var card = new Panel
+            var card = new CardPanel
             {
                 Width = cardWidth,
                 Height = cardHeight,
@@ -547,8 +561,13 @@ namespace SUB.Forms.Inicio
             };
             card.Paint += (s, e) =>
             {
+                Rectangle borda = card.ClientRectangle;
+                borda.Width -= 1;
+                borda.Height -= 1;
+                if (borda.Width <= 0 || borda.Height <= 0)
+                    return;
                 using (var p = new Pen(ThemeManager.Escuro ? ThemeManager.Dark.Borda : Color.FromArgb(235, 239, 244)))
-                    e.Graphics.DrawRectangle(p, 0, 0, card.Width - 1, card.Height - 1);
+                    e.Graphics.DrawRectangle(p, borda);
             };
             var header = new Panel
             {

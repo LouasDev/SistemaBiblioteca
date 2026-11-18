@@ -35,9 +35,9 @@ namespace SUB.Tests.Integration
         }
 
         [TestMethod]
-        public void CreateSchema_RegistraVersaoSete()
+        public void CreateSchema_RegistraVersaoOito()
         {
-            Assert.AreEqual(1, Db.Int("SELECT COUNT(*) FROM SchemaInfo WHERE Versao = 7"));
+            Assert.AreEqual(1, Db.Int("SELECT COUNT(*) FROM SchemaInfo WHERE Versao = 8"));
         }
 
         [TestMethod]

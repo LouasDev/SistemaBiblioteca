@@ -99,7 +99,7 @@ namespace SUB.Tests.Integration
         }
 
         [TestMethod]
-        public void DevolverNormal_LivroRemovido_RejeitaERollbackMantemEmprestimoAtivo()
+        public void DevolverNormal_LivroComEmprestimoNaoPodeSerRemovido()
         {
             using (var conexao = Db.Open())
             {
@@ -110,13 +110,12 @@ namespace SUB.Tests.Integration
                 using (var comando = new SqlCeCommand("DELETE FROM Livros WHERE Id = @Id", conexao))
                 {
                     comando.Parameters.AddWithValue("@Id", ctx.LivroNormalId);
-                    comando.ExecuteNonQuery();
+                    Assert.ThrowsException<SqlCeException>(() => comando.ExecuteNonQuery());
                 }
 
-                Assert.ThrowsException<InvalidOperationException>(() =>
-                    CirculacaoService.DevolverNormal(conexao, id, Agora));
-
                 Assert.AreEqual("Ativo", Db.Scalar("SELECT Status FROM Emprestimo WHERE Id = " + id).ToString());
+                CirculacaoService.DevolverNormal(conexao, id, Agora);
+                Assert.AreEqual("Devolvido", Db.Scalar("SELECT Status FROM Emprestimo WHERE Id = " + id).ToString());
             }
         }
     }

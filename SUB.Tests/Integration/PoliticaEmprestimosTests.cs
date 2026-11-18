@@ -56,11 +56,11 @@ namespace SUB.Tests.Integration
         }
 
         [TestMethod]
-        public void LimitesIndependentes_ZeroBloqueiaSomenteOPerfil()
+        public void LimiteZeroEInvalido_SemAfetarOutrosPerfis()
         {
             var regras = new PoliticaEmprestimos { LimiteAluno = 0, LimiteProfessor = 2 };
-            Assert.ThrowsException<InvalidOperationException>(() => Emprestar(ctx.AlunoId, regras));
-            Emprestar(ctx.ProfessorId, regras);
+            Assert.ThrowsException<InvalidOperationException>(() => regras.Validar());
+            Emprestar(ctx.ProfessorId, new PoliticaEmprestimos { LimiteAluno = 1, LimiteProfessor = 2 });
             Assert.AreEqual(1, Db.Int("SELECT COUNT(*) FROM Emprestimo"));
         }
 

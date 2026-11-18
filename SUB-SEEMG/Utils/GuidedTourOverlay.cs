@@ -210,7 +210,7 @@ namespace SUB.Utils
         {
             screen = TourScreen.Welcome;
             CaptureBackground();
-            ConfigureCard("CONHEÇA O SUB", "Bem-vinda ao SUB", "Este é um passeio rápido pelos recursos essenciais da biblioteca. Nada será preenchido ou alterado durante o tour.", brandImage, "", false, true, "Começar tour", "Pular por agora");
+            ConfigureCard("CONHEÇA O SUB", "Bem vindo(a) ao SUB", "Este é um passeio rápido pelos recursos essenciais da biblioteca. Nada será preenchido ou alterado durante o tour.", brandImage, "", false, true, "Começar tour", "Pular por agora");
         }
 
         private void ShowCompletion()
